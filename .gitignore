@@ -1,0 +1,13 @@
+.project
+.classpath
+.checkstyle
+.settings/
+.idea/
+*.log
+*.lck
+*.iml
+target/
+*.DS_Store
+*.patch
+*~
+git.properties
