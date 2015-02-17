@@ -17,7 +17,7 @@ package org.jackhammer;
 
 import org.jackhammer.Record.Builder;
 
-interface RecordFactory {
+public interface RecordFactory {
   Builder newStreamBuilder();
   Record newRecord();
 }

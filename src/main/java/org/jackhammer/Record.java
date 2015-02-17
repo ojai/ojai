@@ -25,7 +25,7 @@ import java.util.Map;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 
-interface Record extends Iterable<Map.Entry<String, Value>> {
+public interface Record extends Iterable<Map.Entry<String, Value>> {
 
   // set(String name, <Type> value)
   // setAt(String path, <Type> value)
@@ -171,7 +171,7 @@ interface Record extends Iterable<Map.Entry<String, Value>> {
   StreamReader asStreamAt(String path);
   StreamReader asStreamAt(FieldPath path);
 
-  interface Builder {
+  public interface Builder {
 
     Builder addNewMap();
 

@@ -23,9 +23,9 @@ import java.sql.Time;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 
-interface StreamReader {
+public interface StreamReader {
 
-  enum EventType {
+  public enum EventType {
     NULL,
     BOOLEAN,
     STRING,
