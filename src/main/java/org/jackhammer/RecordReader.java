@@ -23,7 +23,7 @@ import java.sql.Time;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 
-public interface StreamReader {
+public interface RecordReader {
 
   public enum EventType {
     NULL,
@@ -48,7 +48,7 @@ public interface StreamReader {
     END_ARRAY,
   }
 
-  StreamReader.EventType next();
+  RecordReader.EventType next();
 
   byte getByte();
   short getShort();

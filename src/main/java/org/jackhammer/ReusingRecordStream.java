@@ -15,18 +15,10 @@
  */
 package org.jackhammer;
 
+public interface ReusingRecordStream extends RecordStream {
 
-public interface RecordFactory {
+  public FieldReader getFieldReader(String path);
 
-  /**
-   * @return A new instance of {@link RecordWriter}.
-   */
-  RecordWriter newRecordBuilder();
-
-  /**
-   *
-   * @return A new instance of {@link Record}.
-   */
-  Record newRecord();
+  public FieldReader getFieldReader(FieldPath path);
 
 }

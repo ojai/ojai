@@ -17,43 +17,91 @@ package org.jackhammer;
 
 public abstract class FieldSegment implements Comparable<FieldSegment> {
 
-  FieldSegment child;
+  protected enum Type {
+    MAP,
+    ARRAY,
+    LEAF
+  }
 
-  int hash;
+  final protected FieldSegment child;
+  final protected Type type;
+
+  protected int hash;
+
+  protected FieldSegment(FieldSegment child) {
+    this.child = child;
+    if (child == null) {
+      type = Type.LEAF;
+    } else {
+      type = child.isIndexed() ? Type.ARRAY : Type.MAP;
+    }
+  }
+
+  /**
+   * @return <code>true</code> if the current segment has a child and
+   * <code>child.isNamed()</code> is <code>true</code>.
+   */
+  public boolean isMap() {
+    return type == Type.MAP;
+  }
+
+  /**
+   * @return <code>true</code> if the current segment has a child and
+   * <code>child.isIndexed()</code> is <code>true</code>.
+   */
+  public boolean isArray() {
+    return type == Type.ARRAY;
+  }
+
+  /**
+   * @return <code>true</code> if the current segment has no child.
+   */
+  public boolean isLeaf() {
+    return type == Type.LEAF;
+  }
+
+  /**
+   * @return <code>true</code> if the current segment is identified by an index.
+   */
+  public abstract boolean isIndexed();
+
+  /**
+   * @return <code>true</code> if the current segment is identified by a name.
+   */
+  public abstract boolean isNamed();
 
   public abstract FieldSegment cloneWithNewChild(FieldSegment segment);
+
   public abstract int segmentCompareTo(FieldSegment o);
 
   @Override
   public abstract FieldSegment clone();
 
-  public static final class ArraySegment extends FieldSegment {
+  public static final class IndexSegment extends FieldSegment {
     private final int index;
 
-    public ArraySegment(String numberAsText, FieldSegment child) {
+    public IndexSegment(int index) {
+      this(index, null);
+    }
+
+    public IndexSegment(String numberAsText, FieldSegment child) {
       this(numberAsText == null ? -1 : Integer.parseInt(numberAsText), child);
     }
 
-    public ArraySegment(int index, FieldSegment child) {
-      this.child = child;
-      this.index = index;
-      assert index >= -1;
+    public IndexSegment(FieldSegment child) {
+      this(-1, child);
     }
 
-    public ArraySegment(FieldSegment child) {
-      this.child = child;
-      this.index = -1;
+    public IndexSegment(int index, FieldSegment child) {
+      super(child);
+      if (index < -1) {
+        throw new IllegalArgumentException();
+      }
+      this.index = index;
     }
 
     public boolean hasIndex() {
       return index != -1;
-    }
-
-    public ArraySegment(int index) {
-      if (index < 0 ) {
-        throw new IllegalArgumentException();
-      }
-      this.index = index;
     }
 
     public int getIndex() {
@@ -61,7 +109,7 @@ public abstract class FieldSegment implements Comparable<FieldSegment> {
     }
 
     @Override
-    public boolean isArray() {
+    public boolean isIndexed() {
       return true;
     }
 
@@ -71,7 +119,7 @@ public abstract class FieldSegment implements Comparable<FieldSegment> {
     }
 
     @Override
-    public ArraySegment getArraySegment() {
+    public IndexSegment getIndexSegment() {
       return this;
     }
 
@@ -82,8 +130,8 @@ public abstract class FieldSegment implements Comparable<FieldSegment> {
 
     @Override
     public int segmentCompareTo(FieldSegment other) {
-      if (other instanceof ArraySegment) {
-        ArraySegment that = (ArraySegment)other;
+      if (other instanceof IndexSegment) {
+        IndexSegment that = (IndexSegment)other;
         return this.index - that.index;
       }
       return other == null? 1 : -1;
@@ -95,30 +143,22 @@ public abstract class FieldSegment implements Comparable<FieldSegment> {
         return true;
       } else if (obj == null) {
         return false;
-      } else if (obj instanceof ArraySegment) {
-        return index == ((ArraySegment)obj).getIndex();
+      } else if (obj instanceof IndexSegment) {
+        return index == ((IndexSegment)obj).getIndex();
       }
       return false;
     }
 
     @Override
     public FieldSegment clone() {
-      FieldSegment seg = index < 0 ? new ArraySegment(null) : new ArraySegment(index);
-      if (child != null) {
-        seg.setChild(child.clone());
-      }
-      return seg;
+      FieldSegment clonedChild = (child != null) ? child.clone() : null;
+      return (index < 0) ? new IndexSegment(clonedChild) : new IndexSegment(index, clonedChild);
     }
 
     @Override
-    public ArraySegment cloneWithNewChild(FieldSegment newChild) {
-      ArraySegment seg = index < 0 ? new ArraySegment(null) : new ArraySegment(index);
-      if (child != null) {
-        seg.setChild(child.cloneWithNewChild(newChild));
-      } else {
-        seg.setChild(newChild);
-      }
-      return seg;
+    public IndexSegment cloneWithNewChild(FieldSegment newChild) {
+      FieldSegment clonedChild = (child != null) ? child.cloneWithNewChild(newChild) : newChild;
+      return (index < 0) ? new IndexSegment(clonedChild) : new IndexSegment(index, clonedChild);
     }
 
     @Override
@@ -136,12 +176,12 @@ public abstract class FieldSegment implements Comparable<FieldSegment> {
   public static final class NameSegment extends FieldSegment {
     private final String name;
 
-    public NameSegment(CharSequence n, FieldSegment child) {
-      this.child = child;
-      this.name = n.toString();
+    public NameSegment(CharSequence n) {
+      this(n, null);
     }
 
-    public NameSegment(CharSequence n) {
+    public NameSegment(CharSequence n, FieldSegment child) {
+      super(child);
       this.name = n.toString();
     }
 
@@ -150,7 +190,7 @@ public abstract class FieldSegment implements Comparable<FieldSegment> {
     }
 
     @Override
-    public boolean isArray() {
+    public boolean isIndexed() {
       return false;
     }
 
@@ -197,22 +237,13 @@ public abstract class FieldSegment implements Comparable<FieldSegment> {
 
     @Override
     public NameSegment clone() {
-      NameSegment s = new NameSegment(this.name);
-      if (child != null) {
-        s.setChild(child.clone());
-      }
-      return s;
+      return new NameSegment(this.name, (child != null ? child.clone() : null));
     }
 
     @Override
     public NameSegment cloneWithNewChild(FieldSegment newChild) {
-      NameSegment s = new NameSegment(this.name);
-      if (child != null) {
-        s.setChild(child.cloneWithNewChild(newChild));
-      } else {
-        s.setChild(newChild);
-      }
-      return s;
+      return new NameSegment(this.name,
+          (child != null ? child.cloneWithNewChild(newChild) : newChild));
     }
 
     @Override
@@ -229,12 +260,10 @@ public abstract class FieldSegment implements Comparable<FieldSegment> {
     throw new UnsupportedOperationException();
   }
 
-  public ArraySegment getArraySegment() {
+  public IndexSegment getIndexSegment() {
     throw new UnsupportedOperationException();
   }
 
-  public abstract boolean isArray();
-  public abstract boolean isNamed();
   protected abstract StringBuilder writeSegment(StringBuilder sb, boolean escape);
 
   @Override
@@ -261,10 +290,6 @@ public abstract class FieldSegment implements Comparable<FieldSegment> {
 
   public FieldSegment getChild() {
     return child;
-  }
-
-  void setChild(FieldSegment child) {
-    this.child = child;
   }
 
   protected abstract int segmentHashCode();
@@ -321,8 +346,8 @@ public abstract class FieldSegment implements Comparable<FieldSegment> {
    * a path is actually contained above the current one.
    *
    * Examples:
-   * [a] . contains( [a.b.c] ) returns true
-   * [a.b.c] . contains( [a] ) returns true
+   * [a] . contains([a.b.c]) returns true
+   * [a.b.c] . contains([a]) returns true
    *
    * This behavior is used for cases like scanning json in an event based fashion, when we arrive at
    * a node in a complex type, we will know the complete path back to the root. This method can
@@ -345,7 +370,7 @@ public abstract class FieldSegment implements Comparable<FieldSegment> {
     // TODO - fix this in the future to match array segments are part of the path
     // the current behavior to always return true when we hit an array may be useful in some cases,
     // but we can get better performance in the JSON reader if we avoid reading unwanted elements in arrays
-    if (otherSeg.isArray() || this.isArray()) {
+    if (otherSeg.isIndexed() || this.isIndexed()) {
       return true;
     }
     if (getClass() != otherSeg.getClass()) {

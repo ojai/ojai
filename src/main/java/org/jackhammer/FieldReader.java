@@ -15,18 +15,6 @@
  */
 package org.jackhammer;
 
-
-public interface RecordFactory {
-
-  /**
-   * @return A new instance of {@link RecordWriter}.
-   */
-  RecordWriter newRecordBuilder();
-
-  /**
-   *
-   * @return A new instance of {@link Record}.
-   */
-  Record newRecord();
+public interface FieldReader extends Value {
 
 }

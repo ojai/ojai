@@ -24,7 +24,7 @@ package org.jackhammer;
 
 import org.jackhammer.FieldPath;
 import org.jackhammer.FieldSegment;
-import org.jackhammer.FieldSegment.ArraySegment;
+import org.jackhammer.FieldSegment.IndexSegment;
 import org.jackhammer.FieldSegment.NameSegment;
 }
 
@@ -40,22 +40,22 @@ fieldSegment returns [NameSegment seg]
   ;
 
 nameSegment returns [NameSegment seg]
-  : QuotedIdentifier ((Period s1=fieldSegment) | s2=arraySegment)? {
+  : QuotedIdentifier ((Period s1=fieldSegment) | s2=indexSegment)? {
       $seg = new NameSegment(
         $QuotedIdentifier.text.substring(1, $QuotedIdentifier.text.length()-1).replaceAll("\\\\(.)", "$1"),
         ($s1.start == null ? ($s2.start == null ? null : $s2.seg) : $s1.seg)
       );
     }
-  | Identifier ((Period s1=fieldSegment) | s2=arraySegment)? {
+  | Identifier ((Period s1=fieldSegment) | s2=indexSegment)? {
       $seg = new NameSegment($Identifier.text,
         ($s1.start == null ? ($s2.start == null ? null : $s2.seg) : $s1.seg)
       );
     }
   ;
 
-arraySegment returns [FieldSegment seg]
-  : OBracket Number? CBracket ((Period s1=fieldSegment) | s2=arraySegment)? {
-      $seg = new ArraySegment($Number.text,
+indexSegment returns [FieldSegment seg]
+  : OBracket Number? CBracket ((Period s1=fieldSegment) | s2=indexSegment)? {
+      $seg = new IndexSegment($Number.text,
         ($s1.start == null ? ($s2.start == null ? null : $s2.seg) : $s1.seg)
       );
     }

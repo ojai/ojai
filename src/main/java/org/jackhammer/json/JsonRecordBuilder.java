@@ -5,374 +5,374 @@ import java.nio.ByteBuffer;
 import java.sql.Date;
 import java.sql.Time;
 
+import org.jackhammer.RecordWriter;
 import org.jackhammer.Record;
-import org.jackhammer.Record.Builder;
 import org.jackhammer.Value;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 
 
-public class JsonRecordBuilder implements Record.Builder {
+public class JsonRecordBuilder implements RecordWriter {
 
   public JsonRecordBuilder() {
   }
 
   @Override
-  public Builder addNewMap() {
+  public RecordWriter addNewMap() {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder put(String field, boolean value) {
+  public RecordWriter put(String field, boolean value) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder put(String field, String value) {
+  public RecordWriter put(String field, String value) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder put(String field, byte value) {
+  public RecordWriter put(String field, byte value) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder put(String field, short value) {
+  public RecordWriter put(String field, short value) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder put(String field, int value) {
+  public RecordWriter put(String field, int value) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder put(String field, long value) {
+  public RecordWriter put(String field, long value) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder put(String field, float value) {
+  public RecordWriter put(String field, float value) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder put(String field, double value) {
+  public RecordWriter put(String field, double value) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder put(String field, Date value) {
+  public RecordWriter put(String field, Date value) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder put(String field, BigDecimal value) {
+  public RecordWriter put(String field, BigDecimal value) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder put(String field, byte[] value) {
+  public RecordWriter put(String field, byte[] value) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder put(String field, byte[] value, int off, int len) {
+  public RecordWriter put(String field, byte[] value, int off, int len) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder put(String field, ByteBuffer value) {
+  public RecordWriter put(String field, ByteBuffer value) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder put(String field, Interval value) {
+  public RecordWriter put(String field, Interval value) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder putNewMap(String field) {
+  public RecordWriter putNewMap(String field) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder putNewArray(String field) {
+  public RecordWriter putNewArray(String field) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder putNull(String field) {
+  public RecordWriter putNull(String field) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder put(String field, Value value) {
+  public RecordWriter put(String field, Value value) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder put(String field, Record value) {
+  public RecordWriter put(String field, Record value) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder putDecimal(String field, int unscaledValue, int scale) {
+  public RecordWriter putDecimal(String field, int unscaledValue, int scale) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder putDecimal(String field, long unscaledValue, int scale) {
+  public RecordWriter putDecimal(String field, long unscaledValue, int scale) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder putDecimal(String field, double unscaledValue, int scale) {
+  public RecordWriter putDecimal(String field, double unscaledValue, int scale) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder putDecimal(String field, float unscaledValue, int scale) {
+  public RecordWriter putDecimal(String field, float unscaledValue, int scale) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder putDecimal(String field, byte[] unscaledValue, int scale) {
+  public RecordWriter putDecimal(String field, byte[] unscaledValue, int scale) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder putDate(String field, int days) {
+  public RecordWriter putDate(String field, int days) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder putTime(String field, int millis) {
+  public RecordWriter putTime(String field, int millis) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder putDateTime(String field, long timeMillis) {
+  public RecordWriter putDateTime(String field, long timeMillis) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder putInterval(int months, int days, int milliseconds) {
+  public RecordWriter putInterval(int months, int days, int milliseconds) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder addNewArray() {
+  public RecordWriter addNewArray() {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder add(boolean value) {
+  public RecordWriter add(boolean value) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder add(String value) {
+  public RecordWriter add(String value) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder add(byte value) {
+  public RecordWriter add(byte value) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder add(short value) {
+  public RecordWriter add(short value) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder add(int value) {
+  public RecordWriter add(int value) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder add(long value) {
+  public RecordWriter add(long value) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder add(float value) {
+  public RecordWriter add(float value) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder add(double value) {
+  public RecordWriter add(double value) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder add(Time value) {
+  public RecordWriter add(Time value) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder add(Date value) {
+  public RecordWriter add(Date value) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder add(DateTime value) {
+  public RecordWriter add(DateTime value) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder add(BigDecimal value) {
+  public RecordWriter add(BigDecimal value) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder add(byte[] value) {
+  public RecordWriter add(byte[] value) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder add(byte[] value, int off, int len) {
+  public RecordWriter add(byte[] value, int off, int len) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder add(ByteBuffer value) {
+  public RecordWriter add(ByteBuffer value) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder add(Interval value) {
+  public RecordWriter add(Interval value) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder addNull() {
+  public RecordWriter addNull() {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder add(Value value) {
+  public RecordWriter add(Value value) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder add(Record value) {
+  public RecordWriter add(Record value) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder addDecimal(int unscaledValue, int scale) {
+  public RecordWriter addDecimal(int unscaledValue, int scale) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder addDecimal(long unscaledValue, int scale) {
+  public RecordWriter addDecimal(long unscaledValue, int scale) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder addDecimal(double unscaledValue, int scale) {
+  public RecordWriter addDecimal(double unscaledValue, int scale) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder addDecimal(float unscaledValue, int scale) {
+  public RecordWriter addDecimal(float unscaledValue, int scale) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder addDecimal(byte[] unscaledValue, int scale) {
+  public RecordWriter addDecimal(byte[] unscaledValue, int scale) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder addDate(int days) {
+  public RecordWriter addDate(int days) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder addTime(int millis) {
+  public RecordWriter addTime(int millis) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder addDateTime(long timeMillis) {
+  public RecordWriter addDateTime(long timeMillis) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder addInterval(int months, int days, int milliseconds) {
+  public RecordWriter addInterval(int months, int days, int milliseconds) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder endArray() {
+  public RecordWriter endArray() {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public Builder endMap() {
+  public RecordWriter endMap() {
     // TODO Auto-generated method stub
     return this;
   }

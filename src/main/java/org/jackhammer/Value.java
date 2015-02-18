@@ -16,11 +16,13 @@
 package org.jackhammer;
 
 import java.math.BigDecimal;
+import java.nio.ByteBuffer;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
 import java.util.Map;
 
+import org.joda.time.DateTime;
 import org.joda.time.Interval;
 
 public interface Value {
@@ -72,7 +74,12 @@ public interface Value {
     DOUBLE,
 
     /**
-     * 32-bit integer representing the number of days since epoch,
+     * Arbitrary precision, fixed point decimal value.
+     */
+    DECIMAL,
+
+    /**
+     * 32-bit integer representing the number of DAYS since epoch,
      * i.e. January 1, 1970 00:00:00 UTC.
      */
     DATE,
@@ -90,11 +97,6 @@ public interface Value {
     DATETIME,
 
     /**
-     * Arbitrary precision, fixed point decimal value.
-     */
-    DECIMAL,
-
-    /**
      * A value representing a period of time between two instants.
      */
     INTERVAL,
@@ -105,136 +107,189 @@ public interface Value {
     BINARY,
 
     /**
-     * Mapping of {@link String} and {@link Value}.
+     * Mapping of String and <code>Value</code>.
      */
     MAP,
 
     /**
-     * A list of {@link Value}.
+     * A list of <code>Value</code>.
      */
     ARRAY
   }
 
+  /**
+   * @return The <code>Type</code> of this value.
+   */
   Value.Type getType();
 
   /**
-   * Returns the value as a <code>byte</code>. May result in rounding or truncation.
-   * <br><br>
-   * Supported for {@link Type#BYTE}, {@link Type#SHORT}, {@link Type#INT},
-   * {@link Type#LONG}, {@link Type#FLOAT}, {@link Type#DOUBLE}, {@link Type#DECIMAL}.
+   * Returns the value as a <code>byte</code>.
    *
-   * @throws ValueTypeException if the underlying value can not be converted
-   * to a <code>byte</code>.
+   * @throws ValueTypeException if this value is not of <code>BYTE</code> type.
    */
   byte getByte();
 
   /**
-   * Returns the value as a <code>short</code>. May result in rounding or truncation.
-   * <br><br>
-   * Supported for {@link Type#BYTE}, {@link Type#SHORT}, {@link Type#INT},
-   * {@link Type#LONG}, {@link Type#FLOAT}, {@link Type#DOUBLE}, {@link Type#DECIMAL}.
+   * Returns the value as a <code>short</code>.
    *
-   * @throws ValueTypeException if the underlying value can not be converted
-   * to a <code>short</code>.
+   * @throws ValueTypeException if this value is not of <code>SHORT</code> type.
    */
   short getShort();
 
   /**
-   * Returns the value as an <code>int</code>. May result in rounding or truncation.
-   * <br><br>
-   * Supported for {@link Type#BYTE}, {@link Type#SHORT}, {@link Type#INT},
-   * {@link Type#LONG}, {@link Type#FLOAT}, {@link Type#DOUBLE}, {@link Type#DECIMAL}.
+   * Returns the value as an <code>int</code>.
    *
-   * @throws ValueTypeException if the underlying value can not be converted
-   * to a <code>int</code>.
+   * @throws ValueTypeException if this value is not of <code>INT</code> type.
    */
   int getInt();
 
   /**
-   * Returns the value as a <code>long</code>. May result in rounding or truncation.
-   * <br><br>
-   * Supported for {@link Type#BYTE}, {@link Type#SHORT}, {@link Type#INT},
-   * {@link Type#LONG}, {@link Type#FLOAT}, {@link Type#DOUBLE}, {@link Type#DECIMAL}.
+   * Returns the value as a <code>long</code>.
    *
-   * @throws ValueTypeException if the underlying value can not be converted
-   * to a <code>long</code>.
+   * @throws ValueTypeException if this value is not of <code>LONG</code> type.
    */
   long getLong();
 
   /**
-   * Returns the value as a <code>float</code>. May result in rounding or truncation.
-   * <br><br>
-   * Supported for {@link Type#BYTE}, {@link Type#SHORT}, {@link Type#INT},
-   * {@link Type#LONG}, {@link Type#FLOAT}, {@link Type#DOUBLE}, {@link Type#DECIMAL}.
+   * Returns the value as a <code>float</code>.
    *
-   * @throws ValueTypeException if the underlying value can not be converted
-   * to a <code>float</code>.
+   * @throws ValueTypeException if this value is not of <code>FLOAT</code> type.
    */
   float getFloat();
 
   /**
-   * Returns the value as a <code>double</code>. May result in rounding or truncation.
-   * <br><br>
-   * Supported for {@link Type#BYTE}, {@link Type#SHORT}, {@link Type#INT},
-   * {@link Type#LONG}, {@link Type#FLOAT}, {@link Type#DOUBLE}, {@link Type#DECIMAL}.
+   * Returns the value as a <code>double</code>.
    *
-   * @throws ValueTypeException if the underlying value can not be converted
-   * to a <code>double</code>.
+   * @throws ValueTypeException if this value is not of <code>DOUBLE</code> type.
    */
   double getDouble();
 
   /**
+   * Returns the value as a <code>BigDecimal</code>.
+   *
+   * @throws ValueTypeException if this value is not of Type.DECIMAL type.
+   */
+  BigDecimal getDecimal();
+
+  /**
    * Returns the value as a <code>boolean</code>.
    *
-   * @throws ValueTypeException if the underlying value is not a <code>boolean</code>.
+   * @throws ValueTypeException if this value is not of <code>BOOLEAN</code> type.
    */
   boolean getBoolean();
 
   /**
-   * Returns the value as a {@link String}.
+   * Returns the value as a <code>String</code>.
    *
-   * @throws ValueTypeException if the underlying value is not of type {@link Type#STRING}.
+   * @throws ValueTypeException if this value is not of <code>STRING</code> type.
    */
   String getString();
 
   /**
-   * Returns the value as a {@link BigDecimal}. May result in rounding or truncation.
-   * <br><br>
-   * Supported for {@link Type#BYTE}, {@link Type#SHORT}, {@link Type#INT},
-   * {@link Type#LONG}, {@link Type#FLOAT}, {@link Type#DOUBLE}, {@link Type#DECIMAL}.
+   * Returns the value as a {@link org.joda.time.DateTime} object.
    *
-   * @throws ValueTypeException if the underlying value can not be converted
-   * to a {@link BigDecimal}.
+   * @throws ValueTypeException if this value is not of <code>DATETIME</code> type.
    */
-  BigDecimal getDecimal();
+  DateTime getDateTime();
 
+  /**
+   * Returns a long value representing the number of milliseconds since epoch.
+   *
+   * @throws ValueTypeException if this value is not of <code>DATETIME</code> type.
+   */
   long getTimeStamp();
 
+  /**
+   * Returns the value as a {@link java.sql.Date} object.
+   *
+   * @throws ValueTypeException if this value is not of <code>DATE</code> type.
+   */
   Date getDate();
 
+  /**
+   * Returns a <code>int</code> representing the number of DAYS since epoch.
+   *
+   * @throws ValueTypeException if this value is not of <code>DATE</code> type.
+   */
+  int getDateAsInt();
+
+  /**
+   * Returns the value as a {@link java.sql.Time} object.
+   *
+   * @throws ValueTypeException if this value is not of <code>TIME</code> type.
+   */
   Time getTime();
 
+  /**
+   * Returns a <code>int</code> representing the number of milliseconds since midnight.
+   *
+   * @throws ValueTypeException if this value is not of <code>TIME</code> type.
+   */
+  int getTimeAsInt();
+
+  /**
+   * Returns the value as a {@link org.joda.time.Interval} object.
+   *
+   * @throws ValueTypeException if this value is not of <code>INTERVAL</code> type.
+   */
   Interval getInterval();
 
   /**
-   * Returns the value as a {@link Map}.
+   * Returns a <code>long</code> representing interval duration in milliseconds.
    *
-   * @throws ValueTypeException if the underlying value is not of type {@link Type#MAP}.
+   * @throws ValueTypeException if this value is not of <code>INTERVAL</code> type.
    */
-  Map<String, Value> getMap();
+  long getIntervalAsLong();
 
   /**
-   * Returns the value as a {@link List}.
+   * Returns the value as a {@link java.nio.ByteBuffer}.
    *
-   * @throws ValueTypeException if the underlying value is not of type {@link Type#ARRAY}.
+   * @throws ValueTypeException if this value is not of <code>BINARY</code> type.
    */
-  List<Value> getList();
+  ByteBuffer getBinary();
 
   /**
-   * Returns the value as an {@link Object} of the underlying type.
+   * Returns the value as a <code>Map<String, Object></code>.
    *
+   * @throws ValueTypeException if this value is not of <code>MAP<code> type.
+   */
+  Map<String, Object> getMap();
+
+  /**
+   * Returns the value as a <code>List&lt;Object></code>.
+   *
+   * @throws ValueTypeException If this value is not of <code>ARRAY</code> type.
+   */
+  List<Object> getList();
+
+  /**
+   * Returns the value as an <code>Object} of the underlying type.
+   * <pre>
+   * Type.NULL      => null
+   * Type.BOOLEAN   => Boolean
+   * Type.STRING    => String
+   * Type.BYTE      => Byte
+   * Type.SHORT     => Short
+   * Type.INT       => Integer
+   * Type.LONG      => Long
+   * Type.FLOAT     => Float
+   * Type.DOUBLE    => Double
+   * Type.DECIMAL   => BigDecimal
+   * Type.DATE      => java.sql.Date
+   * Type.TIME      => java.sql.Time
+   * Type.DATETIME  => org.joda.time.DateTime
+   * Type.INTERVAL  => org.joda.time.Interval
+   * Type.BINARY    => java.nio.ByteBuffer
+   * Type.MAP       => Map
+   * Type.ARRAY     => List
+   * </pre>
    */
   Object getObject();
 
-  StreamReader getStream();
+  /**
+   * Returns a {@link RecordReader} over the current record.
+   * @return
+   */
+  RecordReader getStream();
+
 }

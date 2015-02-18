@@ -31,6 +31,7 @@ public class TestFieldPath {
   @Test
   public void testSimplePathSingleSegment() {
     FieldPath fp = FieldPath.parseFrom("a");
+    assertTrue(fp.getRootSegment().isLeaf());
     assertEquals("`a`", fp.asPathString());
     assertEquals("a", fp.asPathString(false));
   }
@@ -38,6 +39,8 @@ public class TestFieldPath {
   @Test
   public void testSimplePathDoubleSegment() {
     FieldPath fp = FieldPath.parseFrom("a.b");
+    assertTrue(fp.getRootSegment().isMap());
+    assertTrue(fp.getRootSegment().getChild().isLeaf());
     assertEquals("`a`.`b`", fp.asPathString());
     assertEquals("a.b", fp.asPathString(false));
   }
@@ -45,6 +48,11 @@ public class TestFieldPath {
   @Test
   public void testSimplePathWithArrays() {
     FieldPath fp = FieldPath.parseFrom("a.b[3].c");
+    assertTrue(fp.getRootSegment().isMap());
+    assertTrue(fp.getRootSegment().getChild().isArray());
+    assertTrue(fp.getRootSegment().getChild().getChild().isIndexed());
+    assertTrue(fp.getRootSegment().getChild().getChild().isMap());
+    assertTrue(fp.getRootSegment().getChild().getChild().getChild().isLeaf());
     assertEquals("`a`.`b`[3].`c`", fp.asPathString());
     assertEquals("a.b[3].c", fp.asPathString(false));
   }
@@ -52,6 +60,11 @@ public class TestFieldPath {
   @Test
   public void testSimplePathWithArraysEmptyIndex() {
     FieldPath fp = FieldPath.parseFrom("a.b[].c");
+    assertTrue(fp.getRootSegment().isMap());
+    assertTrue(fp.getRootSegment().getChild().isArray());
+    assertTrue(fp.getRootSegment().getChild().getChild().isIndexed());
+    assertTrue(fp.getRootSegment().getChild().getChild().isMap());
+    assertTrue(fp.getRootSegment().getChild().getChild().getChild().isLeaf());
     assertEquals("`a`.`b`[].`c`", fp.asPathString());
     assertEquals("a.b[].c", fp.asPathString(false));
   }
@@ -59,6 +72,7 @@ public class TestFieldPath {
   @Test
   public void testEscapedPathSingleSegment() {
     FieldPath fp = FieldPath.parseFrom("`a`");
+    assertTrue(fp.getRootSegment().isLeaf());
     assertEquals("`a`", fp.asPathString());
     assertEquals("a", fp.asPathString(false));
   }
@@ -66,6 +80,7 @@ public class TestFieldPath {
   @Test
   public void testEscapedPathDoubleSegment() {
     FieldPath fp = FieldPath.parseFrom("`a.b`");
+    assertTrue(fp.getRootSegment().isLeaf());
     assertEquals("`a.b`", fp.asPathString());
     assertEquals("a.b", fp.asPathString(false));
   }
@@ -73,6 +88,8 @@ public class TestFieldPath {
   @Test
   public void testEscapedPathWithArrays() {
     FieldPath fp = FieldPath.parseFrom("a.`b[3].c`");
+    assertTrue(fp.getRootSegment().isMap());
+    assertTrue(fp.getRootSegment().getChild().isLeaf());
     assertEquals("`a`.`b[3].c`", fp.asPathString());
     assertEquals("a.b[3].c", fp.asPathString(false));
   }
@@ -80,6 +97,10 @@ public class TestFieldPath {
   @Test
   public void testEscapedPathWithArraysEmptyIndex() {
     FieldPath fp = FieldPath.parseFrom("`a.b`[].c");
+    assertTrue(fp.getRootSegment().isArray());
+    assertTrue(fp.getRootSegment().getChild().isIndexed());
+    assertTrue(fp.getRootSegment().getChild().isMap());
+    assertTrue(fp.getRootSegment().getChild().getChild().isLeaf());
     assertEquals("`a.b`[].`c`", fp.asPathString());
     assertEquals("a.b[].c", fp.asPathString(false));
   }
@@ -105,7 +126,7 @@ public class TestFieldPath {
     assertTrue(itr.next().isNamed());
     assertEquals("b", itr.next().getNameSegment().getName());
     assertEquals("c", itr.next().getNameSegment().getName());
-    assertEquals(4, itr.next().getArraySegment().getIndex());
+    assertEquals(4, itr.next().getIndexSegment().getIndex());
     assertEquals("x", itr.next().getNameSegment().getName());
     assertFalse(itr.hasNext());
   }
@@ -113,6 +134,22 @@ public class TestFieldPath {
   @Test(expected = IllegalArgumentException.class)
   public void testExceptionWhenBadIndex() {
     FieldPath.parseFrom("a.b.c[a]");
+  }
+
+  @Test
+  public void testSortOrder() {
+    FieldPath fp0 = FieldPath.parseFrom("a[0]");
+    FieldPath fp1 = FieldPath.parseFrom("a[1]");
+    FieldPath fp2 = FieldPath.parseFrom("a.b");
+    FieldPath fp3 = FieldPath.parseFrom("a.b.c");
+    FieldPath fp4 = FieldPath.parseFrom("a.c");
+    FieldPath fp5 = FieldPath.parseFrom("a.c[4]");
+
+    assertTrue(fp0.compareTo(fp1) < 0);
+    assertTrue(fp1.compareTo(fp2) < 0);
+    assertTrue(fp2.compareTo(fp3) < 0);
+    assertTrue(fp3.compareTo(fp4) < 0);
+    assertTrue(fp4.compareTo(fp5) < 0);
   }
 
 }

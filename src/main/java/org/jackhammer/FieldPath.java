@@ -34,13 +34,17 @@ import com.google.common.cache.CacheBuilder;
 public final class FieldPath implements Comparable<FieldPath>, Iterable<FieldSegment> {
 
   /**
-   * Use this method to construct
-   * @param fieldPath
+   * Use this method to translate a <code>String</code> into <code>FieldPath</code>.
+   * 
+   * @param fieldPath The String to parse.
+   *
    * @return An immutable instance of {@link FieldPath} parsed from the input string.
+   * 
+   * @throws IllegalArgumentException If the string is null or empty or has syntax error.
    */
   public static FieldPath parseFrom(String fieldPath) {
     if (fieldPath == null || fieldPath.isEmpty()) {
-      return null;
+      throw new IllegalArgumentException("Can not parse null or emptyr string.");
     }
 
     FieldPath fp = null;
@@ -118,7 +122,8 @@ public final class FieldPath implements Comparable<FieldPath>, Iterable<FieldSeg
   }
 
   /**
-   * Internal cache which store
+   * Internal cache which stores recently parsed {@link FieldPath}
+   * objects in an LRU map.
    */
   private static Cache<String, FieldPath> fieldPathCache =
       CacheBuilder.newBuilder().maximumSize(1000).build();

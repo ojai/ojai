@@ -15,18 +15,23 @@
  */
 package org.jackhammer;
 
-
-public interface RecordFactory {
-
-  /**
-   * @return A new instance of {@link RecordWriter}.
-   */
-  RecordWriter newRecordBuilder();
+public interface RecordListener {
 
   /**
+   * Called when a Record from the {@link RecordStream} is available for consumption.
+   * 
+   * @param record The available <code>Record</code>.
    *
-   * @return A new instance of {@link Record}.
+   * @return The implementation should return <code>false</code> to stop listening
+   * for more records.
    */
-  Record newRecord();
+  boolean recordArrived(Record record);
+
+  /**
+   * Called when an <code>Exception</code> occurs while retrieving a Record.
+   *
+   * @param e
+   */
+  void failed(Exception e);
 
 }

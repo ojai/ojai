@@ -15,18 +15,12 @@
  */
 package org.jackhammer;
 
+/**
+ * A stream of records
+ * Implements Iterable<Record> but only one call is allows to iterator()
+ */
+public interface RecordStream extends AutoCloseable, Iterable<Record> {
 
-public interface RecordFactory {
-
-  /**
-   * @return A new instance of {@link RecordWriter}.
-   */
-  RecordWriter newRecordBuilder();
-
-  /**
-   *
-   * @return A new instance of {@link Record}.
-   */
-  Record newRecord();
+  public void streamTo(RecordListener l);
 
 }
