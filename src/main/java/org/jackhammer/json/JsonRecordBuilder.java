@@ -13,37 +13,14 @@ import org.joda.time.Interval;
 
 
 public class JsonRecordBuilder implements Record.Builder {
-  
-  private static final char NEWLINE = '\n';
-  private static final char MAP_CLOSE = '}';
 
-  private final StringBuilder sb_;
-  private final boolean singleLine_;
-
-  private boolean built_;
-  
-  enum State {
-    IN_MAP,
-    IN_ARRAY,
-    BUILT
-  }
-
-  public JsonRecordBuilder(boolean singleLine) {
-    sb_ = new StringBuilder();
-    singleLine_ = singleLine;
-    built_ = false;
+  public JsonRecordBuilder() {
   }
 
   @Override
   public Builder addNewMap() {
-    checkState();
+    // TODO Auto-generated method stub
     return this;
-  }
-
-  private void checkState() {
-    if (built_) {
-      throw new IllegalStateException("Can not modify the record as it is already built");
-    }
   }
 
   @Override
@@ -402,11 +379,8 @@ public class JsonRecordBuilder implements Record.Builder {
 
   @Override
   public Record build() {
-    if (!singleLine_) {
-      sb_.append(NEWLINE);
-    }
-    sb_.append(MAP_CLOSE);
-    built_ = true;
-    return new JsonRecord(sb_);
+    // TODO Auto-generated method stub
+    return new JsonRecord();
   }
+
 }

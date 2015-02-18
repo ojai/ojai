@@ -18,10 +18,7 @@ import org.joda.time.Interval;
 
 public class JsonRecord implements Record {
 
-  private final StringBuilder sb_;
-
-  JsonRecord(StringBuilder sb) {
-    sb_ = sb;
+  JsonRecord() {
   }
 
   @Override

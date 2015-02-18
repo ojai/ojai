@@ -6,16 +6,16 @@ import org.jackhammer.RecordFactory;
 
 public class JsonRecordFactory implements RecordFactory {
 
-  boolean singleLine = true;
-  @Override
-  public Builder newStreamBuilder() {
-    return new JsonRecordBuilder(singleLine);
-  }
-
   @Override
   public Record newRecord() {
     // TODO Auto-generated method stub
-    return null;
+    return new JsonRecord();
+  }
+
+  @Override
+  public Builder newRecordBuilder() {
+    // TODO Auto-generated method stub
+    return new JsonRecordBuilder();
   }
 
 }
