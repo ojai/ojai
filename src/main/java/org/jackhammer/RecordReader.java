@@ -19,9 +19,9 @@ import java.math.BigDecimal;
 import java.nio.ByteBuffer;
 import java.sql.Date;
 import java.sql.Time;
+import java.sql.Timestamp;
 
-import org.joda.time.DateTime;
-import org.joda.time.Interval;
+import org.jackhammer.types.Interval;
 
 public interface RecordReader {
 
@@ -38,7 +38,7 @@ public interface RecordReader {
     DECIMAL,
     DATE,
     TIME,
-    DATETIME,
+    TIMESTAMP,
     INTERVAL,
     BINARY,
     FIELD_NAME,
@@ -188,19 +188,19 @@ public interface RecordReader {
   String getString();
 
   /**
-   * @return The {@code DateTime} value of the current node as a {@code long}
+   * @return The {@code Timestamp} value of the current node as a {@code long}
    *         representing the number of milliseconds since epoch.
    * @throws TypeException If the current {@code EventType} is not
-   *         {@code DATETIME}.
+   *         {@code TIMESTAMP}.
    */
   long getTimeStamp();
 
   /**
-   * @return The {@code DateTime} value of the current node.
+   * @return The {@code Timestamp} value of the current node.
    * @throws TypeException If the current {@code EventType} is not
-   *         {@code DATETIME}.
+   *         {@code TIMESTAMP}.
    */
-  DateTime getDateTime();
+  Timestamp getTimestamp();
 
   /**
    * @return The {@code Date} value of the current node as an {@code int}

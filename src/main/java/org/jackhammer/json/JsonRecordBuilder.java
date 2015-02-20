@@ -1,15 +1,30 @@
+/**
+ * Copyright (c) 2014 MapR, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.jackhammer.json;
 
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
 import java.sql.Date;
 import java.sql.Time;
+import java.sql.Timestamp;
 
-import org.jackhammer.RecordWriter;
 import org.jackhammer.Record;
+import org.jackhammer.RecordWriter;
 import org.jackhammer.Value;
-import org.joda.time.DateTime;
-import org.joda.time.Interval;
+import org.jackhammer.types.Interval;
 
 
 public class JsonRecordBuilder implements RecordWriter {
@@ -180,13 +195,19 @@ public class JsonRecordBuilder implements RecordWriter {
   }
 
   @Override
-  public RecordWriter putDateTime(String field, long timeMillis) {
+  public RecordWriter putTimestamp(String field, long timeMillis) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public RecordWriter putInterval(int months, int days, int milliseconds) {
+  public RecordWriter putInterval(String field, long durationInMs) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public RecordWriter putInterval(String field, int months, int days, int milliseconds) {
     // TODO Auto-generated method stub
     return this;
   }
@@ -258,7 +279,7 @@ public class JsonRecordBuilder implements RecordWriter {
   }
 
   @Override
-  public RecordWriter add(DateTime value) {
+  public RecordWriter add(Timestamp value) {
     // TODO Auto-generated method stub
     return this;
   }
@@ -354,9 +375,15 @@ public class JsonRecordBuilder implements RecordWriter {
   }
 
   @Override
-  public RecordWriter addDateTime(long timeMillis) {
+  public RecordWriter addTimestamp(long timeMillis) {
     // TODO Auto-generated method stub
     return this;
+  }
+
+  @Override
+  public RecordWriter addInterval(long durationInMs) {
+    // TODO Auto-generated method stub
+    return null;
   }
 
   @Override

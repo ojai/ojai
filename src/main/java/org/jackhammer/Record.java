@@ -19,11 +19,11 @@ import java.math.BigDecimal;
 import java.nio.ByteBuffer;
 import java.sql.Date;
 import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
-import org.joda.time.DateTime;
-import org.joda.time.Interval;
+import org.jackhammer.types.Interval;
 
 public interface Record extends Iterable<Map.Entry<String, Value>> {
 
@@ -57,8 +57,8 @@ public interface Record extends Iterable<Map.Entry<String, Value>> {
   Record set(String fieldPath, Date value);
   Record set(FieldPath fieldPath, Date value);
 
-  Record set(String fieldPath, DateTime value);
-  Record set(FieldPath fieldPath, DateTime value);
+  Record set(String fieldPath, Timestamp value);
+  Record set(FieldPath fieldPath, Timestamp value);
 
   Record set(String fieldPath, BigDecimal value);
   Record set(FieldPath fieldPath, BigDecimal value);
@@ -147,8 +147,8 @@ public interface Record extends Iterable<Map.Entry<String, Value>> {
   Date getDate(String fieldPath);
   Date getDate(FieldPath fieldPath);
 
-  DateTime getDateTime(String fieldPath);
-  DateTime getDateTime(FieldPath fieldPath);
+  Timestamp getTimestamp(String fieldPath);
+  Timestamp getTimestamp(FieldPath fieldPath);
 
   BigDecimal getDecimal(String fieldPath);
   BigDecimal getDecimal(FieldPath fieldPath);

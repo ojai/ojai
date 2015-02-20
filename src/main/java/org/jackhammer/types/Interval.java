@@ -13,24 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jackhammer.json;
+package org.jackhammer.types;
 
-import org.jackhammer.RecordWriter;
-import org.jackhammer.Record;
-import org.jackhammer.RecordFactory;
+import java.io.Serializable;
 
-public class JsonRecordFactory implements RecordFactory {
+public class Interval implements Serializable {
 
-  @Override
-  public Record newRecord() {
-    // TODO Auto-generated method stub
-    return new JsonRecord();
+  private static final long serialVersionUID = 0x228372f2047c1511L;
+
+  final long _millis;
+
+  public Interval(final long millis) {
+      _millis = millis;
   }
 
-  @Override
-  public RecordWriter newRecordBuilder() {
-    // TODO Auto-generated method stub
-    return new JsonRecordBuilder();
+  public long getAsLong() {
+    return _millis;
   }
-
 }

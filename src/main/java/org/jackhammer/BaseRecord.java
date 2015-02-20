@@ -19,11 +19,11 @@ import java.math.BigDecimal;
 import java.nio.ByteBuffer;
 import java.sql.Date;
 import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
-import org.joda.time.DateTime;
-import org.joda.time.Interval;
+import org.jackhammer.types.Interval;
 
 public abstract class BaseRecord implements Record {
 
@@ -78,7 +78,7 @@ public abstract class BaseRecord implements Record {
   }
 
   @Override
-  public Record set(String fieldPath, DateTime value) {
+  public Record set(String fieldPath, Timestamp value) {
     return set(FieldPath.parseFrom(fieldPath), value);
   }
 
@@ -188,8 +188,8 @@ public abstract class BaseRecord implements Record {
   }
 
   @Override
-  public DateTime getDateTime(String fieldPath) {
-    return getDateTime(FieldPath.parseFrom(fieldPath));
+  public Timestamp getTimestamp(String fieldPath) {
+    return getTimestamp(FieldPath.parseFrom(fieldPath));
   }
 
   @Override

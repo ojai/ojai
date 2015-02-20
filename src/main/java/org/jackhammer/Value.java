@@ -19,11 +19,11 @@ import java.math.BigDecimal;
 import java.nio.ByteBuffer;
 import java.sql.Date;
 import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
-import org.joda.time.DateTime;
-import org.joda.time.Interval;
+import org.jackhammer.types.Interval;
 
 public interface Value {
 
@@ -94,7 +94,7 @@ public interface Value {
      * i.e. January 1, 1970 00:00:00 UTC. Negative values represent dates
      * before epoch.
      */
-    DATETIME,
+    TIMESTAMP,
 
     /**
      * A value representing a period of time between two instants.
@@ -186,18 +186,18 @@ public interface Value {
   String getString();
 
   /**
-   * Returns the value as a {@link org.joda.time.DateTime} object.
+   * Returns the value as a {@link java.sql.Timestamp} object.
    *
-   * @throws TypeException if this value is not of <code>DATETIME</code> type.
+   * @throws TypeException if this value is not of <code>TIMESTAMP</code> type.
    */
-  DateTime getDateTime();
+  Timestamp getTimestamp();
 
   /**
    * Returns a long value representing the number of milliseconds since epoch.
    *
-   * @throws TypeException if this value is not of <code>DATETIME</code> type.
+   * @throws TypeException if this value is not of <code>TIMESTAMP</code> type.
    */
-  long getTimeStamp();
+  long getTimestampAsLong();
 
   /**
    * Returns the value as a {@link java.sql.Date} object.
@@ -228,7 +228,7 @@ public interface Value {
   int getTimeAsInt();
 
   /**
-   * Returns the value as a {@link org.joda.time.Interval} object.
+   * Returns the value as a {@link org.jackhammer.types.Interval} object.
    *
    * @throws TypeException if this value is not of <code>INTERVAL</code> type.
    */
@@ -277,11 +277,11 @@ public interface Value {
    * Type.DECIMAL   => BigDecimal
    * Type.DATE      => java.sql.Date
    * Type.TIME      => java.sql.Time
-   * Type.DATETIME  => org.joda.time.DateTime
-   * Type.INTERVAL  => org.joda.time.Interval
+   * Type.TIMESTAMP => java.sql.Timestamp
+   * Type.INTERVAL  => org.jackhammer.types.Interval
    * Type.BINARY    => java.nio.ByteBuffer
-   * Type.MAP       => Map
-   * Type.ARRAY     => List
+   * Type.MAP       => Map<String, Object>
+   * Type.ARRAY     => List<Object>
    * </pre>
    */
   Object getObject();

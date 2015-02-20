@@ -19,9 +19,9 @@ import java.math.BigDecimal;
 import java.nio.ByteBuffer;
 import java.sql.Date;
 import java.sql.Time;
+import java.sql.Timestamp;
 
-import org.joda.time.DateTime;
-import org.joda.time.Interval;
+import org.jackhammer.types.Interval;
 
 public interface RecordWriter {
 
@@ -43,7 +43,6 @@ public interface RecordWriter {
   RecordWriter putNewMap(String field);
   RecordWriter putNewArray(String field);
 
-  // questionable whether we should have this
   RecordWriter putNull(String field);
 
   RecordWriter put(String field, Value value);
@@ -55,10 +54,12 @@ public interface RecordWriter {
   RecordWriter putDecimal(String field, double unscaledValue, int scale);
   RecordWriter putDecimal(String field, float unscaledValue, int scale);
   RecordWriter putDecimal(String field, byte[] unscaledValue, int scale);
+
   RecordWriter putDate(String field, int days);
   RecordWriter putTime(String field, int millis);
-  RecordWriter putDateTime(String field, long timeMillis);
-  RecordWriter putInterval(int months, int days, int milliseconds);
+  RecordWriter putTimestamp(String field, long timeMillis);
+  RecordWriter putInterval(String field, long durationInMs);
+  RecordWriter putInterval(String field, int months, int days, int milliseconds);
 
   /* Array Methods */
   RecordWriter add(boolean value);
@@ -69,14 +70,17 @@ public interface RecordWriter {
   RecordWriter add(long value);
   RecordWriter add(float value);
   RecordWriter add(double value);
+  RecordWriter add(BigDecimal value);
+
   RecordWriter add(Time value);
   RecordWriter add(Date value);
-  RecordWriter add(DateTime value);
-  RecordWriter add(BigDecimal value);
+  RecordWriter add(Timestamp value);
+  RecordWriter add(Interval value);
+
   RecordWriter add(byte[] value);
   RecordWriter add(byte[] value, int off, int len);
   RecordWriter add(ByteBuffer value);
-  RecordWriter add(Interval value);
+
   RecordWriter addNull();
 
   RecordWriter add(Value value);
@@ -91,9 +95,11 @@ public interface RecordWriter {
   RecordWriter addDecimal(double unscaledValue, int scale);
   RecordWriter addDecimal(float unscaledValue, int scale);
   RecordWriter addDecimal(byte[] unscaledValue, int scale);
+
   RecordWriter addDate(int days);
   RecordWriter addTime(int millis);
-  RecordWriter addDateTime(long timeMillis);
+  RecordWriter addTimestamp(long timeMillis);
+  RecordWriter addInterval(long durationInMs);
   RecordWriter addInterval(int months, int days, int milliseconds);
 
   /* Lifecycle methods */
