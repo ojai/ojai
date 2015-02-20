@@ -137,13 +137,61 @@ public class JsonRecord extends BaseRecord {
   }
 
   @Override
-  public Record set(FieldPath fieldPath, Object... value) {
+  public Record set(FieldPath fieldPath, List<Object> value) {
     // TODO Auto-generated method stub
     return null;
   }
 
   @Override
-  public Record set(FieldPath fieldPath, List<Object> value) {
+  public Record setArray(FieldPath fieldPath, byte[] values) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public Record setArray(FieldPath fieldPath, short[] values) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public Record setArray(FieldPath fieldPath, int[] values) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public Record setArray(FieldPath fieldPath, long[] values) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public Record setArray(FieldPath fieldPath, float[] values) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public Record setArray(FieldPath fieldPath, double[] values) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public Record setArray(FieldPath fieldPath, String[] values) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public Record setArray(FieldPath fieldPath, Object... values) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public Record setNull(FieldPath fieldPath) {
     // TODO Auto-generated method stub
     return null;
   }
@@ -245,6 +293,18 @@ public class JsonRecord extends BaseRecord {
   }
 
   @Override
+  public Map<String, Object> getMap(FieldPath fieldPath) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public List<Object> getList(FieldPath fieldPath) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
   public RecordReader asReader() {
     // TODO Auto-generated method stub
     return null;
@@ -261,4 +321,5 @@ public class JsonRecord extends BaseRecord {
     // TODO Auto-generated method stub
     return null;
   }
+
 }

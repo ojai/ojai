@@ -123,8 +123,8 @@ public abstract class BaseRecord implements Record {
   }
 
   @Override
-  public Record set(String fieldPath, Object... value) {
-    return set(FieldPath.parseFrom(fieldPath), value);
+  public Record setArray(String fieldPath, Object... value) {
+    return setArray(FieldPath.parseFrom(fieldPath), value);
   }
 
   @Override
@@ -215,6 +215,56 @@ public abstract class BaseRecord implements Record {
   @Override
   public RecordReader asReader(String fieldPath) {
     return asReader(FieldPath.parseFrom(fieldPath));
+  }
+
+  @Override
+  public Record setArray(String fieldPath, byte[] values) {
+    return setArray(FieldPath.parseFrom(fieldPath), values);
+  }
+
+  @Override
+  public Record setArray(String fieldPath, short[] values) {
+    return setArray(FieldPath.parseFrom(fieldPath), values);
+  }
+
+  @Override
+  public Record setArray(String fieldPath, int[] values) {
+    return setArray(FieldPath.parseFrom(fieldPath), values);
+  }
+
+  @Override
+  public Record setArray(String fieldPath, long[] values) {
+    return setArray(FieldPath.parseFrom(fieldPath), values);
+  }
+
+  @Override
+  public Record setArray(String fieldPath, float[] values) {
+    return setArray(FieldPath.parseFrom(fieldPath), values);
+  }
+
+  @Override
+  public Record setArray(String fieldPath, double[] values) {
+    return setArray(FieldPath.parseFrom(fieldPath), values);
+  }
+
+  @Override
+  public Record setArray(String fieldPath, String[] values) {
+    return setArray(FieldPath.parseFrom(fieldPath), values);
+  }
+
+  @Override
+  public Record setNull(String fieldPath) {
+    return setNull(FieldPath.parseFrom(fieldPath));
+  }
+
+  @Override
+  public Map<String, Object> getMap(String fieldPath) {
+    return getMap(FieldPath.parseFrom(fieldPath));
+  }
+
+  @Override
+  public List<Object> getList(String fieldPath) {
+    return getList(FieldPath.parseFrom(fieldPath));
   }
 
 }

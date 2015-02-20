@@ -84,11 +84,35 @@ public interface Record extends Iterable<Map.Entry<String, Value>> {
   Record set(String fieldPath, Value value);
   Record set(FieldPath fieldPath, Value value);
 
-  Record set(String fieldPath, Object... value);
-  Record set(FieldPath fieldPath, Object... value);
-
   Record set(String fieldPath, List<Object> value);
   Record set(FieldPath fieldPath, List<Object> value);
+
+  Record setArray(String fieldPath, byte[] values);
+  Record setArray(FieldPath fieldPath, byte[] values);
+
+  Record setArray(String fieldPath, short[] values);
+  Record setArray(FieldPath fieldPath, short[] values);
+
+  Record setArray(String fieldPath, int[] values);
+  Record setArray(FieldPath fieldPath, int[] values);
+
+  Record setArray(String fieldPath, long[] values);
+  Record setArray(FieldPath fieldPath, long[] values);
+
+  Record setArray(String fieldPath, float[] values);
+  Record setArray(FieldPath fieldPath, float[] values);
+
+  Record setArray(String fieldPath, double[] values);
+  Record setArray(FieldPath fieldPath, double[] values);
+
+  Record setArray(String fieldPath, String[] values);
+  Record setArray(FieldPath fieldPath, String[] values);
+
+  Record setArray(String fieldPath, Object... values);
+  Record setArray(FieldPath fieldPath, Object... values);
+
+  Record setNull(String fieldPath);
+  Record setNull(FieldPath fieldPath);
 
   Record delete(String fieldPath);
   Record delete(FieldPath fieldPath);
@@ -137,6 +161,12 @@ public interface Record extends Iterable<Map.Entry<String, Value>> {
 
   Value getValue(String fieldPath);
   Value getValue(FieldPath fieldPath);
+
+  Map<String, Object> getMap(String fieldPath);
+  Map<String, Object> getMap(FieldPath fieldPath);
+
+  List<Object> getList(String fieldPath);
+  List<Object> getList(FieldPath fieldPath);
 
   /**
    * @return A new {@link RecordReader} over the current <code>Record</code>.

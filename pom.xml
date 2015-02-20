@@ -24,7 +24,7 @@
   <groupId>org.jackhammer</groupId>
   <artifactId>jackhammer</artifactId>
   <name>Jackhammer</name>
-  <version>0.1.r2-SNAPSHOT</version>
+  <version>0.1.r3-SNAPSHOT</version>
   <packaging>jar</packaging>
   <description>JSON API for Hadoop</description>
   <url>https://github.com/jackhammer/</url>

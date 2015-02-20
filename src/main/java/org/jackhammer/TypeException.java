@@ -15,23 +15,23 @@
  */
 package org.jackhammer;
 
-public class ValueTypeException extends RuntimeException {
+public class TypeException extends RuntimeException {
 
   private static final long serialVersionUID = 0xaccd73435d751ff9L;
 
-  public ValueTypeException() {
+  public TypeException() {
     super();
   }
 
-  public ValueTypeException(String message, Throwable cause) {
+  public TypeException(String message, Throwable cause) {
     super(message, cause);
   }
 
-  public ValueTypeException(String message) {
+  public TypeException(String message) {
     super(message);
   }
 
-  public ValueTypeException(Throwable cause) {
+  public TypeException(Throwable cause) {
     super(cause);
   }
 

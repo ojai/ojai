@@ -125,140 +125,140 @@ public interface Value {
   /**
    * Returns the value as a <code>byte</code>.
    *
-   * @throws ValueTypeException if this value is not of <code>BYTE</code> type.
+   * @throws TypeException if this value is not of <code>BYTE</code> type.
    */
   byte getByte();
 
   /**
    * Returns the value as a <code>short</code>.
    *
-   * @throws ValueTypeException if this value is not of <code>SHORT</code> type.
+   * @throws TypeException if this value is not of <code>SHORT</code> type.
    */
   short getShort();
 
   /**
    * Returns the value as an <code>int</code>.
    *
-   * @throws ValueTypeException if this value is not of <code>INT</code> type.
+   * @throws TypeException if this value is not of <code>INT</code> type.
    */
   int getInt();
 
   /**
    * Returns the value as a <code>long</code>.
    *
-   * @throws ValueTypeException if this value is not of <code>LONG</code> type.
+   * @throws TypeException if this value is not of <code>LONG</code> type.
    */
   long getLong();
 
   /**
    * Returns the value as a <code>float</code>.
    *
-   * @throws ValueTypeException if this value is not of <code>FLOAT</code> type.
+   * @throws TypeException if this value is not of <code>FLOAT</code> type.
    */
   float getFloat();
 
   /**
    * Returns the value as a <code>double</code>.
    *
-   * @throws ValueTypeException if this value is not of <code>DOUBLE</code> type.
+   * @throws TypeException if this value is not of <code>DOUBLE</code> type.
    */
   double getDouble();
 
   /**
    * Returns the value as a <code>BigDecimal</code>.
    *
-   * @throws ValueTypeException if this value is not of Type.DECIMAL type.
+   * @throws TypeException if this value is not of Type.DECIMAL type.
    */
   BigDecimal getDecimal();
 
   /**
    * Returns the value as a <code>boolean</code>.
    *
-   * @throws ValueTypeException if this value is not of <code>BOOLEAN</code> type.
+   * @throws TypeException if this value is not of <code>BOOLEAN</code> type.
    */
   boolean getBoolean();
 
   /**
    * Returns the value as a <code>String</code>.
    *
-   * @throws ValueTypeException if this value is not of <code>STRING</code> type.
+   * @throws TypeException if this value is not of <code>STRING</code> type.
    */
   String getString();
 
   /**
    * Returns the value as a {@link org.joda.time.DateTime} object.
    *
-   * @throws ValueTypeException if this value is not of <code>DATETIME</code> type.
+   * @throws TypeException if this value is not of <code>DATETIME</code> type.
    */
   DateTime getDateTime();
 
   /**
    * Returns a long value representing the number of milliseconds since epoch.
    *
-   * @throws ValueTypeException if this value is not of <code>DATETIME</code> type.
+   * @throws TypeException if this value is not of <code>DATETIME</code> type.
    */
   long getTimeStamp();
 
   /**
    * Returns the value as a {@link java.sql.Date} object.
    *
-   * @throws ValueTypeException if this value is not of <code>DATE</code> type.
+   * @throws TypeException if this value is not of <code>DATE</code> type.
    */
   Date getDate();
 
   /**
    * Returns a <code>int</code> representing the number of DAYS since epoch.
    *
-   * @throws ValueTypeException if this value is not of <code>DATE</code> type.
+   * @throws TypeException if this value is not of <code>DATE</code> type.
    */
   int getDateAsInt();
 
   /**
    * Returns the value as a {@link java.sql.Time} object.
    *
-   * @throws ValueTypeException if this value is not of <code>TIME</code> type.
+   * @throws TypeException if this value is not of <code>TIME</code> type.
    */
   Time getTime();
 
   /**
    * Returns a <code>int</code> representing the number of milliseconds since midnight.
    *
-   * @throws ValueTypeException if this value is not of <code>TIME</code> type.
+   * @throws TypeException if this value is not of <code>TIME</code> type.
    */
   int getTimeAsInt();
 
   /**
    * Returns the value as a {@link org.joda.time.Interval} object.
    *
-   * @throws ValueTypeException if this value is not of <code>INTERVAL</code> type.
+   * @throws TypeException if this value is not of <code>INTERVAL</code> type.
    */
   Interval getInterval();
 
   /**
    * Returns a <code>long</code> representing interval duration in milliseconds.
    *
-   * @throws ValueTypeException if this value is not of <code>INTERVAL</code> type.
+   * @throws TypeException if this value is not of <code>INTERVAL</code> type.
    */
   long getIntervalAsLong();
 
   /**
    * Returns the value as a {@link java.nio.ByteBuffer}.
    *
-   * @throws ValueTypeException if this value is not of <code>BINARY</code> type.
+   * @throws TypeException if this value is not of <code>BINARY</code> type.
    */
   ByteBuffer getBinary();
 
   /**
    * Returns the value as a <code>Map<String, Object></code>.
    *
-   * @throws ValueTypeException if this value is not of <code>MAP<code> type.
+   * @throws TypeException if this value is not of <code>MAP<code> type.
    */
   Map<String, Object> getMap();
 
   /**
    * Returns the value as a <code>List&lt;Object></code>.
    *
-   * @throws ValueTypeException If this value is not of <code>ARRAY</code> type.
+   * @throws TypeException If this value is not of <code>ARRAY</code> type.
    */
   List<Object> getList();
 
