@@ -102,7 +102,7 @@ public interface Value {
     INTERVAL,
 
     /**
-     * Uninterpreted sequence bytes.
+     * Uninterpreted sequence of bytes.
      */
     BINARY,
 
@@ -118,7 +118,7 @@ public interface Value {
   }
 
   /**
-   * @return The <code>Type</code> of this value.
+   * @return The <code>Type</code> of this Value.
    */
   Value.Type getType();
 
@@ -186,7 +186,8 @@ public interface Value {
   String getString();
 
   /**
-   * Returns the value as a {@link java.sql.Timestamp} object.
+   * Returns the value as a {@link java.sql.Timestamp} object. Modifying the
+   * returned object does not alter the content of the Value.
    *
    * @throws TypeException if this value is not of <code>TIMESTAMP</code> type.
    */
@@ -200,7 +201,8 @@ public interface Value {
   long getTimestampAsLong();
 
   /**
-   * Returns the value as a {@link java.sql.Date} object.
+   * Returns the value as a {@link java.sql.Date} object. Modifying the
+   * returned object does not alter the content of the Value.
    *
    * @throws TypeException if this value is not of <code>DATE</code> type.
    */
@@ -214,7 +216,8 @@ public interface Value {
   int getDateAsInt();
 
   /**
-   * Returns the value as a {@link java.sql.Time} object.
+   * Returns the value as a {@link java.sql.Time} object. Modifying the
+   * returned object does not alter the content of the Value.
    *
    * @throws TypeException if this value is not of <code>TIME</code> type.
    */
@@ -229,6 +232,7 @@ public interface Value {
 
   /**
    * Returns the value as a {@link org.jackhammer.types.Interval} object.
+   * Modifying the returned object does not alter the content of the Value.
    *
    * @throws TypeException if this value is not of <code>INTERVAL</code> type.
    */
@@ -242,21 +246,26 @@ public interface Value {
   long getIntervalAsLong();
 
   /**
-   * Returns the value as a {@link java.nio.ByteBuffer}.
+   * Returns the value as a {@link java.nio.ByteBuffer}. Modifying the
+   * returned object does not alter the content of the Value.
    *
    * @throws TypeException if this value is not of <code>BINARY</code> type.
    */
   ByteBuffer getBinary();
 
   /**
-   * Returns the value as a <code>Map<String, Object></code>.
+   * Returns the value as a <code>Map<String, Object></code>. The returned
+   * Map could be mutable or immutable however, modifying the returned Map
+   * does not alter the content of the Value.
    *
    * @throws TypeException if this value is not of <code>MAP<code> type.
    */
   Map<String, Object> getMap();
 
   /**
-   * Returns the value as a <code>List&lt;Object></code>.
+   * Returns the value as a <code>List&lt;Object></code>. The returned List
+   * could be mutable or immutable however, modifying the returned List does
+   * not alter the content of the Value.
    *
    * @throws TypeException If this value is not of <code>ARRAY</code> type.
    */
@@ -283,6 +292,7 @@ public interface Value {
    * Type.MAP       => Map<String, Object>
    * Type.ARRAY     => List<Object>
    * </pre>
+   * <br/>Modifying the returned object does not alter the content of the Value.
    */
   Object getObject();
 

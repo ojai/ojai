@@ -51,6 +51,9 @@ public interface Record extends Iterable<Map.Entry<String, Value>> {
   Record set(String fieldPath, double value);
   Record set(FieldPath fieldPath, double value);
 
+  Record set(String fieldPath, BigDecimal value);
+  Record set(FieldPath fieldPath, BigDecimal value);
+
   Record set(String fieldPath, Time value);
   Record set(FieldPath fieldPath, Time value);
 
@@ -60,8 +63,8 @@ public interface Record extends Iterable<Map.Entry<String, Value>> {
   Record set(String fieldPath, Timestamp value);
   Record set(FieldPath fieldPath, Timestamp value);
 
-  Record set(String fieldPath, BigDecimal value);
-  Record set(FieldPath fieldPath, BigDecimal value);
+  Record set(String fieldPath, Interval value);
+  Record set(FieldPath fieldPath, Interval value);
 
   Record set(String fieldPath, byte[] value);
   Record set(FieldPath fieldPath, byte[] value);
@@ -71,9 +74,6 @@ public interface Record extends Iterable<Map.Entry<String, Value>> {
 
   Record set(String fieldPath, ByteBuffer value);
   Record set(FieldPath fieldPath, ByteBuffer value);
-
-  Record set(String fieldPath, Interval value);
-  Record set(FieldPath fieldPath, Interval value);
 
   Record set(String fieldPath, Map<String, Object> value);
   Record set(FieldPath fieldPath, Map<String, Object> value);
@@ -141,31 +141,178 @@ public interface Record extends Iterable<Map.Entry<String, Value>> {
   double getDouble(String fieldPath);
   double getDouble(FieldPath fieldPath);
 
-  Time getTime(String fieldPath);
-  Time getTime(FieldPath fieldPath);
-
-  Date getDate(String fieldPath);
-  Date getDate(FieldPath fieldPath);
-
-  Timestamp getTimestamp(String fieldPath);
-  Timestamp getTimestamp(FieldPath fieldPath);
-
+  /**
+   * Returns the value at the specified fieldPath as a {@link BigDecimal}
+   * object. Modifying the returned object does not alter the content
+   * of the record.
+   *
+   * @throws TypeException if the value at the fieldPath is not of
+   *         <code>DECIMAL</code> type.
+   */
   BigDecimal getDecimal(String fieldPath);
+
+  /**
+   * Returns the value at the specified fieldPath as a {@link BigDecimal}
+   * object. Modifying the returned object does not alter the content
+   * of the record.
+   *
+   * @throws TypeException if the value at the fieldPath is not of
+   *         <code>DECIMAL</code> type.
+   */
   BigDecimal getDecimal(FieldPath fieldPath);
 
+  /**
+   * Returns the value at the specified fieldPath as a {@link java.sql.Time}
+   * object. Modifying the returned object does not alter the content
+   * of the record.
+   *
+   * @throws TypeException if the value at the fieldPath is not of
+   *         <code>TIME</code> type.
+   */
+  Time getTime(String fieldPath);
+
+  /**
+   * Returns the value at the specified fieldPath as a {@link java.sql.Time}
+   * object. Modifying the returned object does not alter the content
+   * of the record.
+   *
+   * @throws TypeException if the value at the fieldPath is not of
+   *         <code>TIME</code> type.
+   */
+  Time getTime(FieldPath fieldPath);
+
+  /**
+   * Returns the value at the specified fieldPath as a {@link java.sql.Date}
+   * object. Modifying the returned object does not alter the content
+   * of the record.
+   *
+   * @throws TypeException if the value at the fieldPath is not of
+   *         <code>DATE</code> type.
+   */
+  Date getDate(String fieldPath);
+
+  /**
+   * Returns the value at the specified fieldPath as a {@link java.sql.Date}
+   * object. Modifying the returned object does not alter the content
+   * of the record.
+   *
+   * @throws TypeException if the value at the fieldPath is not of
+   *         <code>DATE</code> type.
+   */
+  Date getDate(FieldPath fieldPath);
+
+  /**
+   * Returns the value at the specified fieldPath as a {@link java.sql.Timestamp}
+   * object. Modifying the returned object does not alter the content
+   * of the record.
+   *
+   * @throws TypeException if the value at the fieldPath is not of
+   *         <code>TIMESTAMP</code> type.
+   */
+  Timestamp getTimestamp(String fieldPath);
+
+  /**
+   * Returns the value at the specified fieldPath as a {@link java.sql.Timestamp}
+   * object. Modifying the returned object does not alter the content
+   * of the record.
+   *
+   * @throws TypeException if the value at the fieldPath is not of
+   *         <code>TIMESTAMP</code> type.
+   */
+  Timestamp getTimestamp(FieldPath fieldPath);
+
+  /**
+   * Returns the value at the specified fieldPath as a {@link ByteBuffer}
+   * object. Modifying the returned object does not alter the content
+   * of the record.
+   *
+   * @throws TypeException if the value at the fieldPath is not of
+   *         <code>BINARY</code> type.
+   */
   ByteBuffer getBinary(String fieldPath);
+
+  /**
+   * Returns the value at the specified fieldPath as a {@link ByteBuffer}
+   * object. Modifying the returned object does not alter the content
+   * of the record.
+   *
+   * @throws TypeException if the value at the fieldPath is not of
+   *         <code>BINARY</code> type.
+   */
   ByteBuffer getBinary(FieldPath fieldPath);
 
+  /**
+   * Returns the value at the specified fieldPath as a {@link Interval}
+   * object. Modifying the returned object does not alter the content
+   * of the record.
+   *
+   * @throws TypeException if the value at the fieldPath is not of
+   *         <code>INTERVAL</code> type.
+   */
   Interval getInterval(String fieldPath);
+
+  /**
+   * Returns the value at the specified fieldPath as a {@link Interval}
+   * object. Modifying the returned object does not alter the content
+   * of the record.
+   *
+   * @throws TypeException if the value at the fieldPath is not of
+   *         <code>INTERVAL</code> type.
+   */
   Interval getInterval(FieldPath fieldPath);
 
+  /**
+   * Returns the value at the specified fieldPath as a {@link Value}
+   * object. Modifying the returned object does not alter the content
+   * of the record.
+   */
   Value getValue(String fieldPath);
+
+  /**
+   * Returns the value at the specified fieldPath as a {@link Value}
+   * object. Modifying the returned object does not alter the content
+   * of the record.
+   */
   Value getValue(FieldPath fieldPath);
 
+  /**
+   * Returns the value at the specified fieldPath as a {@link Map}
+   * object. Modifying the returned object does not alter the content
+   * of the record.
+   *
+   * @throws TypeException if the value at the fieldPath is not of
+   *         <code>MAP</code> type.
+   */
   Map<String, Object> getMap(String fieldPath);
+
+  /**
+   * Returns the value at the specified fieldPath as a {@link Map}
+   * object. Modifying the returned object does not alter the content
+   * of the record.
+   *
+   * @throws TypeException if the value at the fieldPath is not of
+   *         <code>MAP</code> type.
+   */
   Map<String, Object> getMap(FieldPath fieldPath);
 
+  /**
+   * Returns the value at the specified fieldPath as a {@link List}
+   * object. Modifying the returned object does not alter the content
+   * of the record.
+   *
+   * @throws TypeException if the value at the fieldPath is not of
+   *         <code>ARRAY</code> type.
+   */
   List<Object> getList(String fieldPath);
+
+  /**
+   * Returns the value at the specified fieldPath as a {@link List}
+   * object. Modifying the returned object does not alter the content
+   * of the record.
+   *
+   * @throws TypeException if the value at the fieldPath is not of
+   *         <code>ARRAY</code> type.
+   */
   List<Object> getList(FieldPath fieldPath);
 
   /**
@@ -173,7 +320,16 @@ public interface Record extends Iterable<Map.Entry<String, Value>> {
    */
   RecordReader asReader();
 
+  /**
+   * @return A new {@link RecordReader} over the node specified by the
+   *         fieldPath or <code>null</code> if the node does not exist.
+   */
   RecordReader asReader(String fieldPath);
+
+  /**
+   * @return A new {@link RecordReader} over the node specified by the
+   *         fieldPath or <code>null</code> if the node does not exist.
+   */
   RecordReader asReader(FieldPath fieldPath);
 
 }

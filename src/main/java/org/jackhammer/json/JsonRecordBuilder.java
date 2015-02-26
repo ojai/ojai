@@ -87,13 +87,91 @@ public class JsonRecordBuilder implements RecordWriter {
   }
 
   @Override
+  public RecordWriter put(String field, BigDecimal value) {
+    // TODO Auto-generated method stub
+    return this;
+  }
+
+  @Override
+  public RecordWriter putDecimal(String field, int unscaledValue, int scale) {
+    // TODO Auto-generated method stub
+    return this;
+  }
+
+  @Override
+  public RecordWriter putDecimal(String field, long unscaledValue, int scale) {
+    // TODO Auto-generated method stub
+    return this;
+  }
+
+  @Override
+  public RecordWriter putDecimal(String field, long decimalValue) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public RecordWriter putDecimal(String field, double decimalValue) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public RecordWriter putDecimal(String field, byte[] unscaledValue, int scale) {
+    // TODO Auto-generated method stub
+    return this;
+  }
+
+  @Override
   public RecordWriter put(String field, Date value) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public RecordWriter put(String field, BigDecimal value) {
+  public RecordWriter putDate(String field, int days) {
+    // TODO Auto-generated method stub
+    return this;
+  }
+
+  @Override
+  public RecordWriter put(String field, Time value) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public RecordWriter putTime(String field, int millis) {
+    // TODO Auto-generated method stub
+    return this;
+  }
+
+  @Override
+  public RecordWriter put(String field, Timestamp value) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public RecordWriter putTimestamp(String field, long timeMillis) {
+    // TODO Auto-generated method stub
+    return this;
+  }
+
+  @Override
+  public RecordWriter put(String field, Interval value) {
+    // TODO Auto-generated method stub
+    return this;
+  }
+
+  @Override
+  public RecordWriter putInterval(String field, long durationInMs) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public RecordWriter putInterval(String field, int months, int days, int milliseconds) {
     // TODO Auto-generated method stub
     return this;
   }
@@ -112,12 +190,6 @@ public class JsonRecordBuilder implements RecordWriter {
 
   @Override
   public RecordWriter put(String field, ByteBuffer value) {
-    // TODO Auto-generated method stub
-    return this;
-  }
-
-  @Override
-  public RecordWriter put(String field, Interval value) {
     // TODO Auto-generated method stub
     return this;
   }
@@ -148,66 +220,6 @@ public class JsonRecordBuilder implements RecordWriter {
 
   @Override
   public RecordWriter put(String field, Record value) {
-    // TODO Auto-generated method stub
-    return this;
-  }
-
-  @Override
-  public RecordWriter putDecimal(String field, int unscaledValue, int scale) {
-    // TODO Auto-generated method stub
-    return this;
-  }
-
-  @Override
-  public RecordWriter putDecimal(String field, long unscaledValue, int scale) {
-    // TODO Auto-generated method stub
-    return this;
-  }
-
-  @Override
-  public RecordWriter putDecimal(String field, double unscaledValue, int scale) {
-    // TODO Auto-generated method stub
-    return this;
-  }
-
-  @Override
-  public RecordWriter putDecimal(String field, float unscaledValue, int scale) {
-    // TODO Auto-generated method stub
-    return this;
-  }
-
-  @Override
-  public RecordWriter putDecimal(String field, byte[] unscaledValue, int scale) {
-    // TODO Auto-generated method stub
-    return this;
-  }
-
-  @Override
-  public RecordWriter putDate(String field, int days) {
-    // TODO Auto-generated method stub
-    return this;
-  }
-
-  @Override
-  public RecordWriter putTime(String field, int millis) {
-    // TODO Auto-generated method stub
-    return this;
-  }
-
-  @Override
-  public RecordWriter putTimestamp(String field, long timeMillis) {
-    // TODO Auto-generated method stub
-    return this;
-  }
-
-  @Override
-  public RecordWriter putInterval(String field, long durationInMs) {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public RecordWriter putInterval(String field, int months, int days, int milliseconds) {
     // TODO Auto-generated method stub
     return this;
   }
@@ -267,7 +279,49 @@ public class JsonRecordBuilder implements RecordWriter {
   }
 
   @Override
+  public RecordWriter add(BigDecimal value) {
+    // TODO Auto-generated method stub
+    return this;
+  }
+
+  @Override
+  public RecordWriter addDecimal(int unscaledValue, int scale) {
+    // TODO Auto-generated method stub
+    return this;
+  }
+
+  @Override
+  public RecordWriter addDecimal(long unscaledValue, int scale) {
+    // TODO Auto-generated method stub
+    return this;
+  }
+
+  @Override
+  public RecordWriter addDecimal(long decimalValue) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public RecordWriter addDecimal(double decimalValue) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public RecordWriter addDecimal(byte[] unscaledValue, int scale) {
+    // TODO Auto-generated method stub
+    return this;
+  }
+
+  @Override
   public RecordWriter add(Time value) {
+    // TODO Auto-generated method stub
+    return this;
+  }
+
+  @Override
+  public RecordWriter addTime(int millis) {
     // TODO Auto-generated method stub
     return this;
   }
@@ -279,13 +333,37 @@ public class JsonRecordBuilder implements RecordWriter {
   }
 
   @Override
+  public RecordWriter addDate(int days) {
+    // TODO Auto-generated method stub
+    return this;
+  }
+
+  @Override
   public RecordWriter add(Timestamp value) {
     // TODO Auto-generated method stub
     return this;
   }
 
   @Override
-  public RecordWriter add(BigDecimal value) {
+  public RecordWriter addTimestamp(long timeMillis) {
+    // TODO Auto-generated method stub
+    return this;
+  }
+
+  @Override
+  public RecordWriter add(Interval value) {
+    // TODO Auto-generated method stub
+    return this;
+  }
+
+  @Override
+  public RecordWriter addInterval(long durationInMs) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public RecordWriter addInterval(int months, int days, int milliseconds) {
     // TODO Auto-generated method stub
     return this;
   }
@@ -309,12 +387,6 @@ public class JsonRecordBuilder implements RecordWriter {
   }
 
   @Override
-  public RecordWriter add(Interval value) {
-    // TODO Auto-generated method stub
-    return this;
-  }
-
-  @Override
   public RecordWriter addNull() {
     // TODO Auto-generated method stub
     return this;
@@ -328,66 +400,6 @@ public class JsonRecordBuilder implements RecordWriter {
 
   @Override
   public RecordWriter add(Record value) {
-    // TODO Auto-generated method stub
-    return this;
-  }
-
-  @Override
-  public RecordWriter addDecimal(int unscaledValue, int scale) {
-    // TODO Auto-generated method stub
-    return this;
-  }
-
-  @Override
-  public RecordWriter addDecimal(long unscaledValue, int scale) {
-    // TODO Auto-generated method stub
-    return this;
-  }
-
-  @Override
-  public RecordWriter addDecimal(double unscaledValue, int scale) {
-    // TODO Auto-generated method stub
-    return this;
-  }
-
-  @Override
-  public RecordWriter addDecimal(float unscaledValue, int scale) {
-    // TODO Auto-generated method stub
-    return this;
-  }
-
-  @Override
-  public RecordWriter addDecimal(byte[] unscaledValue, int scale) {
-    // TODO Auto-generated method stub
-    return this;
-  }
-
-  @Override
-  public RecordWriter addDate(int days) {
-    // TODO Auto-generated method stub
-    return this;
-  }
-
-  @Override
-  public RecordWriter addTime(int millis) {
-    // TODO Auto-generated method stub
-    return this;
-  }
-
-  @Override
-  public RecordWriter addTimestamp(long timeMillis) {
-    // TODO Auto-generated method stub
-    return this;
-  }
-
-  @Override
-  public RecordWriter addInterval(long durationInMs) {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public RecordWriter addInterval(int months, int days, int milliseconds) {
     // TODO Auto-generated method stub
     return this;
   }
