@@ -230,9 +230,21 @@ public class JsonRecord extends BaseRecord {
   }
 
   @Override
+  public Boolean getBooleanObj(FieldPath fieldPath) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
   public byte getByte(FieldPath fieldPath) {
     // TODO Auto-generated method stub
     return 0;
+  }
+
+  @Override
+  public Byte getByteObj(FieldPath fieldPath) {
+    // TODO Auto-generated method stub
+    return null;
   }
 
   @Override
@@ -242,9 +254,21 @@ public class JsonRecord extends BaseRecord {
   }
 
   @Override
+  public Short getShortObj(FieldPath fieldPath) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
   public int getInt(FieldPath fieldPath) {
     // TODO Auto-generated method stub
     return 0;
+  }
+
+  @Override
+  public Integer getIntObj(FieldPath fieldPath) {
+    // TODO Auto-generated method stub
+    return null;
   }
 
   @Override
@@ -254,15 +278,33 @@ public class JsonRecord extends BaseRecord {
   }
 
   @Override
+  public Long getLongObj(FieldPath fieldPath) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
   public float getFloat(FieldPath fieldPath) {
     // TODO Auto-generated method stub
     return 0;
   }
 
   @Override
+  public Float getFloatObj(FieldPath fieldPath) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
   public double getDouble(FieldPath fieldPath) {
     // TODO Auto-generated method stub
     return 0;
+  }
+
+  @Override
+  public Double getDoubleObj(FieldPath fieldPath) {
+    // TODO Auto-generated method stub
+    return null;
   }
 
   @Override

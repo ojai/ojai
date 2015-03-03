@@ -148,8 +148,18 @@ public abstract class BaseRecord implements Record {
   }
 
   @Override
+  public Boolean getBooleanObj(String fieldPath) {
+    return getBooleanObj(FieldPath.parseFrom(fieldPath));
+  }
+
+  @Override
   public byte getByte(String fieldPath) {
     return getByte(FieldPath.parseFrom(fieldPath));
+  }
+
+  @Override
+  public Byte getByteObj(String fieldPath) {
+    return getByteObj(FieldPath.parseFrom(fieldPath));
   }
 
   @Override
@@ -158,8 +168,18 @@ public abstract class BaseRecord implements Record {
   }
 
   @Override
+  public Short getShortObj(String fieldPath) {
+    return getShortObj(FieldPath.parseFrom(fieldPath));
+  }
+
+  @Override
   public int getInt(String fieldPath) {
     return getInt(FieldPath.parseFrom(fieldPath));
+  }
+
+  @Override
+  public Integer getIntObj(String fieldPath) {
+    return getIntObj(FieldPath.parseFrom(fieldPath));
   }
 
   @Override
@@ -168,13 +188,28 @@ public abstract class BaseRecord implements Record {
   }
 
   @Override
+  public Long getLongObj(String fieldPath) {
+    return getLongObj(FieldPath.parseFrom(fieldPath));
+  }
+
+  @Override
   public float getFloat(String fieldPath) {
     return getFloat(FieldPath.parseFrom(fieldPath));
   }
 
   @Override
+  public Float getFloatObj(String fieldPath) {
+    return getFloatObj(FieldPath.parseFrom(fieldPath));
+  }
+
+  @Override
   public double getDouble(String fieldPath) {
     return getDouble(FieldPath.parseFrom(fieldPath));
+  }
+
+  @Override
+  public Double getDoubleObj(String fieldPath) {
+    return getDoubleObj(FieldPath.parseFrom(fieldPath));
   }
 
   @Override
