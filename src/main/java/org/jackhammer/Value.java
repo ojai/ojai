@@ -31,90 +31,124 @@ public interface Value {
     /**
      * A non-existing value of unknown type and quantity.
      */
-    NULL,
+    NULL(1),
 
     /**
      * A boolean value.
      */
-    BOOLEAN,
+    BOOLEAN(2),
 
     /**
      * Character sequence.
      */
-    STRING,
+    STRING(3),
 
     /**
      * 8-bit signed integer.
      */
-    BYTE,
+    BYTE(4),
 
     /**
      * 16-bit signed integer.
      */
-    SHORT,
+    SHORT(5),
 
     /**.
      * 32-bit signed integer.
      */
-    INT,
+    INT(6),
 
     /**
      * 64-bit signed integer.
      */
-    LONG,
+    LONG(7),
 
     /**
      * Single-precision 32-bit floating point number.
      */
-    FLOAT,
+    FLOAT(8),
 
     /**
      * Double-precision 64-bit floating point number.
      */
-    DOUBLE,
+    DOUBLE(9),
 
     /**
      * Arbitrary precision, fixed point decimal value.
      */
-    DECIMAL,
+    DECIMAL(10),
 
     /**
      * 32-bit integer representing the number of DAYS since epoch,
      * i.e. January 1, 1970 00:00:00 UTC.
      */
-    DATE,
+    DATE(11),
 
     /**
      * 32-bit integer representing time of the day in milliseconds.
      */
-    TIME,
+    TIME(12),
 
     /**
      * 64-bit integer representing the number of milliseconds since epoch,
      * i.e. January 1, 1970 00:00:00 UTC. Negative values represent dates
      * before epoch.
      */
-    TIMESTAMP,
+    TIMESTAMP(13),
 
     /**
      * A value representing a period of time between two instants.
      */
-    INTERVAL,
+    INTERVAL(14),
 
     /**
      * Uninterpreted sequence of bytes.
      */
-    BINARY,
+    BINARY(15),
 
     /**
      * Mapping of String and <code>Value</code>.
      */
-    MAP,
+    MAP(16),
 
     /**
      * A list of <code>Value</code>.
      */
-    ARRAY
+    ARRAY(17);
+
+    private byte code;
+
+    Type(int code) {
+      this.code = (byte) code;
+    }
+
+    public byte getCode() {
+      return code;
+    }
+
+    public static Type valueOf(int typeCode) {
+      switch (typeCode) {
+        case 1: return NULL;
+        case 2: return BOOLEAN;
+        case 3: return STRING;
+        case 4: return BYTE;
+        case 5: return SHORT;
+        case 6: return INT;
+        case 7: return LONG;
+        case 8: return FLOAT;
+        case 9: return DOUBLE;
+        case 10: return DECIMAL;
+        case 11: return DATE;
+        case 12: return TIME;
+        case 13: return TIMESTAMP;
+        case 14: return INTERVAL;
+        case 15: return BINARY;
+        case 16: return MAP;
+        case 17: return ARRAY;
+        default: throw new IllegalArgumentException("Unknown Type code: " + typeCode);
+      }
+    }
+
   }
 
   /**
