@@ -23,6 +23,7 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
+import org.jackhammer.exceptions.TypeException;
 import org.jackhammer.types.Interval;
 
 public interface Value {

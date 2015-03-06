@@ -21,6 +21,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 
+import org.jackhammer.exceptions.TypeException;
 import org.jackhammer.types.Interval;
 
 public interface RecordReader {

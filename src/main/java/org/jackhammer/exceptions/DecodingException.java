@@ -13,25 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jackhammer;
+package org.jackhammer.exceptions;
 
-public class TypeException extends RuntimeException {
+/**
+ * Exception thrown by implementations if a failure occurs during
+ * deserialization of the record.
+ */
+public abstract class DecodingException extends JackhammerException {
 
-  private static final long serialVersionUID = 0xaccd73435d751ff9L;
+  private static final long serialVersionUID = 0x6f692793f238e61dL;
 
-  public TypeException() {
+  public DecodingException() {
     super();
   }
 
-  public TypeException(String message, Throwable cause) {
+  public DecodingException(String message, Throwable cause) {
     super(message, cause);
   }
 
-  public TypeException(String message) {
+  public DecodingException(String message) {
     super(message);
   }
 
-  public TypeException(Throwable cause) {
+  public DecodingException(Throwable cause) {
     super(cause);
   }
 
