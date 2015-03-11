@@ -134,7 +134,7 @@ public class JsonRecord extends BaseRecord {
   }
 
   @Override
-  public Record set(FieldPath fieldPath, Map<String, Object> value) {
+  public Record set(FieldPath fieldPath, Map<String, ? extends Object> value) {
     // TODO Auto-generated method stub
     return null;
   }
@@ -152,7 +152,7 @@ public class JsonRecord extends BaseRecord {
   }
 
   @Override
-  public Record set(FieldPath fieldPath, List<Object> value) {
+  public Record set(FieldPath fieldPath, List<? extends Object> value) {
     // TODO Auto-generated method stub
     return null;
   }

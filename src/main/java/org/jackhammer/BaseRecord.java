@@ -108,7 +108,7 @@ public abstract class BaseRecord implements Record {
   }
 
   @Override
-  public Record set(String fieldPath, Map<String, Object> value) {
+  public Record set(String fieldPath, Map<String, ? extends Object> value) {
     return set(FieldPath.parseFrom(fieldPath), value);
   }
 
@@ -128,7 +128,7 @@ public abstract class BaseRecord implements Record {
   }
 
   @Override
-  public Record set(String fieldPath, List<Object> value) {
+  public Record set(String fieldPath, List<? extends Object> value) {
     return set(FieldPath.parseFrom(fieldPath), value);
   }
 

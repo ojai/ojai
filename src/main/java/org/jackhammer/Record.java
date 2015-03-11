@@ -93,9 +93,9 @@ public interface Record extends Iterable<Map.Entry<String, Value>> {
 
   Record set(FieldPath fieldPath, ByteBuffer value);
 
-  Record set(String fieldPath, Map<String, Object> value);
+  Record set(String fieldPath, Map<String, ? extends Object> value);
 
-  Record set(FieldPath fieldPath, Map<String, Object> value);
+  Record set(FieldPath fieldPath, Map<String, ? extends Object> value);
 
   Record set(String fieldPath, Record value);
 
@@ -105,9 +105,9 @@ public interface Record extends Iterable<Map.Entry<String, Value>> {
 
   Record set(FieldPath fieldPath, Value value);
 
-  Record set(String fieldPath, List<Object> value);
+  Record set(String fieldPath, List<? extends Object> value);
 
-  Record set(FieldPath fieldPath, List<Object> value);
+  Record set(FieldPath fieldPath, List<? extends Object> value);
 
   Record setArray(String fieldPath, byte[] values);
 
