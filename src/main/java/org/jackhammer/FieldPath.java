@@ -24,6 +24,8 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
 import org.jackhammer.FieldSegment.NameSegment;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -32,6 +34,7 @@ import com.google.common.cache.CacheBuilder;
  * Immutable class for representing a field path.
  */
 public final class FieldPath implements Comparable<FieldPath>, Iterable<FieldSegment> {
+  private static Logger logger = LoggerFactory.getLogger(FieldPath.class);
 
   /**
    * Use this method to translate a <code>String</code> into <code>FieldPath</code>.
@@ -65,6 +68,7 @@ public final class FieldPath implements Comparable<FieldPath>, Iterable<FieldSeg
         }
         fieldPathCache.put(fieldPath, fp);
       } catch (RecognitionException e) {
+        logger.error("Error parsing {} as a FieldPath: {}.", fieldPath, e.getMessage());
         throw new IllegalArgumentException(
             "Unable to parse '" + fieldPath + "' as a FieldPath.", e);
       }
