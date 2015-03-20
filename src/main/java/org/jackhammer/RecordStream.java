@@ -19,7 +19,7 @@ package org.jackhammer;
  * A stream of records
  * Implements Iterable<Record> but only one call is allows to iterator()
  */
-public interface RecordStream extends AutoCloseable, Iterable<Record> {
+public interface RecordStream<T extends Record> extends AutoCloseable, Iterable<T> {
 
   public void streamTo(RecordListener l);
 

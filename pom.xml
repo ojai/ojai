@@ -24,7 +24,7 @@
   <groupId>org.jackhammer</groupId>
   <artifactId>jackhammer</artifactId>
   <name>Jackhammer</name>
-  <version>0.1.r8-SNAPSHOT</version>
+  <version>0.1.r9-SNAPSHOT</version>
   <packaging>jar</packaging>
   <description>JSON API for Hadoop</description>
   <url>https://github.com/jackhammer/</url>
@@ -91,7 +91,7 @@
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>18.0</version>
+      <version>14.0.1</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
