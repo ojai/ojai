@@ -18,20 +18,27 @@ package org.jackhammer;
 public interface RecordListener {
 
   /**
-   * Called when a Record from the {@link RecordStream} is available for consumption.
-   * 
+   * Called when a Record from the {@link RecordStream} is available for
+   * consumption.
+   *
    * @param record The available <code>Record</code>.
    *
-   * @return The implementation should return <code>false</code> to stop listening
-   * for more records.
+   * @return The implementation should return <code>false</code> to stop
+   *         listening for more records at which point stream is closed.
    */
   boolean recordArrived(Record record);
 
   /**
    * Called when an <code>Exception</code> occurs while retrieving a Record.
    *
-   * @param e
+   * @param e The exception which describes the failure.
    */
   void failed(Exception e);
+
+  /**
+   * Called when the end of the record stream is reached. The stream is
+   * is already closed at this point.
+   */
+  void eos();
 
 }

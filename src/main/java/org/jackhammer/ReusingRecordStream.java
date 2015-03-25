@@ -15,7 +15,7 @@
  */
 package org.jackhammer;
 
-public interface ReusingRecordStream extends RecordStream {
+public interface ReusingRecordStream<T extends Record> extends RecordStream<T> {
 
   public FieldReader getFieldReader(String path);
 
