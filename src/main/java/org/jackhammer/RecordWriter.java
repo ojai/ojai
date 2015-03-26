@@ -346,7 +346,6 @@ public interface RecordWriter {
 
   RecordWriter add(Interval value);
   RecordWriter addInterval(long durationInMs);
-  RecordWriter addInterval(int months, int days, int milliseconds);
 
   /* Lifecycle methods */
   RecordWriter endArray();

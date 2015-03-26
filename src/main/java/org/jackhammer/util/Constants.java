@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014 MapR, Inc.
+ * Copyright (c) 2015 MapR, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,24 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jackhammer.json;
+package org.jackhammer.util;
 
-import org.jackhammer.RecordWriter;
-import org.jackhammer.Record;
-import org.jackhammer.RecordFactory;
+public interface Constants {
 
-public class JsonRecordFactory implements RecordFactory {
-
-  @Override
-  public Record newRecord() {
-    // TODO Auto-generated method stub
-    return new JsonRecord();
-  }
-
-  @Override
-  public RecordWriter newRecordBuilder() {
-    // TODO Auto-generated method stub
-    return new JsonRecordWriter();
-  }
+  public final long MILLISECONDSPERDAY = 24 * 60 * 60 * 1000L;
 
 }

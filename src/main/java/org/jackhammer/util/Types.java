@@ -28,21 +28,32 @@ import com.google.common.collect.Maps;
  */
 public class Types {
 
+  public static final String TAG_BINARY     = "$binary";
+  public static final String TAG_INTERVAL   = "$interval";
+  public static final String TAG_TIMESTAMP  = "$timestamp";
+  public static final String TAG_TIME       = "$time";
+  public static final String TAG_DATE       = "$date";
+  public static final String TAG_DECIMAL    = "$decimal";
+  public static final String TAG_FLOAT      = "$float";
+  public static final String TAG_INT        = "$int";
+  public static final String TAG_SHORT      = "$short";
+  public static final String TAG_BYTE       = "$byte";
+
   /**
    * The map between type and their tag names for the non intrinsic JSON types.
    */
   private static final Map<Type, String> TYPE_TAG_MAP = Maps.newEnumMap(Type.class);
   static {
-    TYPE_TAG_MAP.put(Type.BYTE, "$byte");
-    TYPE_TAG_MAP.put(Type.SHORT, "$short");
-    TYPE_TAG_MAP.put(Type.INT, "$int");
-    TYPE_TAG_MAP.put(Type.FLOAT, "$float");
-    TYPE_TAG_MAP.put(Type.DECIMAL, "$decimal");
-    TYPE_TAG_MAP.put(Type.DATE, "$date");
-    TYPE_TAG_MAP.put(Type.TIME, "$time");
-    TYPE_TAG_MAP.put(Type.TIMESTAMP, "$timestamp");
-    TYPE_TAG_MAP.put(Type.INTERVAL, "$interval");
-    TYPE_TAG_MAP.put(Type.BINARY, "$binary");
+    TYPE_TAG_MAP.put(Type.BYTE, TAG_BYTE);
+    TYPE_TAG_MAP.put(Type.SHORT, TAG_SHORT);
+    TYPE_TAG_MAP.put(Type.INT, TAG_INT);
+    TYPE_TAG_MAP.put(Type.FLOAT, TAG_FLOAT);
+    TYPE_TAG_MAP.put(Type.DECIMAL, TAG_DECIMAL);
+    TYPE_TAG_MAP.put(Type.DATE, TAG_DATE);
+    TYPE_TAG_MAP.put(Type.TIME, TAG_TIME);
+    TYPE_TAG_MAP.put(Type.TIMESTAMP, TAG_TIMESTAMP);
+    TYPE_TAG_MAP.put(Type.INTERVAL, TAG_INTERVAL);
+    TYPE_TAG_MAP.put(Type.BINARY, TAG_BINARY);
     assert TYPE_TAG_MAP.size() == (Type.values().length - (7 /*Json intrinsic types*/))
         : "Map is missing some of the Type enum elements";
   }

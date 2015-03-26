@@ -19,7 +19,7 @@ package org.jackhammer.exceptions;
  * Exception thrown by implementations if a failure occurs during
  * serialization of the record.
  */
-public abstract class EncodingException extends JackhammerException {
+public class EncodingException extends JackhammerException {
 
   private static final long serialVersionUID = 0x549350ba59b3b829L;
 

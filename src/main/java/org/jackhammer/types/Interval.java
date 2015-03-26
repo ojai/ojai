@@ -17,10 +17,12 @@ package org.jackhammer.types;
 
 import java.io.Serializable;
 
+import org.jackhammer.util.Constants;
+
 /**
  * An lightweight, immutable class which encapsulates a time interval.
  */
-public class Interval implements Serializable {
+public class Interval implements Serializable, Constants {
 
   private static final long serialVersionUID = 0x228372f2047c1511L;
 
@@ -31,10 +33,17 @@ public class Interval implements Serializable {
   }
 
   /**
-   * @return The interval duration in milliseconds. 
+   * @return The interval duration in milliseconds.
    */
   public long getInterval() {
     return _millis;
+  }
+
+  /*
+   * @return Number of days in the interval.
+   */
+  public int getDays() {
+    return (int)(_millis/MILLISECONDSPERDAY);
   }
 
 }

@@ -19,7 +19,7 @@ package org.jackhammer.exceptions;
  * Exception thrown by implementations if a failure occurs during
  * deserialization of the record.
  */
-public abstract class DecodingException extends JackhammerException {
+public class DecodingException extends JackhammerException {
 
   private static final long serialVersionUID = 0x6f692793f238e61dL;
 
