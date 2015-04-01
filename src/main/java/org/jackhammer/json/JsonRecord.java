@@ -39,19 +39,23 @@ import org.jackhammer.types.Interval;
 
 public class JsonRecord extends JsonValue implements Record, Map<String, Object> {
 
-  LinkedHashMap<String, JsonValue> map;
+  private LinkedHashMap<String, JsonValue> map;
+  private JsonRecordReader jsonRecordReader;
 
   public JsonRecord() {
-    valueType = Type.MAP;
-    map = new LinkedHashMap<String, JsonValue>();
+    this(null);
+  }
 
+  JsonRecord(JsonRecordReader reader) {
+    jsonRecordReader = reader;
+    valueType = Type.MAP;
   }
 
   JsonRecord createOrInsert(Iterator<FieldSegment> iter, JsonValue newKeyValue) {
     FieldSegment field;
     field = iter.next();
     String key = field.getNameSegment().getName();
-    JsonValue oldKeyValue = map.get(key);
+    JsonValue oldKeyValue = getRootMap().get(key);
     /*
      * If this is the last element in the path then just
      * overwrite the previous value for the same key with
@@ -59,7 +63,7 @@ public class JsonRecord extends JsonValue implements Record, Map<String, Object>
      */
     if (field.isLastPath()) {
       newKeyValue.setKey(key);
-      map.put(key, newKeyValue);
+      getRootMap().put(key, newKeyValue);
       return this;
     }
 
@@ -72,7 +76,7 @@ public class JsonRecord extends JsonValue implements Record, Map<String, Object>
       if ((oldKeyValue == null) || (oldKeyValue.getType() != Type.MAP)) {
         newRecord = new JsonRecord();
         newRecord.createOrInsert(iter, newKeyValue);
-        map.put(key, newRecord);
+        getRootMap().put(key, newRecord);
         return this;
       }
 
@@ -87,7 +91,7 @@ public class JsonRecord extends JsonValue implements Record, Map<String, Object>
       newList = new JsonList();
       newList.createOrInsert(iter, newKeyValue);
       newList.setKey(key);
-      map.put(key, newList);
+      getRootMap().put(key, newList);
       return this;
     }
 
@@ -213,7 +217,7 @@ public class JsonRecord extends JsonValue implements Record, Map<String, Object>
     if (field == null) return null;
 
     String key = field.getNameSegment().getName();
-    JsonValue kv = map.get(key);
+    JsonValue kv = getRootMap().get(key);
     // if value doesn't exist in map then return null
     if (kv == null) {
       return null;
@@ -221,7 +225,7 @@ public class JsonRecord extends JsonValue implements Record, Map<String, Object>
 
     // if this is the last path then return the value at this key in map
     if (field.isLastPath()) {
-      map.remove(kv.key);
+      getRootMap().remove(kv.key);
       return null;
     }
 
@@ -257,7 +261,7 @@ public class JsonRecord extends JsonValue implements Record, Map<String, Object>
 
     Iterator<String> keyIter;
     JsonRecordIterator() {
-      keyIter = map.keySet().iterator();
+      keyIter = getRootMap().keySet().iterator();
     }
     @Override
     public boolean hasNext() {
@@ -267,7 +271,7 @@ public class JsonRecord extends JsonValue implements Record, Map<String, Object>
     @Override
     public java.util.Map.Entry<String, Value> next() {
       String key = keyIter.next();
-      JsonValue kv = map.get(key);
+      JsonValue kv = getRootMap().get(key);
       return new AbstractMap.SimpleImmutableEntry<String, Value>(key, kv);
     }
 
@@ -283,7 +287,7 @@ public class JsonRecord extends JsonValue implements Record, Map<String, Object>
     if (field == null) return null;
 
     String key = field.getNameSegment().getName();
-    JsonValue kv = map.get(key);
+    JsonValue kv = getRootMap().get(key);
     if (kv == null) {
       return null;
     }
@@ -453,13 +457,28 @@ public class JsonRecord extends JsonValue implements Record, Map<String, Object>
 
   @Override
   public RecordReader asReader() {
-    return null;
+    if (jsonRecordReader == null) {
+      // TODO build a RecordReader over the DOM map
+    } else if (map != null) { // don't call getRootMap() 
+      // TODO build a merged RecordReader with DOM
+      // overlaying on top of the jsonRecordReader
+    }
+    return jsonRecordReader;
   }
 
   @Override
   public RecordReader asReader(FieldPath fieldPath) {
-    // TODO Auto-generated method stub
+    /* TODO Here, we need to create a serialized version of the
+     * DOM tree model which can be parsed as next token and put
+     * it into a buffer.
+     * @see org.jackhammer.Record#asReader(org.jackhammer.FieldPath)
+     */
     return null;
+  }
+
+  @Override
+  public RecordReader asReader(String fieldPath) {
+    return asReader(FieldPath.parseFrom(fieldPath));
   }
 
   @Override
@@ -474,23 +493,23 @@ public class JsonRecord extends JsonValue implements Record, Map<String, Object>
 
   @Override
   public boolean containsKey(Object key) {
-    return map.containsKey(key);
+    return getRootMap().containsKey(key);
   }
 
   @Override
   public boolean containsValue(Object value) {
     JsonValue v = JsonValueBuilder.initFromObject(value);
-    return map.containsValue(v);
+    return getRootMap().containsValue(v);
   }
 
   @Override
   public Set<java.util.Map.Entry<String, Object>> entrySet() {
     /* make a copy of the string and the real object and return that */
     LinkedHashSet<Map.Entry<String, Object>> s = new LinkedHashSet<Map.Entry<String,Object>>();
-    for (String k : map.keySet()) {
+    for (String k : getRootMap().keySet()) {
 
       Map.Entry<String, Object> newEntry =
-          new AbstractMap.SimpleImmutableEntry<String, Object>(k, map.get(k).getObject());
+          new AbstractMap.SimpleImmutableEntry<String, Object>(k, getRootMap().get(k).getObject());
       s.add(newEntry);
     }
     return s;
@@ -498,7 +517,7 @@ public class JsonRecord extends JsonValue implements Record, Map<String, Object>
 
   @Override
   public Object get(Object key) {
-    JsonValue value = map.get(key);
+    JsonValue value = getRootMap().get(key);
     if (value != null) {
       return value.getObject();
     }
@@ -507,12 +526,12 @@ public class JsonRecord extends JsonValue implements Record, Map<String, Object>
 
   @Override
   public boolean isEmpty() {
-    return map.isEmpty();
+    return getRootMap().isEmpty();
   }
 
   @Override
   public Set<String> keySet() {
-    return map.keySet();
+    return getRootMap().keySet();
   }
 
   @Override
@@ -533,14 +552,14 @@ public class JsonRecord extends JsonValue implements Record, Map<String, Object>
 
   @Override
   public int size() {
-    return map.size();
+    return getRootMap().size();
   }
 
   @Override
   public Collection<Object> values() {
     /* make a copy and return the real value object */
     ArrayList<Object> list = new ArrayList<Object>();
-    for (JsonValue v : map.values()) {
+    for (JsonValue v : getRootMap().values()) {
       list.add(v.getObject());
     }
     return list;
@@ -883,17 +902,6 @@ public class JsonRecord extends JsonValue implements Record, Map<String, Object>
     return getValue(FieldPath.parseFrom(fieldPath));
   }
 
-  /* Here, we need to create a serialized version of the DOM
-   * tree model which can be parsed as next token and put it
-   * into a buffer.
-   * @see org.jackhammer.Record#asReader(java.lang.String)
-   */
-  @Override
-  public RecordReader asReader(String fieldPath) {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
   @Override
   public Record set(String fieldPath, Map<String, ? extends Object> value) {
     return set(FieldPath.parseFrom(fieldPath), value);
@@ -921,6 +929,13 @@ public class JsonRecord extends JsonValue implements Record, Map<String, Object>
     rec.objValue = objValue;
     rec.jsonValue = jsonValue;
     return rec;
+  }
+
+  private Map<String, JsonValue> getRootMap() {
+    if (map == null) {
+      map = new LinkedHashMap<String, JsonValue>();
+    }
+    return map;
   }
 
 }

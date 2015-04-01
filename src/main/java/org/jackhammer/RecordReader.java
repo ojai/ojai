@@ -24,7 +24,7 @@ import java.sql.Timestamp;
 import org.jackhammer.exceptions.TypeException;
 import org.jackhammer.types.Interval;
 
-public interface RecordReader extends AutoCloseable {
+public interface RecordReader {
 
   public enum EventType {
     NULL,

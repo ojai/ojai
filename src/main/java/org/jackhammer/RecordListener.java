@@ -30,6 +30,8 @@ public interface RecordListener {
 
   /**
    * Called when an <code>Exception</code> occurs while retrieving a Record.
+   * The {@code RecordListener} will be closed and no new record will be
+   * returned.
    *
    * @param e The exception which describes the failure.
    */

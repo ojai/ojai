@@ -17,7 +17,6 @@
 package org.jackhammer.json;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
@@ -31,37 +30,28 @@ import org.jackhammer.exceptions.TypeException;
 import org.jackhammer.types.Interval;
 import org.jackhammer.util.Types;
 
-import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 
 public class JsonRecordReader implements RecordReader {
 
-  private InputStream inputStream;
-  private JsonParser jsonParser;
+  private JsonRecordStream recordStream;
   private JsonToken currentToken; /* current token read from stream */
   private JsonToken nextToken; /* next token from stream */
   private EventType currentEventType; /* used for caching current event type */
+  private int mapLevel;
+  private boolean eor;
 
   /* flag used to lookup next token to determine extended types */
   private boolean lookupToken = false;
 
-  public JsonRecordReader() {
-    inputStream = null;
-    jsonParser = null;
+  JsonRecordReader(JsonRecordStream stream) {
+    recordStream = stream;
     currentToken = null;
     nextToken = null;
-  }
-
-  public JsonRecordReader(InputStream in) {
-    inputStream = in;
-    JsonFactory jFactory = new JsonFactory();
-    try {
-      jsonParser = jFactory.createParser(inputStream);
-    } catch (IOException e) {
-      throw new DecodingException(e);
-    }
+    mapLevel = 0;
+    eor = false;
   }
 
   /*
@@ -71,14 +61,14 @@ public class JsonRecordReader implements RecordReader {
    */
   private EventType nextType() {
     try {
-      nextToken = jsonParser.nextToken();
+      nextToken = getParser().nextToken();
+      lookupToken = true;
 
       if (nextToken == JsonToken.FIELD_NAME) {
-        lookupToken = true;
-        String field_name = jsonParser.getCurrentName();
+        String field_name = getParser().getCurrentName();
 
         if (field_name.startsWith("$")) {
-          currentToken = jsonParser.nextToken();
+          currentToken = getParser().nextToken();
           lookupToken = false;
 
           // determine extended type
@@ -104,18 +94,20 @@ public class JsonRecordReader implements RecordReader {
           case Types.TAG_BINARY:
             return EventType.BINARY;
           default:
-            return EventType.START_MAP;
+            break;
           }
-        } else {
-          return EventType.START_MAP;
         }
       }
     } catch (JsonParseException e) {
-      throw new IllegalStateException(e.getMessage());
+      throw new IllegalStateException(e);
     } catch (IOException ie) {
       throw new DecodingException(ie);
     }
-    return null;
+    return EventType.START_MAP;
+  }
+
+  private JsonParser getParser() {
+    return recordStream.getParser();
   }
 
   /* returns the eventType associated with the currentToken */
@@ -147,24 +139,94 @@ public class JsonRecordReader implements RecordReader {
     }
   }
 
+  /**
+   * @return {@code true} if the {@code RecordReader} has read past the end
+   *         of the current record or end of the underlying stream has been
+   *         reached.
+   */
+  boolean eor() {
+    if (eor) {
+      return true;
+    }
+    try {
+      nextToken = getParser().nextToken();
+      lookupToken = true;
+      return nextToken == null;
+    } catch (IOException e) {
+      throw new DecodingException(e);
+    }
+  }
+
   @Override
   public EventType next() {
+    if (eor) {
+      return null;
+    }
+
+    EventType et = null;
     try {
-      if (!lookupToken) {
-        currentToken = jsonParser.nextToken();
-      } else {
+      if (lookupToken) {
         currentToken = nextToken;
         lookupToken = false;
-      }
-      if (currentToken == null) {
-        return null;
       } else {
-        /* cache current event type and return */
+        currentToken = getParser().nextToken();
+      }
+
+      if (currentToken != null) {
+        /* cache current event type */
         currentEventType = eventType();
-        return currentEventType;
+        et = currentEventType;
+      }
+
+      if (et == EventType.START_MAP) {
+        mapLevel++;
+      } else if (et == EventType.END_MAP) {
+        mapLevel--;
+      }
+      if (mapLevel == 0) {
+        eor = true;
       }
     } catch (JsonParseException jp) {
-      throw new IllegalStateException(jp.getMessage());
+      throw new IllegalStateException(jp);
+    } catch (IOException e) {
+      throw new DecodingException(e);
+    }
+
+    return et;
+  }
+
+  /**
+   * Forward the stream to end of the current record
+   */
+  void readFully() {
+    if (eor) {
+      return;
+    }
+    /**
+     * FIXME: Currently this method just consume the remaining tokens from
+     *        the parser stream and discard them. Instead we need to cache
+     *        the token and return them in next() and getXXXX() calls.
+     */
+    try {
+      JsonToken token;
+      while((token = getParser().nextToken()) != null) {
+        switch (token) {
+        case START_OBJECT:
+          mapLevel++;
+          break;
+        case END_OBJECT:
+          mapLevel--;
+          break;
+        default:
+        }
+
+        if (mapLevel == 0) {
+          break;
+        }
+      }
+      eor = true;
+    } catch (JsonParseException e) {
+      throw new IllegalStateException(e);
     } catch (IOException e) {
       throw new DecodingException(e);
     }
@@ -180,7 +242,7 @@ public class JsonRecordReader implements RecordReader {
   public String getFieldName() {
     CheckEventType(EventType.FIELD_NAME);
     try {
-      return jsonParser.getCurrentName();
+      return getParser().getCurrentName();
     } catch (JsonParseException e) {
       throw new IllegalStateException(e);
     } catch (IOException ie) {
@@ -192,7 +254,7 @@ public class JsonRecordReader implements RecordReader {
   public byte getByte() {
     CheckEventType(EventType.BYTE);
     try {
-      return (byte) (jsonParser.getLongValue() & 0xff);
+      return (byte) (getParser().getLongValue() & 0xff);
     } catch (JsonParseException e) {
       throw new IllegalStateException(e);
     } catch (IOException ie) {
@@ -204,7 +266,7 @@ public class JsonRecordReader implements RecordReader {
   public short getShort() {
     CheckEventType(EventType.SHORT);
     try {
-      return (short) (jsonParser.getLongValue() & 0xffff);
+      return (short) (getParser().getLongValue() & 0xffff);
     } catch (JsonParseException e) {
       throw new IllegalStateException(e);
     } catch (IOException ie) {
@@ -216,7 +278,7 @@ public class JsonRecordReader implements RecordReader {
   public int getInt() {
     CheckEventType(EventType.INT);
     try {
-      return (int) (jsonParser.getLongValue() & 0xffffffff);
+      return (int) (getParser().getLongValue() & 0xffffffff);
     } catch (JsonParseException e) {
       throw new IllegalStateException(e);
     } catch (IOException ie) {
@@ -228,7 +290,7 @@ public class JsonRecordReader implements RecordReader {
   public long getLong() {
     CheckEventType(EventType.LONG);
     try {
-      return jsonParser.getLongValue();
+      return getParser().getLongValue();
     } catch (JsonParseException e) {
       throw new IllegalStateException(e);
     } catch (IOException ie) {
@@ -240,7 +302,7 @@ public class JsonRecordReader implements RecordReader {
   public float getFloat() {
     CheckEventType(EventType.FLOAT);
     try {
-      return jsonParser.getFloatValue();
+      return getParser().getFloatValue();
     } catch (JsonParseException e) {
       throw new IllegalStateException(e);
     } catch (IOException ie) {
@@ -252,7 +314,7 @@ public class JsonRecordReader implements RecordReader {
   public double getDouble() {
     CheckEventType(EventType.DOUBLE);
     try {
-      return jsonParser.getDoubleValue();
+      return getParser().getDoubleValue();
     } catch (JsonParseException e) {
       throw new IllegalStateException(e);
     } catch (IOException ie) {
@@ -264,7 +326,7 @@ public class JsonRecordReader implements RecordReader {
   public BigDecimal getDecimal() {
     CheckEventType(EventType.DECIMAL);
     try {
-      return jsonParser.getDecimalValue();
+      return getParser().getDecimalValue();
     } catch (JsonParseException e) {
       throw new IllegalStateException(e);
     } catch (IOException ie) {
@@ -323,7 +385,7 @@ public class JsonRecordReader implements RecordReader {
   public boolean getBoolean() {
     CheckEventType(EventType.BOOLEAN);
     try {
-      return jsonParser.getBooleanValue();
+      return getParser().getBooleanValue();
     } catch (JsonParseException e) {
       throw new IllegalStateException(e);
     } catch (IOException ie) {
@@ -335,7 +397,7 @@ public class JsonRecordReader implements RecordReader {
   public String getString() {
     CheckEventType(EventType.STRING);
     try {
-      return jsonParser.getText();
+      return getParser().getText();
     } catch (JsonParseException e) {
       throw new IllegalStateException(e);
     } catch (IOException ie) {
@@ -347,7 +409,7 @@ public class JsonRecordReader implements RecordReader {
   public long getTimeStamp() {
     CheckEventType(EventType.TIMESTAMP);
     try {
-      return jsonParser.getLongValue();
+      return getParser().getLongValue();
     } catch (JsonParseException e) {
       throw new IllegalStateException(e);
     } catch (IOException ie) {
@@ -359,7 +421,7 @@ public class JsonRecordReader implements RecordReader {
   public Timestamp getTimestamp() {
     CheckEventType(EventType.TIMESTAMP);
     try {
-      long l = jsonParser.getLongValue();
+      long l = getParser().getLongValue();
       return new Timestamp(l);
     } catch (JsonParseException e) {
       throw new IllegalStateException(e);
@@ -372,7 +434,7 @@ public class JsonRecordReader implements RecordReader {
   public int getDateInt() {
     CheckEventType(EventType.DATE);
     try {
-      return jsonParser.getIntValue();
+      return getParser().getIntValue();
     } catch (JsonParseException e) {
       throw new IllegalStateException(e);
     } catch (IOException ie) {
@@ -384,7 +446,7 @@ public class JsonRecordReader implements RecordReader {
   public Date getDate() {
     CheckEventType(EventType.DATE);
     try {
-      return new Date(jsonParser.getLongValue());
+      return new Date(getParser().getLongValue());
     } catch (IOException ie) {
       throw new DecodingException(ie);
     }
@@ -394,7 +456,7 @@ public class JsonRecordReader implements RecordReader {
   public int getTimeInt() {
     CheckEventType(EventType.TIME);
     try {
-      return jsonParser.getIntValue();
+      return getParser().getIntValue();
     } catch (JsonParseException e) {
       throw new IllegalStateException(e);
     } catch (IOException ie) {
@@ -406,7 +468,7 @@ public class JsonRecordReader implements RecordReader {
   public Time getTime() {
     CheckEventType(EventType.TIME);
     try {
-      return new Time(jsonParser.getLongValue());
+      return new Time(getParser().getLongValue());
     } catch (IOException ie) {
       throw new DecodingException(ie);
     }
@@ -416,7 +478,7 @@ public class JsonRecordReader implements RecordReader {
   public Interval getInterval() {
     CheckEventType(EventType.INTERVAL);
     try {
-      return new Interval(jsonParser.getLongValue());
+      return new Interval(getParser().getLongValue());
     } catch (IOException ie) {
       throw new DecodingException(ie);
     }
@@ -426,7 +488,7 @@ public class JsonRecordReader implements RecordReader {
   public int getIntervalMillis() {
     CheckEventType(EventType.INTERVAL);
     try {
-      return (int) (jsonParser.getLongValue() & 0xffffffff);
+      return (int) (getParser().getLongValue() & 0xffffffff);
     } catch (IOException ie) {
       throw new DecodingException(ie);
     }
@@ -436,7 +498,7 @@ public class JsonRecordReader implements RecordReader {
   public ByteBuffer getBinary() {
     CheckEventType(EventType.BINARY);
     try {
-      return ByteBuffer.wrap(jsonParser.getBinaryValue());
+      return ByteBuffer.wrap(getParser().getBinaryValue());
     } catch (JsonParseException e) {
       throw new IllegalStateException(e);
     } catch (IOException ie) {
@@ -445,19 +507,10 @@ public class JsonRecordReader implements RecordReader {
   }
 
   @Override
-  public void close() {
-    try {
-      jsonParser.close();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-  }
-
-  @Override
   public int getIntervalDays() {
     CheckEventType(EventType.INTERVAL);
     try {
-      Interval i = new Interval(jsonParser.getLongValue());
+      Interval i = new Interval(getParser().getLongValue());
       return i.getDays();
     } catch (IOException ie) {
       throw new DecodingException(ie);

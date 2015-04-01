@@ -30,7 +30,7 @@ import org.junit.rules.ExpectedException;
 
 public class TestJsonRecordWriter extends BaseTest {
 
-  private byte[] GetByteArray(int size) {
+  private byte[] getByteArray(int size) {
     byte[] bytes = new byte[size];
     for (int i = 0; i < bytes.length; ++i) {
       bytes[i] = (byte) i;
@@ -39,7 +39,6 @@ public class TestJsonRecordWriter extends BaseTest {
   }
 
   @Test
-  @SuppressWarnings("deprecation")
   public void testAllTypes() {
 
     JsonRecordWriter jsonWriter = new JsonRecordWriter();
@@ -56,11 +55,11 @@ public class TestJsonRecordWriter extends BaseTest {
     jsonWriter.putDecimal("decimal3", 123456789L);
     jsonWriter.putDecimal("decimal4", 9876.54321d);
     jsonWriter.putDecimal("decimal5", 32700, 5);
-    jsonWriter.put("binary1", GetByteArray(5));
-    jsonWriter.put("binary2", GetByteArray(20), 10, 5);
+    jsonWriter.put("binary1", getByteArray(5));
+    jsonWriter.put("binary2", getByteArray(20), 10, 5);
     /* bytebuffer test */
-    jsonWriter.put("binary3", ByteBuffer.wrap(GetByteArray(10)));
-    jsonWriter.put("date1", new Date(2010, 01, 10));
+    jsonWriter.put("binary3", ByteBuffer.wrap(getByteArray(10)));
+    jsonWriter.put("date1", Date.valueOf("2010-01-10"));
     jsonWriter.put(("time1"), Time.valueOf("19:15:12"));
     jsonWriter.put("timestamp1", Timestamp.valueOf("2010-10-15 14:20:00"));
     jsonWriter.put("interval1", new Interval(10234567));
@@ -78,15 +77,15 @@ public class TestJsonRecordWriter extends BaseTest {
     jsonWriter.addNull();
     jsonWriter.add(10.12345678d);
     jsonWriter.add(new BigDecimal(1234.567891));
-    jsonWriter.add(new Date(2010, 01, 10));
+    jsonWriter.add(Date.valueOf("2010-01-10"));
     jsonWriter.add(Time.valueOf("19:15:12"));
     jsonWriter.add(Timestamp.valueOf("2010-10-15 14:20:00"));
     jsonWriter.add(new Interval(10234567));
-    jsonWriter.add(ByteBuffer.wrap(GetByteArray(15)));
+    jsonWriter.add(ByteBuffer.wrap(getByteArray(15)));
     jsonWriter.endArray();
 
-    jsonWriter.endDocument();
-    jsonWriter.writeContent();
+    jsonWriter.build();
+    System.out.println(jsonWriter.asUTF8String());
 
   }
 
@@ -108,7 +107,7 @@ public class TestJsonRecordWriter extends BaseTest {
     jsonWriter.add((long)23456);
     jsonWriter.add((long)5555);
     //jsonWriter.EndDocument();
-    jsonWriter.writeContent();
+    System.out.println(jsonWriter.asUTF8String());
 
   }
 
@@ -134,7 +133,7 @@ public class TestJsonRecordWriter extends BaseTest {
     jsonWriter.putDecimal("d6", Integer.MIN_VALUE, 15);
     jsonWriter.putDecimal("d7", Long.MAX_VALUE, 25);
     jsonWriter.putDecimal("d8", Long.MIN_VALUE, 25);
-    jsonWriter.endDocument();
-    jsonWriter.writeContent();
+    jsonWriter.build();
+    System.out.println(jsonWriter.asUTF8String());
   }
 }

@@ -17,6 +17,7 @@ package org.jackhammer.json;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
 import java.sql.Date;
@@ -46,6 +47,7 @@ public class JsonRecordWriter implements RecordWriter, Constants {
   // member variables
   private JsonGenerator jsonGenerator;
   private ByteArrayOutputStream b;
+  private String cachedJson;
 
   public JsonRecordWriter() {
     try {
@@ -56,19 +58,6 @@ public class JsonRecordWriter implements RecordWriter, Constants {
     } catch (IOException io) {
       throw new EncodingException(io);
     }
-  }
-
-  public JsonRecordWriter endDocument() {
-    try {
-      jsonGenerator.writeEndObject();
-      jsonGenerator.close();
-    } catch (JsonGenerationException e) {
-      throw new IllegalStateException(
-          "Wrong context for adding object to JSON document.");
-    } catch (IOException e) {
-      throw new EncodingException(e);
-    }
-    return this;
   }
 
   @Override
@@ -816,8 +805,36 @@ public class JsonRecordWriter implements RecordWriter, Constants {
 
   @Override
   public Record build() {
-    // TODO Auto-generated method stub
+    if (jsonGenerator.isClosed()) {
+      throw new IllegalStateException("The record has already been built.");
+    }
+
+    try {
+      jsonGenerator.close();
+    } catch (JsonGenerationException e) {
+      throw new IllegalStateException(e);
+    } catch (IOException ie) {
+      throw new EncodingException(ie);
+    }
+
+    // TODO Return a JsonRecord wrapped over the content
+    // of this BBOS
     return null;
+  }
+
+  public String asUTF8String() {
+    if (!jsonGenerator.isClosed()) {
+      throw new IllegalStateException("The record has not been built.");
+    }
+
+    try {
+      if (cachedJson == null) {
+        cachedJson = b.toString("UTF-8");
+      }
+      return cachedJson;
+    } catch (UnsupportedEncodingException e) {
+      return null; // should never happen
+    }
   }
 
   private JsonRecordWriter addArray(String field, List<Object> values) {
@@ -838,19 +855,12 @@ public class JsonRecordWriter implements RecordWriter, Constants {
     return this;
   }
 
-  public void EnablePrettyPrinting() {
-    jsonGenerator.useDefaultPrettyPrinter();
-  }
-
-  public void writeContent() {
-    try {
-      jsonGenerator.close();
-    } catch (JsonGenerationException e) {
-      throw new IllegalStateException(e);
-    } catch (IOException ie) {
-      throw new EncodingException(ie);
+  public void enablePrettyPrinting(boolean enable) {
+    if (enable) {
+      jsonGenerator.useDefaultPrettyPrinter();
+    } else {
+      jsonGenerator.setPrettyPrinter(null);
     }
-    System.out.println(b.toString());
   }
 
 }
