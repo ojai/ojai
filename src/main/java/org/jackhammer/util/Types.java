@@ -17,9 +17,12 @@ package org.jackhammer.util;
 
 import java.util.Map;
 
+import org.jackhammer.RecordReader.EventType;
 import org.jackhammer.Value;
 import org.jackhammer.Value.Type;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.EnumBiMap;
 import com.google.common.collect.Maps;
 
 /**
@@ -58,6 +61,29 @@ public class Types {
         : "Map is missing some of the Type enum elements";
   }
 
+  public static final BiMap<Type, EventType> TYPE_EVENTTYPE_MAP =
+      EnumBiMap.create(Type.class, EventType.class);
+  static {
+    TYPE_EVENTTYPE_MAP.put(Type.NULL, EventType.NULL);
+    TYPE_EVENTTYPE_MAP.put(Type.BOOLEAN, EventType.BOOLEAN);
+    TYPE_EVENTTYPE_MAP.put(Type.STRING, EventType.STRING);
+    TYPE_EVENTTYPE_MAP.put(Type.BYTE, EventType.BYTE);
+    TYPE_EVENTTYPE_MAP.put(Type.SHORT, EventType.SHORT);
+    TYPE_EVENTTYPE_MAP.put(Type.INT, EventType.INT);
+    TYPE_EVENTTYPE_MAP.put(Type.LONG, EventType.LONG);
+    TYPE_EVENTTYPE_MAP.put(Type.FLOAT, EventType.FLOAT);
+    TYPE_EVENTTYPE_MAP.put(Type.DOUBLE, EventType.DOUBLE);
+    TYPE_EVENTTYPE_MAP.put(Type.DECIMAL, EventType.DECIMAL);
+    TYPE_EVENTTYPE_MAP.put(Type.DATE, EventType.DATE);
+    TYPE_EVENTTYPE_MAP.put(Type.TIME, EventType.TIME);
+    TYPE_EVENTTYPE_MAP.put(Type.TIMESTAMP, EventType.TIMESTAMP);
+    TYPE_EVENTTYPE_MAP.put(Type.INTERVAL, EventType.INTERVAL);
+    TYPE_EVENTTYPE_MAP.put(Type.BINARY, EventType.BINARY);
+    assert TYPE_EVENTTYPE_MAP.size() == (Type.values().length - (2 /*Map and Array*/))
+        : "Map is missing some of the Type enum elements";
+  }
+
+
   /**
    * @param value A <code>Value</code> which should tested.
    * @return {@code true} if the given value is not of an intrinsic
@@ -94,6 +120,24 @@ public class Types {
    */
   public static String getTypeTag(Type type) {
     return TYPE_TAG_MAP.get(type);
+  }
+
+  /**
+   * Returns the {@code EventType} for the specified {@code Type}.
+   * @param type The {@code Type} to lookup
+   * @return The corresponding {@code EventType}
+   */
+  public static EventType getEventTypeForType(Type type) {
+    return TYPE_EVENTTYPE_MAP.get(type);
+  }
+
+  /**
+   * Returns the {@code Type} for the specified {@code EventType}.
+   * @param event The {@code EventType} to lookup
+   * @return The corresponding {@code Type}
+   */
+  public static Type getTypeForEventType(EventType event) {
+    return TYPE_EVENTTYPE_MAP.inverse().get(event);
   }
 
 }

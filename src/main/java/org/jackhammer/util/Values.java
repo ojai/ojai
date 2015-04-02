@@ -37,10 +37,12 @@ import com.google.common.io.BaseEncoding;
 public class Values {
 
   private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd");
+  private static final SimpleDateFormat TINY_TIME_FORMATTER = new SimpleDateFormat("HH:mm");
   private static final SimpleDateFormat SHORT_TIME_FORMATTER = new SimpleDateFormat("HH:mm:ss");
   private static final SimpleDateFormat FULL_TIME_FORMATTER = new SimpleDateFormat("HH:mm:ss.SSS");
   private static final SimpleDateFormat TIMESTAMP_FORMATTER = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
   private static final TimeZone GMT = TimeZone.getTimeZone("GMT");
+  private static final int tinyTimeStringLen = TINY_TIME_FORMATTER.toPattern().length();
   private static final int shortTimeStringLen = SHORT_TIME_FORMATTER.toPattern().length();
 
   /**
@@ -161,8 +163,17 @@ public class Values {
     try {
       return new Date(getDateFormatter().parse(date).getTime());
     } catch (ParseException e) {
-      throw new IllegalArgumentException("Can not parse the provided date: " + date);
+      throw new IllegalArgumentException("Can not parse the provided date: " + date, e);
     }
+  }
+
+  /**
+   * Returns the JDBC string representation ("yyyy-mm-dd") of the specified Date.
+   * @param date The {@code Date} value to stringify.
+   * @return The formatted date string.
+   */
+  public static String toDateStr(Date date) {
+    return getDateFormatter().format(date);
   }
 
   /**
@@ -171,7 +182,7 @@ public class Values {
    * from {@link Time#valueOf(String)} which uses current timezone.
    *
    * @param time a <code>String</code> object representing a time in
-   *        in the format "HH:mm:ss" or "HH:mm:ss.SSS".
+   *        in the format "HH:mm", "HH:mm:ss" or "HH:mm:ss.SSS".
    * @return a <code>java.sql.Time</code> object representing the
    *         given time.
    * @throws IllegalArgumentException if the time given is not in the
@@ -181,12 +192,23 @@ public class Values {
     try {
       if (time.length() > shortTimeStringLen) {
         return new Time(getFullTimeFormatter().parse(time).getTime());
-      } else {
+      } else if (time.length() > tinyTimeStringLen) {
         return new Time(getShortTimeFormatter().parse(time).getTime());
+      } else {
+        return new Time(getTinyTimeFormatter().parse(time).getTime());
       }
     } catch (ParseException e) {
-      throw new IllegalArgumentException("Can not parse the provided time: " + time);
+      throw new IllegalArgumentException("Can not parse the provided time: " + time, e);
     }
+  }
+
+  /**
+   * Returns the JDBC string representation ("HH:mm:ss") of the specified Time.
+   * @param time The {@code Time} value to stringify.
+   * @return The formatted time string.
+   */
+  public static String toTimeStr(Time time) {
+    return getShortTimeFormatter().format(time);
   }
 
   /**
@@ -205,7 +227,7 @@ public class Values {
     try {
       return new Timestamp(getTimestampFormatter().parse(timestampe).getTime());
     } catch (ParseException e) {
-      throw new IllegalArgumentException("Can not parse the provided timestampe: " + timestampe);
+      throw new IllegalArgumentException("Can not parse the provided timestampe: " + timestampe, e);
     }
   }
 
@@ -299,6 +321,11 @@ public class Values {
   private static DateFormat getDateFormatter() {
     DATE_FORMATTER.setTimeZone(GMT);
     return DATE_FORMATTER;
+  }
+
+  private static DateFormat getTinyTimeFormatter() {
+    TINY_TIME_FORMATTER.setTimeZone(GMT);
+    return TINY_TIME_FORMATTER;
   }
 
   private static DateFormat getShortTimeFormatter() {

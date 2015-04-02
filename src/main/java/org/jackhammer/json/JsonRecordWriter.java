@@ -36,6 +36,7 @@ import org.jackhammer.types.Interval;
 import org.jackhammer.util.Constants;
 import org.jackhammer.util.DecimalUtility;
 import org.jackhammer.util.Types;
+import org.jackhammer.util.Values;
 
 import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.JsonFactory;
@@ -246,15 +247,27 @@ public class JsonRecordWriter implements RecordWriter, Constants {
     return put(field, bytes);
   }
 
-  private JsonRecordWriter putLongWithTag(String fieldname, String fieldTag,
-      long value) {
-
+  private JsonRecordWriter putLongWithTag(String fieldname,
+      String fieldTag, long value) {
     try {
       putNewMap(fieldname);
       jsonGenerator.writeNumberField(fieldTag, value);
       endMap();
     } catch (JsonGenerationException e) {
+      throw new IllegalStateException(e);
+    } catch (IOException ie) {
+      throw new EncodingException(ie);
+    }
+    return this;
+  }
 
+  private JsonRecordWriter putStringWithTag(String fieldname,
+      String fieldTag, String value) {
+    try {
+      putNewMap(fieldname);
+      jsonGenerator.writeStringField(fieldTag, value);
+      endMap();
+    } catch (JsonGenerationException e) {
       throw new IllegalStateException(e);
     } catch (IOException ie) {
       throw new EncodingException(ie);
@@ -274,7 +287,7 @@ public class JsonRecordWriter implements RecordWriter, Constants {
 
   @Override
   public JsonRecordWriter put(String field, Time value) {
-    return putLongWithTag(field, Types.TAG_TIME, value.getTime());
+    return putStringWithTag(field, Types.TAG_TIME, Values.toTimeStr(value));
   }
 
   @Override

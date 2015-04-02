@@ -18,12 +18,16 @@ package org.jackhammer.json;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
+import java.util.Map;
 
+import org.jackhammer.FieldPath;
 import org.jackhammer.Record;
 import org.jackhammer.RecordListener;
+import org.jackhammer.RecordReader;
 import org.jackhammer.RecordStream;
+import org.jackhammer.Value.Type;
 import org.jackhammer.exceptions.DecodingException;
+import org.jackhammer.exceptions.StreamInUseException;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
@@ -35,11 +39,17 @@ public class JsonRecordStream implements RecordStream<Record> {
 
   private boolean readStarted;
   private volatile boolean iteratorOpened;
+  private Map<FieldPath, Type> fieldPathTypeMap;
 
   public JsonRecordStream(InputStream in) {
+    this(in, null);
+  }
+
+  public JsonRecordStream(InputStream in, Map<FieldPath, Type> fieldType) {
     inputStream = in;
     readStarted = false;
     iteratorOpened = false;
+    this.fieldPathTypeMap = fieldType;
     try {
       JsonFactory jFactory = new JsonFactory();
       jsonParser = jFactory.createParser(inputStream);
@@ -49,53 +59,35 @@ public class JsonRecordStream implements RecordStream<Record> {
   }
 
   @Override
-  public void close() throws IOException {
-    jsonParser.close();
+  public Iterable<RecordReader> recordReaders() {
+    checkStateForIteration();
+    iteratorOpened = true;
+    return new JsonRecordStreamReaders(this);
   }
 
   @Override
   public synchronized Iterator<Record> iterator() {
-    if (readStarted) {
-      throw new IllegalStateException("Can not create iterator after reading from the stream has started.");
-    } else if (iteratorOpened) {
-      throw new IllegalStateException("An iterator has already been opened on this record stream.");
-    }
-    iteratorOpened = true;
-
+    checkStateForIteration();
+    /*
+     * TODO: Implement a Iterator returning instance of JsonRecord
+     */
     return new Iterator<Record>() {
-      private JsonRecordReader lastReader;
-      private JsonRecordReader currentReader;
-      private boolean eos = false;
 
       @Override
       public void remove() {
-        throw new UnsupportedOperationException();
+        // TODO Auto-generated method stub
       }
 
       @Override
       public Record next() {
-        if (!hasNext()) {
-          throw new NoSuchElementException();
-        }
-        lastReader = currentReader;
-        currentReader = null;
-        return new JsonRecord(lastReader);
+        // TODO Auto-generated method stub
+        return null;
       }
 
       @Override
       public boolean hasNext() {
-        if (lastReader != null) {
-          // If a record was previously returned
-          // ensure that its reader has consumed
-          // its data from the underlying stream
-          lastReader.readFully();
-          lastReader = null;
-        }
-        if (!eos && currentReader == null) {
-          currentReader = new JsonRecordReader(JsonRecordStream.this);
-          eos = currentReader.eor();
-        }
-        return !eos;
+        // TODO Auto-generated method stub
+        return false;
       }
     };
   }
@@ -114,8 +106,25 @@ public class JsonRecordStream implements RecordStream<Record> {
     }
   }
 
-  public JsonParser getParser() {
+  @Override
+  public void close() throws IOException {
+    jsonParser.close();
+  }
+
+  JsonParser getParser() {
     return jsonParser;
+  }
+
+  Map<FieldPath, Type> getFieldPathTypeMap() {
+    return fieldPathTypeMap;
+  }
+
+  private void checkStateForIteration() {
+    if (readStarted) {
+      throw new StreamInUseException("Can not create iterator after reading from the stream has started.");
+    } else if (iteratorOpened) {
+      throw new StreamInUseException("An iterator has already been opened on this record stream.");
+    }
   }
 
 }

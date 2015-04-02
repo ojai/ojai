@@ -194,7 +194,7 @@ public interface RecordReader {
    * @throws TypeException If the current {@code EventType} is not
    *         {@code TIMESTAMP}.
    */
-  long getTimeStamp();
+  long getTimestampLong();
 
   /**
    * @return The {@code Timestamp} value of the current node.
@@ -240,7 +240,7 @@ public interface RecordReader {
    */
   Interval getInterval();
   int getIntervalDays();
-  int getIntervalMillis();
+  long getIntervalMillis();
 
   /**
    * @return The {@code ByteBuffer} value of the current node.

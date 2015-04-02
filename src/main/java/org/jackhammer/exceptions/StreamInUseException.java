@@ -13,29 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jackhammer;
+package org.jackhammer.exceptions;
 
-import java.util.Iterator;
+import org.jackhammer.RecordStream;
 
 /**
- * A stream of records.
- *
- * Implements Iterable<Record> but only one call is allows to iterator()
- * or readerIterator(). Only one of these iterators can be retrieved
- * from the stream.
+ * Exception thrown by implementations a {@link RecordStream} is
+ * accessed in more than one way.
  */
-public interface RecordStream<T extends Record> extends AutoCloseable, Iterable<T> {
+public class StreamInUseException extends JackhammerException {
 
-  public void streamTo(RecordListener l);
+  private static final long serialVersionUID = 0x36921a0f97b532ceL;
 
-  /**
-   * Returns an iterator over a set of {@code Record}.
-   */
-  Iterator<T> iterator();
+  public StreamInUseException() {
+    super();
+  }
 
-  /**
-   * Returns an {@code Iterable} over a set of {@code RecordReader}.
-   */
-  Iterable<RecordReader> recordReaders();
+  public StreamInUseException(String message, Throwable cause) {
+    super(message, cause);
+  }
+
+  public StreamInUseException(String message) {
+    super(message);
+  }
+
+  public StreamInUseException(Throwable cause) {
+    super(cause);
+  }
 
 }

@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.jackhammer.json;
 
 import java.io.IOException;
@@ -28,25 +27,31 @@ import org.jackhammer.RecordReader;
 import org.jackhammer.exceptions.DecodingException;
 import org.jackhammer.exceptions.TypeException;
 import org.jackhammer.types.Interval;
+import org.jackhammer.util.Constants;
 import org.jackhammer.util.Types;
+import org.jackhammer.util.Values;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 
-public class JsonRecordReader implements RecordReader {
+public class JsonStreamRecordReader implements RecordReader, Constants {
 
   private JsonRecordStream recordStream;
   private JsonToken currentToken; /* current token read from stream */
   private JsonToken nextToken; /* next token from stream */
-  private EventType currentEventType; /* used for caching current event type */
   private int mapLevel;
   private boolean eor;
+
+  protected long currentLongValue = 0;
+  protected Object currentObjValue = null;
+  protected double currentDoubleValue = 0;
+  protected EventType currentEventType;
 
   /* flag used to lookup next token to determine extended types */
   private boolean lookupToken = false;
 
-  JsonRecordReader(JsonRecordStream stream) {
+  JsonStreamRecordReader(JsonRecordStream stream) {
     recordStream = stream;
     currentToken = null;
     nextToken = null;
@@ -106,10 +111,6 @@ public class JsonRecordReader implements RecordReader {
     return EventType.START_MAP;
   }
 
-  private JsonParser getParser() {
-    return recordStream.getParser();
-  }
-
   /* returns the eventType associated with the currentToken */
   private EventType eventType() {
     switch (currentToken) {
@@ -135,7 +136,88 @@ public class JsonRecordReader implements RecordReader {
     case FIELD_NAME:
       return EventType.FIELD_NAME;
     default:
-      return null;
+      throw new DecodingException("Encountered unexpected token of type: " + currentToken);
+    }
+  }
+
+  protected void cacheCurrentValue() throws IOException {
+    switch (currentEventType) {
+    case BOOLEAN:
+      currentObjValue = isEventBoolean() ? getParser().getBooleanValue() : Boolean.valueOf(getValueAsString());
+      break;
+    case STRING:
+    case FIELD_NAME:
+      currentObjValue = getParser().getText();
+      break;
+    case BYTE:
+      currentLongValue = (getParser().getLongValue() & 0xff);
+      break;
+    case SHORT:
+      currentLongValue = (getParser().getLongValue() & 0xffff);
+      break;
+    case INT:
+      currentLongValue = (getParser().getLongValue() & 0xffffffff);
+      break;
+    case LONG:
+      currentLongValue = getParser().getLongValue();
+      break;
+    case FLOAT:
+    case DOUBLE:
+      currentDoubleValue = getParser().getDoubleValue();
+      break;
+    case DECIMAL:
+      currentObjValue = getParser().getDecimalValue();
+      break;
+    case DATE:
+      currentObjValue = Values.parseDate(getParser().getText());
+      break;
+    case TIME:
+      currentObjValue = Values.parseTime(getParser().getText());
+      break;
+    case TIMESTAMP:
+      currentObjValue = Values.parseTimestamp(getParser().getText());
+      break;
+    case INTERVAL:
+      currentLongValue = getParser().getLongValue();
+      break;
+    case BINARY:
+      currentObjValue = ByteBuffer.wrap(getParser().getBinaryValue());
+      break;
+    default:
+      // ARRAY, MAP and NULL need not be cached
+      break;
+    }
+  }
+
+  private void checkEventType(EventType eventType) throws TypeException {
+    if (currentEventType != eventType) {
+      throw new TypeException("Event type mismatch");
+    }
+  }
+
+  protected JsonParser getParser() {
+    return recordStream.getParser();
+  }
+
+  protected boolean isEventBoolean() {
+    return getParser().getCurrentToken().isBoolean();
+  }
+
+  protected boolean isEventNumeric() {
+    return getParser().getCurrentToken().isNumeric();
+  }
+
+  protected boolean isNumericEvent() {
+    return getParser().getCurrentToken().isNumeric();
+  }
+
+  protected String getValueAsString() {
+    try {
+      return getParser().getText();
+    } catch (JsonParseException e) {
+      throw new IllegalStateException(e);
+    } catch (IOException ie) {
+      throw new DecodingException(ie);
     }
   }
 
@@ -174,8 +256,8 @@ public class JsonRecordReader implements RecordReader {
 
       if (currentToken != null) {
         /* cache current event type */
-        currentEventType = eventType();
-        et = currentEventType;
+        et = currentEventType = eventType();
+        cacheCurrentValue();
       }
 
       if (et == EventType.START_MAP) {
@@ -232,106 +314,52 @@ public class JsonRecordReader implements RecordReader {
     }
   }
 
-  private void CheckEventType(EventType eventType) throws TypeException {
-    if (currentEventType != eventType) {
-      throw new TypeException("Event type mismatch");
-    }
-  }
-
   @Override
   public String getFieldName() {
-    CheckEventType(EventType.FIELD_NAME);
-    try {
-      return getParser().getCurrentName();
-    } catch (JsonParseException e) {
-      throw new IllegalStateException(e);
-    } catch (IOException ie) {
-      throw new DecodingException(ie);
-    }
+    checkEventType(EventType.FIELD_NAME);
+    return (String) currentObjValue;
   }
 
   @Override
   public byte getByte() {
-    CheckEventType(EventType.BYTE);
-    try {
-      return (byte) (getParser().getLongValue() & 0xff);
-    } catch (JsonParseException e) {
-      throw new IllegalStateException(e);
-    } catch (IOException ie) {
-      throw new DecodingException(ie);
-    }
+    checkEventType(EventType.BYTE);
+    return (byte) currentLongValue;
   }
 
   @Override
   public short getShort() {
-    CheckEventType(EventType.SHORT);
-    try {
-      return (short) (getParser().getLongValue() & 0xffff);
-    } catch (JsonParseException e) {
-      throw new IllegalStateException(e);
-    } catch (IOException ie) {
-      throw new DecodingException(ie);
-    }
+    checkEventType(EventType.SHORT);
+    return (short) currentLongValue;
   }
 
   @Override
   public int getInt() {
-    CheckEventType(EventType.INT);
-    try {
-      return (int) (getParser().getLongValue() & 0xffffffff);
-    } catch (JsonParseException e) {
-      throw new IllegalStateException(e);
-    } catch (IOException ie) {
-      throw new DecodingException(ie);
-    }
+    checkEventType(EventType.INT);
+    return (int) currentLongValue;
   }
 
   @Override
   public long getLong() {
-    CheckEventType(EventType.LONG);
-    try {
-      return getParser().getLongValue();
-    } catch (JsonParseException e) {
-      throw new IllegalStateException(e);
-    } catch (IOException ie) {
-      throw new DecodingException(ie);
-    }
+    checkEventType(EventType.LONG);
+    return currentLongValue;
   }
 
   @Override
   public float getFloat() {
-    CheckEventType(EventType.FLOAT);
-    try {
-      return getParser().getFloatValue();
-    } catch (JsonParseException e) {
-      throw new IllegalStateException(e);
-    } catch (IOException ie) {
-      throw new DecodingException(ie);
-    }
+    checkEventType(EventType.FLOAT);
+    return (float) currentDoubleValue;
   }
 
   @Override
   public double getDouble() {
-    CheckEventType(EventType.DOUBLE);
-    try {
-      return getParser().getDoubleValue();
-    } catch (JsonParseException e) {
-      throw new IllegalStateException(e);
-    } catch (IOException ie) {
-      throw new DecodingException(ie);
-    }
+    checkEventType(EventType.DOUBLE);
+    return currentDoubleValue;
   }
 
   @Override
   public BigDecimal getDecimal() {
-    CheckEventType(EventType.DECIMAL);
-    try {
-      return getParser().getDecimalValue();
-    } catch (JsonParseException e) {
-      throw new IllegalStateException(e);
-    } catch (IOException ie) {
-      throw new DecodingException(ie);
-    }
+    checkEventType(EventType.DECIMAL);
+    return (BigDecimal) currentObjValue;
   }
 
   @Override
@@ -383,138 +411,74 @@ public class JsonRecordReader implements RecordReader {
 
   @Override
   public boolean getBoolean() {
-    CheckEventType(EventType.BOOLEAN);
-    try {
-      return getParser().getBooleanValue();
-    } catch (JsonParseException e) {
-      throw new IllegalStateException(e);
-    } catch (IOException ie) {
-      throw new DecodingException(ie);
-    }
+    checkEventType(EventType.BOOLEAN);
+    return (boolean) currentObjValue;
   }
 
   @Override
   public String getString() {
-    CheckEventType(EventType.STRING);
-    try {
-      return getParser().getText();
-    } catch (JsonParseException e) {
-      throw new IllegalStateException(e);
-    } catch (IOException ie) {
-      throw new DecodingException(ie);
-    }
+    checkEventType(EventType.STRING);
+    return (String) currentObjValue;
   }
 
   @Override
-  public long getTimeStamp() {
-    CheckEventType(EventType.TIMESTAMP);
-    try {
-      return getParser().getLongValue();
-    } catch (JsonParseException e) {
-      throw new IllegalStateException(e);
-    } catch (IOException ie) {
-      throw new DecodingException(ie);
-    }
+  public long getTimestampLong() {
+    checkEventType(EventType.TIMESTAMP);
+    return ((Timestamp) currentObjValue).getTime();
   }
 
   @Override
   public Timestamp getTimestamp() {
-    CheckEventType(EventType.TIMESTAMP);
-    try {
-      long l = getParser().getLongValue();
-      return new Timestamp(l);
-    } catch (JsonParseException e) {
-      throw new IllegalStateException(e);
-    } catch (IOException ie) {
-      throw new DecodingException(ie);
-    }
+    checkEventType(EventType.TIMESTAMP);
+    return (Timestamp) currentObjValue;
   }
 
   @Override
   public int getDateInt() {
-    CheckEventType(EventType.DATE);
-    try {
-      return getParser().getIntValue();
-    } catch (JsonParseException e) {
-      throw new IllegalStateException(e);
-    } catch (IOException ie) {
-      throw new DecodingException(ie);
-    }
+    checkEventType(EventType.DATE);
+    return (int) (((Date) currentObjValue).getTime() / MILLISECONDSPERDAY);
   }
 
   @Override
   public Date getDate() {
-    CheckEventType(EventType.DATE);
-    try {
-      return new Date(getParser().getLongValue());
-    } catch (IOException ie) {
-      throw new DecodingException(ie);
-    }
+    checkEventType(EventType.DATE);
+    return (Date) currentObjValue;
   }
 
   @Override
   public int getTimeInt() {
-    CheckEventType(EventType.TIME);
-    try {
-      return getParser().getIntValue();
-    } catch (JsonParseException e) {
-      throw new IllegalStateException(e);
-    } catch (IOException ie) {
-      throw new DecodingException(ie);
-    }
+    checkEventType(EventType.TIME);
+    return (int) (((Time) currentObjValue).getTime() % MILLISECONDSPERDAY);
   }
 
   @Override
   public Time getTime() {
-    CheckEventType(EventType.TIME);
-    try {
-      return new Time(getParser().getLongValue());
-    } catch (IOException ie) {
-      throw new DecodingException(ie);
-    }
+    checkEventType(EventType.TIME);
+    return (Time) currentObjValue;
   }
 
   @Override
   public Interval getInterval() {
-    CheckEventType(EventType.INTERVAL);
-    try {
-      return new Interval(getParser().getLongValue());
-    } catch (IOException ie) {
-      throw new DecodingException(ie);
-    }
-  }
-
-  @Override
-  public int getIntervalMillis() {
-    CheckEventType(EventType.INTERVAL);
-    try {
-      return (int) (getParser().getLongValue() & 0xffffffff);
-    } catch (IOException ie) {
-      throw new DecodingException(ie);
-    }
-  }
-
-  @Override
-  public ByteBuffer getBinary() {
-    CheckEventType(EventType.BINARY);
-    try {
-      return ByteBuffer.wrap(getParser().getBinaryValue());
-    } catch (JsonParseException e) {
-      throw new IllegalStateException(e);
-    } catch (IOException ie) {
-      throw new DecodingException(ie);
-    }
+    checkEventType(EventType.INTERVAL);
+    return new Interval(currentLongValue);
   }
 
   @Override
   public int getIntervalDays() {
-    CheckEventType(EventType.INTERVAL);
-    try {
-      Interval i = new Interval(getParser().getLongValue());
-      return i.getDays();
-    } catch (IOException ie) {
-      throw new DecodingException(ie);
-    }
+    checkEventType(EventType.INTERVAL);
+    return (int) (currentLongValue / MILLISECONDSPERDAY);
+  }
+
+  @Override
+  public long getIntervalMillis() {
+    checkEventType(EventType.INTERVAL);
+    return currentLongValue;
+  }
+
+  @Override
+  public ByteBuffer getBinary() {
+    checkEventType(EventType.BINARY);
+    return (ByteBuffer) currentObjValue;
   }
 
 }

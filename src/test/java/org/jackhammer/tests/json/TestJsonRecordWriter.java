@@ -27,8 +27,11 @@ import org.jackhammer.types.Interval;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TestJsonRecordWriter extends BaseTest {
+  private static Logger logger = LoggerFactory.getLogger(TestJsonRecordWriter.class);
 
   private byte[] getByteArray(int size) {
     byte[] bytes = new byte[size];
@@ -85,7 +88,7 @@ public class TestJsonRecordWriter extends BaseTest {
     jsonWriter.endArray();
 
     jsonWriter.build();
-    System.out.println(jsonWriter.asUTF8String());
+    logger.debug(jsonWriter.asUTF8String());
 
   }
 
@@ -107,7 +110,7 @@ public class TestJsonRecordWriter extends BaseTest {
     jsonWriter.add((long)23456);
     jsonWriter.add((long)5555);
     //jsonWriter.EndDocument();
-    System.out.println(jsonWriter.asUTF8String());
+    logger.debug(jsonWriter.asUTF8String());
 
   }
 
@@ -134,6 +137,6 @@ public class TestJsonRecordWriter extends BaseTest {
     jsonWriter.putDecimal("d7", Long.MAX_VALUE, 25);
     jsonWriter.putDecimal("d8", Long.MIN_VALUE, 25);
     jsonWriter.build();
-    System.out.println(jsonWriter.asUTF8String());
+    logger.debug(jsonWriter.asUTF8String());
   }
 }

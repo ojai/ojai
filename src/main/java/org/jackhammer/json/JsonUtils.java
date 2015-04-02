@@ -61,6 +61,12 @@ public class JsonUtils {
       case DOUBLE:
         w.put(currentFieldName, r.getDouble());
         break;
+      case DATE:
+        w.put(currentFieldName, r.getDate());
+        break;
+      case TIME:
+        w.put(currentFieldName, r.getTime());
+        break;
       case START_ARRAY:
         w.putNewArray(currentFieldName);
         addToArray(r, w);
@@ -101,6 +107,12 @@ public class JsonUtils {
         break;
       case DOUBLE:
         w.add(r.getDouble());
+        break;
+      case DATE:
+        w.add(r.getDate());
+        break;
+      case TIME:
+        w.add(r.getTime());
         break;
       case START_ARRAY:
         w.putNewArray(currentFieldName);

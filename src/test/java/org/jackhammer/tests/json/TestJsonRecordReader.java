@@ -22,7 +22,6 @@ import java.io.InputStream;
 
 import org.jackhammer.RecordReader;
 import org.jackhammer.RecordReader.EventType;
-import org.jackhammer.json.JsonRecordReader;
 import org.jackhammer.json.JsonRecordStream;
 import org.jackhammer.tests.BaseTest;
 import org.junit.Test;
@@ -34,8 +33,8 @@ public class TestJsonRecordReader extends BaseTest {
 
     try (InputStream testJson = getJsonStream("test.json");
          JsonRecordStream stream = new JsonRecordStream(testJson);) {
-      RecordReader r = stream.iterator().next().asReader();
-      JsonRecordReader.EventType et = r.next();
+      RecordReader r = stream.recordReaders().iterator().next();
+      EventType et = r.next();
       while (et != null) {
         if (et == EventType.BYTE) {
           byte b = r.getByte();

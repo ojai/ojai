@@ -40,13 +40,13 @@ import org.jackhammer.types.Interval;
 public class JsonRecord extends JsonValue implements Record, Map<String, Object> {
 
   private LinkedHashMap<String, JsonValue> map;
-  private JsonRecordReader jsonRecordReader;
+  private JsonStreamRecordReader jsonRecordReader;
 
   public JsonRecord() {
     this(null);
   }
 
-  JsonRecord(JsonRecordReader reader) {
+  JsonRecord(JsonStreamRecordReader reader) {
     jsonRecordReader = reader;
     valueType = Type.MAP;
   }
