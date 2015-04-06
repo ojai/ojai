@@ -933,7 +933,7 @@ public class JsonRecord extends JsonValue implements Record, Map<String, Object>
     return rec;
   }
 
-  private Map<String, JsonValue> getRootMap() {
+  Map<String, JsonValue> getRootMap() {
     if (map == null) {
       map = new LinkedHashMap<String, JsonValue>();
     }

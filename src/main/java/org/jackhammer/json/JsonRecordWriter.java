@@ -34,7 +34,6 @@ import org.jackhammer.Value;
 import org.jackhammer.Value.Type;
 import org.jackhammer.exceptions.EncodingException;
 import org.jackhammer.types.Interval;
-import org.jackhammer.util.ByteArrayWriterOutputStream;
 import org.jackhammer.util.Constants;
 import org.jackhammer.util.DecimalUtility;
 import org.jackhammer.util.Types;

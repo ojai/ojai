@@ -1,13 +1,29 @@
-
+/**
+ * Copyright (c) 2015 MapR, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.jackhammer.json;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Stack;
 
 import org.jackhammer.Record;
 import org.jackhammer.RecordReader;
 import org.jackhammer.RecordReader.EventType;
 import org.jackhammer.exceptions.DecodingException;
+import org.jackhammer.util.Fields;
 
 public class JsonRecordIterator implements Iterator<Record> {
   Iterator<RecordReader> it = null;
@@ -36,106 +52,127 @@ public class JsonRecordIterator implements Iterator<Record> {
     if (hasNextRecord) {
       return getRecordFromStreamReader();
     }
-    return null;
-  }
-
-  private String getFieldPath(String fieldName, Stack<Object> fieldPathStack) {
-    if (fieldPathStack.empty()) {
-      return fieldName;
-    }
-    StringBuilder sb = new StringBuilder();
-    for (Object o :fieldPathStack) {
-      sb.append(o).append('.');
-    }
-
-    return sb.append(fieldName).toString();
+    throw new NoSuchElementException();
   }
 
   private Record getRecordFromStreamReader() {
-    Stack<Object> fieldPathStack = new Stack<Object>();
-    JsonRecord newRecord = new JsonRecord();
+    Stack<JsonValue> containerStack = new Stack<JsonValue>();
     EventType event;
-    String fieldName;
-    String currentPath = null;
+    JsonRecord lastRecord = null;
+    String currentFieldName = null;
+    JsonValue currentContainer = null;
+
     while ((event = reader.next()) != null) {
       switch(event) {
       case START_MAP:
-        if (currentPath != null) {
-          fieldPathStack.push(currentPath);
+        JsonValue newRec = new JsonRecord();
+        if (currentContainer != null) {
+          appendTo(currentContainer, currentFieldName, newRec);
         }
-        break;
-      case FIELD_NAME:
-        fieldName = reader.getFieldName();
-        currentPath = getFieldPath(fieldName, fieldPathStack);
+        currentContainer = newRec;
+        containerStack.push(currentContainer);
         break;
       case END_MAP:
-        if (!fieldPathStack.empty()) {
-          fieldPathStack.pop();
+        if (!containerStack.empty() && containerStack.peek() instanceof JsonRecord) {
+          lastRecord = (JsonRecord) containerStack.pop();
+          if (!containerStack.empty()) {
+            currentContainer = containerStack.peek();
+          }
+        } else {
+          throw new DecodingException("Unable to decode record stream: " + containerStack.toString());
         }
         break;
       case START_ARRAY:
-      case END_ARRAY:
-        //create a list of elements to be inserted as an array
+        JsonValue newList = new JsonList();
+        if (currentContainer != null) {
+          appendTo(currentContainer, currentFieldName, newList);
+        }
+        currentContainer = newList;
+        containerStack.push(currentContainer);
         break;
-
+      case END_ARRAY:
+        if (!containerStack.empty() && containerStack.peek() instanceof JsonList) {
+          containerStack.pop();
+          if (!containerStack.empty()) {
+            currentContainer = containerStack.peek();
+          }
+        } else {
+          throw new DecodingException("Unable to decode record stream: " + containerStack.toString());
+        }
+        break;
+      case FIELD_NAME:
+        currentFieldName = Fields.escapeFieldName(reader.getFieldName());
+        break;
       case NULL:
-        newRecord.setNull(currentPath);
+        appendTo(currentContainer, currentFieldName, JsonValue.NULLKEYVALUE);
         break;
       case BOOLEAN:
-        newRecord.set(currentPath, reader.getBoolean());
+        appendTo(currentContainer, currentFieldName, JsonValueBuilder.initFrom(reader.getBoolean()));
         break;
       case BINARY:
-        newRecord.set(currentPath, reader.getBinary());
+        appendTo(currentContainer, currentFieldName, JsonValueBuilder.initFrom(reader.getBinary()));
         break;
       case BYTE:
-        newRecord.set(currentPath, reader.getByte());
+        appendTo(currentContainer, currentFieldName, JsonValueBuilder.initFrom(reader.getByte()));
         break;
       case SHORT:
-        newRecord.set(currentPath, reader.getShort());
+        appendTo(currentContainer, currentFieldName, JsonValueBuilder.initFrom(reader.getShort()));
         break;
       case INT:
-        newRecord.set(currentPath, reader.getInt());
+        appendTo(currentContainer, currentFieldName, JsonValueBuilder.initFrom(reader.getInt()));
         break;
       case LONG:
-        newRecord.set(currentPath, reader.getLong());
+        appendTo(currentContainer, currentFieldName, JsonValueBuilder.initFrom(reader.getLong()));
         break;
       case FLOAT:
-        newRecord.set(currentPath, reader.getFloat());
+        appendTo(currentContainer, currentFieldName, JsonValueBuilder.initFrom(reader.getFloat()));
         break;
       case DOUBLE:
-        newRecord.set(currentPath, reader.getDouble());
+        appendTo(currentContainer, currentFieldName, JsonValueBuilder.initFrom(reader.getDouble()));
         break;
       case DECIMAL:
-        newRecord.set(currentPath, reader.getDecimal());
+        appendTo(currentContainer, currentFieldName, JsonValueBuilder.initFrom(reader.getDecimal()));
         break;
       case STRING:
-        newRecord.set(currentPath, reader.getString());
+        appendTo(currentContainer, currentFieldName, JsonValueBuilder.initFrom(reader.getString()));
         break;
       case DATE:
-        newRecord.set(currentPath, reader.getDate());
+        appendTo(currentContainer, currentFieldName, JsonValueBuilder.initFrom(reader.getDate()));
         break;
       case TIME:
-        newRecord.set(currentPath, reader.getTime());
+        appendTo(currentContainer, currentFieldName, JsonValueBuilder.initFrom(reader.getTime()));
         break;
       case TIMESTAMP:
-        newRecord.set(currentPath, reader.getTimestamp());
+        appendTo(currentContainer, currentFieldName, JsonValueBuilder.initFrom(reader.getTimestamp()));
         break;
       case INTERVAL:
-        newRecord.set(currentPath, reader.getInterval());
+        appendTo(currentContainer, currentFieldName, JsonValueBuilder.initFrom(reader.getInterval()));
         break;
        default:
-         throw new IllegalStateException("Unknown token type from stream reader");
+         throw new DecodingException("Unknown token type " + event + " from stream reader");
       }
     }
-    if (!fieldPathStack.empty()) {
+    if (!containerStack.empty()) {
       //this means we did not got the end of the record.
       throw new DecodingException("Error processing record");
     }
-    return newRecord;
+    return lastRecord;
+  }
+
+  private void appendTo(JsonValue currentContainer, String fieldName,
+      JsonValue value) {
+    if (currentContainer instanceof JsonRecord) {
+      ((JsonRecord)currentContainer).getRootMap().put(fieldName, value);
+    } else if (currentContainer instanceof JsonList) {
+      ((JsonList)currentContainer).getRootList().add(value);
+    } else {
+      throw new DecodingException("Unable to decode record stream: " + currentContainer.toString());
+    }
   }
 
   @Override
   public void remove() {
     throw new UnsupportedOperationException();
   }
+
 }

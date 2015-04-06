@@ -37,13 +37,15 @@ import com.google.common.io.BaseEncoding;
 public class Values {
 
   private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd");
-  private static final SimpleDateFormat TINY_TIME_FORMATTER = new SimpleDateFormat("HH:mm");
-  private static final SimpleDateFormat SHORT_TIME_FORMATTER = new SimpleDateFormat("HH:mm:ss");
+  private static final SimpleDateFormat SHORT_DATE_FORMATTER = new SimpleDateFormat("yyyy-MM");
+  private static final SimpleDateFormat SHORT_TIME_FORMATTER = new SimpleDateFormat("HH:mm");
+  private static final SimpleDateFormat TIME_FORMATTER = new SimpleDateFormat("HH:mm:ss");
   private static final SimpleDateFormat FULL_TIME_FORMATTER = new SimpleDateFormat("HH:mm:ss.SSS");
   private static final SimpleDateFormat TIMESTAMP_FORMATTER = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
   private static final TimeZone GMT = TimeZone.getTimeZone("GMT");
-  private static final int tinyTimeStringLen = TINY_TIME_FORMATTER.toPattern().length();
   private static final int shortTimeStringLen = SHORT_TIME_FORMATTER.toPattern().length();
+  private static final int timeStringLen = TIME_FORMATTER.toPattern().length();
+  private static final int shortDateStringLen = SHORT_DATE_FORMATTER.toPattern().length();
 
   /**
    * @return Returns the specified value as a <code>byte</code>.
@@ -161,7 +163,11 @@ public class Values {
    */
   public static Date parseDate(String date) {
     try {
-      return new Date(getDateFormatter().parse(date).getTime());
+      if (date.length() > shortDateStringLen) {
+        return new Date(getDateFormatter().parse(date).getTime());
+      } else {
+        return new Date(getShortDateFormatter().parse(date).getTime());
+      }
     } catch (ParseException e) {
       throw new IllegalArgumentException("Can not parse the provided date: " + date, e);
     }
@@ -190,12 +196,12 @@ public class Values {
    */
   public static Time parseTime(String time) {
     try {
-      if (time.length() > shortTimeStringLen) {
+      if (time.length() > timeStringLen) {
         return new Time(getFullTimeFormatter().parse(time).getTime());
-      } else if (time.length() > tinyTimeStringLen) {
-        return new Time(getShortTimeFormatter().parse(time).getTime());
+      } else if (time.length() > shortTimeStringLen) {
+        return new Time(getTimeFormatter().parse(time).getTime());
       } else {
-        return new Time(getTinyTimeFormatter().parse(time).getTime());
+        return new Time(getShortTimeFormatter().parse(time).getTime());
       }
     } catch (ParseException e) {
       throw new IllegalArgumentException("Can not parse the provided time: " + time, e);
@@ -208,7 +214,25 @@ public class Values {
    * @return The formatted time string.
    */
   public static String toTimeStr(Time time) {
+    return getTimeFormatter().format(time);
+  }
+  
+  /**
+   * Returns the JDBC string representation ("HH:mm") of the specified Time.
+   * @param time The {@code Time} value to stringify.
+   * @return The formatted time string.
+   */
+  public static String toShortTimeStr(Time time) {
     return getShortTimeFormatter().format(time);
+  }
+  
+  /**
+   * Returns the JDBC string representation ("HH:mm") of the specified Time.
+   * @param time The {@code Time} value to stringify.
+   * @return The formatted time string.
+   */
+  public static String toFullTimeStr(Time time) {
+    return getFullTimeFormatter().format(time);
   }
 
   /**
@@ -277,7 +301,7 @@ public class Values {
       case TIME:
         int millis = value.getTimeAsInt();
         if (millis % 1000 == 0) {
-          sb.append('"').append(getShortTimeFormatter().format(value.getTime())).append('"');
+          sb.append('"').append(getTimeFormatter().format(value.getTime())).append('"');
         } else {
           sb.append('"').append(getFullTimeFormatter().format(value.getTime())).append('"');
         }
@@ -309,7 +333,7 @@ public class Values {
     } else {
       switch (value.getType()) {
         case STRING:
-          sb.append('"').append(value.getObject()).append('"');
+          sb.append('"').append(value.getString().replaceAll("[\n\r]+", "\\\\n")).append('"');
           break;
         default:
           sb.append(value.getObject());
@@ -318,19 +342,24 @@ public class Values {
     return sb.toString();
   }
 
+  private static DateFormat getShortDateFormatter() {
+    SHORT_DATE_FORMATTER.setTimeZone(GMT);
+    return SHORT_DATE_FORMATTER;
+  }
+
   private static DateFormat getDateFormatter() {
     DATE_FORMATTER.setTimeZone(GMT);
     return DATE_FORMATTER;
   }
 
-  private static DateFormat getTinyTimeFormatter() {
-    TINY_TIME_FORMATTER.setTimeZone(GMT);
-    return TINY_TIME_FORMATTER;
-  }
-
   private static DateFormat getShortTimeFormatter() {
     SHORT_TIME_FORMATTER.setTimeZone(GMT);
     return SHORT_TIME_FORMATTER;
+  }
+
+  private static DateFormat getTimeFormatter() {
+    TIME_FORMATTER.setTimeZone(GMT);
+    return TIME_FORMATTER;
   }
 
   private static DateFormat getFullTimeFormatter() {

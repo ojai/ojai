@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014 MapR, Inc.
+ * Copyright (c) 2015 MapR, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,22 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package org.jackhammer.util;
+package org.jackhammer.json;
 
 import java.io.ByteArrayOutputStream;
 
-public class ByteArrayWriterOutputStream extends ByteArrayOutputStream {
+/**
+ * This class is not part of public API
+ */
+class ByteArrayWriterOutputStream extends ByteArrayOutputStream {
 
   public ByteArrayWriterOutputStream() {
     super();
   }
 
-  /*@Override
-  public byte[] toByteArray() {
-    return buf;
-  }*/
   public byte[] getByteArray() {
     return buf;
   }
+
 }

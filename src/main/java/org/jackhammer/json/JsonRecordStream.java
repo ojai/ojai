@@ -28,6 +28,7 @@ import org.jackhammer.RecordStream;
 import org.jackhammer.Value.Type;
 import org.jackhammer.exceptions.DecodingException;
 import org.jackhammer.exceptions.StreamInUseException;
+import org.jackhammer.json.DelegatingJsonRecordReader.EventDelegate;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
@@ -39,17 +40,29 @@ public class JsonRecordStream implements RecordStream<Record> {
 
   private boolean readStarted;
   private volatile boolean iteratorOpened;
-  private Map<FieldPath, Type> fieldPathTypeMap;
+
+  private final Map<FieldPath, Type> fieldPathTypeMap;
+  private final EventDelegate eventDelegate;
 
   public JsonRecordStream(InputStream in) {
-    this(in, null);
+    this(in, null, null);
   }
 
-  public JsonRecordStream(InputStream in, Map<FieldPath, Type> fieldType) {
+  public JsonRecordStream(InputStream in, Map<FieldPath, Type> fieldPathTypeMap) {
+    this(in, fieldPathTypeMap, null);
+  }
+
+  public JsonRecordStream(InputStream in, EventDelegate eventDelegate) {
+    this(in, null, eventDelegate);
+  }
+
+  JsonRecordStream(InputStream in,
+      Map<FieldPath, Type> fieldPathTypeMap, EventDelegate eventDelegate) {
     inputStream = in;
     readStarted = false;
     iteratorOpened = false;
-    this.fieldPathTypeMap = fieldType;
+    this.eventDelegate = eventDelegate;
+    this.fieldPathTypeMap = fieldPathTypeMap;
     try {
       JsonFactory jFactory = new JsonFactory();
       jsonParser = jFactory.createParser(inputStream);
@@ -71,8 +84,6 @@ public class JsonRecordStream implements RecordStream<Record> {
     checkStateForIteration();
     return new JsonRecordIterator(this);
   }
-
-
 
   @Override
   public void streamTo(RecordListener l) {
@@ -99,6 +110,10 @@ public class JsonRecordStream implements RecordStream<Record> {
 
   Map<FieldPath, Type> getFieldPathTypeMap() {
     return fieldPathTypeMap;
+  }
+
+  EventDelegate getEventDelegate() {
+    return eventDelegate;
   }
 
   private void checkStateForIteration() {

@@ -48,8 +48,24 @@ public class JsonList extends JsonValue implements List<Object> {
 
   @Override
   public Iterator<Object> iterator() {
-    // TODO Auto-generated method stub
-    return null;
+    final Iterator<JsonValue> itr = list.iterator();
+    return new Iterator<Object>() {
+
+      @Override
+      public void remove() {
+        throw new UnsupportedOperationException();
+      }
+
+      @Override
+      public Object next() {
+        return itr.next();
+      }
+
+      @Override
+      public boolean hasNext() {
+        return itr.hasNext();
+      }
+    };
   }
 
   @Override
@@ -365,6 +381,10 @@ public class JsonList extends JsonValue implements List<Object> {
     rec.objValue = objValue;
     rec.jsonValue = jsonValue;
     return rec;
+  }
+
+  List<JsonValue> getRootList() {
+    return list;
   }
 
 }

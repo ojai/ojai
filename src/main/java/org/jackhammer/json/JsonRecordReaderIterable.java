@@ -22,15 +22,18 @@ import java.util.NoSuchElementException;
 import org.jackhammer.FieldPath;
 import org.jackhammer.RecordReader;
 import org.jackhammer.Value.Type;
+import org.jackhammer.json.DelegatingJsonRecordReader.EventDelegate;
 
 class JsonRecordReaderIterable implements Iterable<RecordReader> {
 
   final private JsonRecordStream jsonRecordStream;
   final private Map<FieldPath, Type> fieldPathTypeMap;
+  final private EventDelegate eventDelegate;
 
   JsonRecordReaderIterable(JsonRecordStream recordStream) {
     this.jsonRecordStream = recordStream;
     fieldPathTypeMap = recordStream.getFieldPathTypeMap();
+    eventDelegate = recordStream.getEventDelegate();
   }
 
   @Override
@@ -65,7 +68,9 @@ class JsonRecordReaderIterable implements Iterable<RecordReader> {
           lastReader = null;
         }
         if (!eos && currentReader == null) {
-          if (fieldPathTypeMap != null) {
+          if (eventDelegate != null) {
+            currentReader = new DelegatingJsonRecordReader(jsonRecordStream, eventDelegate);
+          } else if (fieldPathTypeMap != null) {
             currentReader = new TypeMappedJsonRecordReader(jsonRecordStream, fieldPathTypeMap);
           } else {
             currentReader = new JsonStreamRecordReader(jsonRecordStream);
@@ -78,4 +83,3 @@ class JsonRecordReaderIterable implements Iterable<RecordReader> {
   }
 
 }
-
