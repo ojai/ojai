@@ -41,6 +41,7 @@ public class JsonRecord extends JsonValue implements Record, Map<String, Object>
 
   private LinkedHashMap<String, JsonValue> map;
   private JsonStreamRecordReader jsonRecordReader;
+  //private final Stack<Object> fieldPathStack = new Stack<Object>();
 
   public JsonRecord() {
     this(null);
@@ -100,6 +101,7 @@ public class JsonRecord extends JsonValue implements Record, Map<String, Object>
     return this;
 
   }
+
 
   private JsonRecord setCommon(FieldPath fieldPath, JsonValue value) {
     Iterator<FieldSegment> iter = fieldPath.iterator();
@@ -459,7 +461,7 @@ public class JsonRecord extends JsonValue implements Record, Map<String, Object>
   public RecordReader asReader() {
     if (jsonRecordReader == null) {
       // TODO build a RecordReader over the DOM map
-    } else if (map != null) { // don't call getRootMap() 
+    } else if (map != null) { // don't call getRootMap()
       // TODO build a merged RecordReader with DOM
       // overlaying on top of the jsonRecordReader
     }

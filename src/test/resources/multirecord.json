@@ -1,0 +1,3 @@
+{"business_id": "vcNAWiLM4dR7D2nwwJ7nCA", "current": true, "name" : { "first" : "John" , "last" : "Doe" }, "age" : 35}
+{"business_id": "vcNAWiLM4dR7D2nwwJ7nCA", "current" : false, "name" : { "first" : "Jane" , "last" : "Doe" }, "age" : 45}
+{"business_id": "vcNAWiLM4dR7D2nwwJ7nCA", "current" : null, "name" : { "first" : "John" , "last" : "Adams" }, "age" : 40, "address" : {"number" : 500, "street": "Lint St", "zip":95134}}

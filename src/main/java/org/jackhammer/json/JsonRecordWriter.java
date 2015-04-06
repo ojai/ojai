@@ -15,7 +15,6 @@
  */
 package org.jackhammer.json;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
@@ -25,14 +24,17 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import org.jackhammer.Record;
 import org.jackhammer.RecordWriter;
 import org.jackhammer.Value;
+import org.jackhammer.Value.Type;
 import org.jackhammer.exceptions.EncodingException;
 import org.jackhammer.types.Interval;
+import org.jackhammer.util.ByteArrayWriterOutputStream;
 import org.jackhammer.util.Constants;
 import org.jackhammer.util.DecimalUtility;
 import org.jackhammer.util.Types;
@@ -47,13 +49,13 @@ public class JsonRecordWriter implements RecordWriter, Constants {
 
   // member variables
   private JsonGenerator jsonGenerator;
-  private ByteArrayOutputStream b;
+  private ByteArrayWriterOutputStream b;
   private String cachedJson;
 
   public JsonRecordWriter() {
     try {
       JsonFactory jfactory = new JsonFactory();
-      b = new ByteArrayOutputStream();
+      b = new ByteArrayWriterOutputStream();
       jsonGenerator = jfactory.createGenerator(b, JsonEncoding.UTF8);
       jsonGenerator.writeStartObject();
     } catch (IOException io) {
@@ -450,10 +452,35 @@ public class JsonRecordWriter implements RecordWriter, Constants {
     return this;
   }
 
+
+  private JsonRecordWriter iterRecord(String field, Iterator<Entry<String, Value>> it) {
+    while (it.hasNext()) {
+      Entry<String, Value> kv = it.next();
+      String key = kv.getKey();
+      JsonValue value = (JsonValue)kv.getValue();
+      if (value.getType() == Type.MAP) {
+        putNewMap(key);
+        return iterRecord(key, ((JsonRecord)value).iterator());
+      }else if (value.getType() == Type.ARRAY) {
+        putNewArray(key);
+        add(value);
+      }else {
+        //process element.
+        put(key, value);
+      }
+    }
+    return this;
+  }
+
+
   @Override
   public JsonRecordWriter put(String field, Record value) {
-    // TODO Implementation to be added along with Record interface
-    return null;
+    //iterate over the record interface and extract tokens.
+    //Add them to the writer.
+
+    Iterator<Entry<String, Value>> it = value.iterator();
+    putNewMap(field);
+    return iterRecord(field, it);
   }
 
   @Override
@@ -830,8 +857,7 @@ public class JsonRecordWriter implements RecordWriter, Constants {
       throw new EncodingException(ie);
     }
 
-    // TODO Return a JsonRecord wrapped over the content
-    // of this BBOS
+
     return null;
   }
 
@@ -850,14 +876,19 @@ public class JsonRecordWriter implements RecordWriter, Constants {
     }
   }
 
+  public byte[] getOutputStream() {
+    return b.getByteArray();
+  }
+
   private JsonRecordWriter addArray(String field, List<Object> values) {
     try {
       if (field != null) {
         jsonGenerator.writeFieldName(field);
       }
       jsonGenerator.writeStartArray();
-      for (Object e : values) {
-        add((Value) e);
+      for(ListIterator<Object> it = (ListIterator<Object>)values.iterator(); it.hasNext();) {
+        Object e = it.next();
+        add(JsonValueBuilder.initFromObject(e));
       }
       jsonGenerator.writeEndArray();
     } catch (JsonGenerationException je) {

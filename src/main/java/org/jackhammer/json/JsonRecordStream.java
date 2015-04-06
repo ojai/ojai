@@ -62,35 +62,17 @@ public class JsonRecordStream implements RecordStream<Record> {
   public Iterable<RecordReader> recordReaders() {
     checkStateForIteration();
     iteratorOpened = true;
-    return new JsonRecordStreamReaders(this);
+    return new JsonRecordReaderIterable(this);
   }
+
 
   @Override
   public synchronized Iterator<Record> iterator() {
     checkStateForIteration();
-    /*
-     * TODO: Implement a Iterator returning instance of JsonRecord
-     */
-    return new Iterator<Record>() {
-
-      @Override
-      public void remove() {
-        // TODO Auto-generated method stub
-      }
-
-      @Override
-      public Record next() {
-        // TODO Auto-generated method stub
-        return null;
-      }
-
-      @Override
-      public boolean hasNext() {
-        // TODO Auto-generated method stub
-        return false;
-      }
-    };
+    return new JsonRecordIterator(this);
   }
+
+
 
   @Override
   public void streamTo(RecordListener l) {

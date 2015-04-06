@@ -19,9 +19,11 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.jackhammer.FieldPath;
+import org.jackhammer.Record;
 import org.jackhammer.RecordReader;
 import org.jackhammer.Value.Type;
 import org.jackhammer.json.JsonRecordStream;
@@ -91,6 +93,22 @@ public class TestJsonRecordStream extends BaseTest {
         logger.debug("First event in the RecordReader: " + reader.next());
       }
       assertEquals(5, recordCount);
+    }
+  }
+
+  @Test
+  public void testRecordIterator() throws IOException {
+    try (InputStream in = getJsonStream("multirecord.json");
+        JsonRecordStream stream = new JsonRecordStream(in)) {
+
+      int recordCount = 0;
+      Iterator<Record> it = stream.iterator();
+      Record record;
+      while (it.hasNext()) {
+        record = it.next();
+        recordCount++;
+      }
+      assertEquals(3, recordCount);
     }
   }
 

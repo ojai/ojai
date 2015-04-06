@@ -21,6 +21,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 
+import org.jackhammer.json.JsonRecord;
 import org.jackhammer.json.JsonRecordWriter;
 import org.jackhammer.tests.BaseTest;
 import org.jackhammer.types.Interval;
@@ -32,6 +33,10 @@ import org.slf4j.LoggerFactory;
 
 public class TestJsonRecordWriter extends BaseTest {
   private static Logger logger = LoggerFactory.getLogger(TestJsonRecordWriter.class);
+
+  private JsonRecordWriter jsonWriter;
+  private JsonRecord record;
+
 
   private byte[] getByteArray(int size) {
     byte[] bytes = new byte[size];
@@ -60,7 +65,7 @@ public class TestJsonRecordWriter extends BaseTest {
     jsonWriter.putDecimal("decimal5", 32700, 5);
     jsonWriter.put("binary1", getByteArray(5));
     jsonWriter.put("binary2", getByteArray(20), 10, 5);
-    /* bytebuffer test */
+    // bytebuffer test
     jsonWriter.put("binary3", ByteBuffer.wrap(getByteArray(10)));
     jsonWriter.put("date1", Date.valueOf("2010-01-10"));
     jsonWriter.put(("time1"), Time.valueOf("19:15:12"));
@@ -87,8 +92,9 @@ public class TestJsonRecordWriter extends BaseTest {
     jsonWriter.add(ByteBuffer.wrap(getByteArray(15)));
     jsonWriter.endArray();
 
-    jsonWriter.build();
-    logger.debug(jsonWriter.asUTF8String());
+    record = (JsonRecord)jsonWriter.build();
+
+    System.out.println(jsonWriter.asUTF8String());
 
   }
 
@@ -101,14 +107,14 @@ public class TestJsonRecordWriter extends BaseTest {
   //@Test
   public void TestWrongArrayInsertion() {
 
-    JsonRecordWriter jsonWriter = new JsonRecordWriter();
-    jsonWriter.put("string", "santanu");
+    JsonRecordWriter writer = new JsonRecordWriter();
+    writer.put("string", "santanu");
     exception.expect(IllegalStateException.class);
-    jsonWriter.endMap();
+    writer.endMap();
     //exception.expect(IllegalStateException.class);
-    jsonWriter.add((long)12345);
-    jsonWriter.add((long)23456);
-    jsonWriter.add((long)5555);
+    writer.add((long)12345);
+    writer.add((long)23456);
+    writer.add((long)5555);
     //jsonWriter.EndDocument();
     logger.debug(jsonWriter.asUTF8String());
 
@@ -117,26 +123,27 @@ public class TestJsonRecordWriter extends BaseTest {
   //@Test
   public void TestWrongMapInsertion() {
 
-    JsonRecordWriter jsonWriter = new JsonRecordWriter();
-    jsonWriter.putNewArray("array");
-    jsonWriter.add((short) 1000);
+    JsonRecordWriter writer = new JsonRecordWriter();
+    writer.putNewArray("array");
+    writer.add((short) 1000);
     exception.expect(IllegalStateException.class);
-    jsonWriter.put("string", "value");
+    writer.put("string", "value");
 
   }
 
   @Test
   public void TestDecimalRange() {
-    JsonRecordWriter jsonWriter = new JsonRecordWriter();
-    jsonWriter.putDecimal("d1", Integer.MAX_VALUE, 7);
-    jsonWriter.putDecimal("d2", Integer.MIN_VALUE, 7);
-    jsonWriter.putDecimal("d3", Long.MAX_VALUE, 9);
-    jsonWriter.putDecimal("d4", Long.MIN_VALUE, 9);
-    jsonWriter.putDecimal("d5", Integer.MAX_VALUE, 15);
-    jsonWriter.putDecimal("d6", Integer.MIN_VALUE, 15);
-    jsonWriter.putDecimal("d7", Long.MAX_VALUE, 25);
-    jsonWriter.putDecimal("d8", Long.MIN_VALUE, 25);
-    jsonWriter.build();
-    logger.debug(jsonWriter.asUTF8String());
+    JsonRecordWriter writer = new JsonRecordWriter();
+    writer.putDecimal("d1", Integer.MAX_VALUE, 7);
+    writer.putDecimal("d2", Integer.MIN_VALUE, 7);
+    writer.putDecimal("d3", Long.MAX_VALUE, 9);
+    writer.putDecimal("d4", Long.MIN_VALUE, 9);
+    writer.putDecimal("d5", Integer.MAX_VALUE, 15);
+    writer.putDecimal("d6", Integer.MIN_VALUE, 15);
+    writer.putDecimal("d7", Long.MAX_VALUE, 25);
+    writer.putDecimal("d8", Long.MIN_VALUE, 25);
+    writer.build();
+    System.out.println(writer.asUTF8String());
   }
+
 }
