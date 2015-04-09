@@ -25,6 +25,7 @@ import java.util.Map;
 import org.jackhammer.FieldPath;
 import org.jackhammer.Record;
 import org.jackhammer.RecordReader;
+import org.jackhammer.RecordReader.EventType;
 import org.jackhammer.Value.Type;
 import org.jackhammer.json.JsonRecordStream;
 import org.jackhammer.json.JsonUtils;
@@ -46,9 +47,28 @@ public class TestJsonRecordStream extends BaseTest {
       int recordCount = 0;
       for (RecordReader reader : stream.recordReaders()) {
         recordCount++;
-        logger.debug(JsonUtils.serializeToJsonString(reader, false));
+        testRecordReaderFromIterator(reader);
       }
       assertEquals(5, recordCount);
+    }
+  }
+
+  private void testRecordReaderFromIterator(RecordReader reader) {
+    EventType et;
+    String name_field = null;
+    String fieldName = null;
+    while ((et = reader.next()) != null) {
+      if (et == EventType.FIELD_NAME) {
+        fieldName = reader.getFieldName();
+      } else if (et == EventType.STRING) {
+        if (fieldName.equals("name")) {
+          name_field = reader.getString();
+        }
+      } else {
+        if ((et == EventType.DOUBLE) && (fieldName.equals("stars")) && (name_field.equals("Culver's"))) {
+          assertEquals(4.5, reader.getDouble(), 0.0);
+        }
+      }
     }
   }
 
@@ -106,9 +126,49 @@ public class TestJsonRecordStream extends BaseTest {
       Record record;
       while (it.hasNext()) {
         record = it.next();
+        testRecordElements(record);
         recordCount++;
       }
-      assertEquals(3, recordCount);
+      assertEquals(4, recordCount);
+    }
+  }
+
+  private void testRecordElements(Record rec) {
+    RecordReader domReader = rec.asReader();
+    EventType et;
+    String id = null ;
+    String fieldName = null;
+    boolean isArray = false;
+    while ((et = domReader.next()) != null) {
+      if (et == EventType.FIELD_NAME) {
+        fieldName = domReader.getFieldName();
+      } else if (et == EventType.START_ARRAY) {
+        isArray = true;
+      } else if (et == EventType.END_ARRAY) {
+        isArray = false;
+      }else if (et == EventType.STRING) {
+
+        if (fieldName.equals("business_id")) {
+          id = domReader.getString();
+        }
+        if ((fieldName.equals("street")) && (id.equals("id3"))) {
+          assertEquals("Lint St", domReader.getString());
+        }
+
+        if ((isArray) && (fieldName.equals("first"))) {
+          assertEquals("Jerry", domReader.getString());
+        }
+
+      } else {
+        if ((et == EventType.LONG) && (id.equals("id2"))) {
+          assertEquals(45, domReader.getLong());
+        }
+        if ((et == EventType.BOOLEAN) && id.equals("id1")) {
+          assertEquals(true, domReader.getBoolean());
+        }
+
+
+      }
     }
   }
 

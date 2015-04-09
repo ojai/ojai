@@ -68,6 +68,10 @@ public class JsonValue implements Value, Constants {
     key = k;
   }
 
+  String getKey() {
+    return key;
+  }
+
   private void checkType(Type t) throws TypeException {
     if (valueType != t) {
       throw new TypeException("Value is of type " + valueType

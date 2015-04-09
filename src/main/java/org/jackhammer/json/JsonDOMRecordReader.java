@@ -26,7 +26,6 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Stack;
 
-import org.jackhammer.Record;
 import org.jackhammer.RecordReader;
 import org.jackhammer.Value;
 import org.jackhammer.Value.Type;
@@ -35,32 +34,48 @@ import org.jackhammer.types.Interval;
 import org.jackhammer.util.Constants;
 import org.jackhammer.util.Types;
 
-public class JsonDOMRecordReader implements RecordReader, Constants {
+class JsonDOMRecordReader implements RecordReader, Constants {
 
+  class IteratorWithType {
+    Iterator<JsonValue> iter;
+    Type iterType;
 
-  private JsonRecord record;
-  private Iterator<Entry<String, Value>> it ;
-  Stack<Iterator<Entry<String, Value>>> cursorStack;
-  Entry<String, Value> nextkv ;
-  JsonValue jsonValue;
-  EventType et;
-  EventType nextEt;
-  EventType currentEventType;
-  String key;
-  private boolean isArray;
-  private int arrayIndex;
-  private JsonList jsonArray;
-
-  public JsonDOMRecordReader(Record rec) {
-    record = (JsonRecord)rec;
-    it = record.iterator();
-    cursorStack = new Stack<Iterator<Entry<String, Value>>>();
-    cursorStack.push(it);
-    nextkv = null;
-    et = EventType.START_MAP;
-    nextEt = null;
-    isArray = false;
+    IteratorWithType(Iterator<?> i, Type t) {
+      iter = (Iterator<JsonValue>)i;
+      iterType = t;
+    }
   }
+
+  //define data structures
+  private Stack<IteratorWithType> stateStack = null;
+  private EventType event = null;
+  private EventType nextEvent = null;
+  private EventType currentEvent = null;
+  private JsonValue jsonValue;
+
+
+  JsonDOMRecordReader(Value value) {
+    stateStack = new Stack<IteratorWithType>();
+    /* analyze the type of value object and initialize events and stacks */
+    Type t = value.getType();
+    Iterator<?> iter;
+    if (t == Type.MAP) {
+      iter = ((JsonRecord)value).iterator();
+      stateStack.push(new IteratorWithType(iter, t));
+      event = EventType.START_MAP;
+    } else if (t == Type.ARRAY) {
+      iter = ((JsonList)value).iterator();
+      stateStack.push(new IteratorWithType(iter, t));
+      event = EventType.START_ARRAY;
+    } else {
+      jsonValue = (JsonValue)value;
+      event = Types.getEventTypeForType(value.getType());
+    }
+  }
+
+  /*private void setNextType(Value v) {
+    nextEvent = Types.getEventTypeForType(v.getType());
+  }*/
 
   /* Main method for traversing the DFS structure.
    * We use a stack to keep track of iterators at each level of
@@ -75,84 +90,74 @@ public class JsonDOMRecordReader implements RecordReader, Constants {
    * variables et and nextEt.
    */
   private void ProcessNextNode() {
-    if (isArray) {
-      jsonValue = jsonArray.getJsonValueAt(arrayIndex);
-      if (jsonValue == null) {
-        isArray = false;
-        et = EventType.END_ARRAY;
-      }else {
-        setNextType();
-        et = nextEt;
-        nextEt = null;
-        arrayIndex++;
+    if (stateStack.empty()) {
+      /* We are done with the document */
+      event = null;
+      return;
+    }
+    IteratorWithType iterElem = stateStack.peek();
+    Iterator<JsonValue> iter = iterElem.iter;
+    if (iter.hasNext()) {
+      Object o = iter.next();
+      if (o instanceof Entry<?,?>) {
+        Entry<String, JsonValue> kvpair = (Entry<String,JsonValue>)o;
+        jsonValue = kvpair.getValue();
+        jsonValue.setKey(kvpair.getKey());
+        Type kvpairType = jsonValue.getType();
+        if (kvpairType == Type.MAP) {
+          event = EventType.FIELD_NAME;
+          nextEvent = EventType.START_MAP;
+          stateStack.push(new IteratorWithType(((JsonRecord)jsonValue).iterator(), kvpairType));
+        } else if (kvpairType == Type.ARRAY) {
+          event = EventType.FIELD_NAME;
+          nextEvent = EventType.START_ARRAY;
+          stateStack.push(new IteratorWithType(((JsonList)jsonValue).iterator(), kvpairType));
+        } else {
+          event = EventType.FIELD_NAME;
+          nextEvent = Types.getEventTypeForType(jsonValue.getType());
+        }
+      } else {
+        //inside array
+        jsonValue = (JsonValue)o;
+        Type t = jsonValue.getType();
+        if (t == Type.ARRAY) {
+          event = EventType.START_ARRAY;
+          stateStack.push(new IteratorWithType(((JsonList)jsonValue).iterator(), t));
+        } else if (t == Type.MAP) {
+          event = EventType.START_MAP;
+          stateStack.push(new IteratorWithType(((JsonRecord)jsonValue).iterator(), t));
+        } else {
+          event = Types.getEventTypeForType(t);
+        }
       }
+    } else {
+      iterElem = stateStack.pop();
+      event = (iterElem.iterType == Type.MAP) ? EventType.END_MAP : EventType.END_ARRAY;
       return;
-
     }
-    if (cursorStack.empty()) {
-      return;
-    }
-    it = cursorStack.peek();
-
-    /* checks if we are done traversing a map or
-     * if we are not inside an array.
-     */
-    if (!it.hasNext() && (!isArray)) {
-      cursorStack.pop();
-      et = EventType.END_MAP;
-      return ;
-    }
-
-    //else we can extract next element from iterator sitting
-    //on top of the stack
-    nextkv = it.next();
-    Type t = nextkv.getValue().getType();
-    if (t == Type.MAP) {
-      et = EventType.FIELD_NAME;
-      nextEt = EventType.START_MAP;
-      JsonRecord r = (JsonRecord)nextkv.getValue();
-      cursorStack.push(r.iterator());
-    } else if (t == Type.ARRAY) {
-      et = EventType.FIELD_NAME;
-      nextEt = EventType.START_ARRAY;
-      isArray = true;
-      arrayIndex = 0;
-      jsonArray = (JsonList)nextkv.getValue();
-    }
-    else {
-      et = EventType.FIELD_NAME;
-      jsonValue = (JsonValue)nextkv.getValue();
-      setNextType();
-    }
-  }
+ }
 
 
   @Override
   public EventType next() {
-    currentEventType = null;
-    if (et != null) {
-      currentEventType = et;
-      et = null;
-    } else if (nextEt != null) {
-      currentEventType = nextEt;
-      nextEt = null;
+    currentEvent = null;
+    if (event != null) {
+      currentEvent = event;
+      event = null;
+    } else if (nextEvent != null) {
+      currentEvent = nextEvent;
+      nextEvent = null;
     } else {
       ProcessNextNode();
-      currentEventType = et;
-      et = null;
+      currentEvent = event;
+      event = null;
     }
-    return currentEventType;
+    return currentEvent;
   }
-
-
-  private void setNextType() {
-    nextEt = Types.getEventTypeForType(jsonValue.getType());
-  }
-
 
 
   private void checkEventType(EventType event) throws TypeException {
-    if (currentEventType != event) {
+    if (currentEvent != event) {
       throw new TypeException("Event type mismatch.");
     }
   }
@@ -160,7 +165,7 @@ public class JsonDOMRecordReader implements RecordReader, Constants {
   @Override
   public String getFieldName() {
     checkEventType(EventType.FIELD_NAME);
-    return nextkv.getKey();
+    return jsonValue.getKey();
   }
 
   @Override
@@ -197,13 +202,13 @@ public class JsonDOMRecordReader implements RecordReader, Constants {
   @Override
   public double getDouble() {
     checkEventType(EventType.DOUBLE);
-    return nextkv.getValue().getDouble();
+    return jsonValue.getDouble();
   }
 
   @Override
   public BigDecimal getDecimal() {
     checkEventType(EventType.DECIMAL);
-    return nextkv.getValue().getDecimal();
+    return jsonValue.getDecimal();
   }
 
   @Override
@@ -256,7 +261,7 @@ public class JsonDOMRecordReader implements RecordReader, Constants {
   @Override
   public boolean getBoolean() {
     checkEventType(EventType.BOOLEAN);
-    return nextkv.getValue().getBoolean();
+    return jsonValue.getBoolean();
   }
 
   @Override

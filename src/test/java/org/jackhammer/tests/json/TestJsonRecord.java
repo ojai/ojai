@@ -24,6 +24,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.jackhammer.RecordReader;
+import org.jackhammer.RecordReader.EventType;
 import org.jackhammer.Value.Type;
 import org.jackhammer.json.JsonRecord;
 import org.junit.Test;
@@ -47,12 +49,7 @@ public class TestJsonRecord {
     map.put("Name", "Anurag");
     map.put("Age", 20);
     rec.set("newmap.map", map);
-    /*
-     * StringBuffer buf = new StringBuffer(); rec.toStringBuffer(buf);
-     * System.out.println("Record is " + buf);
-     */
 
-    // rec.set("map.null");
     rec.set("map.boolean", false);
     rec.set("map.string", "string");
     rec.set("map.byte", (byte) 100);
@@ -126,6 +123,96 @@ public class TestJsonRecord {
     } catch (Exception e) {
       System.out.println("Exception from list test " + e.getMessage());
     }
+  }
+
+  @Test
+  public void testAsReaderFull() {
+    JsonRecord record = new JsonRecord();
+    record.set("map.byte", (byte)127);
+    record.set("map.long", 123456789);
+    Map<String, Object> map = new HashMap<String, Object>();
+    map.put("first","John");
+    map.put("first", "Doe");
+    record.set("map.name", map);
+    List<Object> mylist = new ArrayList<Object>();
+    mylist.add(true);
+    mylist.add("string");
+    mylist.add(123.456);
+    record.set("map.array", mylist);
+
+    RecordReader myReader = record.asReader();
+    EventType et ;
+    String fieldName = null;
+    while ((et = myReader.next()) != null) {
+      if (et == EventType.FIELD_NAME) {
+        fieldName = myReader.getFieldName();
+      }
+      if ((et == EventType.BYTE) && (fieldName.equals("byte"))) {
+
+        assertEquals((byte)127, myReader.getByte());
+      }
+      if ((et == EventType.STRING) && (fieldName.equals("array"))) {
+
+        assertEquals("string", myReader.getString());
+      }
+    }
+
+  }
+
+  @Test
+  public void testAsReaderPartial() {
+    JsonRecord record = new JsonRecord();
+    record.set("map.byte", (byte)127);
+    record.set("map.num", 12345);
+    Map<String, Object> map = new HashMap<String, Object>();
+    map.put("first","John");
+    map.put("last", "Doe");
+    map.put("id", (long)123456789);
+    record.set("map.name", map);
+    List<Object> mylist = new ArrayList<Object>();
+    mylist.add(true);
+    mylist.add("string");
+    mylist.add(123.456);
+    record.set("map.array", mylist);
+    RecordReader myReader = record.asReader("map.name");
+    EventType event;
+    String fieldName = null;
+    while ((event = myReader.next()) != null) {
+      if (event == EventType.FIELD_NAME) {
+        fieldName = myReader.getFieldName();
+      }
+
+      if (event == EventType.LONG) {
+        assertEquals("id", fieldName);
+        assertEquals(123456789, myReader.getLong());
+      }
+    }
+
+  }
+
+  /*
+   * Unit test for asReader created on a leaf node of DOM tree.
+   */
+  @Test
+  public void testAsReaderLeaf() {
+    JsonRecord record = new JsonRecord();
+    record.set("map.byte", (byte)127);
+    record.set("map.num", 12345);
+    Map<String, Object> m = new HashMap<String, Object>();
+    m.put("first", "John");
+    m.put("last", "Doe");
+    m.put("age", (short)45);
+    record.set("map.info", m);
+    RecordReader myReader = record.asReader("map.info.age");
+    EventType event;
+    int numtokens = 0;
+    while ((event = myReader.next()) != null) {
+      if (event == EventType.SHORT) {
+        numtokens++;
+        assertEquals((short)45, myReader.getShort());
+      }
+    }
+    assertEquals(1, numtokens);
   }
 
 }

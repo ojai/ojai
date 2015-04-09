@@ -37,11 +37,11 @@ import org.jackhammer.RecordReader;
 import org.jackhammer.Value;
 import org.jackhammer.types.Interval;
 
+
 public class JsonRecord extends JsonValue implements Record, Map<String, Object> {
 
   private LinkedHashMap<String, JsonValue> map;
   private JsonStreamRecordReader jsonRecordReader;
-  //private final Stack<Object> fieldPathStack = new Stack<Object>();
 
   public JsonRecord() {
     this(null);
@@ -460,22 +460,16 @@ public class JsonRecord extends JsonValue implements Record, Map<String, Object>
   @Override
   public RecordReader asReader() {
     if (jsonRecordReader == null) {
-      // TODO build a RecordReader over the DOM map
-    } else if (map != null) { // don't call getRootMap()
-      // TODO build a merged RecordReader with DOM
-      // overlaying on top of the jsonRecordReader
+      return new JsonDOMRecordReader(this);
     }
     return jsonRecordReader;
   }
 
   @Override
   public RecordReader asReader(FieldPath fieldPath) {
-    /* TODO Here, we need to create a serialized version of the
-     * DOM tree model which can be parsed as next token and put
-     * it into a buffer.
-     * @see org.jackhammer.Record#asReader(org.jackhammer.FieldPath)
-     */
-    return null;
+    Value val = getValue(fieldPath);
+    return new JsonDOMRecordReader(val);
+
   }
 
   @Override
