@@ -44,12 +44,12 @@ nameSegment returns [NameSegment seg]
       $seg = new NameSegment(
         $QuotedIdentifier.text.substring(1, $QuotedIdentifier.text.length()-1).replaceAll("\\\\(.)", "$1"),
         ($s1.start == null ? ($s2.start == null ? null : $s2.seg) : $s1.seg)
-      );
+      , true);
     }
   | Identifier ((Period s1=fieldSegment) | s2=indexSegment)? {
       $seg = new NameSegment($Identifier.text,
         ($s1.start == null ? ($s2.start == null ? null : $s2.seg) : $s1.seg)
-      );
+      , false);
     }
   ;
 

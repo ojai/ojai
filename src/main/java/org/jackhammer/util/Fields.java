@@ -17,9 +17,9 @@ package org.jackhammer.util;
 
 public class Fields {
 
-  public static String escapeFieldName(String fieldName) {
+  public static String quoteFieldName(String fieldName) {
     if (fieldName.charAt(0)  == '`' && fieldName.charAt(fieldName.length()-1)  == '`') {
-      return fieldName; // already escaped
+      return fieldName; // already quoted
     } else {
       for (int i = 0; i < fieldName.length(); i++) {
         char ch = fieldName.charAt(i);
@@ -28,7 +28,14 @@ public class Fields {
         }
       }
     }
-    return fieldName; // no need to escape
+    return fieldName; // no need to quote
+  }
+
+  public static String unquoteFieldName(String fieldName) {
+    if (fieldName.charAt(0)  == '`' && fieldName.charAt(fieldName.length()-1)  == '`') {
+      return fieldName.substring(1, fieldName.length()-1); // quoted
+    }
+    return fieldName; // not quoted
   }
 
 }

@@ -101,7 +101,7 @@ public class JsonRecordIterator implements Iterator<Record> {
         }
         break;
       case FIELD_NAME:
-        currentFieldName = Fields.escapeFieldName(reader.getFieldName());
+        currentFieldName = Fields.quoteFieldName(reader.getFieldName());
         break;
       case NULL:
         appendTo(currentContainer, currentFieldName, JsonValue.NULLKEYVALUE);

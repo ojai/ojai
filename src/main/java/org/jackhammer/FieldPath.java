@@ -24,6 +24,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
 import org.jackhammer.FieldSegment.NameSegment;
+import org.jackhammer.FieldSegment.IndexSegment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -113,8 +114,13 @@ public final class FieldPath implements Comparable<FieldPath>, Iterable<FieldSeg
     return rootSegment.compareTo(other.getRootSegment());
   }
 
+  /**
+   * Return the {@code String} representation of this field path, quoting
+   * the name segments which were parsed from a quoted identifier.
+   * @return The {@code String} representation of this {@code FieldPath}.
+   */
   public String asPathString() {
-    return rootSegment.asPathString(true);
+    return rootSegment.asPathString(false);
   }
 
   public String asPathString(boolean escape) {
@@ -123,6 +129,16 @@ public final class FieldPath implements Comparable<FieldPath>, Iterable<FieldSeg
 
   public FieldSegment getRootSegment() {
     return rootSegment;
+  }
+
+  public FieldPath getChild(String childPath) {
+    NameSegment newRoot = rootSegment.cloneWithNewChild(new NameSegment(childPath));
+    return new FieldPath(newRoot);
+  }
+
+  public FieldPath getChild(int index) {
+    NameSegment newRoot = rootSegment.cloneWithNewChild(new IndexSegment(index));
+    return new FieldPath(newRoot);
   }
 
   /**

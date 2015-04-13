@@ -15,6 +15,8 @@
  */
 package org.jackhammer;
 
+import org.jackhammer.util.Fields;
+
 public abstract class FieldSegment implements Comparable<FieldSegment> {
 
   protected enum Type {
@@ -175,14 +177,18 @@ public abstract class FieldSegment implements Comparable<FieldSegment> {
 
   public static final class NameSegment extends FieldSegment {
     private final String name;
+    private final boolean quoted;
 
-    public NameSegment(CharSequence n) {
-      this(n, null);
+    NameSegment(String n) {
+      super(null);
+      this.name = Fields.unquoteFieldName(n);
+      this.quoted = (this.name != n);
     }
 
-    public NameSegment(CharSequence n, FieldSegment child) {
+    public NameSegment(String n, FieldSegment child, boolean quoted) {
       super(child);
-      this.name = n.toString();
+      this.name = n;
+      this.quoted = quoted;
     }
 
     public String getName() {
@@ -237,20 +243,20 @@ public abstract class FieldSegment implements Comparable<FieldSegment> {
 
     @Override
     public NameSegment clone() {
-      return new NameSegment(this.name, (child != null ? child.clone() : null));
+      return new NameSegment(this.name, (child != null ? child.clone() : null), this.quoted);
     }
 
     @Override
     public NameSegment cloneWithNewChild(FieldSegment newChild) {
       return new NameSegment(this.name,
-          (child != null ? child.cloneWithNewChild(newChild) : newChild));
+          (child != null ? child.cloneWithNewChild(newChild) : newChild), this.quoted);
     }
 
     @Override
     protected StringBuilder writeSegment(StringBuilder sb, boolean escape) {
-      if (escape) sb.append('`');
+      if (escape || quoted) sb.append('`');
       sb.append(name);
-      if (escape) sb.append('`');
+      if (escape || quoted) sb.append('`');
       return sb;
     }
 
