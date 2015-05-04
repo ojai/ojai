@@ -40,8 +40,7 @@ import org.jackhammer.types.Interval;
 
 public class JsonRecord extends JsonValue implements Record, Map<String, Object> {
 
-  private LinkedHashMap<String, JsonValue> map;
-  private JsonStreamRecordReader jsonRecordReader;
+  private final JsonStreamRecordReader jsonRecordReader;
 
   public JsonRecord() {
     this(null);
@@ -88,7 +87,6 @@ public class JsonRecord extends JsonValue implements Record, Map<String, Object>
 
     JsonList newList;
     if ((oldKeyValue == null) || (oldKeyValue.getType() != Type.ARRAY)) {
-      System.out.println("New array to be introduced");
       newList = new JsonList();
       newList.createOrInsert(iter, newKeyValue);
       newList.setKey(key);
@@ -214,7 +212,7 @@ public class JsonRecord extends JsonValue implements Record, Map<String, Object>
   /*
    * deletes an element from the record. it returns the change in size
    */
- Record delete(Iterator<FieldSegment> iter) {
+  Record delete(Iterator<FieldSegment> iter) {
     FieldSegment field = iter.next();
     if (field == null) return null;
 
@@ -422,11 +420,11 @@ public class JsonRecord extends JsonValue implements Record, Map<String, Object>
 
   @Override
   public BigDecimal getDecimal(FieldPath fieldPath) {
-   JsonValue v = getKeyValueAt(fieldPath.iterator());
-   if (v != null) {
-     return v.getDecimal();
-   }
-   return null;
+    JsonValue v = getKeyValueAt(fieldPath.iterator());
+    if (v != null) {
+      return v.getDecimal();
+    }
+    return null;
   }
 
   @Override
@@ -619,7 +617,7 @@ public class JsonRecord extends JsonValue implements Record, Map<String, Object>
   @Override
   public JsonRecord set(String field, byte[] value) {
     return setCommon(FieldPath.parseFrom(field),
-                     JsonValueBuilder.initFrom(ByteBuffer.wrap(value)));
+        JsonValueBuilder.initFrom(ByteBuffer.wrap(value)));
   }
 
   @Override
@@ -630,7 +628,7 @@ public class JsonRecord extends JsonValue implements Record, Map<String, Object>
   @Override
   public JsonRecord set(String field, byte[] value, int off, int len) {
     return setCommon(FieldPath.parseFrom(field),
-                     JsonValueBuilder.initFrom(ByteBuffer.wrap(value, off, len)));
+        JsonValueBuilder.initFrom(ByteBuffer.wrap(value, off, len)));
   }
 
   @Override
@@ -704,13 +702,13 @@ public class JsonRecord extends JsonValue implements Record, Map<String, Object>
 
   @Override
   public Record setArray(String fieldPath, double[] values) {
-    return setArray(fieldPath, JsonValueBuilder.initFromArray(values));
+    return setArray(FieldPath.parseFrom(fieldPath), values);
   }
 
   @Override
   public Record setArray(FieldPath fieldPath, double[] values) {
     return setCommon(fieldPath, JsonValueBuilder.initFromArray(values));
-   }
+  }
 
   @Override
   public Record setArray(String fieldPath, String[] values) {
@@ -921,17 +919,26 @@ public class JsonRecord extends JsonValue implements Record, Map<String, Object>
   @Override
   public JsonRecord shallowCopy() {
     JsonRecord rec = new JsonRecord();
-    rec.map = map;
     rec.objValue = objValue;
     rec.jsonValue = jsonValue;
     return rec;
   }
 
   Map<String, JsonValue> getRootMap() {
-    if (map == null) {
-      map = new LinkedHashMap<String, JsonValue>();
+    if (objValue == null) {
+      objValue = new LinkedHashMap<String, JsonValue>();
     }
-    return map;
+    return (Map<String, JsonValue>)objValue;
+  }
+
+  @Override
+  public Record setArray(String fieldPath, boolean[] values) {
+    return setArray(FieldPath.parseFrom(fieldPath), values);
+  }
+
+  @Override
+  public Record setArray(FieldPath fieldPath, boolean[] values) {
+    return setCommon(fieldPath, JsonValueBuilder.initFromArray(values));
   }
 
 }

@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.jackhammer.Record;
 import org.jackhammer.RecordReader;
 import org.jackhammer.RecordReader.EventType;
 import org.jackhammer.Value.Type;
@@ -213,6 +214,31 @@ public class TestJsonRecord {
       }
     }
     assertEquals(1, numtokens);
+  }
+
+  @Test
+  public void testGetMap() {
+    Record record = new JsonRecord();
+    Map<String, Object> map = new HashMap();
+    map.put("a", 1);
+    map.put("b", "A");
+    record.set("map", map);
+    assertEquals(map, record.getMap("map"));
+  }
+
+  @Test
+  public void testSetBooleanArray() {
+    Record record = new JsonRecord();
+    record.set("map.int", 111);
+    boolean[] boolArray = new boolean[3];
+    boolArray[0] = true;
+    boolArray[1] = false;
+    boolArray[2] = true;
+    record.setArray("map.boolarray", boolArray);
+
+    assertEquals(false, record.getBoolean("map.boolarray[1]"));
+    assertEquals(true, record.getBoolean("map.boolarray[2]"));
+
   }
 
 }

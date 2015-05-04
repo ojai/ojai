@@ -24,7 +24,7 @@
   <parent>
     <groupId>org.jackhammer</groupId>
     <artifactId>jackhammer-root</artifactId>
-    <version>0.1.r15-SNAPSHOT</version>
+    <version>0.1.r16-SNAPSHOT</version>
     <relativePath>..</relativePath>
   </parent>
 
@@ -46,6 +46,11 @@
     <dependency>
       <groupId>org.apache.hadoop</groupId>
       <artifactId>hadoop-mapreduce-client-core</artifactId>
+      <version>${hadoop.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.hadoop</groupId>
+      <artifactId>hadoop-common</artifactId>
       <version>${hadoop.version}</version>
     </dependency>
   </dependencies>

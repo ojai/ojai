@@ -17,6 +17,7 @@ package org.jackhammer.json;
 
 import org.jackhammer.RecordReader;
 import org.jackhammer.RecordReader.EventType;
+import org.jackhammer.RecordWriter;
 
 public class JsonUtils {
   public static String serializeToJsonString(RecordReader r) {
@@ -34,13 +35,19 @@ public class JsonUtils {
     return w.asUTF8String();
   }
 
-  private static void addToMap(RecordReader r, JsonRecordWriter w) {
+  public static void writeToStreamFromReader(RecordReader r, RecordWriter w) {
+    addToMap(r, w);
+  }
+
+  private static void addToMap(RecordReader r, RecordWriter w) {
     EventType e;
     String currentFieldName = null;
     while((e = r.next()) != null) {
       switch (e) {
       case START_MAP:
-        w.putNewMap(currentFieldName);
+        if (currentFieldName != null) {
+          w.putNewMap(currentFieldName);
+        }
         addToMap(r, w);
         break;
       case END_MAP:
@@ -67,6 +74,12 @@ public class JsonUtils {
       case TIME:
         w.put(currentFieldName, r.getTime());
         break;
+      case NULL:
+        w.putNull(currentFieldName);
+        break;
+      case BINARY:
+        w.put(currentFieldName, r.getBinary());
+        break;
       case START_ARRAY:
         w.putNewArray(currentFieldName);
         addToArray(r, w);
@@ -81,7 +94,7 @@ public class JsonUtils {
     }
   }
 
-  private static void addToArray(RecordReader r, JsonRecordWriter w) {
+  private static void addToArray(RecordReader r, RecordWriter w) {
     EventType e;
     String currentFieldName = null;
     while((e = r.next()) != null) {

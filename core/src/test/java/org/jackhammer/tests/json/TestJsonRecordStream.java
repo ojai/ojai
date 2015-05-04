@@ -37,7 +37,8 @@ import org.slf4j.LoggerFactory;
 import com.google.common.collect.Maps;
 
 public class TestJsonRecordStream extends BaseTest {
-  private static Logger logger = LoggerFactory.getLogger(TestJsonRecordStream.class);
+  private static Logger logger = LoggerFactory
+      .getLogger(TestJsonRecordStream.class);
 
   @Test
   public void testFetchAndParseJsonRecordStream() throws IOException {
@@ -65,7 +66,8 @@ public class TestJsonRecordStream extends BaseTest {
           name_field = reader.getString();
         }
       } else {
-        if ((et == EventType.DOUBLE) && (fieldName.equals("stars")) && (name_field.equals("Culver's"))) {
+        if ((et == EventType.DOUBLE) && (fieldName.equals("stars"))
+            && (name_field.equals("Culver's"))) {
           assertEquals(4.5, reader.getDouble(), 0.0);
         }
       }
@@ -136,7 +138,7 @@ public class TestJsonRecordStream extends BaseTest {
   private void testRecordElements(Record rec) {
     RecordReader domReader = rec.asReader();
     EventType et;
-    String id = null ;
+    String id = null;
     String fieldName = null;
     boolean isArray = false;
     while ((et = domReader.next()) != null) {
@@ -146,7 +148,7 @@ public class TestJsonRecordStream extends BaseTest {
         isArray = true;
       } else if (et == EventType.END_ARRAY) {
         isArray = false;
-      }else if (et == EventType.STRING) {
+      } else if (et == EventType.STRING) {
 
         if (fieldName.equals("business_id")) {
           id = domReader.getString();
@@ -166,7 +168,6 @@ public class TestJsonRecordStream extends BaseTest {
         if ((et == EventType.BOOLEAN) && id.equals("id1")) {
           assertEquals(true, domReader.getBoolean());
         }
-
 
       }
     }

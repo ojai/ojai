@@ -118,7 +118,7 @@ class JsonDOMRecordReader implements RecordReader, Constants {
         }
       } else {
         //inside array
-        jsonValue = (JsonValue)o;
+        jsonValue = JsonValueBuilder.initFromObject(o);
         Type t = jsonValue.getType();
         if (t == Type.ARRAY) {
           event = EventType.START_ARRAY;
@@ -135,7 +135,7 @@ class JsonDOMRecordReader implements RecordReader, Constants {
       event = (iterElem.iterType == Type.MAP) ? EventType.END_MAP : EventType.END_ARRAY;
       return;
     }
- }
+  }
 
 
   @Override

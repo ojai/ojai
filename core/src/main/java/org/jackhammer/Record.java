@@ -109,6 +109,10 @@ public interface Record extends Iterable<Map.Entry<String, Value>> {
 
   Record set(FieldPath fieldPath, List<? extends Object> value);
 
+  Record setArray(String fieldPath, boolean[] values);
+
+  Record setArray(FieldPath fieldPath, boolean[] values);
+
   Record setArray(String fieldPath, byte[] values);
 
   Record setArray(FieldPath fieldPath, byte[] values);

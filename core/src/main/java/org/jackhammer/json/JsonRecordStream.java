@@ -35,10 +35,10 @@ import com.fasterxml.jackson.core.JsonParser;
 
 public class JsonRecordStream implements RecordStream<Record> {
 
-  private InputStream inputStream;
+  private final InputStream inputStream;
   private JsonParser jsonParser;
 
-  private boolean readStarted;
+  private final boolean readStarted;
   private volatile boolean iteratorOpened;
 
   private final Map<FieldPath, Type> fieldPathTypeMap;
@@ -65,6 +65,11 @@ public class JsonRecordStream implements RecordStream<Record> {
     this.fieldPathTypeMap = fieldPathTypeMap;
     try {
       JsonFactory jFactory = new JsonFactory();
+      /* setting explicitly AUTO_CLOSE_SOURCE = false to ensure that
+       * jsonParser.close() do not close the underlying inputstream.
+       * It has to be closed by the owner of the stream.
+       */
+      jFactory.configure(JsonParser.Feature.AUTO_CLOSE_SOURCE, false);
       jsonParser = jFactory.createParser(inputStream);
     } catch (IOException e) {
       throw new DecodingException(e);

@@ -16,6 +16,7 @@
 package org.jackhammer.json;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
@@ -24,7 +25,6 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -46,16 +46,23 @@ import com.fasterxml.jackson.core.JsonGenerator;
 
 public class JsonRecordWriter implements RecordWriter, Constants {
 
-  // member variables
   private JsonGenerator jsonGenerator;
   private ByteArrayWriterOutputStream b;
   private String cachedJson;
 
   public JsonRecordWriter() {
+    b = new ByteArrayWriterOutputStream();
+    this.initJsonGenerator(b);
+  }
+
+  protected JsonRecordWriter(OutputStream out) {
+    this.initJsonGenerator(out);
+  }
+
+  private void initJsonGenerator(OutputStream out) {
+    JsonFactory jFactory = new JsonFactory();
     try {
-      JsonFactory jfactory = new JsonFactory();
-      b = new ByteArrayWriterOutputStream();
-      jsonGenerator = jfactory.createGenerator(b, JsonEncoding.UTF8);
+      jsonGenerator = jFactory.createGenerator(out, JsonEncoding.UTF8);
       jsonGenerator.writeStartObject();
     } catch (IOException io) {
       throw new EncodingException(io);
@@ -248,8 +255,7 @@ public class JsonRecordWriter implements RecordWriter, Constants {
     return put(field, bytes);
   }
 
-  private JsonRecordWriter putLongWithTag(String fieldname,
-      String fieldTag, long value) {
+  private JsonRecordWriter putLongWithTag(String fieldname, String fieldTag, long value) {
     try {
       putNewMap(fieldname);
       jsonGenerator.writeNumberField(fieldTag, value);
@@ -262,8 +268,7 @@ public class JsonRecordWriter implements RecordWriter, Constants {
     return this;
   }
 
-  private JsonRecordWriter putStringWithTag(String fieldname,
-      String fieldTag, String value) {
+  private JsonRecordWriter putStringWithTag(String fieldname, String fieldTag, String value) {
     try {
       putNewMap(fieldname);
       jsonGenerator.writeStringField(fieldTag, value);
@@ -321,10 +326,8 @@ public class JsonRecordWriter implements RecordWriter, Constants {
   }
 
   @Override
-  public JsonRecordWriter putInterval(String field, int months, int days,
-      int milliseconds) {
-    long total_milliseconds = milliseconds + (days + (long) months * 30)
-        * MILLISECONDSPERDAY;
+  public JsonRecordWriter putInterval(String field, int months, int days, int milliseconds) {
+    long total_milliseconds = milliseconds + (days + (long) months * 30) * MILLISECONDSPERDAY;
     return putLongWithTag(field, Types.TAG_INTERVAL, total_milliseconds);
   }
 
@@ -440,7 +443,7 @@ public class JsonRecordWriter implements RecordWriter, Constants {
       put(field, value.getBinary());
       break;
     case MAP:
-      putMap(field, value.getMap());
+      put(field, (Record)value);
       break;
     case ARRAY:
       addArray(field, value.getList());
@@ -451,31 +454,29 @@ public class JsonRecordWriter implements RecordWriter, Constants {
     return this;
   }
 
-
   private JsonRecordWriter iterRecord(String field, Iterator<Entry<String, Value>> it) {
     while (it.hasNext()) {
       Entry<String, Value> kv = it.next();
       String key = kv.getKey();
-      JsonValue value = (JsonValue)kv.getValue();
+      JsonValue value = (JsonValue) kv.getValue();
       if (value.getType() == Type.MAP) {
         putNewMap(key);
-        return iterRecord(key, ((JsonRecord)value).iterator());
-      }else if (value.getType() == Type.ARRAY) {
-        putNewArray(key);
-        add(value);
-      }else {
-        //process element.
+        iterRecord(key, ((JsonRecord) value).iterator());
+      } else if (value.getType() == Type.ARRAY) {
+        addArray(key, (JsonList)value);
+      } else {
+        // process element.
         put(key, value);
       }
     }
+    endMap();
     return this;
   }
 
-
   @Override
   public JsonRecordWriter put(String field, Record value) {
-    //iterate over the record interface and extract tokens.
-    //Add them to the writer.
+    // iterate over the record interface and extract tokens.
+    // Add them to the writer.
 
     Iterator<Entry<String, Value>> it = value.iterator();
     putNewMap(field);
@@ -856,7 +857,6 @@ public class JsonRecordWriter implements RecordWriter, Constants {
       throw new EncodingException(ie);
     }
 
-
     return null;
   }
 
@@ -885,7 +885,8 @@ public class JsonRecordWriter implements RecordWriter, Constants {
         jsonGenerator.writeFieldName(field);
       }
       jsonGenerator.writeStartArray();
-      for(ListIterator<Object> it = (ListIterator<Object>)values.iterator(); it.hasNext();) {
+      for (Iterator<Object> it = values.iterator(); it
+          .hasNext();) {
         Object e = it.next();
         add(JsonValueBuilder.initFromObject(e));
       }

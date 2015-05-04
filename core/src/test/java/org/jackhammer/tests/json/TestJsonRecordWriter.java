@@ -20,9 +20,14 @@ import java.nio.ByteBuffer;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.jackhammer.Record;
+import org.jackhammer.Value;
 import org.jackhammer.json.JsonRecord;
 import org.jackhammer.json.JsonRecordWriter;
+import org.jackhammer.json.JsonValueBuilder;
 import org.jackhammer.tests.BaseTest;
 import org.jackhammer.types.Interval;
 import org.junit.Rule;
@@ -32,11 +37,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class TestJsonRecordWriter extends BaseTest {
-  private static Logger logger = LoggerFactory.getLogger(TestJsonRecordWriter.class);
+  private static Logger logger = LoggerFactory
+      .getLogger(TestJsonRecordWriter.class);
 
   private JsonRecordWriter jsonWriter;
   private JsonRecord record;
-
 
   private byte[] getByteArray(int size) {
     byte[] bytes = new byte[size];
@@ -92,7 +97,7 @@ public class TestJsonRecordWriter extends BaseTest {
     jsonWriter.add(ByteBuffer.wrap(getByteArray(15)));
     jsonWriter.endArray();
 
-    record = (JsonRecord)jsonWriter.build();
+    record = (JsonRecord) jsonWriter.build();
 
     System.out.println(jsonWriter.asUTF8String());
 
@@ -101,26 +106,27 @@ public class TestJsonRecordWriter extends BaseTest {
   @Rule
   public ExpectedException exception = ExpectedException.none();
 
-  /* disabling these negative test cases until we add manual error
-   * checking for out of context writing on outputStream.
+  /*
+   * disabling these negative test cases until we add manual error checking for
+   * out of context writing on outputStream.
    */
-  //@Test
+  // @Test
   public void TestWrongArrayInsertion() {
 
     JsonRecordWriter writer = new JsonRecordWriter();
     writer.put("string", "santanu");
     exception.expect(IllegalStateException.class);
     writer.endMap();
-    //exception.expect(IllegalStateException.class);
-    writer.add((long)12345);
-    writer.add((long)23456);
-    writer.add((long)5555);
-    //jsonWriter.EndDocument();
+    // exception.expect(IllegalStateException.class);
+    writer.add((long) 12345);
+    writer.add((long) 23456);
+    writer.add((long) 5555);
+    // jsonWriter.EndDocument();
     logger.debug(jsonWriter.asUTF8String());
 
   }
 
-  //@Test
+  // @Test
   public void TestWrongMapInsertion() {
 
     JsonRecordWriter writer = new JsonRecordWriter();
@@ -129,6 +135,17 @@ public class TestJsonRecordWriter extends BaseTest {
     exception.expect(IllegalStateException.class);
     writer.put("string", "value");
 
+  }
+
+  @Test
+  public void testPutListAsValue() {
+    JsonRecordWriter jsonRecordWriter = new JsonRecordWriter();
+    List<Object> list = new ArrayList<>();
+    list.add(1);
+    list.add("2");
+    Value v = JsonValueBuilder.initFrom(list);
+    jsonRecordWriter.put("value", v);
+    Record r = jsonRecordWriter.build();
   }
 
   @Test
@@ -144,6 +161,27 @@ public class TestJsonRecordWriter extends BaseTest {
     writer.putDecimal("d8", Long.MIN_VALUE, 25);
     writer.build();
     System.out.println(writer.asUTF8String());
+  }
+
+  @Test
+  public void TestRecordPut() {
+    Record record = new JsonRecord();
+    record.set("recValue1", "string");
+    record.set("recValue2", 1);
+    Record record2 = new JsonRecord();
+    record2.set("val1", true);
+    record2.set("val2", 100);
+    List<Object> l = new ArrayList<Object>();
+    l.add("abcd");
+    l.add(false);
+    record2.set("list", l);
+    record.set("rec", record2);
+    JsonRecordWriter recordWriter = new JsonRecordWriter();
+    recordWriter.put("record", record);
+    recordWriter.put("rootValue1", 1)
+    .put("rootValue2", "2").build();
+    System.out.println(recordWriter.asUTF8String());
+
   }
 
 }

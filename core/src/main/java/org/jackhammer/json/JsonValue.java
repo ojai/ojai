@@ -268,7 +268,7 @@ public class JsonValue implements Value, Constants {
   @Override
   public Map<String, Object> getMap() {
     checkType(Type.MAP);
-    return (JsonRecord) objValue;
+    return (JsonRecord)this;
   }
 
   @Override

@@ -58,7 +58,7 @@ public class JsonList extends JsonValue implements List<Object> {
 
       @Override
       public Object next() {
-        return itr.next();
+        return itr.next().getObject();
       }
 
       @Override
@@ -213,9 +213,9 @@ public class JsonList extends JsonValue implements List<Object> {
         newRecord = new JsonRecord();
         newRecord.createOrInsert(iter, inJsonValue);
         if (index >= list.size()) {
-          list.add(inJsonValue);
+          list.add(newRecord);
         }else {
-          list.set(index, inJsonValue);
+          list.set(index, newRecord);
         }
         return this;
       }

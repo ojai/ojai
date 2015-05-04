@@ -1,4 +1,4 @@
 {"business_id": "id1", "current": true, "name" : { "first" : "John" , "last" : "Doe" }, "age" : 35}
 {"business_id": "id2", "current" : false, "name" : { "first" : "Jane" , "last" : "Doe" }, "age" : 45}
-{"business_id": "id3", "current" : null, "name" : { "first" : "John" , "last" : "Adams" }, "age" : 40, "address" : {"number" : 500, "street": "Lint St", "zip":95134}}
-{"business_id": "id4", "current" : null, "info" : ["123-456-7890", 40 , { "name" : { "first": "Jerry", "last" : "Lee"}}], "address" : {"number" : 500, "street": "Lint St", "zip":95134}}
+{"business_id": "id3", "current" : false, "name" : { "first" : "John" , "last" : "Adams" }, "age" : 40, "address" : {"number" : 500, "street": "Lint St", "zip":95134}}
+{"business_id": "id4", "current" : true, "info" : ["123-456-7890", 40 , { "name" : { "first": "Jerry", "last" : "Lee"}}], "address" : {"number" : 500, "street": "Lint St", "zip":95134}}
