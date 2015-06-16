@@ -23,8 +23,10 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
+import org.jackhammer.annotation.API;
 import org.jackhammer.types.Interval;
 
+@API.Public
 public abstract class BaseRecord implements Record {
 
   @Override

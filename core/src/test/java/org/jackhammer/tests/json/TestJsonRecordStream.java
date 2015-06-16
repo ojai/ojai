@@ -17,7 +17,6 @@ package org.jackhammer.tests.json;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
 import java.util.Map;
@@ -26,9 +25,9 @@ import org.jackhammer.FieldPath;
 import org.jackhammer.Record;
 import org.jackhammer.RecordReader;
 import org.jackhammer.RecordReader.EventType;
+import org.jackhammer.RecordStream;
 import org.jackhammer.Value.Type;
-import org.jackhammer.json.JsonRecordStream;
-import org.jackhammer.json.JsonUtils;
+import org.jackhammer.json.Json;
 import org.jackhammer.tests.BaseTest;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -41,9 +40,9 @@ public class TestJsonRecordStream extends BaseTest {
       .getLogger(TestJsonRecordStream.class);
 
   @Test
-  public void testFetchAndParseJsonRecordStream() throws IOException {
+  public void testFetchAndParseJsonRecordStream() throws Exception {
     try (InputStream in = getJsonStream("business.json");
-        JsonRecordStream stream = new JsonRecordStream(in)) {
+        RecordStream<Record> stream = Json.newRecordStream(in)) {
 
       int recordCount = 0;
       for (RecordReader reader : stream.recordReaders()) {
@@ -75,7 +74,7 @@ public class TestJsonRecordStream extends BaseTest {
   }
 
   @Test
-  public void testFetchAndParseTypeMappedJsonRecordStream() throws IOException {
+  public void testFetchAndParseTypeMappedJsonRecordStream() throws Exception {
     Map<FieldPath, Type> fieldPathTypeMap = Maps.newHashMap();
     fieldPathTypeMap.put(FieldPath.parseFrom("hours.Monday.open"), Type.TIME);
     fieldPathTypeMap.put(FieldPath.parseFrom("hours.Monday.close"), Type.TIME);
@@ -93,21 +92,21 @@ public class TestJsonRecordStream extends BaseTest {
     fieldPathTypeMap.put(FieldPath.parseFrom("hours.Sunday.close"), Type.TIME);
 
     try (InputStream in = getJsonStream("business.json");
-        JsonRecordStream stream = new JsonRecordStream(in, fieldPathTypeMap)) {
+        RecordStream<Record> stream = Json.newRecordStream(in, fieldPathTypeMap)) {
 
       int recordCount = 0;
       for (RecordReader reader : stream.recordReaders()) {
         recordCount++;
-        logger.debug(JsonUtils.serializeToJsonString(reader, false));
+        logger.debug(Json.toJsonString(reader, false));
       }
       assertEquals(5, recordCount);
     }
   }
 
   @Test
-  public void testFetchAndParsePartiallyJsonRecordStream() throws IOException {
+  public void testFetchAndParsePartiallyJsonRecordStream() throws Exception {
     try (InputStream in = getJsonStream("business.json");
-        JsonRecordStream stream = new JsonRecordStream(in)) {
+        RecordStream<Record> stream = Json.newRecordStream(in)) {
 
       int recordCount = 0;
       for (RecordReader reader : stream.recordReaders()) {
@@ -119,9 +118,9 @@ public class TestJsonRecordStream extends BaseTest {
   }
 
   @Test
-  public void testRecordIterator() throws IOException {
+  public void testRecordIterator() throws Exception {
     try (InputStream in = getJsonStream("multirecord.json");
-        JsonRecordStream stream = new JsonRecordStream(in)) {
+        RecordStream<Record> stream = Json.newRecordStream(in)) {
 
       int recordCount = 0;
       Iterator<Record> it = stream.iterator();

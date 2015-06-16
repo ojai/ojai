@@ -15,6 +15,9 @@
  */
 package org.jackhammer;
 
+import org.jackhammer.annotation.API;
+
+@API.Public
 public interface FieldReader extends Value {
 
 }

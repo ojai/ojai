@@ -16,11 +16,13 @@
 package org.jackhammer.exceptions;
 
 import org.jackhammer.RecordStream;
+import org.jackhammer.annotation.API;
 
 /**
  * Exception thrown by implementations a {@link RecordStream} is
  * accessed in more than one way.
  */
+@API.Public
 public class StreamInUseException extends JackhammerException {
 
   private static final long serialVersionUID = 0x36921a0f97b532ceL;

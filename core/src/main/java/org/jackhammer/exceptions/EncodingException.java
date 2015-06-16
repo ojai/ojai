@@ -15,10 +15,13 @@
  */
 package org.jackhammer.exceptions;
 
+import org.jackhammer.annotation.API;
+
 /**
  * Exception thrown by implementations if a failure occurs during
  * serialization of the record.
  */
+@API.Public
 public class EncodingException extends JackhammerException {
 
   private static final long serialVersionUID = 0x549350ba59b3b829L;

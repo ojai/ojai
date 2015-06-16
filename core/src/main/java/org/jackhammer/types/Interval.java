@@ -17,11 +17,13 @@ package org.jackhammer.types;
 
 import java.io.Serializable;
 
+import org.jackhammer.annotation.API;
 import org.jackhammer.util.Constants;
 
 /**
  * An lightweight, immutable class which encapsulates a time interval.
  */
+@API.Public
 public class Interval implements Serializable, Constants {
 
   private static final long serialVersionUID = 0x228372f2047c1511L;

@@ -23,9 +23,11 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
+import org.jackhammer.annotation.API;
 import org.jackhammer.exceptions.TypeException;
 import org.jackhammer.types.Interval;
 
+@API.Public
 public interface Value {
 
   public enum Type {

@@ -24,9 +24,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+import org.jackhammer.annotation.API;
 import org.jackhammer.exceptions.TypeException;
 import org.jackhammer.types.Interval;
 
+@API.Public
 public interface Record extends Iterable<Map.Entry<String, Value>> {
 
   Record set(String fieldPath, String value);

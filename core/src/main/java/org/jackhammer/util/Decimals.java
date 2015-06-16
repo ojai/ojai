@@ -18,21 +18,24 @@ package org.jackhammer.util;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
+import org.jackhammer.annotation.API;
+
 /*
  * Utility class with functions for data type conversions.
  */
 
-public class DecimalUtility {
+@API.Public
+public class Decimals {
 
-  public static BigDecimal ConvertIntToDecimal(int value, int scale) {
+  public static BigDecimal convertIntToDecimal(int value, int scale) {
     return new BigDecimal(BigInteger.valueOf(value), scale);
   }
 
-  public static BigDecimal ConvertLongToDecimal(long value, int scale) {
+  public static BigDecimal convertLongToDecimal(long value, int scale) {
     return new BigDecimal(BigInteger.valueOf(value), scale);
   }
 
-  public static BigDecimal ConvertByteToBigDecimal(byte[] value, int scale) {
+  public static BigDecimal convertByteToBigDecimal(byte[] value, int scale) {
     return new BigDecimal(new BigInteger(value), scale);
   }
 

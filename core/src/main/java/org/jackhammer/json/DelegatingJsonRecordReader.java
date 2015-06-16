@@ -18,8 +18,9 @@ package org.jackhammer.json;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import org.jackhammer.RecordReader;
 import org.jackhammer.Value;
+import org.jackhammer.json.Events.Delegate;
+import org.jackhammer.json.Events.TypeValuePair;
 
 /**
  * This implementation of {@code RecordReader} offers application a
@@ -27,48 +28,11 @@ import org.jackhammer.Value;
  */
 public class DelegatingJsonRecordReader extends JsonStreamRecordReader {
 
-  public static class EventTypeValuePair {
-    public EventType eventType;
-    public Value value;
-    public EventTypeValuePair(EventType eventType) {
-      this(eventType, null);
-    }
-    public EventTypeValuePair(EventType eventType, Value value) {
-      this.eventType = eventType;
-      this.value = value;
-    }
-  }
-
-  public static interface EventDelegate {
-    public boolean process(RecordReader reader,
-        EventType event, Queue<EventTypeValuePair> eventQueue);
-    public boolean bor(RecordReader reader, Queue<EventTypeValuePair> eventQueue);
-    public boolean eor(RecordReader reader, Queue<EventTypeValuePair> eventQueue);
-  }
-
-  public static abstract class BaseEventDelegate implements EventDelegate {
-    @Override
-    public boolean process(RecordReader reader, EventType event,
-        Queue<EventTypeValuePair> eventQueue) {
-      return false;
-    }
-    @Override
-    public boolean bor(RecordReader reader,
-        Queue<EventTypeValuePair> eventQueue) {
-      return false;
-    }
-    @Override
-    public boolean eor(RecordReader reader,
-        Queue<EventTypeValuePair> eventQueue) {
-      return false;
-    }
-  }
-
-  private final Queue<EventTypeValuePair> eventQueue = new LinkedList<EventTypeValuePair>();
-  private final EventDelegate eventDelegate;
+  private final Queue<TypeValuePair> eventQueue = new LinkedList<Events.TypeValuePair>();
+  private final Events.Delegate eventDelegate;
   private boolean startSeen = false;
 
-  DelegatingJsonRecordReader(JsonRecordStream stream, EventDelegate eventDelegate) {
+  DelegatingJsonRecordReader(JsonRecordStream stream, Delegate eventDelegate) {
     super(stream);
     if (eventDelegate == null) {
       throw new NullPointerException("Event delegate must be provided.");
@@ -105,7 +69,7 @@ public class DelegatingJsonRecordReader extends JsonStreamRecordReader {
     return et;
   }
 
-  private EventType updateCurrentValue(EventTypeValuePair head) {
+  private EventType updateCurrentValue(TypeValuePair head) {
     currentEventType = head.eventType;
     Value value = head.value;
 

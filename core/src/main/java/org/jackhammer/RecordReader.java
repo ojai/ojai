@@ -21,9 +21,11 @@ import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 
+import org.jackhammer.annotation.API;
 import org.jackhammer.exceptions.TypeException;
 import org.jackhammer.types.Interval;
 
+@API.Public
 public interface RecordReader {
 
   public enum EventType {

@@ -20,19 +20,22 @@ import java.io.InputStream;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
 import org.jackhammer.FieldPath;
 import org.jackhammer.Record;
 import org.jackhammer.RecordListener;
 import org.jackhammer.RecordReader;
 import org.jackhammer.RecordStream;
 import org.jackhammer.Value.Type;
+import org.jackhammer.annotation.API;
 import org.jackhammer.exceptions.DecodingException;
 import org.jackhammer.exceptions.StreamInUseException;
-import org.jackhammer.json.DelegatingJsonRecordReader.EventDelegate;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 
+@API.Internal
 public class JsonRecordStream implements RecordStream<Record> {
 
   private final InputStream inputStream;
@@ -42,22 +45,32 @@ public class JsonRecordStream implements RecordStream<Record> {
   private volatile boolean iteratorOpened;
 
   private final Map<FieldPath, Type> fieldPathTypeMap;
-  private final EventDelegate eventDelegate;
+  private final Events.Delegate eventDelegate;
 
-  public JsonRecordStream(InputStream in) {
-    this(in, null, null);
+  static RecordStream<Record> newRecordStream(FileSystem fs,
+      Path path, Map<FieldPath, Type> map, Events.Delegate delegate)
+          throws IllegalArgumentException, IOException {
+    final InputStream in = fs.open(path);
+    return new JsonRecordStream(in, map, delegate) {
+      @Override
+      public void close() throws IOException {
+        try {
+          super.close();
+        } finally {
+          in.close();
+        }
+      }
+    };
   }
 
-  public JsonRecordStream(InputStream in, Map<FieldPath, Type> fieldPathTypeMap) {
-    this(in, fieldPathTypeMap, null);
-  }
-
-  public JsonRecordStream(InputStream in, EventDelegate eventDelegate) {
-    this(in, null, eventDelegate);
+  static RecordStream<Record> newRecordStream(FileSystem fs,
+      String path, Map<FieldPath, Type> map, Events.Delegate delegate)
+          throws IllegalArgumentException, IOException {
+    return newRecordStream(fs, new Path(path), map, delegate);
   }
 
   JsonRecordStream(InputStream in,
-      Map<FieldPath, Type> fieldPathTypeMap, EventDelegate eventDelegate) {
+      Map<FieldPath, Type> fieldPathTypeMap, Events.Delegate eventDelegate) {
     inputStream = in;
     readStarted = false;
     iteratorOpened = false;
@@ -117,7 +130,7 @@ public class JsonRecordStream implements RecordStream<Record> {
     return fieldPathTypeMap;
   }
 
-  EventDelegate getEventDelegate() {
+  Events.Delegate getEventDelegate() {
     return eventDelegate;
   }
 

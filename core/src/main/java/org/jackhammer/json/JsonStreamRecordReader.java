@@ -24,6 +24,7 @@ import java.sql.Time;
 import java.sql.Timestamp;
 
 import org.jackhammer.RecordReader;
+import org.jackhammer.annotation.API;
 import org.jackhammer.exceptions.DecodingException;
 import org.jackhammer.exceptions.TypeException;
 import org.jackhammer.types.Interval;
@@ -35,6 +36,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 
+@API.Internal
 public class JsonStreamRecordReader implements RecordReader, Constants {
 
   private JsonRecordStream recordStream;

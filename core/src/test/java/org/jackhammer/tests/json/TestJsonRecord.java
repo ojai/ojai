@@ -28,7 +28,7 @@ import org.jackhammer.Record;
 import org.jackhammer.RecordReader;
 import org.jackhammer.RecordReader.EventType;
 import org.jackhammer.Value.Type;
-import org.jackhammer.json.JsonRecord;
+import org.jackhammer.json.Json;
 import org.junit.Test;
 
 public class TestJsonRecord {
@@ -36,7 +36,7 @@ public class TestJsonRecord {
   @Test
   public void testAllTypes() {
 
-    JsonRecord rec = new JsonRecord();
+    Record rec = Json.newRecord();
     rec.set("map.field1", (byte) 100);
     rec.set("map.field2", (short) 10000);
     rec.set("map.longfield2verylongverylong", 12.345678);
@@ -128,7 +128,7 @@ public class TestJsonRecord {
 
   @Test
   public void testAsReaderFull() {
-    JsonRecord record = new JsonRecord();
+    Record record = Json.newRecord();
     record.set("map.byte", (byte)127);
     record.set("map.long", 123456789);
     Map<String, Object> map = new HashMap<String, Object>();
@@ -162,7 +162,7 @@ public class TestJsonRecord {
 
   @Test
   public void testAsReaderPartial() {
-    JsonRecord record = new JsonRecord();
+    Record record = Json.newRecord();
     record.set("map.byte", (byte)127);
     record.set("map.num", 12345);
     Map<String, Object> map = new HashMap<String, Object>();
@@ -196,7 +196,7 @@ public class TestJsonRecord {
    */
   @Test
   public void testAsReaderLeaf() {
-    JsonRecord record = new JsonRecord();
+    Record record = Json.newRecord();
     record.set("map.byte", (byte)127);
     record.set("map.num", 12345);
     Map<String, Object> m = new HashMap<String, Object>();
@@ -218,8 +218,8 @@ public class TestJsonRecord {
 
   @Test
   public void testGetMap() {
-    Record record = new JsonRecord();
-    Map<String, Object> map = new HashMap();
+    Record record = Json.newRecord();
+    Map<String, Object> map = new HashMap<String, Object>();
     map.put("a", 1);
     map.put("b", "A");
     record.set("map", map);
@@ -228,7 +228,7 @@ public class TestJsonRecord {
 
   @Test
   public void testSetBooleanArray() {
-    Record record = new JsonRecord();
+    Record record = Json.newRecord();
     record.set("map.int", 111);
     boolean[] boolArray = new boolean[3];
     boolArray[0] = true;

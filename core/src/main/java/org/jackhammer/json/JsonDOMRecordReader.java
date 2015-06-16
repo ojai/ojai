@@ -40,6 +40,7 @@ class JsonDOMRecordReader implements RecordReader, Constants {
     Iterator<JsonValue> iter;
     Type iterType;
 
+    @SuppressWarnings("unchecked")
     IteratorWithType(Iterator<?> i, Type t) {
       iter = (Iterator<JsonValue>)i;
       iterType = t;
@@ -89,6 +90,7 @@ class JsonDOMRecordReader implements RecordReader, Constants {
    * we have to determine two types of tokens when we process a node, we have two
    * variables et and nextEt.
    */
+  @SuppressWarnings("unchecked")
   private void ProcessNextNode() {
     if (stateStack.empty()) {
       /* We are done with the document */

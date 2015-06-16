@@ -18,28 +18,11 @@ package org.jackhammer.json;
 import org.jackhammer.RecordReader;
 import org.jackhammer.RecordReader.EventType;
 import org.jackhammer.RecordWriter;
+import org.jackhammer.annotation.API;
 
+@API.Internal
 public class JsonUtils {
-  public static String serializeToJsonString(RecordReader r) {
-    return serializeToJsonString(r, true);
-  }
-
-  public static String serializeToJsonString(RecordReader r, boolean pretty) {
-    EventType e = r.next();
-    assert e == EventType.START_MAP;
-
-    JsonRecordWriter w = new JsonRecordWriter();
-    w.enablePrettyPrinting(pretty);
-    addToMap(r, w);
-    w.build();
-    return w.asUTF8String();
-  }
-
-  public static void writeToStreamFromReader(RecordReader r, RecordWriter w) {
-    addToMap(r, w);
-  }
-
-  private static void addToMap(RecordReader r, RecordWriter w) {
+  static void addToMap(RecordReader r, RecordWriter w) {
     EventType e;
     String currentFieldName = null;
     while((e = r.next()) != null) {
@@ -140,4 +123,5 @@ public class JsonUtils {
       }
     }
   }
+
 }

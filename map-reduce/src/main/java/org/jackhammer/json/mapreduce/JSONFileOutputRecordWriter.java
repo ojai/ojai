@@ -24,8 +24,8 @@ import org.apache.hadoop.mapreduce.RecordWriter;
 import org.apache.hadoop.mapreduce.TaskAttemptContext;
 import org.jackhammer.Record;
 import org.jackhammer.RecordReader;
+import org.jackhammer.json.Json;
 import org.jackhammer.json.JsonRecordWriter;
-import org.jackhammer.json.JsonUtils;
 
 public class JSONFileOutputRecordWriter extends
 RecordWriter<LongWritable, Record> {
@@ -47,9 +47,9 @@ RecordWriter<LongWritable, Record> {
   public void write(LongWritable arg0, Record record) throws IOException,
   InterruptedException {
 
-    writer = new JsonRecordWriter();
+    writer = (JsonRecordWriter) Json.newRecordWriter();
     RecordReader reader = record.asReader();
-    JsonUtils.writeToStreamFromReader(reader, writer);
+    Json.writeReaderToStream(reader, writer);
     writer.build();
     byte[] bytes = writer.getOutputStream();
     out.write(bytes);

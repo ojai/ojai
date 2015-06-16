@@ -15,6 +15,9 @@
  */
 package org.jackhammer;
 
+import org.jackhammer.annotation.API;
+
+@API.Public
 public interface ReusingRecordStream<T extends Record> extends RecordStream<T> {
 
   public FieldReader getFieldReader(String path);

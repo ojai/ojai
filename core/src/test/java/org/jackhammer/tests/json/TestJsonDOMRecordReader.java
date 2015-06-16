@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.jackhammer.tests.json;
 
 import static org.junit.Assert.assertEquals;
@@ -24,16 +23,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.jackhammer.Record;
 import org.jackhammer.RecordReader;
 import org.jackhammer.RecordReader.EventType;
-import org.jackhammer.json.JsonRecord;
+import org.jackhammer.json.Json;
 import org.jackhammer.tests.BaseTest;
 import org.junit.Before;
 import org.junit.Test;
 
 public class TestJsonDOMRecordReader extends BaseTest {
 
-  JsonRecord record = new JsonRecord();
+  Record record = Json.newRecord();
 
   @Before
   public void setUp() {
@@ -57,13 +57,13 @@ public class TestJsonDOMRecordReader extends BaseTest {
     values.add(l);
     record.set("map.list", values);
   }
+
   @Test
   public void testDOMRecordReader() throws IOException {
     boolean isArray = false;
 
     RecordReader r = record.asReader();
     EventType et;
-    int numtokens = 0;
     String fieldName = null;
     while ((et = r.next()) != null) {
       if (et == EventType.FIELD_NAME) {
@@ -94,8 +94,6 @@ public class TestJsonDOMRecordReader extends BaseTest {
       if (et == EventType.END_ARRAY) {
         isArray = false;
       }
-
-      numtokens++;
     }
 
   }
@@ -121,4 +119,5 @@ public class TestJsonDOMRecordReader extends BaseTest {
       assertEquals((byte)127, reader.getByte());
     }
   }
+
 }

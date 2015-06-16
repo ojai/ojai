@@ -24,7 +24,7 @@
   <parent>
     <groupId>org.jackhammer</groupId>
     <artifactId>jackhammer-root</artifactId>
-    <version>0.1.r16-SNAPSHOT</version>
+    <version>0.1.r17-SNAPSHOT</version>
     <relativePath>..</relativePath>
   </parent>
 
@@ -32,10 +32,6 @@
   <artifactId>jackhammer-mapreduce</artifactId>
   <name>Jackhammer Map-Reduce Library</name>
   <packaging>jar</packaging>
-
-  <properties>
-    <hadoop.version>2.5.1</hadoop.version>
-  </properties>
 
   <dependencies>
     <dependency>

@@ -21,11 +21,13 @@ import java.util.Stack;
 
 import org.jackhammer.FieldPath;
 import org.jackhammer.Value.Type;
+import org.jackhammer.annotation.API;
 import org.jackhammer.exceptions.DecodingException;
 import org.jackhammer.util.Types;
 
 import com.fasterxml.jackson.core.JsonParseException;
 
+@API.Internal
 public class TypeMappedJsonRecordReader extends JsonStreamRecordReader {
 
   private final Map<FieldPath, Type> typeMap;

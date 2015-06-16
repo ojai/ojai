@@ -22,9 +22,11 @@ import java.util.Stack;
 import org.jackhammer.Record;
 import org.jackhammer.RecordReader;
 import org.jackhammer.RecordReader.EventType;
+import org.jackhammer.annotation.API;
 import org.jackhammer.exceptions.DecodingException;
 import org.jackhammer.util.Fields;
 
+@API.Internal
 public class JsonRecordIterator implements Iterator<Record> {
   Iterator<RecordReader> it = null;
   JsonRecord record;

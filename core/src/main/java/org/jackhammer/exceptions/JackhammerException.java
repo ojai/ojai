@@ -15,9 +15,12 @@
  */
 package org.jackhammer.exceptions;
 
+import org.jackhammer.annotation.API;
+
 /**
  * The parent class of all exceptions thrown from this library.
  */
+@API.Public
 public abstract class JackhammerException extends RuntimeException {
 
   private static final long serialVersionUID = 0xd5abadb72d9d62edL;

@@ -26,6 +26,7 @@ import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
 import org.jackhammer.Value;
+import org.jackhammer.annotation.API;
 import org.jackhammer.exceptions.TypeException;
 
 import com.google.common.io.BaseEncoding;
@@ -34,6 +35,7 @@ import com.google.common.io.BaseEncoding;
  * A helper class which provide convenience methods
  * to operate on a {@code Value}.
  */
+@API.Public
 public class Values {
 
   private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd");

@@ -31,7 +31,7 @@ import org.apache.hadoop.mapreduce.TaskAttemptContext;
 import org.apache.hadoop.mapreduce.lib.input.FileSplit;
 import org.jackhammer.Record;
 import org.jackhammer.RecordStream;
-import org.jackhammer.json.JsonRecordStream;
+import org.jackhammer.json.Json;
 
 public class JSONFileRecordReader extends RecordReader<LongWritable, Record> {
 
@@ -148,7 +148,7 @@ public class JSONFileRecordReader extends RecordReader<LongWritable, Record> {
     /* Initialize a stream reader so that it can read multiple records from */
     /* the file */
 
-    recordStream = new JsonRecordStream(inputStream);
+    recordStream = Json.newRecordStream(inputStream);
     it = recordStream.iterator();
 
   }

@@ -27,9 +27,9 @@ import org.apache.hadoop.io.serializer.Serialization;
 import org.apache.hadoop.io.serializer.Serializer;
 import org.jackhammer.Record;
 import org.jackhammer.RecordReader;
+import org.jackhammer.RecordStream;
+import org.jackhammer.json.Json;
 import org.jackhammer.json.JsonRecord;
-import org.jackhammer.json.JsonRecordStream;
-import org.jackhammer.json.JsonUtils;
 
 public class JSONRecordSerialization extends Configured implements
 Serialization<JsonRecord> {
@@ -49,7 +49,7 @@ Serialization<JsonRecord> {
   private static class JsonRecordDeserializer implements
   Deserializer<JsonRecord> {
 
-    private JsonRecordStream stream;
+    private RecordStream<Record> stream;
     private Iterator<Record> iter;
 
     public void close() throws IOException {
@@ -67,8 +67,8 @@ Serialization<JsonRecord> {
       return null;
     }
 
-    public void open(InputStream arg0) throws IOException {
-      stream = new JsonRecordStream(arg0);
+    public void open(InputStream in) throws IOException {
+      stream = Json.newRecordStream(in);
       iter = stream.iterator();
     }
 
@@ -95,7 +95,7 @@ Serialization<JsonRecord> {
       }
 
       RecordReader reader = arg0.asReader();
-      JsonUtils.writeToStreamFromReader(reader, writer);
+      Json.writeReaderToStream(reader, writer);
       writer.build();
     }
 

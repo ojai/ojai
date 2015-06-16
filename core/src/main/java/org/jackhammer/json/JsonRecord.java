@@ -35,14 +35,15 @@ import org.jackhammer.FieldSegment;
 import org.jackhammer.Record;
 import org.jackhammer.RecordReader;
 import org.jackhammer.Value;
+import org.jackhammer.annotation.API;
 import org.jackhammer.types.Interval;
 
-
+@API.Internal
 public class JsonRecord extends JsonValue implements Record, Map<String, Object> {
 
   private final JsonStreamRecordReader jsonRecordReader;
 
-  public JsonRecord() {
+  JsonRecord() {
     this(null);
   }
 
@@ -924,6 +925,7 @@ public class JsonRecord extends JsonValue implements Record, Map<String, Object>
     return rec;
   }
 
+  @SuppressWarnings("unchecked")
   Map<String, JsonValue> getRootMap() {
     if (objValue == null) {
       objValue = new LinkedHashMap<String, JsonValue>();

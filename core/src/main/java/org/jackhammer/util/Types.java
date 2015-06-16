@@ -20,6 +20,7 @@ import java.util.Map;
 import org.jackhammer.RecordReader.EventType;
 import org.jackhammer.Value;
 import org.jackhammer.Value.Type;
+import org.jackhammer.annotation.API;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.EnumBiMap;
@@ -29,6 +30,7 @@ import com.google.common.collect.Maps;
  * A helper class which provide convenience methods
  * to operate on a {@code Type}.
  */
+@API.Public
 public class Types {
 
   public static final String TAG_BINARY     = "$binary";

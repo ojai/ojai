@@ -15,6 +15,9 @@
  */
 package org.jackhammer.util;
 
+import org.jackhammer.annotation.API;
+
+@API.Public
 public class Fields {
 
   public static String quoteFieldName(String fieldName) {

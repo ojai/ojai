@@ -15,8 +15,10 @@
  */
 package org.jackhammer;
 
+import org.jackhammer.annotation.API;
 import org.jackhammer.util.Fields;
 
+@API.Public
 public abstract class FieldSegment implements Comparable<FieldSegment> {
 
   protected enum Type {

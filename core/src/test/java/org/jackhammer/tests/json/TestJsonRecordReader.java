@@ -17,22 +17,23 @@ package org.jackhammer.tests.json;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.IOException;
 import java.io.InputStream;
 
+import org.jackhammer.Record;
 import org.jackhammer.RecordReader;
 import org.jackhammer.RecordReader.EventType;
-import org.jackhammer.json.JsonRecordStream;
+import org.jackhammer.RecordStream;
+import org.jackhammer.json.Json;
 import org.jackhammer.tests.BaseTest;
 import org.junit.Test;
 
 public class TestJsonRecordReader extends BaseTest {
 
   @Test
-  public void testAll() throws IOException {
+  public void testAll() throws Exception {
 
     try (InputStream testJson = getJsonStream("test.json");
-         JsonRecordStream stream = new JsonRecordStream(testJson);) {
+         RecordStream<Record> stream = Json.newRecordStream(testJson);) {
       RecordReader r = stream.recordReaders().iterator().next();
       EventType et = r.next();
       while (et != null) {

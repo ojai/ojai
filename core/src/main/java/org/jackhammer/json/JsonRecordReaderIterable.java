@@ -22,13 +22,13 @@ import java.util.NoSuchElementException;
 import org.jackhammer.FieldPath;
 import org.jackhammer.RecordReader;
 import org.jackhammer.Value.Type;
-import org.jackhammer.json.DelegatingJsonRecordReader.EventDelegate;
+import org.jackhammer.json.Events.Delegate;
 
 class JsonRecordReaderIterable implements Iterable<RecordReader> {
 
   final private JsonRecordStream jsonRecordStream;
   final private Map<FieldPath, Type> fieldPathTypeMap;
-  final private EventDelegate eventDelegate;
+  final private Delegate eventDelegate;
 
   JsonRecordReaderIterable(JsonRecordStream recordStream) {
     this.jsonRecordStream = recordStream;

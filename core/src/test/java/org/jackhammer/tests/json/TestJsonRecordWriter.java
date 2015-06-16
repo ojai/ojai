@@ -24,9 +24,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jackhammer.Record;
+import org.jackhammer.RecordWriter;
 import org.jackhammer.Value;
-import org.jackhammer.json.JsonRecord;
-import org.jackhammer.json.JsonRecordWriter;
+import org.jackhammer.json.Json;
 import org.jackhammer.json.JsonValueBuilder;
 import org.jackhammer.tests.BaseTest;
 import org.jackhammer.types.Interval;
@@ -40,9 +40,6 @@ public class TestJsonRecordWriter extends BaseTest {
   private static Logger logger = LoggerFactory
       .getLogger(TestJsonRecordWriter.class);
 
-  private JsonRecordWriter jsonWriter;
-  private JsonRecord record;
-
   private byte[] getByteArray(int size) {
     byte[] bytes = new byte[size];
     for (int i = 0; i < bytes.length; ++i) {
@@ -54,7 +51,7 @@ public class TestJsonRecordWriter extends BaseTest {
   @Test
   public void testAllTypes() {
 
-    JsonRecordWriter jsonWriter = new JsonRecordWriter();
+    RecordWriter jsonWriter = Json.newRecordWriter();
     jsonWriter.put("boolean", true);
     jsonWriter.put("string", "santanu");
     jsonWriter.put("bytefield", (byte) 16);
@@ -97,9 +94,9 @@ public class TestJsonRecordWriter extends BaseTest {
     jsonWriter.add(ByteBuffer.wrap(getByteArray(15)));
     jsonWriter.endArray();
 
-    record = (JsonRecord) jsonWriter.build();
+    Record record = jsonWriter.build();
 
-    System.out.println(jsonWriter.asUTF8String());
+    System.out.println(record);
 
   }
 
@@ -113,7 +110,7 @@ public class TestJsonRecordWriter extends BaseTest {
   // @Test
   public void TestWrongArrayInsertion() {
 
-    JsonRecordWriter writer = new JsonRecordWriter();
+    RecordWriter writer = Json.newRecordWriter();
     writer.put("string", "santanu");
     exception.expect(IllegalStateException.class);
     writer.endMap();
@@ -122,14 +119,14 @@ public class TestJsonRecordWriter extends BaseTest {
     writer.add((long) 23456);
     writer.add((long) 5555);
     // jsonWriter.EndDocument();
-    logger.debug(jsonWriter.asUTF8String());
+    logger.debug(writer.toString());
 
   }
 
   // @Test
   public void TestWrongMapInsertion() {
 
-    JsonRecordWriter writer = new JsonRecordWriter();
+    RecordWriter writer = Json.newRecordWriter();
     writer.putNewArray("array");
     writer.add((short) 1000);
     exception.expect(IllegalStateException.class);
@@ -138,19 +135,21 @@ public class TestJsonRecordWriter extends BaseTest {
   }
 
   @Test
+  @SuppressWarnings("unused")
   public void testPutListAsValue() {
-    JsonRecordWriter jsonRecordWriter = new JsonRecordWriter();
+    RecordWriter jsonRecordWriter = Json.newRecordWriter();
     List<Object> list = new ArrayList<>();
     list.add(1);
     list.add("2");
     Value v = JsonValueBuilder.initFrom(list);
     jsonRecordWriter.put("value", v);
     Record r = jsonRecordWriter.build();
+    //logger.debug(r.toString()); NPE
   }
 
   @Test
   public void TestDecimalRange() {
-    JsonRecordWriter writer = new JsonRecordWriter();
+    RecordWriter writer = Json.newRecordWriter();
     writer.putDecimal("d1", Integer.MAX_VALUE, 7);
     writer.putDecimal("d2", Integer.MIN_VALUE, 7);
     writer.putDecimal("d3", Long.MAX_VALUE, 9);
@@ -160,15 +159,15 @@ public class TestJsonRecordWriter extends BaseTest {
     writer.putDecimal("d7", Long.MAX_VALUE, 25);
     writer.putDecimal("d8", Long.MIN_VALUE, 25);
     writer.build();
-    System.out.println(writer.asUTF8String());
+    System.out.println(writer);
   }
 
   @Test
   public void TestRecordPut() {
-    Record record = new JsonRecord();
+    Record record = Json.newRecord();
     record.set("recValue1", "string");
     record.set("recValue2", 1);
-    Record record2 = new JsonRecord();
+    Record record2 = Json.newRecord();
     record2.set("val1", true);
     record2.set("val2", 100);
     List<Object> l = new ArrayList<Object>();
@@ -176,11 +175,11 @@ public class TestJsonRecordWriter extends BaseTest {
     l.add(false);
     record2.set("list", l);
     record.set("rec", record2);
-    JsonRecordWriter recordWriter = new JsonRecordWriter();
+    RecordWriter recordWriter = Json.newRecordWriter();
     recordWriter.put("record", record);
     recordWriter.put("rootValue1", 1)
-    .put("rootValue2", "2").build();
-    System.out.println(recordWriter.asUTF8String());
+      .put("rootValue2", "2").build();
+    System.out.println(recordWriter);
 
   }
 

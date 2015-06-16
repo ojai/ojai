@@ -23,7 +23,7 @@
 
   <groupId>org.jackhammer</groupId>
   <artifactId>jackhammer-root</artifactId>
-  <version>0.1.r16-SNAPSHOT</version>
+  <version>0.1.r17-SNAPSHOT</version>
 
   <name>Jackhammer ROOT pom</name>
   <packaging>pom</packaging>
@@ -31,6 +31,7 @@
   <url>https://github.com/jackhammer/</url>
 
   <properties>
+    <hadoop.version>2.5.1</hadoop.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>

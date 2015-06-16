@@ -25,6 +25,7 @@ import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
 import org.jackhammer.FieldSegment.NameSegment;
 import org.jackhammer.FieldSegment.IndexSegment;
+import org.jackhammer.annotation.API;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,6 +35,7 @@ import com.google.common.cache.CacheBuilder;
 /**
  * Immutable class for representing a field path.
  */
+@API.Public
 public final class FieldPath implements Comparable<FieldPath>, Iterable<FieldSegment> {
   private static Logger logger = LoggerFactory.getLogger(FieldPath.class);
 
@@ -109,6 +111,13 @@ public final class FieldPath implements Comparable<FieldPath>, Iterable<FieldSeg
     return asPathString();
   }
 
+  /**
+   * Compares two FieldPath segment by segment from left to right.
+   * Named segments are compared lexicographically while indexed
+   * segments are compared based on their index value. For same
+   * position in a FieldPath, a name segment is considered greater
+   * than the indexed segment.
+   */
   @Override
   public int compareTo(FieldPath other) {
     return rootSegment.compareTo(other.getRootSegment());

@@ -17,6 +17,8 @@ package org.jackhammer;
 
 import java.util.Iterator;
 
+import org.jackhammer.annotation.API;
+
 /**
  * A stream of records.
  *
@@ -24,6 +26,7 @@ import java.util.Iterator;
  * or readerIterator(). Only one of these iterators can be retrieved
  * from the stream.
  */
+@API.Public
 public interface RecordStream<T extends Record> extends AutoCloseable, Iterable<T> {
 
   public void streamTo(RecordListener l);

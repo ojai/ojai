@@ -15,6 +15,9 @@
  */
 package org.jackhammer.exceptions;
 
+import org.jackhammer.annotation.API;
+
+@API.Public
 public class TypeException extends JackhammerException {
 
   private static final long serialVersionUID = 0xaccd73435d751ff9L;

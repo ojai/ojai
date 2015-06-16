@@ -32,10 +32,11 @@ import org.jackhammer.Record;
 import org.jackhammer.RecordWriter;
 import org.jackhammer.Value;
 import org.jackhammer.Value.Type;
+import org.jackhammer.annotation.API;
 import org.jackhammer.exceptions.EncodingException;
 import org.jackhammer.types.Interval;
 import org.jackhammer.util.Constants;
-import org.jackhammer.util.DecimalUtility;
+import org.jackhammer.util.Decimals;
 import org.jackhammer.util.Types;
 import org.jackhammer.util.Values;
 
@@ -44,13 +45,14 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 
+@API.Internal
 public class JsonRecordWriter implements RecordWriter, Constants {
 
   private JsonGenerator jsonGenerator;
   private ByteArrayWriterOutputStream b;
   private String cachedJson;
 
-  public JsonRecordWriter() {
+  JsonRecordWriter() {
     b = new ByteArrayWriterOutputStream();
     this.initJsonGenerator(b);
   }
@@ -204,19 +206,19 @@ public class JsonRecordWriter implements RecordWriter, Constants {
 
   @Override
   public JsonRecordWriter putDecimal(String field, int unscaledValue, int scale) {
-    return put(field, DecimalUtility.ConvertIntToDecimal(unscaledValue, scale));
+    return put(field, Decimals.convertIntToDecimal(unscaledValue, scale));
   }
 
   @Override
   public JsonRecordWriter putDecimal(String field, long unscaledValue, int scale) {
-    return put(field, DecimalUtility.ConvertLongToDecimal(unscaledValue, scale));
+    return put(field, Decimals.convertLongToDecimal(unscaledValue, scale));
   }
 
   @Override
   public JsonRecordWriter putDecimal(String field, byte[] unscaledValue,
       int scale) {
     return put(field,
-        DecimalUtility.ConvertByteToBigDecimal(unscaledValue, scale));
+        Decimals.convertByteToBigDecimal(unscaledValue, scale));
   }
 
   @Override
@@ -618,17 +620,17 @@ public class JsonRecordWriter implements RecordWriter, Constants {
 
   @Override
   public JsonRecordWriter addDecimal(int unscaledValue, int scale) {
-    return add(DecimalUtility.ConvertIntToDecimal(unscaledValue, scale));
+    return add(Decimals.convertIntToDecimal(unscaledValue, scale));
   }
 
   @Override
   public JsonRecordWriter addDecimal(long unscaledValue, int scale) {
-    return add(DecimalUtility.ConvertLongToDecimal(unscaledValue, scale));
+    return add(Decimals.convertLongToDecimal(unscaledValue, scale));
   }
 
   @Override
   public JsonRecordWriter addDecimal(byte[] unscaledValue, int scale) {
-    return add(DecimalUtility.ConvertByteToBigDecimal(unscaledValue, scale));
+    return add(Decimals.convertByteToBigDecimal(unscaledValue, scale));
   }
 
   @Override
@@ -860,19 +862,24 @@ public class JsonRecordWriter implements RecordWriter, Constants {
     return null;
   }
 
+  @Override
+  public String toString() {
+    try {
+      return b.toString("UTF-8");
+    } catch (UnsupportedEncodingException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
   public String asUTF8String() {
     if (!jsonGenerator.isClosed()) {
       throw new IllegalStateException("The record has not been built.");
     }
 
-    try {
-      if (cachedJson == null) {
-        cachedJson = b.toString("UTF-8");
-      }
-      return cachedJson;
-    } catch (UnsupportedEncodingException e) {
-      return null; // should never happen
+    if (cachedJson == null) {
+      cachedJson = toString();
     }
+    return cachedJson;
   }
 
   public byte[] getOutputStream() {

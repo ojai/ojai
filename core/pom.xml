@@ -24,7 +24,7 @@
   <parent>
     <groupId>org.jackhammer</groupId>
     <artifactId>jackhammer-root</artifactId>
-    <version>0.1.r16-SNAPSHOT</version>
+    <version>0.1.r17-SNAPSHOT</version>
     <relativePath>..</relativePath>
   </parent>
 
@@ -87,6 +87,18 @@
       <version>2.5.1</version>
     </dependency>
 
+    <dependency>
+      <!-- Used for FileSystem and Path classes -->
+      <groupId>org.apache.hadoop</groupId>
+      <artifactId>hadoop-common</artifactId>
+      <version>${hadoop.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>*</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
   </dependencies>
 
 </project>

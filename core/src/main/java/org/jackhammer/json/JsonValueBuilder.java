@@ -26,6 +26,7 @@ import java.util.Map;
 import org.jackhammer.Record;
 import org.jackhammer.Value;
 import org.jackhammer.Value.Type;
+import org.jackhammer.annotation.API;
 import org.jackhammer.exceptions.TypeException;
 import org.jackhammer.types.Interval;
 import org.jackhammer.util.Constants;
@@ -34,6 +35,7 @@ import org.jackhammer.util.Constants;
  * Helper class providing set of static methods to create instance of
  * JsonValue class from different input types
  */
+@API.Internal
 public class JsonValueBuilder implements Constants {
 
   public static JsonValue initFromNull() {

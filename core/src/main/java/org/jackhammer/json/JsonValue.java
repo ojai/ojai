@@ -25,10 +25,12 @@ import java.util.Map;
 
 import org.jackhammer.RecordReader;
 import org.jackhammer.Value;
+import org.jackhammer.annotation.API;
 import org.jackhammer.exceptions.TypeException;
 import org.jackhammer.types.Interval;
 import org.jackhammer.util.Constants;
 
+@API.Internal
 public class JsonValue implements Value, Constants {
 
   Type valueType;

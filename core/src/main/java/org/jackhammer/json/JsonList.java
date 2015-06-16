@@ -23,7 +23,7 @@ import java.util.ListIterator;
 
 import org.jackhammer.FieldSegment;
 
-public class JsonList extends JsonValue implements List<Object> {
+class JsonList extends JsonValue implements List<Object> {
 
   List <JsonValue> list;
   public JsonList() {
