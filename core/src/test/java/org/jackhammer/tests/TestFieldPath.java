@@ -37,6 +37,22 @@ public class TestFieldPath {
   }
 
   @Test
+  public void testQuotedPath() {
+    FieldPath fp = FieldPath.parseFrom("`the quick.brown fox`");
+    assertTrue(fp.getRootSegment().isLastPath());
+    assertEquals("`the quick.brown fox`", fp.asPathString(true));
+    assertEquals("`the quick.brown fox`", fp.asPathString());
+  }
+
+  @Test
+  public void testQuotedEscapedPath() {
+    FieldPath fp = FieldPath.parseFrom("`the\\`quick.brown\\\\fox`");
+    assertTrue(fp.getRootSegment().isLastPath());
+    assertEquals("`the`quick.brown\\fox`", fp.asPathString(true));
+    assertEquals("`the`quick.brown\\fox`", fp.asPathString());
+  }
+
+  @Test
   public void testSimplePathDoubleSegment() {
     FieldPath fp = FieldPath.parseFrom("a.`b`");
     assertTrue(fp.getRootSegment().isMap());
@@ -55,6 +71,17 @@ public class TestFieldPath {
     assertTrue(fp.getRootSegment().getChild().getChild().getChild().isLeaf());
     assertEquals("`a`.`b`[3].`c`", fp.asPathString(true));
     assertEquals("a.b[3].c", fp.asPathString());
+  }
+
+  @Test
+  public void testSimplePathWithNumericNameSegments() {
+    FieldPath fp = FieldPath.parseFrom("1.23.4a");
+    assertTrue(fp.getRootSegment().isMap());
+    assertTrue(fp.getRootSegment().getChild().isMap());
+    assertTrue(fp.getRootSegment().getChild().getChild().isNamed());
+    assertTrue(fp.getRootSegment().getChild().getChild().isLeaf());
+    assertEquals("`1`.`23`.`4a`", fp.asPathString(true));
+    assertEquals("1.23.4a", fp.asPathString());
   }
 
   @Test

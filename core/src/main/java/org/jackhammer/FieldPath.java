@@ -50,7 +50,7 @@ public final class FieldPath implements Comparable<FieldPath>, Iterable<FieldSeg
    */
   public static FieldPath parseFrom(String fieldPath) {
     if (fieldPath == null || fieldPath.isEmpty()) {
-      throw new IllegalArgumentException("Can not parse null or emptyr string.");
+      throw new IllegalArgumentException("Can not parse null or empty string.");
     }
 
     FieldPath fp = null;

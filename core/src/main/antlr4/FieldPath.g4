@@ -51,11 +51,16 @@ nameSegment returns [NameSegment seg]
         ($s1.start == null ? ($s2.start == null ? null : $s2.seg) : $s1.seg)
       , false);
     }
+  | Integer ((Period s1=fieldSegment) | s2=indexSegment)? {
+      $seg = new NameSegment($Integer.text,
+        ($s1.start == null ? ($s2.start == null ? null : $s2.seg) : $s1.seg)
+      , false);
+    }
   ;
 
 indexSegment returns [FieldSegment seg]
-  : OBracket Number? CBracket ((Period s1=fieldSegment) | s2=indexSegment)? {
-      $seg = new IndexSegment($Number.text,
+  : OBracket Integer? CBracket ((Period s1=fieldSegment) | s2=indexSegment)? {
+      $seg = new IndexSegment($Integer.text,
         ($s1.start == null ? ($s2.start == null ? null : $s2.seg) : $s1.seg)
       );
     }
@@ -70,12 +75,12 @@ OBracket : '[';
 CBracket : ']';
 SingleQuote: '\'';
 
-Number
-  :  Int ('.' Digit*)? ('e' ('+' | '-')? Digit*)?
+Integer
+  :  Digit+
   ;
 
 Identifier
-  : ('a'..'z' | 'A'..'Z' | '_' | '$') ('a'..'z' | 'A'..'Z' | '_' | '$' | Digit)*
+  : ('a'..'z' | 'A'..'Z' | '_' | '$' | Digit)+
   ;
 
 Space
@@ -83,12 +88,7 @@ Space
   ;
 
 QuotedIdentifier
-  :  '`'  (~('`' | '\\')  | '\\' ('\\' | '`'))* '`'
-  ;
-
-fragment Int
-  :  '1'..'9' Digit*
-  |  '0'
+  :  '`'  (~('`' | '\\')  | '\\' ('\\' | '`'))+ '`'
   ;
 
 fragment Digit
