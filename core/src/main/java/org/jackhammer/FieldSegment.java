@@ -67,16 +67,20 @@ public abstract class FieldSegment implements Comparable<FieldSegment> {
   /**
    * @return <code>true</code> if the current segment is identified by an index.
    */
-  public abstract boolean isIndexed();
+  public boolean isIndexed() {
+    return false;
+  }
 
   /**
    * @return <code>true</code> if the current segment is identified by a name.
    */
-  public abstract boolean isNamed();
+  public boolean isNamed() {
+    return false;
+  }
 
-  public abstract FieldSegment cloneWithNewChild(FieldSegment segment);
+  abstract FieldSegment cloneWithNewChild(FieldSegment segment);
 
-  public abstract int segmentCompareTo(FieldSegment o);
+  abstract int segmentCompareTo(FieldSegment o);
 
   @Override
   public abstract FieldSegment clone();
@@ -118,22 +122,17 @@ public abstract class FieldSegment implements Comparable<FieldSegment> {
     }
 
     @Override
-    public boolean isNamed() {
-      return false;
-    }
-
-    @Override
     public IndexSegment getIndexSegment() {
       return this;
     }
 
     @Override
-    public int segmentHashCode() {
+    protected int segmentHashCode() {
       return index;
     }
 
     @Override
-    public int segmentCompareTo(FieldSegment other) {
+    protected int segmentCompareTo(FieldSegment other) {
       if (other instanceof IndexSegment) {
         IndexSegment that = (IndexSegment)other;
         return this.index - that.index;
@@ -142,7 +141,7 @@ public abstract class FieldSegment implements Comparable<FieldSegment> {
     }
 
     @Override
-    public boolean segmentEquals(FieldSegment obj) {
+    protected boolean segmentEquals(FieldSegment obj) {
       if (this == obj) {
         return true;
       } else if (obj == null) {
@@ -160,7 +159,7 @@ public abstract class FieldSegment implements Comparable<FieldSegment> {
     }
 
     @Override
-    public IndexSegment cloneWithNewChild(FieldSegment newChild) {
+    IndexSegment cloneWithNewChild(FieldSegment newChild) {
       FieldSegment clonedChild = (child != null) ? child.cloneWithNewChild(newChild) : newChild;
       return (index < 0) ? new IndexSegment(clonedChild) : new IndexSegment(index, clonedChild);
     }
@@ -181,7 +180,7 @@ public abstract class FieldSegment implements Comparable<FieldSegment> {
     private final String name;
     private final boolean quoted;
 
-    NameSegment(String n) {
+    protected NameSegment(String n) {
       super(null);
       this.name = Fields.unquoteFieldName(n);
       this.quoted = (this.name != n);
@@ -198,17 +197,12 @@ public abstract class FieldSegment implements Comparable<FieldSegment> {
     }
 
     @Override
-    public boolean isIndexed() {
-      return false;
-    }
-
-    @Override
     public boolean isNamed() {
       return true;
     }
 
     @Override
-    public int segmentCompareTo(FieldSegment o) {
+    protected int segmentCompareTo(FieldSegment o) {
       if (o instanceof NameSegment) {
         NameSegment that = (NameSegment)o;
         return this.name.compareTo(that.name);
@@ -222,12 +216,12 @@ public abstract class FieldSegment implements Comparable<FieldSegment> {
     }
 
     @Override
-    public int segmentHashCode() {
+    protected int segmentHashCode() {
       return ((name == null) ? 0 : name.toLowerCase().hashCode());
     }
 
     @Override
-    public boolean segmentEquals(FieldSegment obj) {
+    protected boolean segmentEquals(FieldSegment obj) {
       if (this == obj) {
         return true;
       } else if (obj == null) {
@@ -249,7 +243,7 @@ public abstract class FieldSegment implements Comparable<FieldSegment> {
     }
 
     @Override
-    public NameSegment cloneWithNewChild(FieldSegment newChild) {
+    NameSegment cloneWithNewChild(FieldSegment newChild) {
       return new NameSegment(this.name,
           (child != null ? child.cloneWithNewChild(newChild) : newChild), this.quoted);
     }
@@ -279,7 +273,7 @@ public abstract class FieldSegment implements Comparable<FieldSegment> {
     return asPathString(true);
   }
 
-  public final String asPathString(boolean escape) {
+  final String asPathString(boolean escape) {
     StringBuilder sb = new StringBuilder();
     FieldSegment seg = this;
     seg.writeSegment(sb, escape);
