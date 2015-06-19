@@ -420,6 +420,7 @@ public class JsonRecordWriter implements RecordWriter, Constants {
       break;
     case LONG:
       put(field, value.getLong());
+      break;
     case FLOAT:
       put(field, value.getFloat());
       break;
