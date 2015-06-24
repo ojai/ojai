@@ -315,21 +315,94 @@ public class JsonValue implements Value, Constants {
       case LONG:
       case FLOAT:
       case DOUBLE:
+      case DATE:
+      case TIMESTAMP:
+      case TIME:
+      case INTERVAL:
         return jsonValue == value.jsonValue;
 
-      case TIME:
-      case TIMESTAMP:
-      case DATE:
-      case INTERVAL:
+      case NULL:
+        return ((objValue == null) && (value.objValue == null));
+
       case BINARY:
       case DECIMAL:
       case STRING:
-      case NULL:
       case MAP:
       case ARRAY:
         return objValue.equals(value.objValue);
       }
     }
+    if (obj instanceof String) {
+      return objValue.equals(obj);
+    }
+    if (obj instanceof Byte) {
+      return obj.equals(getByte());
+    }
+
+    if (obj instanceof Short) {
+      return obj.equals(getShort());
+    }
+
+    if (obj instanceof Boolean) {
+      return obj.equals(getBoolean());
+    }
+
+    if (obj instanceof Float) {
+      return obj.equals(getFloat());
+    }
+
+    if (obj instanceof Integer) {
+      return obj.equals(getInt());
+    }
+
+    if (obj instanceof BigDecimal) {
+      return obj.equals(getDecimal());
+    }
+
+    if (obj instanceof Double) {
+      return obj.equals(getDouble());
+    }
+
+    /* Internally we store Date, Time and Timestamp objects as long
+     * values. Therefore, it is simpler to compare against that when
+     * obj is of time Date, Time or Timestamp.
+     * However, if the comparison is done with, for example, a date object
+     * date as date.equals(getDate()), the comparison will not be equivalent
+     * since the interval implementation in java is different. It may not
+     * return same result.
+     */
+    if (obj instanceof Date) {
+      long dateAsLong = ((Date)obj).getTime()/MILLISECONDSPERDAY;
+      return dateAsLong == jsonValue;
+    }
+
+    if (obj instanceof Time) {
+      long timeAsLong = ((Time)obj).getTime() % MILLISECONDSPERDAY;
+      return timeAsLong == jsonValue;
+    }
+
+    if (obj instanceof Timestamp) {
+      long timestampAsLong = ((Timestamp)obj).getTime();
+      return getTimestampAsLong() == timestampAsLong;
+    }
+
+    if (obj instanceof Interval) {
+      return obj.equals(getInterval());
+    }
+
+    if (obj instanceof ByteBuffer) {
+      return obj.equals(getBinary());
+    }
+
+    if (obj instanceof Map) {
+      return obj.equals(getMap());
+    }
+
+    if (obj instanceof List) {
+      return obj.equals(getList());
+    }
+
+
     return false;
   }
 

@@ -29,6 +29,7 @@ class JsonList extends JsonValue implements List<Object> {
   public JsonList() {
     valueType = Type.ARRAY;
     list = new ArrayList<JsonValue>();
+    objValue = list;
   }
 
   @Override
