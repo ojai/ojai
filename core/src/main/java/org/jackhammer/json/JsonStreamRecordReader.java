@@ -39,7 +39,7 @@ import com.fasterxml.jackson.core.JsonToken;
 @API.Internal
 public class JsonStreamRecordReader implements RecordReader, Constants {
 
-  private JsonRecordStream recordStream;
+  private final JsonRecordStream recordStream;
   private JsonToken currentToken; /* current token read from stream */
   private JsonToken nextToken; /* next token from stream */
   private int mapLevel;
@@ -52,6 +52,11 @@ public class JsonStreamRecordReader implements RecordReader, Constants {
 
   /* flag used to lookup next token to determine extended types */
   private boolean lookupToken = false;
+  /*
+   * isExtendedType is used to track if we are parsing extended type from stream.
+   * If we do, we need to ignore the END_OBJECT token.
+   */
+  private boolean isExtendedType = false;
 
   JsonStreamRecordReader(JsonRecordStream stream) {
     recordStream = stream;
@@ -77,6 +82,7 @@ public class JsonStreamRecordReader implements RecordReader, Constants {
         if (field_name.startsWith("$")) {
           currentToken = getParser().nextToken();
           lookupToken = false;
+          isExtendedType = true;
 
           // determine extended type
           switch(field_name) {
@@ -265,7 +271,12 @@ public class JsonStreamRecordReader implements RecordReader, Constants {
       if (et == EventType.START_MAP) {
         mapLevel++;
       } else if (et == EventType.END_MAP) {
-        mapLevel--;
+        if (!isExtendedType) {
+          mapLevel--;
+        } else {
+          isExtendedType = false;
+          return next();
+        }
       }
       if (mapLevel == 0) {
         eor = true;

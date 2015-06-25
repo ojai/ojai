@@ -43,7 +43,7 @@ public class Values {
   private static final SimpleDateFormat SHORT_TIME_FORMATTER = new SimpleDateFormat("HH:mm");
   private static final SimpleDateFormat TIME_FORMATTER = new SimpleDateFormat("HH:mm:ss");
   private static final SimpleDateFormat FULL_TIME_FORMATTER = new SimpleDateFormat("HH:mm:ss.SSS");
-  private static final SimpleDateFormat TIMESTAMP_FORMATTER = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+  private static final SimpleDateFormat TIMESTAMP_FORMATTER = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
   private static final TimeZone GMT = TimeZone.getTimeZone("GMT");
   private static final int shortTimeStringLen = SHORT_TIME_FORMATTER.toPattern().length();
   private static final int timeStringLen = TIME_FORMATTER.toPattern().length();

@@ -15,6 +15,7 @@
  */
 package org.jackhammer.json;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
@@ -29,6 +30,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.jackhammer.Record;
+import org.jackhammer.RecordStream;
 import org.jackhammer.RecordWriter;
 import org.jackhammer.Value;
 import org.jackhammer.Value.Type;
@@ -782,34 +784,48 @@ public class JsonRecordWriter implements RecordWriter, Constants {
     return this;
   }
 
+  /* helper function to write date, time and timestamp types as string */
+  private JsonRecordWriter addStringWithTag(String tagName, String value) {
+    try {
+      jsonGenerator.writeStartObject();
+      jsonGenerator.writeStringField(tagName, value);
+      jsonGenerator.writeEndObject();
+    } catch (JsonGenerationException e) {
+      throw new IllegalStateException(e);
+    } catch (IOException ie) {
+      throw new EncodingException(ie);
+    }
+    return this;
+  }
+
   @Override
   public JsonRecordWriter add(Time value) {
-    return addLongWithTag(Types.TAG_TIME, value.getTime());
+    return addStringWithTag(Types.TAG_TIME, Values.toTimeStr(value));
   }
 
   @Override
   public JsonRecordWriter addTime(int millis) {
-    return addLongWithTag(Types.TAG_TIME, millis);
+    return addStringWithTag(Types.TAG_TIME, Values.toTimeStr(new Time(millis)));
   }
 
   @Override
   public JsonRecordWriter add(Date value) {
-    return addLongWithTag(Types.TAG_DATE, value.getTime());
+    return addStringWithTag(Types.TAG_DATE, Values.toDateStr(value));
   }
 
   @Override
   public JsonRecordWriter addDate(int days) {
-    return addLongWithTag(Types.TAG_DATE, days * MILLISECONDSPERDAY);
+    return addStringWithTag(Types.TAG_DATE, Values.toDateStr(new Date(days * MILLISECONDSPERDAY)));
   }
 
   @Override
   public JsonRecordWriter add(Timestamp value) {
-    return addLongWithTag(Types.TAG_TIMESTAMP, value.getTime());
+    return addStringWithTag(Types.TAG_TIMESTAMP, Values.toTimestampString(value));
   }
 
   @Override
   public JsonRecordWriter addTimestamp(long timeMillis) {
-    return addLongWithTag(Types.TAG_TIMESTAMP, timeMillis);
+    return addStringWithTag(Types.TAG_TIMESTAMP, Values.toTimestampString(new Timestamp(timeMillis)));
   }
 
   @Override
@@ -859,6 +875,18 @@ public class JsonRecordWriter implements RecordWriter, Constants {
     } catch (IOException ie) {
       throw new EncodingException(ie);
     }
+
+    if (b != null) {
+      byte[] barray = b.getByteArray();
+      ByteArrayInputStream inputStream = new ByteArrayInputStream(barray);
+      RecordStream<Record> recordStream = Json.newRecordStream(inputStream);
+      Iterator<Record> iter = recordStream.iterator();
+      if (iter.hasNext()) {
+        Record r = iter.next();
+        return r;
+      }
+    }
+
 
     return null;
   }

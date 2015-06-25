@@ -15,10 +15,10 @@
  */
 package org.jackhammer.tests.json;
 
+import static org.junit.Assert.assertEquals;
+
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
-import java.sql.Date;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +30,7 @@ import org.jackhammer.json.Json;
 import org.jackhammer.json.JsonValueBuilder;
 import org.jackhammer.tests.BaseTest;
 import org.jackhammer.types.Interval;
+import org.jackhammer.util.Values;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -69,9 +70,9 @@ public class TestJsonRecordWriter extends BaseTest {
     jsonWriter.put("binary2", getByteArray(20), 10, 5);
     // bytebuffer test
     jsonWriter.put("binary3", ByteBuffer.wrap(getByteArray(10)));
-    jsonWriter.put("date1", Date.valueOf("2010-01-10"));
-    jsonWriter.put(("time1"), Time.valueOf("19:15:12"));
-    jsonWriter.put("timestamp1", Timestamp.valueOf("2010-10-15 14:20:00"));
+    jsonWriter.put("date1", Values.parseDate("2013-10-22"));
+    jsonWriter.put(("time1"), Values.parseTime("10:42:46"));
+    jsonWriter.put("timestamp1", new Timestamp(System.currentTimeMillis()));
     jsonWriter.put("interval1", new Interval(10234567));
 
     // test array
@@ -87,16 +88,19 @@ public class TestJsonRecordWriter extends BaseTest {
     jsonWriter.addNull();
     jsonWriter.add(10.12345678d);
     jsonWriter.add(new BigDecimal(1234.567891));
-    jsonWriter.add(Date.valueOf("2010-01-10"));
-    jsonWriter.add(Time.valueOf("19:15:12"));
-    jsonWriter.add(Timestamp.valueOf("2010-10-15 14:20:00"));
+    jsonWriter.add(Values.parseDate("2014-11-14"));
+    jsonWriter.add(Values.parseTime("11:22:33"));
+    jsonWriter.add(new Timestamp(System.currentTimeMillis()));
     jsonWriter.add(new Interval(10234567));
     jsonWriter.add(ByteBuffer.wrap(getByteArray(15)));
     jsonWriter.endArray();
 
     Record record = jsonWriter.build();
 
-    System.out.println(record);
+    System.out.println(jsonWriter);
+
+    assertEquals("santanu", record.getString("array1[0]"));
+    assertEquals(true, record.getValue("date1").equals(Values.parseDate("2013-10-22")));
 
   }
 
@@ -180,6 +184,25 @@ public class TestJsonRecordWriter extends BaseTest {
     recordWriter.put("rootValue1", 1)
     .put("rootValue2", "2").build();
     System.out.println(recordWriter);
+
+  }
+
+  @Test
+  public void testBuild() {
+    RecordWriter jsonWriter = Json.newRecordWriter();
+
+    jsonWriter.put("string", "santanu");
+    jsonWriter.put("bytefield", (byte) 16);
+    jsonWriter.put("short", (short) 1000);
+    jsonWriter.put("integer", 32000);
+    jsonWriter.put("long", 123456789L);
+    jsonWriter.put("float", 10.123f);
+    jsonWriter.put("double", 10.12345678d);
+    jsonWriter.put("decimal1", new BigDecimal(12345.6789));
+
+    Record record = jsonWriter.build();
+
+    assertEquals("santanu", record.getString("string"));
 
   }
 
