@@ -119,8 +119,8 @@ public class Values {
     Number val = asNumber(value);
     return (val instanceof BigDecimal)
         ? (BigDecimal) val
-        : ((val instanceof Long)
-            ? new BigDecimal(val.longValue())
+            : ((val instanceof Long)
+                ? new BigDecimal(val.longValue())
             : new BigDecimal(val.doubleValue()));
   }
 
@@ -218,7 +218,7 @@ public class Values {
   public static String toTimeStr(Time time) {
     return getTimeFormatter().format(time);
   }
-  
+
   /**
    * Returns the JDBC string representation ("HH:mm") of the specified Time.
    * @param time The {@code Time} value to stringify.
@@ -227,7 +227,7 @@ public class Values {
   public static String toShortTimeStr(Time time) {
     return getShortTimeFormatter().format(time);
   }
-  
+
   /**
    * Returns the JDBC string representation ("HH:mm") of the specified Time.
    * @param time The {@code Time} value to stringify.
@@ -255,6 +255,10 @@ public class Values {
     } catch (ParseException e) {
       throw new IllegalArgumentException("Can not parse the provided timestampe: " + timestampe, e);
     }
+  }
+
+  public static String toTimestampString(Timestamp timeStamp) {
+    return getTimestampFormatter().format(timeStamp);
   }
 
   /**
@@ -334,11 +338,11 @@ public class Values {
       sb.append('}');
     } else {
       switch (value.getType()) {
-        case STRING:
-          sb.append('"').append(value.getString().replaceAll("[\n\r]+", "\\\\n")).append('"');
-          break;
-        default:
-          sb.append(value.getObject());
+      case STRING:
+        sb.append('"').append(value.getString().replaceAll("[\n\r]+", "\\\\n")).append('"');
+        break;
+      default:
+        sb.append(value.getObject());
       }
     }
     return sb.toString();

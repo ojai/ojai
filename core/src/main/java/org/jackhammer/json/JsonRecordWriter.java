@@ -285,12 +285,12 @@ public class JsonRecordWriter implements RecordWriter, Constants {
 
   @Override
   public JsonRecordWriter put(String field, Date value) {
-    return putLongWithTag(field, Types.TAG_DATE, value.getTime());
+    return putStringWithTag(field, Types.TAG_DATE, Values.toDateStr(value));
   }
 
   @Override
   public JsonRecordWriter putDate(String field, int days) {
-    return putLongWithTag(field, Types.TAG_DATE, days * MILLISECONDSPERDAY);
+    return putStringWithTag(field, Types.TAG_DATE, Values.toDateStr(new Date(days * MILLISECONDSPERDAY)));
   }
 
   @Override
@@ -304,17 +304,17 @@ public class JsonRecordWriter implements RecordWriter, Constants {
       throw new IllegalArgumentException("Long value exceeds "
           + Long.toString(MILLISECONDSPERDAY) + " " + Long.toString(millis));
     }
-    return putLongWithTag(field, Types.TAG_TIME, millis);
+    return putStringWithTag(field, Types.TAG_TIME, Values.toTimeStr(new Time(millis)));
   }
 
   @Override
   public JsonRecordWriter put(String field, Timestamp value) {
-    return putLongWithTag(field, Types.TAG_TIMESTAMP, value.getTime());
+    return putStringWithTag(field, Types.TAG_TIMESTAMP, Values.toTimestampString(value));
   }
 
   @Override
   public JsonRecordWriter putTimestamp(String field, long timeMillis) {
-    return putLongWithTag(field, Types.TAG_TIMESTAMP, timeMillis);
+    return putStringWithTag(field, Types.TAG_TIMESTAMP, Values.toTimestampString(new Timestamp(timeMillis)));
   }
 
   @Override

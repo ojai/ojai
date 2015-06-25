@@ -178,7 +178,7 @@ public class TestJsonRecordWriter extends BaseTest {
     RecordWriter recordWriter = Json.newRecordWriter();
     recordWriter.put("record", record);
     recordWriter.put("rootValue1", 1)
-      .put("rootValue2", "2").build();
+    .put("rootValue2", "2").build();
     System.out.println(recordWriter);
 
   }
