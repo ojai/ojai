@@ -17,6 +17,7 @@ package org.jackhammer.tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
@@ -27,6 +28,15 @@ import org.jackhammer.FieldSegment;
 import org.junit.Test;
 
 public class TestFieldPath {
+
+  @Test
+  public void testEmptyFieldPath() {
+    FieldSegment root = FieldPath.EMPTY.getRootSegment();
+    assertNotNull(root);
+    assertTrue(root.isLastPath());
+    assertTrue(root.isLeaf());
+    assertEquals("", FieldPath.EMPTY.asPathString());
+  }
 
   @Test
   public void testSimplePathSingleSegment() {

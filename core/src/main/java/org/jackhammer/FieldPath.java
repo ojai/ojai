@@ -39,18 +39,22 @@ import com.google.common.cache.CacheBuilder;
 public final class FieldPath implements Comparable<FieldPath>, Iterable<FieldSegment> {
   private static Logger logger = LoggerFactory.getLogger(FieldPath.class);
 
+  public static final FieldPath EMPTY = new FieldPath(new NameSegment("", null, false));
+
   /**
    * Use this method to translate a <code>String</code> into <code>FieldPath</code>.
-   * 
+   *
    * @param fieldPath The String to parse.
    *
    * @return An immutable instance of {@link FieldPath} parsed from the input string.
-   * 
+   *
    * @throws IllegalArgumentException If the string is null or empty or has syntax error.
    */
   public static FieldPath parseFrom(String fieldPath) {
-    if (fieldPath == null || fieldPath.isEmpty()) {
-      throw new IllegalArgumentException("Can not parse null or empty string.");
+    if (fieldPath == null) {
+      throw new NullPointerException("Can not parse null string as FieldPath.");
+    } else if (fieldPath.isEmpty()) {
+      return EMPTY;
     }
 
     FieldPath fp = null;
