@@ -144,14 +144,67 @@ public final class FieldPath implements Comparable<FieldPath>, Iterable<FieldSeg
     return rootSegment;
   }
 
-  public FieldPath getChild(String childPath) {
+  /**
+   * @return A FieldPath with the specified name segment added as the
+   *         child of the leaf of this FieldPath.
+   */
+  public FieldPath cloneWithNewChild(String childPath) {
     NameSegment newRoot = rootSegment.cloneWithNewChild(new NameSegment(childPath));
     return new FieldPath(newRoot);
   }
 
-  public FieldPath getChild(int index) {
+  /**
+   * @return A FieldPath with the specified index segment added as the
+   *         child of the leaf of this FieldPath.
+   */
+  public FieldPath cloneWithNewChild(int index) {
     NameSegment newRoot = rootSegment.cloneWithNewChild(new IndexSegment(index));
     return new FieldPath(newRoot);
+  }
+
+  /**
+   * @return A sub-segment of this FieldPath starting after the specified
+   *         ancestor. For example if the current FieldPath is "a.b.c.d"
+   *         and the specified ancestor is "a.b", will return "c.d".<br/>
+   *         If the ancestor is same as this, will return EMPTY. If the
+   *         ancestor is not an actual ancestor, will return null.
+   */
+  public FieldPath cloneAfterAncestor(FieldPath ancestor) {
+    if (this == ancestor) {
+      return EMPTY;
+    }
+
+    FieldSegment c1 = rootSegment;
+    FieldSegment c2 = ancestor.rootSegment;
+    while (c1 != null && c2 != null) {
+      if (!c1.segmentEquals(c2)) { // bad blood
+        return null;
+      }
+      c1 = c1.getChild();
+      c2 = c2.getChild();
+    }
+
+    if (c1 == null && c2 == null) {
+      return EMPTY;          // ancestor same as this
+    } else if (c1 == null    // ancestor is actually a progeny
+        || c1.isIndexed()) { // or progeny starts at an index segment
+      return null;
+    }
+    return new FieldPath((NameSegment) c1.clone());
+  }
+
+  /**
+   * @return true if the other {@code FieldPath} is same or a child of this.
+   */
+  public boolean isAtOrBelow(FieldPath other) {
+    return rootSegment.isAtOrBelow(other.rootSegment);
+  }
+
+  /**
+   * @return true if the other {@code FieldPath} is same or parent of this.
+   */
+  public boolean isAtOrAbove(FieldPath other) {
+    return rootSegment.isAtOrAbove(other.rootSegment);
   }
 
   /**

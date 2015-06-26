@@ -390,4 +390,26 @@ public abstract class FieldSegment implements Comparable<FieldSegment> {
 
   }
 
+  boolean isAtOrBelow(FieldSegment otherSeg) {
+    if (this == otherSeg || otherSeg == null) {
+      return true;
+    } else if (!segmentEquals(otherSeg)) {
+      return false;
+    } else if (child != null) {
+      return child.isAtOrBelow(otherSeg.child);
+    }
+    return otherSeg.child == null;
+  }
+
+  boolean isAtOrAbove(FieldSegment otherSeg) {
+    if (this == otherSeg) {
+      return true;
+    } else if (otherSeg == null || !segmentEquals(otherSeg)) {
+      return false;
+    } else if (child != null) {
+      return child.isAtOrAbove(otherSeg.child);
+    }
+    return true;
+  }
+
 }

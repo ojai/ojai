@@ -18,6 +18,7 @@ package org.jackhammer.tests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
@@ -187,6 +188,39 @@ public class TestFieldPath {
     assertTrue(fp2.compareTo(fp3) < 0);
     assertTrue(fp3.compareTo(fp4) < 0);
     assertTrue(fp4.compareTo(fp5) < 0);
+  }
+
+  @Test
+  public void testCloneAfterAncestor() {
+    FieldPath parent = FieldPath.parseFrom("a.b.c");
+    FieldPath child = FieldPath.parseFrom("a.b.c.d");
+
+    FieldPath progeny = child.cloneAfterAncestor(parent);
+    assertEquals("d", progeny.asPathString());
+    assertEquals(FieldPath.EMPTY, child.cloneAfterAncestor(child));
+    assertNull(child.cloneAfterAncestor(FieldPath.parseFrom("a.b.d")));
+
+    parent = FieldPath.parseFrom("a.b[2]");
+    child = FieldPath.parseFrom("a.b[2].c");
+    progeny = child.cloneAfterAncestor(parent);
+    assertEquals("c", progeny.asPathString());
+  }
+
+  @Test
+  public void testFieldPathParentChild() {
+    FieldPath parent = FieldPath.parseFrom("a.b.c");
+    FieldPath child = FieldPath.parseFrom("a.b.c.d");
+    assertTrue(parent.isAtOrAbove(child));
+    assertFalse(parent.isAtOrBelow(child));
+    assertTrue(child.isAtOrBelow(parent));
+    assertFalse(child.isAtOrAbove(parent));
+
+    parent = FieldPath.parseFrom("a.b[2]");
+    child = FieldPath.parseFrom("a.b[2].c");
+    assertTrue(parent.isAtOrAbove(child));
+    assertFalse(parent.isAtOrBelow(child));
+    assertTrue(child.isAtOrBelow(parent));
+    assertFalse(child.isAtOrAbove(parent));
   }
 
 }
