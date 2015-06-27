@@ -26,6 +26,7 @@ import org.antlr.v4.runtime.Recognizer;
 import org.jackhammer.FieldSegment.NameSegment;
 import org.jackhammer.FieldSegment.IndexSegment;
 import org.jackhammer.annotation.API;
+import org.jackhammer.util.Fields;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -145,11 +146,22 @@ public final class FieldPath implements Comparable<FieldPath>, Iterable<FieldSeg
   }
 
   /**
+   * @return A FieldPath with the specified name segment as the
+   *         parent of the this FieldPath.
+   */
+  public FieldPath cloneWithNewParent(String parentSegment) {
+    String rootSegmentName = Fields.unquoteFieldName(parentSegment);
+    NameSegment newRoot = new NameSegment(
+        parentSegment, rootSegment.clone(), (rootSegmentName != parentSegment));
+    return new FieldPath(newRoot);
+  }
+
+  /**
    * @return A FieldPath with the specified name segment added as the
    *         child of the leaf of this FieldPath.
    */
-  public FieldPath cloneWithNewChild(String childPath) {
-    NameSegment newRoot = rootSegment.cloneWithNewChild(new NameSegment(childPath));
+  public FieldPath cloneWithNewChild(String childSegment) {
+    NameSegment newRoot = rootSegment.cloneWithNewChild(new NameSegment(childSegment));
     return new FieldPath(newRoot);
   }
 

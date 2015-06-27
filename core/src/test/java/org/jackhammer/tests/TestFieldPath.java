@@ -191,6 +191,14 @@ public class TestFieldPath {
   }
 
   @Test
+  public void testCloneWithNewParent() {
+    FieldPath fp1 = FieldPath.parseFrom("a.b.c");
+    FieldPath fp2 = fp1.cloneWithNewParent("v");
+    assertEquals("v.a.b.c", fp2.asPathString());
+    assertEquals(fp1.getRootSegment(), fp2.getRootSegment().getChild());
+  }
+
+  @Test
   public void testCloneAfterAncestor() {
     FieldPath parent = FieldPath.parseFrom("a.b.c");
     FieldPath child = FieldPath.parseFrom("a.b.c.d");
