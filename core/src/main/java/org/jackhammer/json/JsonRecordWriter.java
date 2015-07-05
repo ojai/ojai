@@ -147,7 +147,9 @@ public class JsonRecordWriter implements RecordWriter, Constants {
   @Override
   public JsonRecordWriter put(String field, long value) {
     try {
-      jsonGenerator.writeNumberField(field, value);
+      this.putNewMap(field);
+      jsonGenerator.writeNumberField(Types.TAG_LONG, value);
+      this.endMap();
     } catch (JsonGenerationException e) {
       throw new IllegalStateException(e);
     } catch (IOException ie) {
@@ -159,9 +161,7 @@ public class JsonRecordWriter implements RecordWriter, Constants {
   @Override
   public JsonRecordWriter put(String field, float value) {
     try {
-      putNewMap(field);
-      jsonGenerator.writeNumberField(Types.TAG_FLOAT, value);
-      endMap();
+      jsonGenerator.writeNumberField(field, value);
     } catch (JsonGenerationException e) {
       throw new IllegalStateException(e);
     } catch (IOException ie) {
@@ -514,15 +514,15 @@ public class JsonRecordWriter implements RecordWriter, Constants {
 
   @Override
   public JsonRecordWriter add(byte value) {
-    return AddInt(Types.TAG_BYTE, value);
+    return addInt(Types.TAG_BYTE, value);
   }
 
   @Override
   public JsonRecordWriter add(short value) {
-    return AddInt(Types.TAG_SHORT, value);
+    return addInt(Types.TAG_SHORT, value);
   }
 
-  private JsonRecordWriter AddInt(String field, int value) {
+  private JsonRecordWriter addInt(String field, long value) {
     try {
       jsonGenerator.writeStartObject();
       jsonGenerator.writeNumberField(field, value);
@@ -537,27 +537,18 @@ public class JsonRecordWriter implements RecordWriter, Constants {
 
   @Override
   public JsonRecordWriter add(int value) {
-    return AddInt(Types.TAG_INT, value);
+    return addInt(Types.TAG_INT, value);
   }
 
   @Override
   public JsonRecordWriter add(long value) {
-    try {
-      jsonGenerator.writeNumber(value);
-    } catch (JsonGenerationException e) {
-      throw new IllegalStateException(e);
-    } catch (IOException ie) {
-      throw new EncodingException(ie);
-    }
-    return this;
+    return addInt(Types.TAG_LONG, value);
   }
 
   @Override
   public JsonRecordWriter add(float value) {
     try {
-      jsonGenerator.writeStartObject();
-      jsonGenerator.writeNumberField(Types.TAG_FLOAT, value);
-      jsonGenerator.writeEndObject();
+      jsonGenerator.writeNumber(value);
     } catch (JsonGenerationException e) {
       throw new IllegalStateException(e);
     } catch (IOException ie) {

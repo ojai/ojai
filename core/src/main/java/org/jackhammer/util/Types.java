@@ -35,14 +35,14 @@ public class Types {
 
   public static final String TAG_BINARY     = "$binary";
   public static final String TAG_INTERVAL   = "$interval";
-  public static final String TAG_TIMESTAMP  = "$timestamp";
+  public static final String TAG_TIMESTAMP  = "$date";
   public static final String TAG_TIME       = "$time";
-  public static final String TAG_DATE       = "$date";
+  public static final String TAG_DATE       = "$dateDay";
   public static final String TAG_DECIMAL    = "$decimal";
-  public static final String TAG_FLOAT      = "$float";
-  public static final String TAG_INT        = "$int";
-  public static final String TAG_SHORT      = "$short";
-  public static final String TAG_BYTE       = "$byte";
+  public static final String TAG_LONG        = "$numberLong";
+  public static final String TAG_BYTE       = TAG_LONG;
+  public static final String TAG_SHORT      = TAG_LONG;
+  public static final String TAG_INT        = TAG_LONG;
 
   /**
    * The map between type and their tag names for the non intrinsic JSON types.
@@ -52,13 +52,14 @@ public class Types {
     TYPE_TAG_MAP.put(Type.BYTE, TAG_BYTE);
     TYPE_TAG_MAP.put(Type.SHORT, TAG_SHORT);
     TYPE_TAG_MAP.put(Type.INT, TAG_INT);
-    TYPE_TAG_MAP.put(Type.FLOAT, TAG_FLOAT);
+    TYPE_TAG_MAP.put(Type.LONG, TAG_LONG);
     TYPE_TAG_MAP.put(Type.DECIMAL, TAG_DECIMAL);
     TYPE_TAG_MAP.put(Type.DATE, TAG_DATE);
     TYPE_TAG_MAP.put(Type.TIME, TAG_TIME);
     TYPE_TAG_MAP.put(Type.TIMESTAMP, TAG_TIMESTAMP);
     TYPE_TAG_MAP.put(Type.INTERVAL, TAG_INTERVAL);
     TYPE_TAG_MAP.put(Type.BINARY, TAG_BINARY);
+
     assert TYPE_TAG_MAP.size() == (Type.values().length - (7 /*Json intrinsic types*/))
         : "Map is missing some of the Type enum elements";
   }

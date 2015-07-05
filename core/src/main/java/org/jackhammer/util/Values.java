@@ -151,6 +151,13 @@ public class Values {
     }
   }
 
+  /*
+   * Converts a string to BigDecimal object.
+   */
+  public static BigDecimal parseBigDecimal(String s) {
+    return new BigDecimal(s);
+  }
+
   /**
    * Converts a string in ISO-8601 date format to a <code>Date</code> value.
    * This assumes that the specified date string is in GMT. This is different

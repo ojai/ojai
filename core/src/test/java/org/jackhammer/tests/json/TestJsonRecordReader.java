@@ -32,37 +32,44 @@ public class TestJsonRecordReader extends BaseTest {
   @Test
   public void testAll() throws Exception {
 
+    String fieldName = null;
+
     try (InputStream testJson = getJsonStream("test.json");
-         RecordStream<Record> stream = Json.newRecordStream(testJson);) {
+        RecordStream<Record> stream = Json.newRecordStream(testJson);) {
       RecordReader r = stream.recordReaders().iterator().next();
       EventType et = r.next();
       while (et != null) {
-        if (et == EventType.BYTE) {
-          byte b = r.getByte();
-          assertEquals((byte) 127, b);
-        } else if (et == EventType.SHORT) {
-          short s = r.getShort();
-          assertEquals((short) 32767, s);
-        } else if (et == EventType.INT) {
-          int myint = r.getInt();
-          assertEquals(2147483647, myint);
-        } else if (et == EventType.BOOLEAN) {
+        if (et == EventType.FIELD_NAME) {
+          fieldName = r.getFieldName();
+        }
+        else if (et == EventType.LONG) {
+          if (fieldName.equals("byte")) {
+            assertEquals((byte)127, r.getByte());
+          }
+          else if (fieldName.equals("short")) {
+            assertEquals((short)32767, r.getShort());
+          }
+          else if (fieldName.equals("int")) {
+            assertEquals(2147483647, r.getInt());
+          }
+          else if (fieldName.equals("long")) {
+            long l = r.getLong();
+            assertEquals(Long.valueOf("9223372036854775807").longValue(), l);
+          }
+
+        }
+        else if (et == EventType.BOOLEAN) {
           boolean b = r.getBoolean();
           assertEquals(true, b);
         } else if (et == EventType.STRING) {
           String s = r.getString();
           assertEquals("eureka", s);
         }
-        else if (et == EventType.LONG) {
-          long l = r.getLong();
-          assertEquals(123456789, l);
-        } else if (et == EventType.INTERVAL) {
+        else if (et == EventType.INTERVAL) {
           int days = r.getIntervalDays();
           assertEquals(2, days);
         }
-        else if (et == EventType.FLOAT) {
-          r.getFloat();
-        } else if (et == EventType.START_ARRAY) {
+        else if (et == EventType.START_ARRAY) {
           et = r.next();
           while (et != EventType.END_ARRAY) {
             if (et == EventType.LONG) {

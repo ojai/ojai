@@ -86,14 +86,8 @@ public class JsonStreamRecordReader implements RecordReader, Constants {
 
           // determine extended type
           switch(field_name) {
-          case Types.TAG_BYTE:
-            return EventType.BYTE;
-          case Types.TAG_SHORT:
-            return EventType.SHORT;
-          case Types.TAG_INT:
-            return EventType.INT;
-          case Types.TAG_FLOAT:
-            return EventType.FLOAT;
+          case Types.TAG_LONG:
+            return EventType.LONG;
           case Types.TAG_DECIMAL:
             return EventType.DECIMAL;
           case Types.TAG_DATE:
@@ -174,7 +168,7 @@ public class JsonStreamRecordReader implements RecordReader, Constants {
       currentDoubleValue = getParser().getDoubleValue();
       break;
     case DECIMAL:
-      currentObjValue = getParser().getDecimalValue();
+      currentObjValue = Values.parseBigDecimal(getParser().getText());
       break;
     case DATE:
       currentObjValue = Values.parseDate(getParser().getText());
@@ -199,6 +193,15 @@ public class JsonStreamRecordReader implements RecordReader, Constants {
 
   private void checkEventType(EventType eventType) throws TypeException {
     if (currentEventType != eventType) {
+      throw new TypeException("Event type mismatch");
+    }
+  }
+
+  private void checkNumericEventType() throws TypeException {
+
+    if (currentEventType == EventType.LONG) {
+      return;
+    } else {
       throw new TypeException("Event type mismatch");
     }
   }
@@ -333,21 +336,22 @@ public class JsonStreamRecordReader implements RecordReader, Constants {
     return (String) currentObjValue;
   }
 
+
   @Override
   public byte getByte() {
-    checkEventType(EventType.BYTE);
+    checkNumericEventType();
     return (byte) currentLongValue;
   }
 
   @Override
   public short getShort() {
-    checkEventType(EventType.SHORT);
+    checkNumericEventType();
     return (short) currentLongValue;
   }
 
   @Override
   public int getInt() {
-    checkEventType(EventType.INT);
+    checkNumericEventType();
     return (int) currentLongValue;
   }
 

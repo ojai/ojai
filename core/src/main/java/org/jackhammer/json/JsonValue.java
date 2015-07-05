@@ -82,6 +82,19 @@ public class JsonValue implements Value, Constants {
     return;
   }
 
+  private void checkNumericType() throws TypeException {
+
+    switch(valueType) {
+    case BYTE:
+    case SHORT:
+    case INT:
+    case LONG:
+      return;
+    default:
+      throw new TypeException("Value type is wrong");
+    }
+  }
+
   void setPrimValue(long value) {
     this.jsonValue = value;
   }
@@ -94,13 +107,13 @@ public class JsonValue implements Value, Constants {
 
   @Override
   public int getInt() {
-    checkType(Type.INT);
+    checkNumericType();
     return (int) (jsonValue & 0xffffffff);
   }
 
   @Override
   public long getLong() {
-    checkType(Type.LONG);
+    checkNumericType();
     return jsonValue;
   }
 
@@ -159,13 +172,13 @@ public class JsonValue implements Value, Constants {
 
   @Override
   public byte getByte() {
-    checkType(Type.BYTE);
+    checkNumericType();
     return (byte) (jsonValue & 0xff);
   }
 
   @Override
   public short getShort() {
-    checkType(Type.SHORT);
+    checkNumericType();
     return (short) (jsonValue & 0xffff);
   }
 
