@@ -21,12 +21,15 @@ import java.math.BigDecimal;
 import java.nio.ByteBuffer;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.jackhammer.Record;
 import org.jackhammer.RecordWriter;
 import org.jackhammer.Value;
 import org.jackhammer.json.Json;
+import org.jackhammer.json.JsonRecordWriter;
 import org.jackhammer.json.JsonValueBuilder;
 import org.jackhammer.tests.BaseTest;
 import org.jackhammer.types.Interval;
@@ -203,6 +206,43 @@ public class TestJsonRecordWriter extends BaseTest {
     Record record = jsonWriter.build();
 
     assertEquals("santanu", record.getString("string"));
+
+  }
+
+  @Test
+  public void testRecordAdd() {
+    Map<String, Object> map = new LinkedHashMap<String, Object>();
+
+    map.put("null", null);
+    map.put("boolean", true);
+    map.put("string", "eureka");
+    List<Object> l = new ArrayList<Object>();
+    l.add("test1");
+    Map<String, Object> m2 = new LinkedHashMap<String, Object>();
+    m2.put("int", 32900);
+    l.add(m2);
+    l.add(Long.valueOf("9223372036854775807").longValue());
+    l.add(new BigDecimal(7126353.167263));
+    map.put("array", l);
+
+    Record innerRecord = Json.newRecord();
+    innerRecord.set("map", map);
+
+    //assert on integer field inside innerRecord
+    assertEquals(32900, innerRecord.getInt("map.array[1].int"));
+
+    JsonRecordWriter writer = (JsonRecordWriter)Json.newRecordWriter();
+    writer.putNewMap("map");
+    writer.putNewArray("array");
+    writer.add(innerRecord);
+    writer.add(true);
+    writer.endArray();
+    writer.endMap();
+
+    Record rec = writer.build();
+    //rerun assert on built record
+    assertEquals(32900, rec.getInt("map.array[0].map.array[1].int"));
+    System.out.println(writer.asUTF8String());
 
   }
 

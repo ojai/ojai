@@ -459,16 +459,16 @@ public class JsonRecordWriter implements RecordWriter, Constants {
     return this;
   }
 
-  private JsonRecordWriter iterRecord(String field, Iterator<Entry<String, Value>> it) {
+  private JsonRecordWriter iterRecord(Iterator<Entry<String, Value>> it) {
     while (it.hasNext()) {
       Entry<String, Value> kv = it.next();
       String key = kv.getKey();
-      JsonValue value = (JsonValue) kv.getValue();
+      Value value = kv.getValue();
       if (value.getType() == Type.MAP) {
         putNewMap(key);
-        iterRecord(key, ((JsonRecord) value).iterator());
+        iterRecord(((Record) value).iterator());
       } else if (value.getType() == Type.ARRAY) {
-        addArray(key, (JsonList)value);
+        addArray(key, value.getList());
       } else {
         // process element.
         put(key, value);
@@ -485,7 +485,7 @@ public class JsonRecordWriter implements RecordWriter, Constants {
 
     Iterator<Entry<String, Value>> it = value.iterator();
     putNewMap(field);
-    return iterRecord(field, it);
+    return iterRecord(it);
   }
 
   @Override
@@ -731,6 +731,10 @@ public class JsonRecordWriter implements RecordWriter, Constants {
       add(value.getBinary());
       break;
     case MAP:
+      add((Record)value);
+      break;
+    case DECIMAL:
+      add(value.getDecimal());
       break;
     case ARRAY:
       addArray(null, value.getList());
@@ -744,7 +748,9 @@ public class JsonRecordWriter implements RecordWriter, Constants {
 
   @Override
   public JsonRecordWriter add(Record value) {
-    return null;
+    addNewMap();
+    Iterator<Entry<String, Value>> it = value.iterator();
+    return iterRecord(it);
   }
 
   @Override
