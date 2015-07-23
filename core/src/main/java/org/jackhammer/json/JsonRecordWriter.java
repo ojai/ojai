@@ -321,7 +321,7 @@ public class JsonRecordWriter implements RecordWriter, Constants {
 
   @Override
   public JsonRecordWriter put(String field, Interval value) {
-    return putLongWithTag(field, Types.TAG_INTERVAL, value.getInterval());
+    return putLongWithTag(field, Types.TAG_INTERVAL, value.getTimeInMillis());
   }
 
   @Override
@@ -827,7 +827,7 @@ public class JsonRecordWriter implements RecordWriter, Constants {
 
   @Override
   public JsonRecordWriter add(Interval value) {
-    return addLongWithTag(Types.TAG_INTERVAL, value.getInterval());
+    return addLongWithTag(Types.TAG_INTERVAL, value.getTimeInMillis());
   }
 
   @Override

@@ -321,7 +321,7 @@ class JsonDOMRecordReader implements RecordReader, Constants {
 
   @Override
   public long getIntervalMillis() {
-    return getInterval().getInterval();
+    return getInterval().getTimeInMillis();
   }
 
   @Override

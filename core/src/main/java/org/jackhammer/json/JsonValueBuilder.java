@@ -119,7 +119,7 @@ public class JsonValueBuilder implements Constants {
 
   public static JsonValue initFrom(Interval value) {
     JsonValue v = new JsonValue(Type.INTERVAL);
-    v.setPrimValue(value.getInterval());
+    v.setPrimValue(value.getTimeInMillis());
     return v;
   }
 
