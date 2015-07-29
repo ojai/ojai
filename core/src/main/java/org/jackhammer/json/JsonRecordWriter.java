@@ -28,6 +28,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Stack;
 
 import org.jackhammer.Record;
 import org.jackhammer.RecordStream;
@@ -50,9 +51,17 @@ import com.fasterxml.jackson.core.JsonGenerator;
 @API.Internal
 public class JsonRecordWriter implements RecordWriter, Constants {
 
+  private enum WriterContext {
+    MAPCONTEXT,
+    ARRAYCONTEXT,
+    NONE
+  }
+
   private JsonGenerator jsonGenerator;
   private ByteArrayWriterOutputStream b;
   private String cachedJson;
+  private Stack<WriterContext> allRecords;
+  private WriterContext currentContext;
 
   JsonRecordWriter() {
     b = new ByteArrayWriterOutputStream();
@@ -67,15 +76,25 @@ public class JsonRecordWriter implements RecordWriter, Constants {
     JsonFactory jFactory = new JsonFactory();
     try {
       jsonGenerator = jFactory.createGenerator(out, JsonEncoding.UTF8);
-      jsonGenerator.writeStartObject();
     } catch (IOException io) {
       throw new EncodingException(io);
     }
+
+    allRecords = new Stack<WriterContext>();
+    currentContext = WriterContext.NONE;
   }
+
+  private void checkContext(WriterContext expectedContext) {
+    if (currentContext != expectedContext) {
+      throw new IllegalStateException("Mismatch in writeContext. Expected " +
+          expectedContext.name() + " but found "+currentContext.name());
+    }
+  }
+
 
   @Override
   public JsonRecordWriter put(String field, boolean value) {
-
+    checkContext(WriterContext.MAPCONTEXT);
     try {
       jsonGenerator.writeBooleanField(field, value);
     } catch (JsonGenerationException e) {
@@ -88,7 +107,7 @@ public class JsonRecordWriter implements RecordWriter, Constants {
 
   @Override
   public JsonRecordWriter put(String field, String value) {
-
+    checkContext(WriterContext.MAPCONTEXT);
     try {
       jsonGenerator.writeStringField(field, value);
     } catch (JsonGenerationException e) {
@@ -101,7 +120,7 @@ public class JsonRecordWriter implements RecordWriter, Constants {
 
   @Override
   public JsonRecordWriter put(String field, byte value) {
-
+    checkContext(WriterContext.MAPCONTEXT);
     putNewMap(field);
     try {
       jsonGenerator.writeNumberField(Types.TAG_BYTE, value);
@@ -116,6 +135,7 @@ public class JsonRecordWriter implements RecordWriter, Constants {
 
   @Override
   public JsonRecordWriter put(String field, short value) {
+    checkContext(WriterContext.MAPCONTEXT);
     try {
       this.putNewMap(field);
       jsonGenerator.writeNumberField(Types.TAG_SHORT, value);
@@ -131,6 +151,7 @@ public class JsonRecordWriter implements RecordWriter, Constants {
 
   @Override
   public JsonRecordWriter put(String field, int value) {
+    checkContext(WriterContext.MAPCONTEXT);
     try {
       this.putNewMap(field);
       jsonGenerator.writeNumberField(Types.TAG_INT, value);
@@ -146,6 +167,7 @@ public class JsonRecordWriter implements RecordWriter, Constants {
 
   @Override
   public JsonRecordWriter put(String field, long value) {
+    checkContext(WriterContext.MAPCONTEXT);
     try {
       this.putNewMap(field);
       jsonGenerator.writeNumberField(Types.TAG_LONG, value);
@@ -160,6 +182,7 @@ public class JsonRecordWriter implements RecordWriter, Constants {
 
   @Override
   public JsonRecordWriter put(String field, float value) {
+    checkContext(WriterContext.MAPCONTEXT);
     try {
       jsonGenerator.writeNumberField(field, value);
     } catch (JsonGenerationException e) {
@@ -172,6 +195,7 @@ public class JsonRecordWriter implements RecordWriter, Constants {
 
   @Override
   public JsonRecordWriter put(String field, double value) {
+    checkContext(WriterContext.MAPCONTEXT);
     try {
       jsonGenerator.writeNumberField(field, value);
     } catch (JsonGenerationException e) {
@@ -184,6 +208,7 @@ public class JsonRecordWriter implements RecordWriter, Constants {
 
   @Override
   public JsonRecordWriter put(String field, BigDecimal value) {
+    checkContext(WriterContext.MAPCONTEXT);
     try {
       putNewMap(field);
       jsonGenerator.writeNumberField(Types.TAG_DECIMAL, value);
@@ -225,6 +250,7 @@ public class JsonRecordWriter implements RecordWriter, Constants {
 
   @Override
   public JsonRecordWriter put(String field, byte[] value) {
+    checkContext(WriterContext.MAPCONTEXT);
     try {
       putNewMap(field);
       jsonGenerator.writeBinaryField(Types.TAG_BINARY, value);
@@ -239,6 +265,7 @@ public class JsonRecordWriter implements RecordWriter, Constants {
 
   @Override
   public JsonRecordWriter put(String field, byte[] value, int offset, int length) {
+    checkContext(WriterContext.MAPCONTEXT);
     try {
       putNewMap(field);
       jsonGenerator.writeFieldName(Types.TAG_BINARY);
@@ -260,6 +287,7 @@ public class JsonRecordWriter implements RecordWriter, Constants {
   }
 
   private JsonRecordWriter putLongWithTag(String fieldname, String fieldTag, long value) {
+    checkContext(WriterContext.MAPCONTEXT);
     try {
       putNewMap(fieldname);
       jsonGenerator.writeNumberField(fieldTag, value);
@@ -273,6 +301,7 @@ public class JsonRecordWriter implements RecordWriter, Constants {
   }
 
   private JsonRecordWriter putStringWithTag(String fieldname, String fieldTag, String value) {
+    checkContext(WriterContext.MAPCONTEXT);
     try {
       putNewMap(fieldname);
       jsonGenerator.writeStringField(fieldTag, value);
@@ -337,6 +366,7 @@ public class JsonRecordWriter implements RecordWriter, Constants {
 
   @Override
   public JsonRecordWriter putNewMap(String field) {
+    checkContext(WriterContext.MAPCONTEXT);
     try {
       jsonGenerator.writeFieldName(field);
       jsonGenerator.writeStartObject();
@@ -345,11 +375,13 @@ public class JsonRecordWriter implements RecordWriter, Constants {
     } catch (IOException ie) {
       throw new EncodingException(ie);
     }
+    allRecords.push(currentContext);
     return this;
   }
 
   @Override
   public JsonRecordWriter putNewArray(String field) {
+    checkContext(WriterContext.MAPCONTEXT);
     try {
       jsonGenerator.writeFieldName(field);
       jsonGenerator.writeStartArray();
@@ -358,11 +390,14 @@ public class JsonRecordWriter implements RecordWriter, Constants {
     } catch (IOException ie) {
       throw new EncodingException(ie);
     }
+    currentContext = WriterContext.ARRAYCONTEXT;
+    allRecords.push(currentContext);
     return this;
   }
 
   @Override
   public JsonRecordWriter putNull(String field) {
+    checkContext(WriterContext.MAPCONTEXT);
     try {
       jsonGenerator.writeNullField(field);
     } catch (JsonGenerationException e) {
@@ -373,29 +408,6 @@ public class JsonRecordWriter implements RecordWriter, Constants {
     return this;
   }
 
-  /*
-   * Implementation for adding a map to JSON document.
-   */
-  private JsonRecordWriter putMap(String field, Map<String, Object> map) {
-    try {
-      jsonGenerator.writeFieldName(field);
-      jsonGenerator.writeStartObject();
-      Iterator<Entry<String, Object>> entries = map.entrySet().iterator();
-      while (entries.hasNext()) {
-        Entry<String, Object> keyvaluepair = entries.next();
-        String key = keyvaluepair.getKey();
-        Value val = (Value) keyvaluepair.getValue();
-        put(key, val);
-      }
-      jsonGenerator.writeEndObject();
-
-    } catch (JsonGenerationException e) {
-      throw new IllegalStateException(e);
-    } catch (IOException ie) {
-      throw new EncodingException(ie);
-    }
-    return this;
-  }
 
   @Override
   public JsonRecordWriter put(String field, Value value) {
@@ -451,7 +463,7 @@ public class JsonRecordWriter implements RecordWriter, Constants {
       put(field, (Record)value);
       break;
     case ARRAY:
-      addArray(field, value.getList());
+      putArray(field, value.getList());
       break;
     default:
       break;
@@ -468,7 +480,7 @@ public class JsonRecordWriter implements RecordWriter, Constants {
         putNewMap(key);
         iterRecord(((Record) value).iterator());
       } else if (value.getType() == Type.ARRAY) {
-        addArray(key, value.getList());
+        putArray(key, value.getList());
       } else {
         // process element.
         put(key, value);
@@ -482,7 +494,7 @@ public class JsonRecordWriter implements RecordWriter, Constants {
   public JsonRecordWriter put(String field, Record value) {
     // iterate over the record interface and extract tokens.
     // Add them to the writer.
-
+    checkContext(WriterContext.MAPCONTEXT);
     Iterator<Entry<String, Value>> it = value.iterator();
     putNewMap(field);
     return iterRecord(it);
@@ -490,6 +502,7 @@ public class JsonRecordWriter implements RecordWriter, Constants {
 
   @Override
   public JsonRecordWriter add(boolean value) {
+    checkContext(WriterContext.ARRAYCONTEXT);
     try {
       jsonGenerator.writeBoolean(value);
     } catch (JsonGenerationException e) {
@@ -502,6 +515,7 @@ public class JsonRecordWriter implements RecordWriter, Constants {
 
   @Override
   public JsonRecordWriter add(String value) {
+    checkContext(WriterContext.ARRAYCONTEXT);
     try {
       jsonGenerator.writeString(value);
     } catch (JsonGenerationException e) {
@@ -523,6 +537,7 @@ public class JsonRecordWriter implements RecordWriter, Constants {
   }
 
   private JsonRecordWriter addInt(String field, long value) {
+    checkContext(WriterContext.ARRAYCONTEXT);
     try {
       jsonGenerator.writeStartObject();
       jsonGenerator.writeNumberField(field, value);
@@ -547,6 +562,7 @@ public class JsonRecordWriter implements RecordWriter, Constants {
 
   @Override
   public JsonRecordWriter add(float value) {
+    checkContext(WriterContext.ARRAYCONTEXT);
     try {
       jsonGenerator.writeNumber(value);
     } catch (JsonGenerationException e) {
@@ -559,6 +575,7 @@ public class JsonRecordWriter implements RecordWriter, Constants {
 
   @Override
   public JsonRecordWriter add(double value) {
+    checkContext(WriterContext.ARRAYCONTEXT);
     try {
       jsonGenerator.writeNumber(value);
     } catch (JsonGenerationException e) {
@@ -571,6 +588,7 @@ public class JsonRecordWriter implements RecordWriter, Constants {
 
   @Override
   public JsonRecordWriter add(BigDecimal value) {
+    checkContext(WriterContext.ARRAYCONTEXT);
     try {
       jsonGenerator.writeStartObject();
       jsonGenerator.writeNumberField(Types.TAG_DECIMAL, value);
@@ -585,6 +603,7 @@ public class JsonRecordWriter implements RecordWriter, Constants {
 
   @Override
   public JsonRecordWriter addDecimal(long decimalValue) {
+    checkContext(WriterContext.ARRAYCONTEXT);
     try {
       jsonGenerator.writeStartObject();
       jsonGenerator.writeNumberField(Types.TAG_DECIMAL, decimalValue);
@@ -599,7 +618,7 @@ public class JsonRecordWriter implements RecordWriter, Constants {
 
   @Override
   public JsonRecordWriter addDecimal(double decimalValue) {
-
+    checkContext(WriterContext.ARRAYCONTEXT);
     try {
       jsonGenerator.writeStartObject();
       jsonGenerator.writeNumberField(Types.TAG_DECIMAL, decimalValue);
@@ -629,6 +648,7 @@ public class JsonRecordWriter implements RecordWriter, Constants {
 
   @Override
   public JsonRecordWriter add(byte[] value) {
+    checkContext(WriterContext.ARRAYCONTEXT);
     try {
       jsonGenerator.writeStartObject();
       jsonGenerator.writeBinaryField(Types.TAG_BINARY, value);
@@ -643,6 +663,7 @@ public class JsonRecordWriter implements RecordWriter, Constants {
 
   @Override
   public JsonRecordWriter add(byte[] value, int offset, int length) {
+    checkContext(WriterContext.ARRAYCONTEXT);
     try {
       jsonGenerator.writeStartObject();
       jsonGenerator.writeFieldName(Types.TAG_BINARY);
@@ -665,6 +686,7 @@ public class JsonRecordWriter implements RecordWriter, Constants {
 
   @Override
   public JsonRecordWriter addNull() {
+    checkContext(WriterContext.ARRAYCONTEXT);
     try {
       jsonGenerator.writeNull();
     } catch (JsonGenerationException e) {
@@ -728,7 +750,7 @@ public class JsonRecordWriter implements RecordWriter, Constants {
       add(value.getDecimal());
       break;
     case ARRAY:
-      addArray(null, value.getList());
+      putArray(null, value.getList());
       break;
     default:
       throw new IllegalStateException("Unknown object type");
@@ -746,6 +768,7 @@ public class JsonRecordWriter implements RecordWriter, Constants {
 
   @Override
   public JsonRecordWriter addNewArray() {
+    checkContext(WriterContext.ARRAYCONTEXT);
     try {
       jsonGenerator.writeStartArray();
     } catch (JsonGenerationException e) {
@@ -753,11 +776,16 @@ public class JsonRecordWriter implements RecordWriter, Constants {
     } catch (IOException ie) {
       throw new EncodingException(ie);
     }
+    allRecords.push(WriterContext.ARRAYCONTEXT);
     return this;
   }
 
   @Override
   public JsonRecordWriter addNewMap() {
+    if (currentContext == WriterContext.MAPCONTEXT) {
+      throw new IllegalStateException("Context mismatch : addNewMap() can not be called at "+
+          currentContext.name());
+    }
     try {
       jsonGenerator.writeStartObject();
     } catch (JsonGenerationException e) {
@@ -765,10 +793,14 @@ public class JsonRecordWriter implements RecordWriter, Constants {
     } catch (IOException ie) {
       throw new EncodingException(ie);
     }
+    currentContext = WriterContext.MAPCONTEXT;
+    allRecords.push(currentContext);
+
     return this;
   }
 
   private JsonRecordWriter addLongWithTag(String tagName, long value) {
+    checkContext(WriterContext.ARRAYCONTEXT);
     try {
       jsonGenerator.writeStartObject();
       jsonGenerator.writeNumberField(tagName, value);
@@ -783,6 +815,7 @@ public class JsonRecordWriter implements RecordWriter, Constants {
 
   /* helper function to write date, time and timestamp types as string */
   private JsonRecordWriter addStringWithTag(String tagName, String value) {
+    checkContext(WriterContext.ARRAYCONTEXT);
     try {
       jsonGenerator.writeStartObject();
       jsonGenerator.writeStringField(tagName, value);
@@ -837,6 +870,7 @@ public class JsonRecordWriter implements RecordWriter, Constants {
 
   @Override
   public JsonRecordWriter endArray() {
+    checkContext(WriterContext.ARRAYCONTEXT);
     try {
       jsonGenerator.writeEndArray();
     } catch (JsonGenerationException e) {
@@ -844,11 +878,19 @@ public class JsonRecordWriter implements RecordWriter, Constants {
     } catch (IOException ie) {
       throw new EncodingException(ie);
     }
+    allRecords.pop();
+
+    currentContext = allRecords.peek();
+
     return this;
   }
 
   @Override
   public JsonRecordWriter endMap() {
+    if (jsonGenerator.isClosed()) {
+      throw new IllegalStateException("The record has already been built.");
+    }
+    checkContext(WriterContext.MAPCONTEXT);
     try {
       jsonGenerator.writeEndObject();
     } catch (JsonGenerationException e) {
@@ -856,36 +898,21 @@ public class JsonRecordWriter implements RecordWriter, Constants {
     } catch (IOException ie) {
       throw new EncodingException(ie);
     }
-    return this;
-  }
-
-  @Override
-  public Record build() {
-    if (jsonGenerator.isClosed()) {
-      throw new IllegalStateException("The record has already been built.");
-    }
-
-    try {
-      jsonGenerator.close();
-    } catch (JsonGenerationException e) {
-      throw new IllegalStateException(e);
-    } catch (IOException ie) {
-      throw new EncodingException(ie);
-    }
-
-    if (b != null) {
-      byte[] barray = b.getByteArray();
-      ByteArrayInputStream inputStream = new ByteArrayInputStream(barray);
-      RecordStream<Record> recordStream = Json.newRecordStream(inputStream);
-      Iterator<Record> iter = recordStream.iterator();
-      if (iter.hasNext()) {
-        Record r = iter.next();
-        return r;
+    allRecords.pop();
+    if (!allRecords.empty()) {
+      currentContext = allRecords.peek();
+    } else {
+      //close the generator
+      try {
+        jsonGenerator.close();
+      } catch (JsonGenerationException e) {
+        throw new IllegalStateException(e);
+      } catch (IOException ie) {
+        throw new EncodingException(ie);
       }
     }
 
-
-    return null;
+    return this;
   }
 
   @Override
@@ -912,18 +939,28 @@ public class JsonRecordWriter implements RecordWriter, Constants {
     return b.getByteArray();
   }
 
-  private JsonRecordWriter addArray(String field, List<Object> values) {
+  /* private function that adds an array as value of k-v pair */
+  private JsonRecordWriter putArray(String field, List<Object> values) {
+
     try {
       if (field != null) {
+        checkContext(WriterContext.MAPCONTEXT);
         jsonGenerator.writeFieldName(field);
+      } else {
+        checkContext(WriterContext.ARRAYCONTEXT);
       }
       jsonGenerator.writeStartArray();
+      currentContext = WriterContext.ARRAYCONTEXT;
+      allRecords.push(currentContext);
+
       for (Iterator<Object> it = values.iterator(); it
           .hasNext();) {
         Object e = it.next();
         add(JsonValueBuilder.initFromObject(e));
       }
       jsonGenerator.writeEndArray();
+      allRecords.pop();
+      currentContext = allRecords.peek();
     } catch (JsonGenerationException je) {
       throw new IllegalStateException(je);
     } catch (IOException ie) {
@@ -938,6 +975,30 @@ public class JsonRecordWriter implements RecordWriter, Constants {
     } else {
       jsonGenerator.setPrettyPrinter(null);
     }
+  }
+
+  @Override
+  public Record getRecord() {
+    if (!jsonGenerator.isClosed()) {
+      throw new IllegalStateException("Record is not written completely");
+    }
+
+    if (b != null) {
+      byte[] barray = b.getByteArray();
+      ByteArrayInputStream inputStream = new ByteArrayInputStream(barray);
+      RecordStream<Record> recordStream = Json.newRecordStream(inputStream);
+      Iterator<Record> iter = recordStream.iterator();
+      if (iter.hasNext()) {
+        Record r = iter.next();
+        return r;
+      }
+    }
+    return null;
+  }
+
+  @Override
+  public RecordWriter put(String field, Map<String, Object> value) {
+    return put(field, JsonValueBuilder.initFrom(value));
   }
 
 }

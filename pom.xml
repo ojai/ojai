@@ -23,7 +23,7 @@
 
   <groupId>org.jackhammer</groupId>
   <artifactId>jackhammer-root</artifactId>
-  <version>0.1.r19-SNAPSHOT</version>
+  <version>0.1.r20-SNAPSHOT</version>
 
   <name>Jackhammer ROOT pom</name>
   <packaging>pom</packaging>

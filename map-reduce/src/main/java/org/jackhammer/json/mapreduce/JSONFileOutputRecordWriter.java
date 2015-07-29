@@ -50,7 +50,6 @@ RecordWriter<LongWritable, Record> {
     writer = (JsonRecordWriter) Json.newRecordWriter();
     RecordReader reader = record.asReader();
     Json.writeReaderToStream(reader, writer);
-    writer.build();
     byte[] bytes = writer.getOutputStream();
     out.write(bytes);
   }

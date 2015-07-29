@@ -13,13 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.jackhammer.json.mapreduce;
 
 import java.io.IOException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.LongWritable;
@@ -31,8 +28,6 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.jackhammer.Record;
 
 public class JSONFileInputFormat extends FileInputFormat<LongWritable, Record> {
-
-  final Log LOG = LogFactory.getLog(JSONFileInputFormat.class);
 
   @Override
   public RecordReader<LongWritable, Record> createRecordReader(InputSplit arg0,

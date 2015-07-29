@@ -31,7 +31,7 @@ public class JsonRecordIterator implements Iterator<Record> {
   Iterator<RecordReader> it = null;
   JsonRecord record;
   RecordReader reader;
-  private boolean hasNextRecord;
+  private boolean done = false;
 
   public JsonRecordIterator(JsonRecordStream s) {
     it = s.recordReaders().iterator();
@@ -39,22 +39,27 @@ public class JsonRecordIterator implements Iterator<Record> {
 
   @Override
   public boolean hasNext() {
-    hasNextRecord = false;
-    if (it.hasNext()) {
-      reader = it.next();
-      if (reader != null) {
-        hasNextRecord = true;
+    if (done) {
+      return false;
+    }
+    if (reader == null) {
+      if (it.hasNext()) {
+        reader = it.next();
+      } else {
+        done = true;
       }
     }
-    return hasNextRecord;
+    return reader != null ;
   }
 
   @Override
   public Record next() {
-    if (hasNextRecord) {
-      return getRecordFromStreamReader();
+    if (!hasNext()) {
+      throw new NoSuchElementException("next() called after hasNext() returned false");
     }
-    throw new NoSuchElementException();
+    Record rec = getRecordFromStreamReader();
+    reader = null;
+    return rec;
   }
 
   private Record getRecordFromStreamReader() {
@@ -150,8 +155,8 @@ public class JsonRecordIterator implements Iterator<Record> {
       case INTERVAL:
         appendTo(currentContainer, currentFieldName, JsonValueBuilder.initFrom(reader.getInterval()));
         break;
-       default:
-         throw new DecodingException("Unknown token type " + event + " from stream reader");
+      default:
+        throw new DecodingException("Unknown token type " + event + " from stream reader");
       }
     }
     if (!containerStack.empty()) {

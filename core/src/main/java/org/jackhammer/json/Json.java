@@ -84,9 +84,9 @@ public final class Json {
     assert e == EventType.START_MAP;
 
     JsonRecordWriter w = new JsonRecordWriter();
+    w.addNewMap();
     w.enablePrettyPrinting(pretty);
     JsonUtils.addToMap(r, w);
-    w.build();
     return w.asUTF8String();
   }
 

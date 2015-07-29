@@ -22,6 +22,7 @@ import org.jackhammer.annotation.API;
 
 @API.Internal
 public class JsonUtils {
+
   static void addToMap(RecordReader r, RecordWriter w) {
     EventType e;
     String currentFieldName = null;
@@ -30,6 +31,9 @@ public class JsonUtils {
       case START_MAP:
         if (currentFieldName != null) {
           w.putNewMap(currentFieldName);
+        } else {
+          //start of the document
+          w.addNewMap();
         }
         addToMap(r, w);
         break;

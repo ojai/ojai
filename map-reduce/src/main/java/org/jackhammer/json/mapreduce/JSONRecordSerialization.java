@@ -34,14 +34,17 @@ import org.jackhammer.json.JsonRecord;
 public class JSONRecordSerialization extends Configured implements
 Serialization<JsonRecord> {
 
+  @Override
   public boolean accept(Class<?> arg0) {
     return JsonRecord.class.isAssignableFrom(arg0);
   }
 
+  @Override
   public Deserializer<JsonRecord> getDeserializer(Class<JsonRecord> arg0) {
     return new JsonRecordDeserializer();
   }
 
+  @Override
   public Serializer<JsonRecord> getSerializer(Class<JsonRecord> arg0) {
     return new JsonRecordSerializer();
   }
@@ -52,6 +55,7 @@ Serialization<JsonRecord> {
     private RecordStream<Record> stream;
     private Iterator<Record> iter;
 
+    @Override
     public void close() throws IOException {
       try {
         stream.close();
@@ -60,6 +64,7 @@ Serialization<JsonRecord> {
       }
     }
 
+    @Override
     public JsonRecord deserialize(JsonRecord arg0) throws IOException {
       if (iter.hasNext()) {
         return (JsonRecord) iter.next();
@@ -67,6 +72,7 @@ Serialization<JsonRecord> {
       return null;
     }
 
+    @Override
     public void open(InputStream in) throws IOException {
       stream = Json.newRecordStream(in);
       iter = stream.iterator();
@@ -79,14 +85,17 @@ Serialization<JsonRecord> {
     private OutputStream out;
     private JSONFileRecordWriter writer = null;
 
+    @Override
     public void close() throws IOException {
       out.close();
     }
 
+    @Override
     public void open(OutputStream arg0) throws IOException {
       out = arg0;
     }
 
+    @Override
     public void serialize(JsonRecord arg0) throws IOException {
       writer = new JSONFileRecordWriter(out);
       if (writer == null) {
@@ -96,7 +105,6 @@ Serialization<JsonRecord> {
 
       RecordReader reader = arg0.asReader();
       Json.writeReaderToStream(reader, writer);
-      writer.build();
     }
 
   }

@@ -15,7 +15,7 @@ public class TestJsonMapperReducer extends Configured implements Tool {
 
   public int run(String[] args) throws Exception {
     Configuration conf = getConf();
-    Job job = new Job(conf);
+    Job job = Job.getInstance(conf);
     job.setJarByClass(getClass());
     job.setJobName(getClass().getSimpleName());
     job.setOutputKeyClass(LongWritable.class);

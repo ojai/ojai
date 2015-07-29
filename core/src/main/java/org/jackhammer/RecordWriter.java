@@ -20,6 +20,7 @@ import java.nio.ByteBuffer;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.Map;
 
 import org.jackhammer.annotation.API;
 import org.jackhammer.types.Interval;
@@ -128,6 +129,7 @@ public interface RecordWriter {
 
   RecordWriter put(String field, Value value);
   RecordWriter put(String field, Record value);
+  RecordWriter put(String field, Map<String, Object> value);
 
   /* =============
    * Array Methods
@@ -353,6 +355,6 @@ public interface RecordWriter {
   RecordWriter endArray();
   RecordWriter endMap();
 
-  Record build();
+  Record getRecord();
 
 }

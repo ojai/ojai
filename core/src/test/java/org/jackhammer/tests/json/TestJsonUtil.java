@@ -34,7 +34,6 @@ public class TestJsonUtil extends BaseTest {
       for (RecordReader reader : stream.recordReaders()) {
         RecordWriter writer = Json.newRecordWriter();
         Json.writeReaderToStream(reader, writer);
-        writer.build();
         System.out.println(writer);
       }
     }

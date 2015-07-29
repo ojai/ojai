@@ -172,4 +172,26 @@ public class TestJsonRecordStream extends BaseTest {
     }
   }
 
+  @Test
+  public void testRecordIteratorNextMethod() throws Exception {
+    try (InputStream in = getJsonStream("multirecord.json");
+        RecordStream<Record> stream = Json.newRecordStream(in)) {
+
+      int recordCount = 0;
+      Iterator<Record> it = stream.iterator();
+
+      Record rec ;
+      try {
+        while ((rec = it.next()) != null) {
+          recordCount++;
+          if (recordCount == 1) {
+            assertEquals("John", rec.getString("name.first"));
+          }
+        }
+      } catch (Exception e) {
+        assertEquals(4, recordCount);
+      }
+    }
+  }
+
 }
