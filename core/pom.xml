@@ -22,14 +22,14 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.jackhammer</groupId>
-    <artifactId>jackhammer-root</artifactId>
-    <version>0.1.r20-SNAPSHOT</version>
+    <groupId>org.argonaut</groupId>
+    <artifactId>argonaut-root</artifactId>
+    <version>0.1.r1-SNAPSHOT</version>
     <relativePath>..</relativePath>
   </parent>
 
-  <artifactId>jackhammer</artifactId>
-  <name>Jackhammer Core APIs</name>
+  <artifactId>argonaut</artifactId>
+  <name>Argonaut Core APIs</name>
   <packaging>jar</packaging>
 
   <build>
@@ -42,7 +42,7 @@
         <configuration>
           <arguments>
             <argument>-o</argument>
-            <argument>${project.build.directory}/generated-sources/antlr4/org/jackhammer</argument>
+            <argument>${project.build.directory}/generated-sources/antlr4/org/argonaut</argument>
           </arguments>
         </configuration>
         <executions>

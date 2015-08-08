@@ -21,14 +21,14 @@
   xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.jackhammer</groupId>
-  <artifactId>jackhammer-root</artifactId>
-  <version>0.1.r20-SNAPSHOT</version>
+  <groupId>org.argonaut</groupId>
+  <artifactId>argonaut-root</artifactId>
+  <version>0.1.r1-SNAPSHOT</version>
 
-  <name>Jackhammer ROOT pom</name>
+  <name>Argonaut Root Pom</name>
   <packaging>pom</packaging>
   <description>JSON API for Hadoop</description>
-  <url>https://github.com/jackhammer/</url>
+  <url>https://github.com/mapr/argonaut</url>
 
   <properties>
     <hadoop.version>2.5.1</hadoop.version>
@@ -132,8 +132,8 @@
         <version>1.2</version>
       </dependency>
       <dependency>
-        <groupId>org.jackhammer</groupId>
-        <artifactId>jackhammer</artifactId>
+        <groupId>org.argonaut</groupId>
+        <artifactId>argonaut</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>

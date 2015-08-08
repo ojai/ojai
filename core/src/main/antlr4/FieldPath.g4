@@ -20,12 +20,12 @@ options {
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jackhammer;
+package org.argonaut;
 
-import org.jackhammer.FieldPath;
-import org.jackhammer.FieldSegment;
-import org.jackhammer.FieldSegment.IndexSegment;
-import org.jackhammer.FieldSegment.NameSegment;
+import org.argonaut.FieldPath;
+import org.argonaut.FieldSegment;
+import org.argonaut.FieldSegment.IndexSegment;
+import org.argonaut.FieldSegment.NameSegment;
 }
 
 /**
