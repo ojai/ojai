@@ -15,6 +15,8 @@
  */
 package org.argonaut.json;
 
+import static org.argonaut.util.Constants.MILLISECONDSPERDAY;
+
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
 import java.sql.Date;
@@ -29,14 +31,13 @@ import org.argonaut.Value.Type;
 import org.argonaut.annotation.API;
 import org.argonaut.exceptions.TypeException;
 import org.argonaut.types.Interval;
-import org.argonaut.util.Constants;
 
 /**
  * Helper class providing set of static methods to create instance of
  * JsonValue class from different input types
  */
 @API.Internal
-public class JsonValueBuilder implements Constants {
+public class JsonValueBuilder {
 
   public static JsonValue initFromNull() {
     return JsonValue.NULLKEYVALUE;

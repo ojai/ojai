@@ -15,8 +15,8 @@
  */
 package org.argonaut.util;
 
-public interface Constants {
+public class Constants {
 
-  public final long MILLISECONDSPERDAY = 24 * 60 * 60 * 1000L;
+  public final static long MILLISECONDSPERDAY = 24 * 60 * 60 * 1000L;
 
 }

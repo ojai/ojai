@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.argonaut.json;
 
 import java.math.BigDecimal;
@@ -31,10 +30,9 @@ import org.argonaut.Value;
 import org.argonaut.Value.Type;
 import org.argonaut.exceptions.TypeException;
 import org.argonaut.types.Interval;
-import org.argonaut.util.Constants;
 import org.argonaut.util.Types;
 
-class JsonDOMRecordReader implements RecordReader, Constants {
+class JsonDOMRecordReader implements RecordReader {
 
   class IteratorWithType {
     Iterator<JsonValue> iter;

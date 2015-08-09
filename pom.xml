@@ -23,7 +23,7 @@
 
   <groupId>org.argonaut</groupId>
   <artifactId>argonaut-root</artifactId>
-  <version>0.1.r1-SNAPSHOT</version>
+  <version>0.1.r2-SNAPSHOT</version>
 
   <name>Argonaut Root Pom</name>
   <packaging>pom</packaging>

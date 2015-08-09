@@ -15,6 +15,8 @@
  */
 package org.argonaut.json;
 
+import static org.argonaut.util.Constants.MILLISECONDSPERDAY;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -38,7 +40,6 @@ import org.argonaut.Value.Type;
 import org.argonaut.annotation.API;
 import org.argonaut.exceptions.EncodingException;
 import org.argonaut.types.Interval;
-import org.argonaut.util.Constants;
 import org.argonaut.util.Decimals;
 import org.argonaut.util.Types;
 import org.argonaut.util.Values;
@@ -49,7 +50,7 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 
 @API.Internal
-public class JsonRecordWriter implements RecordWriter, Constants {
+public class JsonRecordWriter implements RecordWriter {
 
   private enum WriterContext {
     MAPCONTEXT,

@@ -15,6 +15,7 @@
  */
 package org.argonaut.json;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
@@ -28,6 +29,7 @@ import org.argonaut.RecordWriter;
 import org.argonaut.RecordReader.EventType;
 import org.argonaut.Value.Type;
 import org.argonaut.annotation.API;
+import org.argonaut.exceptions.DecodingException;
 
 /**
  * This class serves as factory for JSON implementation
@@ -38,6 +40,32 @@ public final class Json {
 
   public static Record newRecord() {
     return new JsonRecord();
+  }
+
+  public static Record newRecord(String jsonString)
+      throws DecodingException {
+    try {
+      InputStream jsonStream =
+          new ByteArrayInputStream(JsonUtils.getBytes(jsonString));
+      return newRecordStream(jsonStream).iterator().next();
+    } catch (DecodingException e) {
+      throw e;
+    } catch (Exception e) {
+      throw new DecodingException(e);
+    }
+  }
+
+  public static RecordReader newRecordReader(String jsonString)
+      throws DecodingException {
+    try {
+      InputStream jsonStream =
+          new ByteArrayInputStream(JsonUtils.getBytes(jsonString));
+      return newRecordStream(jsonStream).recordReaders().iterator().next();
+    } catch (DecodingException e) {
+      throw e;
+    } catch (Exception e) {
+      throw new DecodingException(e);
+    }
   }
 
   public static RecordWriter newRecordWriter() {
@@ -58,20 +86,21 @@ public final class Json {
     return new JsonRecordStream(in, null, eventDelegate);
   }
 
-  public static RecordStream<Record> newRecordStream(FileSystem fs, String path)
-      throws IllegalArgumentException, IOException {
+  public static RecordStream<Record> newRecordStream(
+      FileSystem fs, String path)
+          throws DecodingException, IOException {
     return JsonRecordStream.newRecordStream(fs, path, null, null);
   }
 
   public static RecordStream<Record> newRecordStream(
       FileSystem fs, String path, Map<FieldPath, Type> fieldPathTypeMap)
-          throws IllegalArgumentException, IOException {
+          throws DecodingException, IOException {
     return JsonRecordStream.newRecordStream(fs, path, fieldPathTypeMap, null);
   }
 
   public static RecordStream<Record> newRecordStream(
       FileSystem fs, String path, Events.Delegate eventDelegate)
-          throws IllegalArgumentException, IOException {
+          throws DecodingException, IOException {
     return JsonRecordStream.newRecordStream(fs, path, null, eventDelegate);
   }
 

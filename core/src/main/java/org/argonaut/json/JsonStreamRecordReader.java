@@ -15,6 +15,8 @@
  */
 package org.argonaut.json;
 
+import static org.argonaut.util.Constants.MILLISECONDSPERDAY;
+
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -28,7 +30,6 @@ import org.argonaut.annotation.API;
 import org.argonaut.exceptions.DecodingException;
 import org.argonaut.exceptions.TypeException;
 import org.argonaut.types.Interval;
-import org.argonaut.util.Constants;
 import org.argonaut.util.Types;
 import org.argonaut.util.Values;
 
@@ -37,7 +38,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 
 @API.Internal
-public class JsonStreamRecordReader implements RecordReader, Constants {
+public class JsonStreamRecordReader implements RecordReader {
 
   private final JsonRecordStream recordStream;
   private JsonToken currentToken; /* current token read from stream */

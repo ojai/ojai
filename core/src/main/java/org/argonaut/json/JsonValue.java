@@ -15,6 +15,8 @@
  */
 package org.argonaut.json;
 
+import static org.argonaut.util.Constants.MILLISECONDSPERDAY;
+
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
 import java.sql.Date;
@@ -28,10 +30,9 @@ import org.argonaut.Value;
 import org.argonaut.annotation.API;
 import org.argonaut.exceptions.TypeException;
 import org.argonaut.types.Interval;
-import org.argonaut.util.Constants;
 
 @API.Internal
-public class JsonValue implements Value, Constants {
+public class JsonValue implements Value {
 
   Type valueType;
   long jsonValue;

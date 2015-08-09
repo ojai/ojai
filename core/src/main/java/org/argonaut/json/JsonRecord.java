@@ -457,6 +457,12 @@ public class JsonRecord extends JsonValue implements Record, Map<String, Object>
   }
 
   @Override
+  public JsonRecord empty() {
+    getRootMap().clear();
+    return this;
+  }
+
+  @Override
   public RecordReader asReader() {
     if (jsonRecordReader == null) {
       return new JsonDOMRecordReader(this);

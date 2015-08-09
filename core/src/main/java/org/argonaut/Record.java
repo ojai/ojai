@@ -31,6 +31,16 @@ import org.argonaut.types.Interval;
 @API.Public
 public interface Record extends Iterable<Map.Entry<String, Value>> {
 
+  /**
+   * @return the number of top level entries in the record.
+   */
+  int size();
+
+  /**
+   * Removes all of the entries from this record.
+   */
+  Record empty();
+
   Record set(String fieldPath, String value);
 
   Record set(FieldPath fieldPath, String value);
