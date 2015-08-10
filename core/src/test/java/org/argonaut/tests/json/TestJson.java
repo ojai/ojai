@@ -18,6 +18,8 @@ package org.argonaut.tests.json;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.regex.Pattern;
+
 import org.argonaut.Record;
 import org.argonaut.json.Json;
 import org.argonaut.tests.BaseTest;
@@ -63,7 +65,7 @@ public class TestJson extends BaseTest {
         "  \"review_count\": 7,\n" +
         "  \"name\": \"Eric Goldberg, MD\",\n" +
         "  \"neighborhoods\": [],\n" +
-        "  \"longitude\": -111.98375799999999,\n" +
+        "  \"longitude\": -111,\n" +
         "  \"state\": \"AZ\",\n" +
         "  \"stars\": 3.5,\n" +
         "  \"latitude\": 33.499313000000001,\n" +
@@ -75,6 +77,12 @@ public class TestJson extends BaseTest {
     assertEquals(15, rec.size());
     assertEquals("08:00", rec.getString("hours.Wednesday.open"));
     assertEquals("Health & Medical", rec.getString("categories[1]"));
+
+    String jsonString = Json.toJsonString(rec.asReader());
+    Pattern p1 = Pattern.compile(".*\"review_count\".*:.*7,.*", Pattern.DOTALL);
+    Pattern p2 = Pattern.compile(".*\"longitude\".*:.*-111,.*", Pattern.DOTALL);
+    assertTrue(p1.matcher(jsonString).matches());
+    assertTrue(p2.matcher(jsonString).matches());
   }
 
 }

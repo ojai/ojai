@@ -184,14 +184,7 @@ public class JsonRecordWriter implements RecordWriter {
 
   @Override
   public JsonRecordWriter put(String field, float value) {
-    checkContext(WriterContext.MAPCONTEXT);
-    try {
-      jsonGenerator.writeNumberField(field, value);
-    } catch (JsonGenerationException e) {
-      throw new IllegalStateException(e);
-    } catch (IOException ie) {
-      throw new EncodingException(ie);
-    }
+    put(field, (double)value);
     return this;
   }
 
@@ -199,7 +192,11 @@ public class JsonRecordWriter implements RecordWriter {
   public JsonRecordWriter put(String field, double value) {
     checkContext(WriterContext.MAPCONTEXT);
     try {
-      jsonGenerator.writeNumberField(field, value);
+      if ((value == Math.floor(value)) && !Double.isInfinite(value)) {
+        jsonGenerator.writeNumberField(field, (long)value);
+      } else {
+        jsonGenerator.writeNumberField(field, value);
+      }
     } catch (JsonGenerationException e) {
       throw new IllegalStateException(e);
     } catch (IOException ie) {

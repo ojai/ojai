@@ -16,15 +16,18 @@
 package org.argonaut.tests.json;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.InputStream;
 
 import org.argonaut.Record;
 import org.argonaut.RecordReader;
-import org.argonaut.RecordStream;
 import org.argonaut.RecordReader.EventType;
+import org.argonaut.RecordStream;
 import org.argonaut.json.Json;
 import org.argonaut.tests.BaseTest;
+import org.argonaut.util.Values;
 import org.junit.Test;
 
 public class TestJsonRecordReader extends BaseTest {
@@ -32,13 +35,13 @@ public class TestJsonRecordReader extends BaseTest {
   @Test
   public void testAll() throws Exception {
 
-    String fieldName = null;
 
     try (InputStream testJson = getJsonStream("test.json");
         RecordStream<Record> stream = Json.newRecordStream(testJson);) {
+      EventType et = null;
+      String fieldName = null;
       RecordReader r = stream.recordReaders().iterator().next();
-      EventType et = r.next();
-      while (et != null) {
+      while ((et = r.next()) != null) {
         if (et == EventType.FIELD_NAME) {
           fieldName = r.getFieldName();
         }
@@ -71,22 +74,25 @@ public class TestJsonRecordReader extends BaseTest {
         }
         else if (et == EventType.START_ARRAY) {
           et = r.next();
-          while (et != EventType.END_ARRAY) {
-            if (et == EventType.LONG) {
-              assertEquals(42, r.getLong());
-            } else if (et == EventType.STRING) {
-              assertEquals("open sesame", r.getString());
-            } else if (et == EventType.DOUBLE) {
-              assertEquals(3.14, r.getDouble(), 0.0);
-            } else {
+          assertNotNull(et);
+          assertTrue(et == EventType.DOUBLE);
+          assertEquals(42.0, r.getDouble(), 0.0);
 
-            }
-            et = r.next();
-          }
-        } else {
+          et = r.next();
+          assertNotNull(et);
+          assertTrue(et == EventType.STRING);
+          assertEquals("open sesame", r.getString());
 
+          et = r.next();
+          assertNotNull(et);
+          assertTrue(et == EventType.DOUBLE);
+          assertEquals(3.14, r.getDouble(), 0.0001);
+
+          et = r.next();
+          assertNotNull(et);
+          assertTrue(et == EventType.DATE);
+          assertEquals(Values.parseDate("2015-01-21"), r.getDate());
         }
-        et = r.next();
       }
     }
   }

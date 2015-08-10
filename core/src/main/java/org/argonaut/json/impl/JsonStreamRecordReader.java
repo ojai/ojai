@@ -133,7 +133,6 @@ public class JsonStreamRecordReader implements RecordReader {
     case END_ARRAY:
       return EventType.END_ARRAY;
     case VALUE_NUMBER_INT:
-      return EventType.LONG;
     case VALUE_NUMBER_FLOAT:
       return EventType.DOUBLE;
     case FIELD_NAME:
