@@ -32,7 +32,7 @@ import java.util.TimeZone;
 import org.argonaut.Record;
 import org.argonaut.Value;
 import org.argonaut.json.Json;
-import org.argonaut.json.JsonValueBuilder;
+import org.argonaut.json.impl.JsonValueBuilder;
 import org.junit.Test;
 
 public class TestJsonRecordEquals {

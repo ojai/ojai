@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.mapreduce.Reducer;
-import org.argonaut.json.JsonRecord;
+import org.argonaut.json.impl.JsonRecord;
 
 public class TestInputReducer extends
 Reducer<LongWritable, JsonRecord, LongWritable, JsonRecord> {

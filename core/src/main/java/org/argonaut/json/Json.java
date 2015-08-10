@@ -30,6 +30,10 @@ import org.argonaut.RecordReader.EventType;
 import org.argonaut.Value.Type;
 import org.argonaut.annotation.API;
 import org.argonaut.exceptions.DecodingException;
+import org.argonaut.json.impl.JsonRecord;
+import org.argonaut.json.impl.JsonRecordStream;
+import org.argonaut.json.impl.JsonRecordWriter;
+import org.argonaut.json.impl.JsonUtils;
 
 /**
  * This class serves as factory for JSON implementation

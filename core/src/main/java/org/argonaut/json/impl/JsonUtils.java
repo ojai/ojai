@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.argonaut.json;
+package org.argonaut.json.impl;
 
 import java.io.UnsupportedEncodingException;
 
@@ -26,14 +26,14 @@ import org.argonaut.exceptions.DecodingException;
 @API.Internal
 public class JsonUtils {
 
-  static byte[] getBytes(String string) {
+  public static byte[] getBytes(String string) {
     try {
       return string.getBytes("UTF-8");
     } catch (UnsupportedEncodingException e) {}
     return null;
   }
 
-  static void addToMap(RecordReader r, RecordWriter w) {
+  public static void addToMap(RecordReader r, RecordWriter w) {
     EventType e;
     String currentFieldName = null;
     while((e = r.next()) != null) {

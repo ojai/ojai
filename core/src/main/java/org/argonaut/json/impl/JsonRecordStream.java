@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.argonaut.json;
+package org.argonaut.json.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,6 +31,7 @@ import org.argonaut.Value.Type;
 import org.argonaut.annotation.API;
 import org.argonaut.exceptions.DecodingException;
 import org.argonaut.exceptions.StreamInUseException;
+import org.argonaut.json.Events;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
@@ -63,13 +64,13 @@ public class JsonRecordStream implements RecordStream<Record> {
     };
   }
 
-  static RecordStream<Record> newRecordStream(FileSystem fs,
+  public static RecordStream<Record> newRecordStream(FileSystem fs,
       String path, Map<FieldPath, Type> map, Events.Delegate delegate)
           throws IllegalArgumentException, IOException {
     return newRecordStream(fs, new Path(path), map, delegate);
   }
 
-  JsonRecordStream(InputStream in,
+  public JsonRecordStream(InputStream in,
       Map<FieldPath, Type> fieldPathTypeMap, Events.Delegate eventDelegate) {
     inputStream = in;
     readStarted = false;

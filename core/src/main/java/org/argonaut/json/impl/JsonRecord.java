@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.argonaut.json;
+package org.argonaut.json.impl;
 
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
@@ -43,7 +43,7 @@ public class JsonRecord extends JsonValue implements Record, Map<String, Object>
 
   private final JsonStreamRecordReader jsonRecordReader;
 
-  JsonRecord() {
+  public JsonRecord() {
     this(null);
   }
 

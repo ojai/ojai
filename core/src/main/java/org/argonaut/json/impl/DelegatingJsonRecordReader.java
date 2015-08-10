@@ -13,12 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.argonaut.json;
+package org.argonaut.json.impl;
 
 import java.util.LinkedList;
 import java.util.Queue;
 
 import org.argonaut.Value;
+import org.argonaut.annotation.API;
+import org.argonaut.json.Events;
 import org.argonaut.json.Events.Delegate;
 import org.argonaut.json.Events.TypeValuePair;
 
@@ -26,6 +28,7 @@ import org.argonaut.json.Events.TypeValuePair;
  * This implementation of {@code RecordReader} offers application a
  * chance to inspect the next event in Json stream and alter if required.
  */
+@API.Internal
 public class DelegatingJsonRecordReader extends JsonStreamRecordReader {
 
   private final Queue<TypeValuePair> eventQueue = new LinkedList<Events.TypeValuePair>();

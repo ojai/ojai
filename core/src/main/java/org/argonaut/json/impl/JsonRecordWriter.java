@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.argonaut.json;
+package org.argonaut.json.impl;
 
 import static org.argonaut.util.Constants.MILLISECONDSPERDAY;
 
@@ -39,6 +39,7 @@ import org.argonaut.Value;
 import org.argonaut.Value.Type;
 import org.argonaut.annotation.API;
 import org.argonaut.exceptions.EncodingException;
+import org.argonaut.json.Json;
 import org.argonaut.types.Interval;
 import org.argonaut.util.Decimals;
 import org.argonaut.util.Types;
@@ -64,7 +65,7 @@ public class JsonRecordWriter implements RecordWriter {
   private Stack<WriterContext> allRecords;
   private WriterContext currentContext;
 
-  JsonRecordWriter() {
+  public JsonRecordWriter() {
     b = new ByteArrayWriterOutputStream();
     this.initJsonGenerator(b);
   }

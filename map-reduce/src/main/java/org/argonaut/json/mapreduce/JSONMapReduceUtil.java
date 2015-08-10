@@ -4,7 +4,7 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
-import org.argonaut.json.JsonRecord;
+import org.argonaut.json.impl.JsonRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

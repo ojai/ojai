@@ -16,6 +16,7 @@
 package org.argonaut.tests.json;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
@@ -31,20 +32,16 @@ import org.argonaut.Record;
 import org.argonaut.RecordWriter;
 import org.argonaut.Value;
 import org.argonaut.json.Json;
-import org.argonaut.json.JsonRecordWriter;
-import org.argonaut.json.JsonValueBuilder;
+import org.argonaut.json.impl.JsonRecordWriter;
+import org.argonaut.json.impl.JsonValueBuilder;
 import org.argonaut.tests.BaseTest;
 import org.argonaut.types.Interval;
 import org.argonaut.util.Values;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class TestJsonRecordWriter extends BaseTest {
-  private static Logger logger = LoggerFactory
-      .getLogger(TestJsonRecordWriter.class);
 
   private byte[] getByteArray(int size) {
     byte[] bytes = new byte[size];
@@ -181,6 +178,7 @@ public class TestJsonRecordWriter extends BaseTest {
     w.put("f1", "abcd");
     exception.expect(IllegalStateException.class);
     Record r = w.getRecord();
+    assertNotNull(r);
   }
 
   @Test

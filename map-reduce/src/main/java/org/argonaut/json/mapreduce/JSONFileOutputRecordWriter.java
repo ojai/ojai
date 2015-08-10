@@ -25,7 +25,7 @@ import org.apache.hadoop.mapreduce.TaskAttemptContext;
 import org.argonaut.Record;
 import org.argonaut.RecordReader;
 import org.argonaut.json.Json;
-import org.argonaut.json.JsonRecordWriter;
+import org.argonaut.json.impl.JsonRecordWriter;
 
 public class JSONFileOutputRecordWriter extends
 RecordWriter<LongWritable, Record> {
