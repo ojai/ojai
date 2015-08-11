@@ -35,6 +35,10 @@
 
   <dependencies>
     <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.argonaut</groupId>
       <artifactId>argonaut</artifactId>
     </dependency>
@@ -47,9 +51,10 @@
       <artifactId>hadoop-common</artifactId>
     </dependency>
     <dependency>
-      <!-- needed for FileInputFormat -->
-      <groupId>commons-logging</groupId>
-      <artifactId>commons-logging</artifactId>
+      <!-- replaces commons logging, needed for FileInputFormat -->
+      <groupId>org.slf4j</groupId>
+      <artifactId>jcl-over-slf4j</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
