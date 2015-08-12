@@ -25,7 +25,7 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
-import org.argonaut.Record;
+import org.argonaut.Document;
 import org.argonaut.Value;
 import org.argonaut.Value.Type;
 import org.argonaut.annotation.API;
@@ -143,17 +143,17 @@ public class JsonValueBuilder {
   }
 
   public static <T extends Object> JsonValue initFrom(Map<String, T> map) {
-    // We can't put the JsonRecord directly into the map as
+    // We can't put the JsonDocument directly into the map as
     // it could be part of some other document as well and we
     // will be putting information like order of field in each
     // keyvalue which would change based on which document tree
     // this value is part of. Hence make a shallow copy of the
     // value before return it.
-    if (map instanceof JsonRecord) {
-      return ((JsonRecord) map).shallowCopy();
+    if (map instanceof JsonDocument) {
+      return ((JsonDocument) map).shallowCopy();
     }
 
-    JsonRecord rec = new JsonRecord();
+    JsonDocument rec = new JsonDocument();
     for (String k : map.keySet()) {
       rec.set(k, initFromObject(map.get(k)));
       //rec.put(k, map.get(k));
@@ -161,12 +161,12 @@ public class JsonValueBuilder {
     return rec;
   }
 
-  public static JsonValue initFrom(Record value) {
-    if (value instanceof JsonRecord) {
-      return ((JsonRecord) value).shallowCopy();
+  public static JsonValue initFrom(Document value) {
+    if (value instanceof JsonDocument) {
+      return ((JsonDocument) value).shallowCopy();
     }
 
-    JsonRecord r = new JsonRecord();
+    JsonDocument r = new JsonDocument();
     for (Map.Entry<String, Value> e : value) {
       r.set(e.getKey(), initFromObject(e.getValue()));
     }
@@ -244,8 +244,8 @@ public class JsonValueBuilder {
       return initFrom(((Interval) value));
     }
 
-    if (value instanceof Record) {
-      return initFrom(((Record) value));
+    if (value instanceof Document) {
+      return initFrom(((Document) value));
     }
 
     if (value instanceof Map) {

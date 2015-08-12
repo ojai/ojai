@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.argonaut.json.mapreduce;
 
 import java.io.IOException;
@@ -22,15 +21,15 @@ import java.io.OutputStream;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.mapreduce.RecordWriter;
 import org.apache.hadoop.mapreduce.TaskAttemptContext;
-import org.argonaut.Record;
-import org.argonaut.RecordReader;
+import org.argonaut.Document;
+import org.argonaut.DocumentReader;
 import org.argonaut.json.Json;
-import org.argonaut.json.impl.JsonRecordWriter;
+import org.argonaut.json.impl.JsonDocumentBuilder;
 
 public class JSONFileOutputRecordWriter extends
-RecordWriter<LongWritable, Record> {
+RecordWriter<LongWritable, Document> {
 
-  private JsonRecordWriter writer;
+  private JsonDocumentBuilder writer;
   private final OutputStream out;
 
   public JSONFileOutputRecordWriter(OutputStream fileOut) {
@@ -44,11 +43,11 @@ RecordWriter<LongWritable, Record> {
   }
 
   @Override
-  public void write(LongWritable arg0, Record record) throws IOException,
+  public void write(LongWritable arg0, Document document) throws IOException,
   InterruptedException {
 
-    writer = (JsonRecordWriter) Json.newRecordWriter();
-    RecordReader reader = record.asReader();
+    writer = (JsonDocumentBuilder) Json.newDocumentBuilder();
+    DocumentReader reader = document.asReader();
     Json.writeReaderToStream(reader, writer);
     byte[] bytes = writer.getOutputStream();
     out.write(bytes);

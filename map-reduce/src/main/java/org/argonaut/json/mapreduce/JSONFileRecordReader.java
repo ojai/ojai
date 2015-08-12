@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.argonaut.json.mapreduce;
 
 import java.io.IOException;
@@ -29,18 +28,18 @@ import org.apache.hadoop.mapreduce.InputSplit;
 import org.apache.hadoop.mapreduce.RecordReader;
 import org.apache.hadoop.mapreduce.TaskAttemptContext;
 import org.apache.hadoop.mapreduce.lib.input.FileSplit;
-import org.argonaut.Record;
-import org.argonaut.RecordStream;
+import org.argonaut.Document;
+import org.argonaut.DocumentStream;
 import org.argonaut.json.Json;
 
-public class JSONFileRecordReader extends RecordReader<LongWritable, Record> {
+public class JSONFileRecordReader extends RecordReader<LongWritable, Document> {
 
   private FSDataInputStream inputStream;
-  private RecordStream<Record> recordStream;
-  private Iterator<Record> it;
-  private long recordCount;
+  private DocumentStream<Document> documentStream;
+  private Iterator<Document> it;
+  private long documentCount;
   private LongWritable key = null;
-  private Record record;
+  private Document document;
   private long currentPos;
   private long start;
   private long end;
@@ -49,10 +48,10 @@ public class JSONFileRecordReader extends RecordReader<LongWritable, Record> {
   @Override
   public void close() throws IOException {
     try {
-      recordStream.close();
+      documentStream.close();
     } catch (Exception e) {
       throw new IOException(
-          "Error closing record Stream in JsonFileRecordReader");
+          "Error closing document Stream in JsonFileRecordReader");
     }
     if (inputStream != null) {
       inputStream.close();
@@ -65,8 +64,8 @@ public class JSONFileRecordReader extends RecordReader<LongWritable, Record> {
   }
 
   @Override
-  public Record getCurrentValue() throws IOException, InterruptedException {
-    return record;
+  public Document getCurrentValue() throws IOException, InterruptedException {
+    return document;
   }
 
   @Override
@@ -109,11 +108,11 @@ public class JSONFileRecordReader extends RecordReader<LongWritable, Record> {
   public void initialize(InputSplit arg0, TaskAttemptContext taskContext)
       throws IOException, InterruptedException {
 
-    recordStream = null;
+    documentStream = null;
     it = null;
-    recordCount = 0;
+    documentCount = 0;
     key = new LongWritable();
-    record = null;
+    document = null;
     currentPos = 0;
 
     /* get the split */
@@ -129,8 +128,8 @@ public class JSONFileRecordReader extends RecordReader<LongWritable, Record> {
 
 
     /*
-     * if this block is not the first block check if it falls on record
-     * boundary. If not, skip bytes to start to the next record boundary.
+     * if this block is not the first block check if it falls on document
+     * boundary. If not, skip bytes to start to the next document boundary.
      */
     start = split.getStart();
     blockLength = split.getLength();
@@ -138,18 +137,18 @@ public class JSONFileRecordReader extends RecordReader<LongWritable, Record> {
 
     if (start != 0) {
       /*
-       * not the first block check if it starts on a record boundary
+       * not the first block check if it starts on a document boundary
        */
       skipBytes = bytesToSkip(start, blockLength);
       currentPos = start - 1 + skipBytes;
       inputStream.seek(currentPos);
     }
 
-    /* Initialize a stream reader so that it can read multiple records from */
+    /* Initialize a stream reader so that it can read multiple documents from */
     /* the file */
 
-    recordStream = Json.newRecordStream(inputStream);
-    it = recordStream.iterator();
+    documentStream = Json.newDocumentStream(inputStream);
+    it = documentStream.iterator();
 
   }
 
@@ -163,9 +162,9 @@ public class JSONFileRecordReader extends RecordReader<LongWritable, Record> {
     }
 
     if (it.hasNext()) {
-      key.set(recordCount);
-      record = it.next();
-      recordCount++;
+      key.set(documentCount);
+      document = it.next();
+      documentCount++;
       hasNextKeyVal = true;
     }
 

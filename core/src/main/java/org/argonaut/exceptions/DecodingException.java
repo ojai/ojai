@@ -19,7 +19,7 @@ import org.argonaut.annotation.API;
 
 /**
  * Exception thrown by implementations if a failure occurs during
- * deserialization of the record.
+ * deserialization of the document.
  */
 @API.Public
 public class DecodingException extends ArgonautException {

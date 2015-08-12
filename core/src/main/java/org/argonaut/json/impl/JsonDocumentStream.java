@@ -23,10 +23,10 @@ import java.util.Map;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.argonaut.FieldPath;
-import org.argonaut.Record;
-import org.argonaut.RecordListener;
-import org.argonaut.RecordReader;
-import org.argonaut.RecordStream;
+import org.argonaut.Document;
+import org.argonaut.DocumentListener;
+import org.argonaut.DocumentReader;
+import org.argonaut.DocumentStream;
 import org.argonaut.Value.Type;
 import org.argonaut.annotation.API;
 import org.argonaut.exceptions.DecodingException;
@@ -37,7 +37,7 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 
 @API.Internal
-public class JsonRecordStream implements RecordStream<Record> {
+public class JsonDocumentStream implements DocumentStream<Document> {
 
   private final InputStream inputStream;
   private JsonParser jsonParser;
@@ -48,11 +48,11 @@ public class JsonRecordStream implements RecordStream<Record> {
   private final Map<FieldPath, Type> fieldPathTypeMap;
   private final Events.Delegate eventDelegate;
 
-  static RecordStream<Record> newRecordStream(FileSystem fs,
+  static DocumentStream<Document> newDocumentStream(FileSystem fs,
       Path path, Map<FieldPath, Type> map, Events.Delegate delegate)
           throws IllegalArgumentException, IOException {
     final InputStream in = fs.open(path);
-    return new JsonRecordStream(in, map, delegate) {
+    return new JsonDocumentStream(in, map, delegate) {
       @Override
       public void close() throws IOException {
         try {
@@ -64,13 +64,13 @@ public class JsonRecordStream implements RecordStream<Record> {
     };
   }
 
-  public static RecordStream<Record> newRecordStream(FileSystem fs,
+  public static DocumentStream<Document> newDocumentStream(FileSystem fs,
       String path, Map<FieldPath, Type> map, Events.Delegate delegate)
           throws IllegalArgumentException, IOException {
-    return newRecordStream(fs, new Path(path), map, delegate);
+    return newDocumentStream(fs, new Path(path), map, delegate);
   }
 
-  public JsonRecordStream(InputStream in,
+  public JsonDocumentStream(InputStream in,
       Map<FieldPath, Type> fieldPathTypeMap, Events.Delegate eventDelegate) {
     inputStream = in;
     readStarted = false;
@@ -91,24 +91,24 @@ public class JsonRecordStream implements RecordStream<Record> {
   }
 
   @Override
-  public Iterable<RecordReader> recordReaders() {
+  public Iterable<DocumentReader> documentReaders() {
     checkStateForIteration();
     iteratorOpened = true;
-    return new JsonRecordReaderIterable(this);
+    return new JsonDocumentReaderIterable(this);
   }
 
 
   @Override
-  public synchronized Iterator<Record> iterator() {
+  public synchronized Iterator<Document> iterator() {
     checkStateForIteration();
-    return new JsonRecordIterator(this);
+    return new JsonDocumentIterator(this);
   }
 
   @Override
-  public void streamTo(RecordListener l) {
+  public void streamTo(DocumentListener l) {
     try {
-      for (Record record : this) {
-        l.recordArrived(record);
+      for (Document document : this) {
+        l.documentArrived(document);
       }
     } catch (Exception e) {
       try {
@@ -139,7 +139,7 @@ public class JsonRecordStream implements RecordStream<Record> {
     if (readStarted) {
       throw new StreamInUseException("Can not create iterator after reading from the stream has started.");
     } else if (iteratorOpened) {
-      throw new StreamInUseException("An iterator has already been opened on this record stream.");
+      throw new StreamInUseException("An iterator has already been opened on this document stream.");
     }
   }
 

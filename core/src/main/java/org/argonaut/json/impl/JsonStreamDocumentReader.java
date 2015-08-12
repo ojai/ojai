@@ -25,7 +25,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 
-import org.argonaut.RecordReader;
+import org.argonaut.DocumentReader;
 import org.argonaut.annotation.API;
 import org.argonaut.exceptions.DecodingException;
 import org.argonaut.exceptions.TypeException;
@@ -38,9 +38,9 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 
 @API.Internal
-public class JsonStreamRecordReader implements RecordReader {
+public class JsonStreamDocumentReader implements DocumentReader {
 
-  private final JsonRecordStream recordStream;
+  private final JsonDocumentStream documentStream;
   private JsonToken currentToken; /* current token read from stream */
   private JsonToken nextToken; /* next token from stream */
   private int mapLevel;
@@ -59,8 +59,8 @@ public class JsonStreamRecordReader implements RecordReader {
    */
   private boolean isExtendedType = false;
 
-  JsonStreamRecordReader(JsonRecordStream stream) {
-    recordStream = stream;
+  JsonStreamDocumentReader(JsonDocumentStream stream) {
+    documentStream = stream;
     currentToken = null;
     nextToken = null;
     mapLevel = 0;
@@ -207,7 +207,7 @@ public class JsonStreamRecordReader implements RecordReader {
   }
 
   protected JsonParser getParser() {
-    return recordStream.getParser();
+    return documentStream.getParser();
   }
 
   protected boolean isEventBoolean() {
@@ -233,8 +233,8 @@ public class JsonStreamRecordReader implements RecordReader {
   }
 
   /**
-   * @return {@code true} if the {@code RecordReader} has read past the end
-   *         of the current record or end of the underlying stream has been
+   * @return {@code true} if the {@code DocumentReader} has read past the end
+   *         of the current document or end of the underlying stream has been
    *         reached.
    */
   boolean eor() {
@@ -294,7 +294,7 @@ public class JsonStreamRecordReader implements RecordReader {
   }
 
   /**
-   * Forward the stream to end of the current record
+   * Forward the stream to end of the current document
    */
   void readFully() {
     if (eor) {

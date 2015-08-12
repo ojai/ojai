@@ -25,17 +25,17 @@ import org.argonaut.json.Events.Delegate;
 import org.argonaut.json.Events.TypeValuePair;
 
 /**
- * This implementation of {@code RecordReader} offers application a
+ * This implementation of {@code DocumentReader} offers application a
  * chance to inspect the next event in Json stream and alter if required.
  */
 @API.Internal
-public class DelegatingJsonRecordReader extends JsonStreamRecordReader {
+public class DelegatingJsonDocumentReader extends JsonStreamDocumentReader {
 
   private final Queue<TypeValuePair> eventQueue = new LinkedList<Events.TypeValuePair>();
   private final Events.Delegate eventDelegate;
   private boolean startSeen = false;
 
-  DelegatingJsonRecordReader(JsonRecordStream stream, Delegate eventDelegate) {
+  DelegatingJsonDocumentReader(JsonDocumentStream stream, Delegate eventDelegate) {
     super(stream);
     if (eventDelegate == null) {
       throw new NullPointerException("Event delegate must be provided.");

@@ -17,9 +17,9 @@ package org.argonaut.json.impl;
 
 import java.io.UnsupportedEncodingException;
 
-import org.argonaut.RecordReader;
-import org.argonaut.RecordWriter;
-import org.argonaut.RecordReader.EventType;
+import org.argonaut.DocumentReader;
+import org.argonaut.DocumentBuilder;
+import org.argonaut.DocumentReader.EventType;
 import org.argonaut.annotation.API;
 import org.argonaut.exceptions.DecodingException;
 
@@ -33,7 +33,7 @@ public class JsonUtils {
     return null;
   }
 
-  public static void addToMap(RecordReader r, RecordWriter w) {
+  public static void addToMap(DocumentReader r, DocumentBuilder w) {
     EventType e;
     String currentFieldName = null;
     while((e = r.next()) != null) {
@@ -111,7 +111,7 @@ public class JsonUtils {
     }
   }
 
-  private static void addToArray(RecordReader r, RecordWriter w) {
+  private static void addToArray(DocumentReader r, DocumentBuilder w) {
     EventType e;
     String currentFieldName = null;
     while((e = r.next()) != null) {

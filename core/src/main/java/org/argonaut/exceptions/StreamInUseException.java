@@ -15,11 +15,11 @@
  */
 package org.argonaut.exceptions;
 
-import org.argonaut.RecordStream;
+import org.argonaut.DocumentStream;
 import org.argonaut.annotation.API;
 
 /**
- * Exception thrown by implementations a {@link RecordStream} is
+ * Exception thrown by implementations a {@link DocumentStream} is
  * accessed in more than one way.
  */
 @API.Public

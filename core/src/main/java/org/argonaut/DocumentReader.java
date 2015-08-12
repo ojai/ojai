@@ -26,7 +26,7 @@ import org.argonaut.exceptions.TypeException;
 import org.argonaut.types.Interval;
 
 @API.Public
-public interface RecordReader {
+public interface DocumentReader {
 
   public enum EventType {
     NULL,
@@ -52,13 +52,13 @@ public interface RecordReader {
   }
 
   /**
-   * Move the {@code RecordReader} to the next node and returns the node type
+   * Move the {@code DocumentReader} to the next node and returns the node type
    * as {@code EventType}.
    *
    * @return The {@code EventType} for the current node or {@code null} if the
-   *         reader is past the end of the record.
+   *         reader is past the end of the document.
    */
-  RecordReader.EventType next();
+  DocumentReader.EventType next();
 
   /**
    * @return The name of the current field.

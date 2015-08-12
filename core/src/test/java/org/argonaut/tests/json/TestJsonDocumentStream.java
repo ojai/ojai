@@ -22,10 +22,10 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.argonaut.FieldPath;
-import org.argonaut.Record;
-import org.argonaut.RecordReader;
-import org.argonaut.RecordStream;
-import org.argonaut.RecordReader.EventType;
+import org.argonaut.Document;
+import org.argonaut.DocumentReader;
+import org.argonaut.DocumentStream;
+import org.argonaut.DocumentReader.EventType;
 import org.argonaut.Value.Type;
 import org.argonaut.json.Json;
 import org.argonaut.tests.BaseTest;
@@ -35,25 +35,25 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Maps;
 
-public class TestJsonRecordStream extends BaseTest {
+public class TestJsonDocumentStream extends BaseTest {
   private static Logger logger = LoggerFactory
-      .getLogger(TestJsonRecordStream.class);
+      .getLogger(TestJsonDocumentStream.class);
 
   @Test
-  public void testFetchAndParseJsonRecordStream() throws Exception {
+  public void testFetchAndParseJsonDocumentStream() throws Exception {
     try (InputStream in = getJsonStream("business.json");
-        RecordStream<Record> stream = Json.newRecordStream(in)) {
+        DocumentStream<Document> stream = Json.newDocumentStream(in)) {
 
-      int recordCount = 0;
-      for (RecordReader reader : stream.recordReaders()) {
-        recordCount++;
-        testRecordReaderFromIterator(reader);
+      int documentCount = 0;
+      for (DocumentReader reader : stream.documentReaders()) {
+        documentCount++;
+        testDocumentReaderFromIterator(reader);
       }
-      assertEquals(5, recordCount);
+      assertEquals(5, documentCount);
     }
   }
 
-  private void testRecordReaderFromIterator(RecordReader reader) {
+  private void testDocumentReaderFromIterator(DocumentReader reader) {
     EventType et;
     String name_field = null;
     String fieldName = null;
@@ -74,7 +74,7 @@ public class TestJsonRecordStream extends BaseTest {
   }
 
   @Test
-  public void testFetchAndParseTypeMappedJsonRecordStream() throws Exception {
+  public void testFetchAndParseTypeMappedJsonDocumentStream() throws Exception {
     Map<FieldPath, Type> fieldPathTypeMap = Maps.newHashMap();
     fieldPathTypeMap.put(FieldPath.parseFrom("hours.Monday.open"), Type.TIME);
     fieldPathTypeMap.put(FieldPath.parseFrom("hours.Monday.close"), Type.TIME);
@@ -92,50 +92,50 @@ public class TestJsonRecordStream extends BaseTest {
     fieldPathTypeMap.put(FieldPath.parseFrom("hours.Sunday.close"), Type.TIME);
 
     try (InputStream in = getJsonStream("business.json");
-        RecordStream<Record> stream = Json.newRecordStream(in, fieldPathTypeMap)) {
+        DocumentStream<Document> stream = Json.newDocumentStream(in, fieldPathTypeMap)) {
 
-      int recordCount = 0;
-      for (RecordReader reader : stream.recordReaders()) {
-        recordCount++;
+      int documentCount = 0;
+      for (DocumentReader reader : stream.documentReaders()) {
+        documentCount++;
         logger.debug(Json.toJsonString(reader, false));
       }
-      assertEquals(5, recordCount);
+      assertEquals(5, documentCount);
     }
   }
 
   @Test
-  public void testFetchAndParsePartiallyJsonRecordStream() throws Exception {
+  public void testFetchAndParsePartiallyJsonDocumentStream() throws Exception {
     try (InputStream in = getJsonStream("business.json");
-        RecordStream<Record> stream = Json.newRecordStream(in)) {
+        DocumentStream<Document> stream = Json.newDocumentStream(in)) {
 
-      int recordCount = 0;
-      for (RecordReader reader : stream.recordReaders()) {
-        recordCount++;
-        logger.debug("First event in the RecordReader: " + reader.next());
+      int documentCount = 0;
+      for (DocumentReader reader : stream.documentReaders()) {
+        documentCount++;
+        logger.debug("First event in the DocumentReader: " + reader.next());
       }
-      assertEquals(5, recordCount);
+      assertEquals(5, documentCount);
     }
   }
 
   @Test
-  public void testRecordIterator() throws Exception {
-    try (InputStream in = getJsonStream("multirecord.json");
-        RecordStream<Record> stream = Json.newRecordStream(in)) {
+  public void testDocumentIterator() throws Exception {
+    try (InputStream in = getJsonStream("multidocument.json");
+        DocumentStream<Document> stream = Json.newDocumentStream(in)) {
 
-      int recordCount = 0;
-      Iterator<Record> it = stream.iterator();
-      Record record;
+      int documentCount = 0;
+      Iterator<Document> it = stream.iterator();
+      Document document;
       while (it.hasNext()) {
-        record = it.next();
-        testRecordElements(record);
-        recordCount++;
+        document = it.next();
+        testDocumentElements(document);
+        documentCount++;
       }
-      assertEquals(4, recordCount);
+      assertEquals(4, documentCount);
     }
   }
 
-  private void testRecordElements(Record rec) {
-    RecordReader domReader = rec.asReader();
+  private void testDocumentElements(Document rec) {
+    DocumentReader domReader = rec.asReader();
     EventType et;
     String id = null;
     String fieldName = null;
@@ -173,23 +173,23 @@ public class TestJsonRecordStream extends BaseTest {
   }
 
   @Test
-  public void testRecordIteratorNextMethod() throws Exception {
-    try (InputStream in = getJsonStream("multirecord.json");
-        RecordStream<Record> stream = Json.newRecordStream(in)) {
+  public void testDocumentIteratorNextMethod() throws Exception {
+    try (InputStream in = getJsonStream("multidocument.json");
+        DocumentStream<Document> stream = Json.newDocumentStream(in)) {
 
-      int recordCount = 0;
-      Iterator<Record> it = stream.iterator();
+      int documentCount = 0;
+      Iterator<Document> it = stream.iterator();
 
-      Record rec ;
+      Document rec ;
       try {
         while ((rec = it.next()) != null) {
-          recordCount++;
-          if (recordCount == 1) {
+          documentCount++;
+          if (documentCount == 1) {
             assertEquals("John", rec.getString("name.first"));
           }
         }
       } catch (Exception e) {
-        assertEquals(4, recordCount);
+        assertEquals(4, documentCount);
       }
     }
   }

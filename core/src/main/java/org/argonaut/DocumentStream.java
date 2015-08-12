@@ -15,13 +15,30 @@
  */
 package org.argonaut;
 
+import java.util.Iterator;
+
 import org.argonaut.annotation.API;
 
+/**
+ * A stream of documents.
+ *
+ * Implements Iterable<Document> but only one call is allows to iterator()
+ * or readerIterator(). Only one of these iterators can be retrieved
+ * from the stream.
+ */
 @API.Public
-public interface ReusingRecordStream<T extends Record> extends RecordStream<T> {
+public interface DocumentStream<T extends Document> extends AutoCloseable, Iterable<T> {
 
-  public FieldReader getFieldReader(String path);
+  public void streamTo(DocumentListener l);
 
-  public FieldReader getFieldReader(FieldPath path);
+  /**
+   * Returns an iterator over a set of {@code Document}.
+   */
+  Iterator<T> iterator();
+
+  /**
+   * Returns an {@code Iterable} over a set of {@code DocumentReader}.
+   */
+  Iterable<DocumentReader> documentReaders();
 
 }

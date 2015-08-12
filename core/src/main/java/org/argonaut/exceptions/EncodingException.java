@@ -19,7 +19,7 @@ import org.argonaut.annotation.API;
 
 /**
  * Exception thrown by implementations if a failure occurs during
- * serialization of the record.
+ * serialization of the document.
  */
 @API.Public
 public class EncodingException extends ArgonautException {

@@ -22,17 +22,17 @@ import java.util.Map;
 
 import org.apache.hadoop.fs.FileSystem;
 import org.argonaut.FieldPath;
-import org.argonaut.Record;
-import org.argonaut.RecordReader;
-import org.argonaut.RecordStream;
-import org.argonaut.RecordWriter;
-import org.argonaut.RecordReader.EventType;
+import org.argonaut.Document;
+import org.argonaut.DocumentReader;
+import org.argonaut.DocumentStream;
+import org.argonaut.DocumentBuilder;
+import org.argonaut.DocumentReader.EventType;
 import org.argonaut.Value.Type;
 import org.argonaut.annotation.API;
 import org.argonaut.exceptions.DecodingException;
-import org.argonaut.json.impl.JsonRecord;
-import org.argonaut.json.impl.JsonRecordStream;
-import org.argonaut.json.impl.JsonRecordWriter;
+import org.argonaut.json.impl.JsonDocument;
+import org.argonaut.json.impl.JsonDocumentStream;
+import org.argonaut.json.impl.JsonDocumentBuilder;
 import org.argonaut.json.impl.JsonUtils;
 
 /**
@@ -42,16 +42,16 @@ import org.argonaut.json.impl.JsonUtils;
 @API.Public
 public final class Json {
 
-  public static Record newRecord() {
-    return new JsonRecord();
+  public static Document newDocument() {
+    return new JsonDocument();
   }
 
-  public static Record newRecord(String jsonString)
+  public static Document newDocument(String jsonString)
       throws DecodingException {
     try {
       InputStream jsonStream =
           new ByteArrayInputStream(JsonUtils.getBytes(jsonString));
-      return newRecordStream(jsonStream).iterator().next();
+      return newDocumentStream(jsonStream).iterator().next();
     } catch (DecodingException e) {
       throw e;
     } catch (Exception e) {
@@ -59,12 +59,12 @@ public final class Json {
     }
   }
 
-  public static RecordReader newRecordReader(String jsonString)
+  public static DocumentReader newDocumentReader(String jsonString)
       throws DecodingException {
     try {
       InputStream jsonStream =
           new ByteArrayInputStream(JsonUtils.getBytes(jsonString));
-      return newRecordStream(jsonStream).recordReaders().iterator().next();
+      return newDocumentStream(jsonStream).documentReaders().iterator().next();
     } catch (DecodingException e) {
       throw e;
     } catch (Exception e) {
@@ -72,58 +72,58 @@ public final class Json {
     }
   }
 
-  public static RecordWriter newRecordWriter() {
-    return new JsonRecordWriter();
+  public static DocumentBuilder newDocumentBuilder() {
+    return new JsonDocumentBuilder();
   }
 
-  public static RecordStream<Record> newRecordStream(InputStream in) {
-    return new JsonRecordStream(in, null, null);
+  public static DocumentStream<Document> newDocumentStream(InputStream in) {
+    return new JsonDocumentStream(in, null, null);
   }
 
-  public static RecordStream<Record> newRecordStream(
+  public static DocumentStream<Document> newDocumentStream(
       InputStream in, Map<FieldPath, Type> fieldPathTypeMap) {
-    return new JsonRecordStream(in, fieldPathTypeMap, null);
+    return new JsonDocumentStream(in, fieldPathTypeMap, null);
   }
 
-  public static RecordStream<Record> newRecordStream(
+  public static DocumentStream<Document> newDocumentStream(
       InputStream in, Events.Delegate eventDelegate) {
-    return new JsonRecordStream(in, null, eventDelegate);
+    return new JsonDocumentStream(in, null, eventDelegate);
   }
 
-  public static RecordStream<Record> newRecordStream(
+  public static DocumentStream<Document> newDocumentStream(
       FileSystem fs, String path)
           throws DecodingException, IOException {
-    return JsonRecordStream.newRecordStream(fs, path, null, null);
+    return JsonDocumentStream.newDocumentStream(fs, path, null, null);
   }
 
-  public static RecordStream<Record> newRecordStream(
+  public static DocumentStream<Document> newDocumentStream(
       FileSystem fs, String path, Map<FieldPath, Type> fieldPathTypeMap)
           throws DecodingException, IOException {
-    return JsonRecordStream.newRecordStream(fs, path, fieldPathTypeMap, null);
+    return JsonDocumentStream.newDocumentStream(fs, path, fieldPathTypeMap, null);
   }
 
-  public static RecordStream<Record> newRecordStream(
+  public static DocumentStream<Document> newDocumentStream(
       FileSystem fs, String path, Events.Delegate eventDelegate)
           throws DecodingException, IOException {
-    return JsonRecordStream.newRecordStream(fs, path, null, eventDelegate);
+    return JsonDocumentStream.newDocumentStream(fs, path, null, eventDelegate);
   }
 
-  public static String toJsonString(RecordReader r) {
+  public static String toJsonString(DocumentReader r) {
     return Json.toJsonString(r, true);
   }
 
-  public static String toJsonString(RecordReader r, boolean pretty) {
+  public static String toJsonString(DocumentReader r, boolean pretty) {
     EventType e = r.next();
     assert e == EventType.START_MAP;
 
-    JsonRecordWriter w = new JsonRecordWriter();
+    JsonDocumentBuilder w = new JsonDocumentBuilder();
     w.addNewMap();
     w.enablePrettyPrinting(pretty);
     JsonUtils.addToMap(r, w);
     return w.asUTF8String();
   }
 
-  public static void writeReaderToStream(RecordReader r, RecordWriter w) {
+  public static void writeReaderToStream(DocumentReader r, DocumentBuilder w) {
     JsonUtils.addToMap(r, w);
   }
 

@@ -29,16 +29,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
-import org.argonaut.Record;
+import org.argonaut.Document;
 import org.argonaut.Value;
 import org.argonaut.json.Json;
 import org.argonaut.json.impl.JsonValueBuilder;
 import org.junit.Test;
 
-public class TestJsonRecordEquals {
+public class TestJsonDocumentEquals {
   @Test
   public void testEquals() {
-    Record rec = Json.newRecord();
+    Document rec = Json.newDocument();
     rec.set("map.field1", (byte) 100);
     rec.set("map.field2", (short) 10000);
     rec.set("map.string", "eureka");
@@ -73,7 +73,7 @@ public class TestJsonRecordEquals {
 
     rec.set("list1", l);
 
-    Record rec2 = rec;
+    Document rec2 = rec;
     assertEquals(true, rec2.equals(rec));
 
     Value stringValue = rec.getValue("map.string");
@@ -126,9 +126,9 @@ public class TestJsonRecordEquals {
     Value nval = rec.getValue("map.null");
     assertEquals(true, rec.getValue("map.null").equals(nval));
 
-    Record r1 = Json.newRecord();
-    Record r2 = Json.newRecord();
-    Record r3 = Json.newRecord();
+    Document r1 = Json.newDocument();
+    Document r2 = Json.newDocument();
+    Document r3 = Json.newDocument();
     r1.setNull("a");
     r2.setNull("a");
     r3.setNull("b");
@@ -154,7 +154,7 @@ public class TestJsonRecordEquals {
     long ts3 = cal.getTime().getTime();
 
 
-    Record r = Json.newRecord()
+    Document r = Json.newDocument()
         .set("date1", new Date(ts1))
         .set("date2", new Date(ts2))
         .set("date3", new Date(ts3))

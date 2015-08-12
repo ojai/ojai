@@ -25,12 +25,12 @@ import org.apache.hadoop.mapreduce.JobContext;
 import org.apache.hadoop.mapreduce.RecordReader;
 import org.apache.hadoop.mapreduce.TaskAttemptContext;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
-import org.argonaut.Record;
+import org.argonaut.Document;
 
-public class JSONFileInputFormat extends FileInputFormat<LongWritable, Record> {
+public class JSONFileInputFormat extends FileInputFormat<LongWritable, Document> {
 
   @Override
-  public RecordReader<LongWritable, Record> createRecordReader(InputSplit arg0,
+  public RecordReader<LongWritable, Document> createRecordReader(InputSplit arg0,
       TaskAttemptContext arg1) throws IOException, InterruptedException {
 
     return new JSONFileRecordReader();

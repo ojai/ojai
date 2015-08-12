@@ -28,7 +28,7 @@ import org.argonaut.util.Types;
 import com.fasterxml.jackson.core.JsonParseException;
 
 @API.Internal
-public class TypeMappedJsonRecordReader extends JsonStreamRecordReader {
+public class TypeMappedJsonDocumentReader extends JsonStreamDocumentReader {
 
   private final Map<FieldPath, Type> typeMap;
   private final Stack<Object> fieldSegmentStack = new Stack<Object>();
@@ -36,7 +36,7 @@ public class TypeMappedJsonRecordReader extends JsonStreamRecordReader {
   private FieldPath currentFieldPath = null;
   private String currentFieldName;
 
-  TypeMappedJsonRecordReader(JsonRecordStream stream, Map<FieldPath, Type> hashMap) {
+  TypeMappedJsonDocumentReader(JsonDocumentStream stream, Map<FieldPath, Type> hashMap) {
     super(stream);
     if (hashMap == null) {
       throw new IllegalArgumentException("A FieldPath => Type map must be provided.");

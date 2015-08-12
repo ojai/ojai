@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.argonaut.json.mapreduce;
 
 import java.io.IOException;
@@ -25,35 +24,35 @@ import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.io.serializer.Deserializer;
 import org.apache.hadoop.io.serializer.Serialization;
 import org.apache.hadoop.io.serializer.Serializer;
-import org.argonaut.Record;
-import org.argonaut.RecordReader;
-import org.argonaut.RecordStream;
+import org.argonaut.Document;
+import org.argonaut.DocumentReader;
+import org.argonaut.DocumentStream;
 import org.argonaut.json.Json;
-import org.argonaut.json.impl.JsonRecord;
+import org.argonaut.json.impl.JsonDocument;
 
-public class JSONRecordSerialization extends Configured implements
-Serialization<JsonRecord> {
+public class JSONDocumentSerialization extends Configured implements
+Serialization<JsonDocument> {
 
   @Override
   public boolean accept(Class<?> arg0) {
-    return JsonRecord.class.isAssignableFrom(arg0);
+    return JsonDocument.class.isAssignableFrom(arg0);
   }
 
   @Override
-  public Deserializer<JsonRecord> getDeserializer(Class<JsonRecord> arg0) {
-    return new JsonRecordDeserializer();
+  public Deserializer<JsonDocument> getDeserializer(Class<JsonDocument> arg0) {
+    return new JsonDocumentDeserializer();
   }
 
   @Override
-  public Serializer<JsonRecord> getSerializer(Class<JsonRecord> arg0) {
-    return new JsonRecordSerializer();
+  public Serializer<JsonDocument> getSerializer(Class<JsonDocument> arg0) {
+    return new JsonDocumentSerializer();
   }
 
-  private static class JsonRecordDeserializer implements
-  Deserializer<JsonRecord> {
+  private static class JsonDocumentDeserializer implements
+  Deserializer<JsonDocument> {
 
-    private RecordStream<Record> stream;
-    private Iterator<Record> iter;
+    private DocumentStream<Document> stream;
+    private Iterator<Document> iter;
 
     @Override
     public void close() throws IOException {
@@ -65,22 +64,22 @@ Serialization<JsonRecord> {
     }
 
     @Override
-    public JsonRecord deserialize(JsonRecord arg0) throws IOException {
+    public JsonDocument deserialize(JsonDocument arg0) throws IOException {
       if (iter.hasNext()) {
-        return (JsonRecord) iter.next();
+        return (JsonDocument) iter.next();
       }
       return null;
     }
 
     @Override
     public void open(InputStream in) throws IOException {
-      stream = Json.newRecordStream(in);
+      stream = Json.newDocumentStream(in);
       iter = stream.iterator();
     }
 
   }
 
-  private static class JsonRecordSerializer implements Serializer<JsonRecord> {
+  private static class JsonDocumentSerializer implements Serializer<JsonDocument> {
 
     private OutputStream out;
     private JSONFileRecordWriter writer = null;
@@ -96,14 +95,14 @@ Serialization<JsonRecord> {
     }
 
     @Override
-    public void serialize(JsonRecord arg0) throws IOException {
+    public void serialize(JsonDocument arg0) throws IOException {
       writer = new JSONFileRecordWriter(out);
       if (writer == null) {
         throw new IOException(
             "Output stream is not available for serialization.");
       }
 
-      RecordReader reader = arg0.asReader();
+      DocumentReader reader = arg0.asReader();
       Json.writeReaderToStream(reader, writer);
     }
 

@@ -32,9 +32,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Stack;
 
-import org.argonaut.Record;
-import org.argonaut.RecordStream;
-import org.argonaut.RecordWriter;
+import org.argonaut.Document;
+import org.argonaut.DocumentStream;
+import org.argonaut.DocumentBuilder;
 import org.argonaut.Value;
 import org.argonaut.Value.Type;
 import org.argonaut.annotation.API;
@@ -51,9 +51,9 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 
 @API.Internal
-public class JsonRecordWriter implements RecordWriter {
+public class JsonDocumentBuilder implements DocumentBuilder {
 
-  private enum WriterContext {
+  private enum BuilderContext {
     MAPCONTEXT,
     ARRAYCONTEXT,
     NONE
@@ -62,15 +62,15 @@ public class JsonRecordWriter implements RecordWriter {
   private JsonGenerator jsonGenerator;
   private ByteArrayWriterOutputStream b;
   private String cachedJson;
-  private Stack<WriterContext> allRecords;
-  private WriterContext currentContext;
+  private Stack<BuilderContext> allDocuments;
+  private BuilderContext currentContext;
 
-  public JsonRecordWriter() {
+  public JsonDocumentBuilder() {
     b = new ByteArrayWriterOutputStream();
     this.initJsonGenerator(b);
   }
 
-  protected JsonRecordWriter(OutputStream out) {
+  protected JsonDocumentBuilder(OutputStream out) {
     this.initJsonGenerator(out);
   }
 
@@ -82,11 +82,11 @@ public class JsonRecordWriter implements RecordWriter {
       throw new EncodingException(io);
     }
 
-    allRecords = new Stack<WriterContext>();
-    currentContext = WriterContext.NONE;
+    allDocuments = new Stack<BuilderContext>();
+    currentContext = BuilderContext.NONE;
   }
 
-  private void checkContext(WriterContext expectedContext) {
+  private void checkContext(BuilderContext expectedContext) {
     if (currentContext != expectedContext) {
       throw new IllegalStateException("Mismatch in writeContext. Expected " +
           expectedContext.name() + " but found "+currentContext.name());
@@ -95,8 +95,8 @@ public class JsonRecordWriter implements RecordWriter {
 
 
   @Override
-  public JsonRecordWriter put(String field, boolean value) {
-    checkContext(WriterContext.MAPCONTEXT);
+  public JsonDocumentBuilder put(String field, boolean value) {
+    checkContext(BuilderContext.MAPCONTEXT);
     try {
       jsonGenerator.writeBooleanField(field, value);
     } catch (JsonGenerationException e) {
@@ -108,8 +108,8 @@ public class JsonRecordWriter implements RecordWriter {
   }
 
   @Override
-  public JsonRecordWriter put(String field, String value) {
-    checkContext(WriterContext.MAPCONTEXT);
+  public JsonDocumentBuilder put(String field, String value) {
+    checkContext(BuilderContext.MAPCONTEXT);
     try {
       jsonGenerator.writeStringField(field, value);
     } catch (JsonGenerationException e) {
@@ -121,8 +121,8 @@ public class JsonRecordWriter implements RecordWriter {
   }
 
   @Override
-  public JsonRecordWriter put(String field, byte value) {
-    checkContext(WriterContext.MAPCONTEXT);
+  public JsonDocumentBuilder put(String field, byte value) {
+    checkContext(BuilderContext.MAPCONTEXT);
     putNewMap(field);
     try {
       jsonGenerator.writeNumberField(Types.TAG_BYTE, value);
@@ -136,8 +136,8 @@ public class JsonRecordWriter implements RecordWriter {
   }
 
   @Override
-  public JsonRecordWriter put(String field, short value) {
-    checkContext(WriterContext.MAPCONTEXT);
+  public JsonDocumentBuilder put(String field, short value) {
+    checkContext(BuilderContext.MAPCONTEXT);
     try {
       this.putNewMap(field);
       jsonGenerator.writeNumberField(Types.TAG_SHORT, value);
@@ -152,8 +152,8 @@ public class JsonRecordWriter implements RecordWriter {
   }
 
   @Override
-  public JsonRecordWriter put(String field, int value) {
-    checkContext(WriterContext.MAPCONTEXT);
+  public JsonDocumentBuilder put(String field, int value) {
+    checkContext(BuilderContext.MAPCONTEXT);
     try {
       this.putNewMap(field);
       jsonGenerator.writeNumberField(Types.TAG_INT, value);
@@ -168,8 +168,8 @@ public class JsonRecordWriter implements RecordWriter {
   }
 
   @Override
-  public JsonRecordWriter put(String field, long value) {
-    checkContext(WriterContext.MAPCONTEXT);
+  public JsonDocumentBuilder put(String field, long value) {
+    checkContext(BuilderContext.MAPCONTEXT);
     try {
       this.putNewMap(field);
       jsonGenerator.writeNumberField(Types.TAG_LONG, value);
@@ -183,14 +183,14 @@ public class JsonRecordWriter implements RecordWriter {
   }
 
   @Override
-  public JsonRecordWriter put(String field, float value) {
+  public JsonDocumentBuilder put(String field, float value) {
     put(field, (double)value);
     return this;
   }
 
   @Override
-  public JsonRecordWriter put(String field, double value) {
-    checkContext(WriterContext.MAPCONTEXT);
+  public JsonDocumentBuilder put(String field, double value) {
+    checkContext(BuilderContext.MAPCONTEXT);
     try {
       if ((value == Math.floor(value)) && !Double.isInfinite(value)) {
         jsonGenerator.writeNumberField(field, (long)value);
@@ -206,8 +206,8 @@ public class JsonRecordWriter implements RecordWriter {
   }
 
   @Override
-  public JsonRecordWriter put(String field, BigDecimal value) {
-    checkContext(WriterContext.MAPCONTEXT);
+  public JsonDocumentBuilder put(String field, BigDecimal value) {
+    checkContext(BuilderContext.MAPCONTEXT);
     try {
       putNewMap(field);
       jsonGenerator.writeNumberField(Types.TAG_DECIMAL, value);
@@ -221,35 +221,35 @@ public class JsonRecordWriter implements RecordWriter {
   }
 
   @Override
-  public JsonRecordWriter putDecimal(String field, long decimalValue) {
+  public JsonDocumentBuilder putDecimal(String field, long decimalValue) {
     return put(field, new BigDecimal(decimalValue));
   }
 
   @Override
-  public JsonRecordWriter putDecimal(String field, double decimalValue) {
+  public JsonDocumentBuilder putDecimal(String field, double decimalValue) {
     return put(field, new BigDecimal(decimalValue));
   }
 
   @Override
-  public JsonRecordWriter putDecimal(String field, int unscaledValue, int scale) {
+  public JsonDocumentBuilder putDecimal(String field, int unscaledValue, int scale) {
     return put(field, Decimals.convertIntToDecimal(unscaledValue, scale));
   }
 
   @Override
-  public JsonRecordWriter putDecimal(String field, long unscaledValue, int scale) {
+  public JsonDocumentBuilder putDecimal(String field, long unscaledValue, int scale) {
     return put(field, Decimals.convertLongToDecimal(unscaledValue, scale));
   }
 
   @Override
-  public JsonRecordWriter putDecimal(String field, byte[] unscaledValue,
+  public JsonDocumentBuilder putDecimal(String field, byte[] unscaledValue,
       int scale) {
     return put(field,
         Decimals.convertByteToBigDecimal(unscaledValue, scale));
   }
 
   @Override
-  public JsonRecordWriter put(String field, byte[] value) {
-    checkContext(WriterContext.MAPCONTEXT);
+  public JsonDocumentBuilder put(String field, byte[] value) {
+    checkContext(BuilderContext.MAPCONTEXT);
     try {
       putNewMap(field);
       jsonGenerator.writeBinaryField(Types.TAG_BINARY, value);
@@ -263,8 +263,8 @@ public class JsonRecordWriter implements RecordWriter {
   }
 
   @Override
-  public JsonRecordWriter put(String field, byte[] value, int offset, int length) {
-    checkContext(WriterContext.MAPCONTEXT);
+  public JsonDocumentBuilder put(String field, byte[] value, int offset, int length) {
+    checkContext(BuilderContext.MAPCONTEXT);
     try {
       putNewMap(field);
       jsonGenerator.writeFieldName(Types.TAG_BINARY);
@@ -279,14 +279,14 @@ public class JsonRecordWriter implements RecordWriter {
   }
 
   @Override
-  public JsonRecordWriter put(String field, ByteBuffer value) {
+  public JsonDocumentBuilder put(String field, ByteBuffer value) {
     byte[] bytes = new byte[value.remaining()];
     value.get(bytes);
     return put(field, bytes);
   }
 
-  private JsonRecordWriter putLongWithTag(String fieldname, String fieldTag, long value) {
-    checkContext(WriterContext.MAPCONTEXT);
+  private JsonDocumentBuilder putLongWithTag(String fieldname, String fieldTag, long value) {
+    checkContext(BuilderContext.MAPCONTEXT);
     try {
       putNewMap(fieldname);
       jsonGenerator.writeNumberField(fieldTag, value);
@@ -299,8 +299,8 @@ public class JsonRecordWriter implements RecordWriter {
     return this;
   }
 
-  private JsonRecordWriter putStringWithTag(String fieldname, String fieldTag, String value) {
-    checkContext(WriterContext.MAPCONTEXT);
+  private JsonDocumentBuilder putStringWithTag(String fieldname, String fieldTag, String value) {
+    checkContext(BuilderContext.MAPCONTEXT);
     try {
       putNewMap(fieldname);
       jsonGenerator.writeStringField(fieldTag, value);
@@ -314,22 +314,22 @@ public class JsonRecordWriter implements RecordWriter {
   }
 
   @Override
-  public JsonRecordWriter put(String field, Date value) {
+  public JsonDocumentBuilder put(String field, Date value) {
     return putStringWithTag(field, Types.TAG_DATE, Values.toDateStr(value));
   }
 
   @Override
-  public JsonRecordWriter putDate(String field, int days) {
+  public JsonDocumentBuilder putDate(String field, int days) {
     return putStringWithTag(field, Types.TAG_DATE, Values.toDateStr(new Date(days * MILLISECONDSPERDAY)));
   }
 
   @Override
-  public JsonRecordWriter put(String field, Time value) {
+  public JsonDocumentBuilder put(String field, Time value) {
     return putStringWithTag(field, Types.TAG_TIME, Values.toTimeStr(value));
   }
 
   @Override
-  public JsonRecordWriter putTime(String field, int millis) {
+  public JsonDocumentBuilder putTime(String field, int millis) {
     if (millis > MILLISECONDSPERDAY) {
       throw new IllegalArgumentException("Long value exceeds "
           + Long.toString(MILLISECONDSPERDAY) + " " + Long.toString(millis));
@@ -338,34 +338,34 @@ public class JsonRecordWriter implements RecordWriter {
   }
 
   @Override
-  public JsonRecordWriter put(String field, Timestamp value) {
+  public JsonDocumentBuilder put(String field, Timestamp value) {
     return putStringWithTag(field, Types.TAG_TIMESTAMP, Values.toTimestampString(value));
   }
 
   @Override
-  public JsonRecordWriter putTimestamp(String field, long timeMillis) {
+  public JsonDocumentBuilder putTimestamp(String field, long timeMillis) {
     return putStringWithTag(field, Types.TAG_TIMESTAMP, Values.toTimestampString(new Timestamp(timeMillis)));
   }
 
   @Override
-  public JsonRecordWriter put(String field, Interval value) {
+  public JsonDocumentBuilder put(String field, Interval value) {
     return putLongWithTag(field, Types.TAG_INTERVAL, value.getTimeInMillis());
   }
 
   @Override
-  public JsonRecordWriter putInterval(String field, long durationInMs) {
+  public JsonDocumentBuilder putInterval(String field, long durationInMs) {
     return putLongWithTag(field, Types.TAG_INTERVAL, durationInMs);
   }
 
   @Override
-  public JsonRecordWriter putInterval(String field, int months, int days, int milliseconds) {
+  public JsonDocumentBuilder putInterval(String field, int months, int days, int milliseconds) {
     long total_milliseconds = milliseconds + (days + (long) months * 30) * MILLISECONDSPERDAY;
     return putLongWithTag(field, Types.TAG_INTERVAL, total_milliseconds);
   }
 
   @Override
-  public JsonRecordWriter putNewMap(String field) {
-    checkContext(WriterContext.MAPCONTEXT);
+  public JsonDocumentBuilder putNewMap(String field) {
+    checkContext(BuilderContext.MAPCONTEXT);
     try {
       jsonGenerator.writeFieldName(field);
       jsonGenerator.writeStartObject();
@@ -374,13 +374,13 @@ public class JsonRecordWriter implements RecordWriter {
     } catch (IOException ie) {
       throw new EncodingException(ie);
     }
-    allRecords.push(currentContext);
+    allDocuments.push(currentContext);
     return this;
   }
 
   @Override
-  public JsonRecordWriter putNewArray(String field) {
-    checkContext(WriterContext.MAPCONTEXT);
+  public JsonDocumentBuilder putNewArray(String field) {
+    checkContext(BuilderContext.MAPCONTEXT);
     try {
       jsonGenerator.writeFieldName(field);
       jsonGenerator.writeStartArray();
@@ -389,14 +389,14 @@ public class JsonRecordWriter implements RecordWriter {
     } catch (IOException ie) {
       throw new EncodingException(ie);
     }
-    currentContext = WriterContext.ARRAYCONTEXT;
-    allRecords.push(currentContext);
+    currentContext = BuilderContext.ARRAYCONTEXT;
+    allDocuments.push(currentContext);
     return this;
   }
 
   @Override
-  public JsonRecordWriter putNull(String field) {
-    checkContext(WriterContext.MAPCONTEXT);
+  public JsonDocumentBuilder putNull(String field) {
+    checkContext(BuilderContext.MAPCONTEXT);
     try {
       jsonGenerator.writeNullField(field);
     } catch (JsonGenerationException e) {
@@ -409,7 +409,7 @@ public class JsonRecordWriter implements RecordWriter {
 
 
   @Override
-  public JsonRecordWriter put(String field, Value value) {
+  public JsonDocumentBuilder put(String field, Value value) {
 
     Value.Type t = value.getType();
     switch (t) {
@@ -459,7 +459,7 @@ public class JsonRecordWriter implements RecordWriter {
       put(field, value.getBinary());
       break;
     case MAP:
-      put(field, (Record)value);
+      put(field, (Document)value);
       break;
     case ARRAY:
       putArray(field, value.getList());
@@ -470,14 +470,14 @@ public class JsonRecordWriter implements RecordWriter {
     return this;
   }
 
-  private JsonRecordWriter iterRecord(Iterator<Entry<String, Value>> it) {
+  private JsonDocumentBuilder iterDocument(Iterator<Entry<String, Value>> it) {
     while (it.hasNext()) {
       Entry<String, Value> kv = it.next();
       String key = kv.getKey();
       Value value = kv.getValue();
       if (value.getType() == Type.MAP) {
         putNewMap(key);
-        iterRecord(((Record) value).iterator());
+        iterDocument(((Document) value).iterator());
       } else if (value.getType() == Type.ARRAY) {
         putArray(key, value.getList());
       } else {
@@ -490,18 +490,18 @@ public class JsonRecordWriter implements RecordWriter {
   }
 
   @Override
-  public JsonRecordWriter put(String field, Record value) {
-    // iterate over the record interface and extract tokens.
+  public JsonDocumentBuilder put(String field, Document value) {
+    // iterate over the document interface and extract tokens.
     // Add them to the writer.
-    checkContext(WriterContext.MAPCONTEXT);
+    checkContext(BuilderContext.MAPCONTEXT);
     Iterator<Entry<String, Value>> it = value.iterator();
     putNewMap(field);
-    return iterRecord(it);
+    return iterDocument(it);
   }
 
   @Override
-  public JsonRecordWriter add(boolean value) {
-    checkContext(WriterContext.ARRAYCONTEXT);
+  public JsonDocumentBuilder add(boolean value) {
+    checkContext(BuilderContext.ARRAYCONTEXT);
     try {
       jsonGenerator.writeBoolean(value);
     } catch (JsonGenerationException e) {
@@ -513,8 +513,8 @@ public class JsonRecordWriter implements RecordWriter {
   }
 
   @Override
-  public JsonRecordWriter add(String value) {
-    checkContext(WriterContext.ARRAYCONTEXT);
+  public JsonDocumentBuilder add(String value) {
+    checkContext(BuilderContext.ARRAYCONTEXT);
     try {
       jsonGenerator.writeString(value);
     } catch (JsonGenerationException e) {
@@ -526,17 +526,17 @@ public class JsonRecordWriter implements RecordWriter {
   }
 
   @Override
-  public JsonRecordWriter add(byte value) {
+  public JsonDocumentBuilder add(byte value) {
     return addInt(Types.TAG_BYTE, value);
   }
 
   @Override
-  public JsonRecordWriter add(short value) {
+  public JsonDocumentBuilder add(short value) {
     return addInt(Types.TAG_SHORT, value);
   }
 
-  private JsonRecordWriter addInt(String field, long value) {
-    checkContext(WriterContext.ARRAYCONTEXT);
+  private JsonDocumentBuilder addInt(String field, long value) {
+    checkContext(BuilderContext.ARRAYCONTEXT);
     try {
       jsonGenerator.writeStartObject();
       jsonGenerator.writeNumberField(field, value);
@@ -550,18 +550,18 @@ public class JsonRecordWriter implements RecordWriter {
   }
 
   @Override
-  public JsonRecordWriter add(int value) {
+  public JsonDocumentBuilder add(int value) {
     return addInt(Types.TAG_INT, value);
   }
 
   @Override
-  public JsonRecordWriter add(long value) {
+  public JsonDocumentBuilder add(long value) {
     return addInt(Types.TAG_LONG, value);
   }
 
   @Override
-  public JsonRecordWriter add(float value) {
-    checkContext(WriterContext.ARRAYCONTEXT);
+  public JsonDocumentBuilder add(float value) {
+    checkContext(BuilderContext.ARRAYCONTEXT);
     try {
       jsonGenerator.writeNumber(value);
     } catch (JsonGenerationException e) {
@@ -573,8 +573,8 @@ public class JsonRecordWriter implements RecordWriter {
   }
 
   @Override
-  public JsonRecordWriter add(double value) {
-    checkContext(WriterContext.ARRAYCONTEXT);
+  public JsonDocumentBuilder add(double value) {
+    checkContext(BuilderContext.ARRAYCONTEXT);
     try {
       jsonGenerator.writeNumber(value);
     } catch (JsonGenerationException e) {
@@ -586,8 +586,8 @@ public class JsonRecordWriter implements RecordWriter {
   }
 
   @Override
-  public JsonRecordWriter add(BigDecimal value) {
-    checkContext(WriterContext.ARRAYCONTEXT);
+  public JsonDocumentBuilder add(BigDecimal value) {
+    checkContext(BuilderContext.ARRAYCONTEXT);
     try {
       jsonGenerator.writeStartObject();
       jsonGenerator.writeNumberField(Types.TAG_DECIMAL, value);
@@ -601,8 +601,8 @@ public class JsonRecordWriter implements RecordWriter {
   }
 
   @Override
-  public JsonRecordWriter addDecimal(long decimalValue) {
-    checkContext(WriterContext.ARRAYCONTEXT);
+  public JsonDocumentBuilder addDecimal(long decimalValue) {
+    checkContext(BuilderContext.ARRAYCONTEXT);
     try {
       jsonGenerator.writeStartObject();
       jsonGenerator.writeNumberField(Types.TAG_DECIMAL, decimalValue);
@@ -616,8 +616,8 @@ public class JsonRecordWriter implements RecordWriter {
   }
 
   @Override
-  public JsonRecordWriter addDecimal(double decimalValue) {
-    checkContext(WriterContext.ARRAYCONTEXT);
+  public JsonDocumentBuilder addDecimal(double decimalValue) {
+    checkContext(BuilderContext.ARRAYCONTEXT);
     try {
       jsonGenerator.writeStartObject();
       jsonGenerator.writeNumberField(Types.TAG_DECIMAL, decimalValue);
@@ -631,23 +631,23 @@ public class JsonRecordWriter implements RecordWriter {
   }
 
   @Override
-  public JsonRecordWriter addDecimal(int unscaledValue, int scale) {
+  public JsonDocumentBuilder addDecimal(int unscaledValue, int scale) {
     return add(Decimals.convertIntToDecimal(unscaledValue, scale));
   }
 
   @Override
-  public JsonRecordWriter addDecimal(long unscaledValue, int scale) {
+  public JsonDocumentBuilder addDecimal(long unscaledValue, int scale) {
     return add(Decimals.convertLongToDecimal(unscaledValue, scale));
   }
 
   @Override
-  public JsonRecordWriter addDecimal(byte[] unscaledValue, int scale) {
+  public JsonDocumentBuilder addDecimal(byte[] unscaledValue, int scale) {
     return add(Decimals.convertByteToBigDecimal(unscaledValue, scale));
   }
 
   @Override
-  public JsonRecordWriter add(byte[] value) {
-    checkContext(WriterContext.ARRAYCONTEXT);
+  public JsonDocumentBuilder add(byte[] value) {
+    checkContext(BuilderContext.ARRAYCONTEXT);
     try {
       jsonGenerator.writeStartObject();
       jsonGenerator.writeBinaryField(Types.TAG_BINARY, value);
@@ -661,8 +661,8 @@ public class JsonRecordWriter implements RecordWriter {
   }
 
   @Override
-  public JsonRecordWriter add(byte[] value, int offset, int length) {
-    checkContext(WriterContext.ARRAYCONTEXT);
+  public JsonDocumentBuilder add(byte[] value, int offset, int length) {
+    checkContext(BuilderContext.ARRAYCONTEXT);
     try {
       jsonGenerator.writeStartObject();
       jsonGenerator.writeFieldName(Types.TAG_BINARY);
@@ -677,15 +677,15 @@ public class JsonRecordWriter implements RecordWriter {
   }
 
   @Override
-  public JsonRecordWriter add(ByteBuffer value) {
+  public JsonDocumentBuilder add(ByteBuffer value) {
     byte[] bytes = new byte[value.remaining()];
     value.get(bytes);
     return add(bytes);
   }
 
   @Override
-  public JsonRecordWriter addNull() {
-    checkContext(WriterContext.ARRAYCONTEXT);
+  public JsonDocumentBuilder addNull() {
+    checkContext(BuilderContext.ARRAYCONTEXT);
     try {
       jsonGenerator.writeNull();
     } catch (JsonGenerationException e) {
@@ -697,7 +697,7 @@ public class JsonRecordWriter implements RecordWriter {
   }
 
   @Override
-  public JsonRecordWriter add(Value value) {
+  public JsonDocumentBuilder add(Value value) {
     Value.Type t = value.getType();
     switch (t) {
     case NULL:
@@ -743,7 +743,7 @@ public class JsonRecordWriter implements RecordWriter {
       add(value.getBinary());
       break;
     case MAP:
-      add((Record)value);
+      add((Document)value);
       break;
     case DECIMAL:
       add(value.getDecimal());
@@ -759,15 +759,15 @@ public class JsonRecordWriter implements RecordWriter {
   }
 
   @Override
-  public JsonRecordWriter add(Record value) {
+  public JsonDocumentBuilder add(Document value) {
     addNewMap();
     Iterator<Entry<String, Value>> it = value.iterator();
-    return iterRecord(it);
+    return iterDocument(it);
   }
 
   @Override
-  public JsonRecordWriter addNewArray() {
-    checkContext(WriterContext.ARRAYCONTEXT);
+  public JsonDocumentBuilder addNewArray() {
+    checkContext(BuilderContext.ARRAYCONTEXT);
     try {
       jsonGenerator.writeStartArray();
     } catch (JsonGenerationException e) {
@@ -775,13 +775,13 @@ public class JsonRecordWriter implements RecordWriter {
     } catch (IOException ie) {
       throw new EncodingException(ie);
     }
-    allRecords.push(WriterContext.ARRAYCONTEXT);
+    allDocuments.push(BuilderContext.ARRAYCONTEXT);
     return this;
   }
 
   @Override
-  public JsonRecordWriter addNewMap() {
-    if (currentContext == WriterContext.MAPCONTEXT) {
+  public JsonDocumentBuilder addNewMap() {
+    if (currentContext == BuilderContext.MAPCONTEXT) {
       throw new IllegalStateException("Context mismatch : addNewMap() can not be called at "+
           currentContext.name());
     }
@@ -792,14 +792,14 @@ public class JsonRecordWriter implements RecordWriter {
     } catch (IOException ie) {
       throw new EncodingException(ie);
     }
-    currentContext = WriterContext.MAPCONTEXT;
-    allRecords.push(currentContext);
+    currentContext = BuilderContext.MAPCONTEXT;
+    allDocuments.push(currentContext);
 
     return this;
   }
 
-  private JsonRecordWriter addLongWithTag(String tagName, long value) {
-    checkContext(WriterContext.ARRAYCONTEXT);
+  private JsonDocumentBuilder addLongWithTag(String tagName, long value) {
+    checkContext(BuilderContext.ARRAYCONTEXT);
     try {
       jsonGenerator.writeStartObject();
       jsonGenerator.writeNumberField(tagName, value);
@@ -813,8 +813,8 @@ public class JsonRecordWriter implements RecordWriter {
   }
 
   /* helper function to write date, time and timestamp types as string */
-  private JsonRecordWriter addStringWithTag(String tagName, String value) {
-    checkContext(WriterContext.ARRAYCONTEXT);
+  private JsonDocumentBuilder addStringWithTag(String tagName, String value) {
+    checkContext(BuilderContext.ARRAYCONTEXT);
     try {
       jsonGenerator.writeStartObject();
       jsonGenerator.writeStringField(tagName, value);
@@ -828,48 +828,48 @@ public class JsonRecordWriter implements RecordWriter {
   }
 
   @Override
-  public JsonRecordWriter add(Time value) {
+  public JsonDocumentBuilder add(Time value) {
     return addStringWithTag(Types.TAG_TIME, Values.toTimeStr(value));
   }
 
   @Override
-  public JsonRecordWriter addTime(int millis) {
+  public JsonDocumentBuilder addTime(int millis) {
     return addStringWithTag(Types.TAG_TIME, Values.toTimeStr(new Time(millis)));
   }
 
   @Override
-  public JsonRecordWriter add(Date value) {
+  public JsonDocumentBuilder add(Date value) {
     return addStringWithTag(Types.TAG_DATE, Values.toDateStr(value));
   }
 
   @Override
-  public JsonRecordWriter addDate(int days) {
+  public JsonDocumentBuilder addDate(int days) {
     return addStringWithTag(Types.TAG_DATE, Values.toDateStr(new Date(days * MILLISECONDSPERDAY)));
   }
 
   @Override
-  public JsonRecordWriter add(Timestamp value) {
+  public JsonDocumentBuilder add(Timestamp value) {
     return addStringWithTag(Types.TAG_TIMESTAMP, Values.toTimestampString(value));
   }
 
   @Override
-  public JsonRecordWriter addTimestamp(long timeMillis) {
+  public JsonDocumentBuilder addTimestamp(long timeMillis) {
     return addStringWithTag(Types.TAG_TIMESTAMP, Values.toTimestampString(new Timestamp(timeMillis)));
   }
 
   @Override
-  public JsonRecordWriter add(Interval value) {
+  public JsonDocumentBuilder add(Interval value) {
     return addLongWithTag(Types.TAG_INTERVAL, value.getTimeInMillis());
   }
 
   @Override
-  public JsonRecordWriter addInterval(long durationInMs) {
+  public JsonDocumentBuilder addInterval(long durationInMs) {
     return addLongWithTag(Types.TAG_INTERVAL, durationInMs);
   }
 
   @Override
-  public JsonRecordWriter endArray() {
-    checkContext(WriterContext.ARRAYCONTEXT);
+  public JsonDocumentBuilder endArray() {
+    checkContext(BuilderContext.ARRAYCONTEXT);
     try {
       jsonGenerator.writeEndArray();
     } catch (JsonGenerationException e) {
@@ -877,19 +877,19 @@ public class JsonRecordWriter implements RecordWriter {
     } catch (IOException ie) {
       throw new EncodingException(ie);
     }
-    allRecords.pop();
+    allDocuments.pop();
 
-    currentContext = allRecords.peek();
+    currentContext = allDocuments.peek();
 
     return this;
   }
 
   @Override
-  public JsonRecordWriter endMap() {
+  public JsonDocumentBuilder endMap() {
     if (jsonGenerator.isClosed()) {
-      throw new IllegalStateException("The record has already been built.");
+      throw new IllegalStateException("The document has already been built.");
     }
-    checkContext(WriterContext.MAPCONTEXT);
+    checkContext(BuilderContext.MAPCONTEXT);
     try {
       jsonGenerator.writeEndObject();
     } catch (JsonGenerationException e) {
@@ -897,9 +897,9 @@ public class JsonRecordWriter implements RecordWriter {
     } catch (IOException ie) {
       throw new EncodingException(ie);
     }
-    allRecords.pop();
-    if (!allRecords.empty()) {
-      currentContext = allRecords.peek();
+    allDocuments.pop();
+    if (!allDocuments.empty()) {
+      currentContext = allDocuments.peek();
     } else {
       //close the generator
       try {
@@ -925,7 +925,7 @@ public class JsonRecordWriter implements RecordWriter {
 
   public String asUTF8String() {
     if (!jsonGenerator.isClosed()) {
-      throw new IllegalStateException("The record has not been built.");
+      throw new IllegalStateException("The document has not been built.");
     }
 
     if (cachedJson == null) {
@@ -939,18 +939,18 @@ public class JsonRecordWriter implements RecordWriter {
   }
 
   /* private function that adds an array as value of k-v pair */
-  private JsonRecordWriter putArray(String field, List<Object> values) {
+  private JsonDocumentBuilder putArray(String field, List<Object> values) {
 
     try {
       if (field != null) {
-        checkContext(WriterContext.MAPCONTEXT);
+        checkContext(BuilderContext.MAPCONTEXT);
         jsonGenerator.writeFieldName(field);
       } else {
-        checkContext(WriterContext.ARRAYCONTEXT);
+        checkContext(BuilderContext.ARRAYCONTEXT);
       }
       jsonGenerator.writeStartArray();
-      currentContext = WriterContext.ARRAYCONTEXT;
-      allRecords.push(currentContext);
+      currentContext = BuilderContext.ARRAYCONTEXT;
+      allDocuments.push(currentContext);
 
       for (Iterator<Object> it = values.iterator(); it
           .hasNext();) {
@@ -958,8 +958,8 @@ public class JsonRecordWriter implements RecordWriter {
         add(JsonValueBuilder.initFromObject(e));
       }
       jsonGenerator.writeEndArray();
-      allRecords.pop();
-      currentContext = allRecords.peek();
+      allDocuments.pop();
+      currentContext = allDocuments.peek();
     } catch (JsonGenerationException je) {
       throw new IllegalStateException(je);
     } catch (IOException ie) {
@@ -977,18 +977,18 @@ public class JsonRecordWriter implements RecordWriter {
   }
 
   @Override
-  public Record getRecord() {
+  public Document getDocument() {
     if (!jsonGenerator.isClosed()) {
-      throw new IllegalStateException("Record is not written completely");
+      throw new IllegalStateException("Document is not written completely");
     }
 
     if (b != null) {
       byte[] barray = b.getByteArray();
       ByteArrayInputStream inputStream = new ByteArrayInputStream(barray);
-      RecordStream<Record> recordStream = Json.newRecordStream(inputStream);
-      Iterator<Record> iter = recordStream.iterator();
+      DocumentStream<Document> documentStream = Json.newDocumentStream(inputStream);
+      Iterator<Document> iter = documentStream.iterator();
       if (iter.hasNext()) {
-        Record r = iter.next();
+        Document r = iter.next();
         return r;
       }
     }
@@ -996,7 +996,7 @@ public class JsonRecordWriter implements RecordWriter {
   }
 
   @Override
-  public RecordWriter put(String field, Map<String, Object> value) {
+  public DocumentBuilder put(String field, Map<String, Object> value) {
     return put(field, JsonValueBuilder.initFrom(value));
   }
 

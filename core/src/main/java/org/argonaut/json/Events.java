@@ -17,9 +17,9 @@ package org.argonaut.json;
 
 import java.util.Queue;
 
-import org.argonaut.RecordReader;
+import org.argonaut.DocumentReader;
 import org.argonaut.Value;
-import org.argonaut.RecordReader.EventType;
+import org.argonaut.DocumentReader.EventType;
 import org.argonaut.annotation.API;
 
 @API.Public
@@ -38,27 +38,27 @@ public class Events {
   }
 
   public static interface Delegate {
-    public boolean process(RecordReader reader,
+    public boolean process(DocumentReader reader,
         EventType event, Queue<TypeValuePair> eventQueue);
-    public boolean bor(RecordReader reader, Queue<TypeValuePair> eventQueue);
-    public boolean eor(RecordReader reader, Queue<TypeValuePair> eventQueue);
+    public boolean bor(DocumentReader reader, Queue<TypeValuePair> eventQueue);
+    public boolean eor(DocumentReader reader, Queue<TypeValuePair> eventQueue);
   }
 
   public static abstract class BaseDelegate implements Delegate {
     @Override
-    public boolean process(RecordReader reader, EventType event,
+    public boolean process(DocumentReader reader, EventType event,
         Queue<TypeValuePair> eventQueue) {
       return false;
     }
 
     @Override
-    public boolean bor(RecordReader reader,
+    public boolean bor(DocumentReader reader,
         Queue<TypeValuePair> eventQueue) {
       return false;
     }
 
     @Override
-    public boolean eor(RecordReader reader,
+    public boolean eor(DocumentReader reader,
         Queue<TypeValuePair> eventQueue) {
       return false;
     }

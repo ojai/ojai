@@ -20,27 +20,27 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 import org.argonaut.FieldPath;
-import org.argonaut.RecordReader;
+import org.argonaut.DocumentReader;
 import org.argonaut.Value.Type;
 import org.argonaut.json.Events.Delegate;
 
-class JsonRecordReaderIterable implements Iterable<RecordReader> {
+class JsonDocumentReaderIterable implements Iterable<DocumentReader> {
 
-  final private JsonRecordStream jsonRecordStream;
+  final private JsonDocumentStream jsonDocumentStream;
   final private Map<FieldPath, Type> fieldPathTypeMap;
   final private Delegate eventDelegate;
 
-  JsonRecordReaderIterable(JsonRecordStream recordStream) {
-    this.jsonRecordStream = recordStream;
-    fieldPathTypeMap = recordStream.getFieldPathTypeMap();
-    eventDelegate = recordStream.getEventDelegate();
+  JsonDocumentReaderIterable(JsonDocumentStream documentStream) {
+    this.jsonDocumentStream = documentStream;
+    fieldPathTypeMap = documentStream.getFieldPathTypeMap();
+    eventDelegate = documentStream.getEventDelegate();
   }
 
   @Override
-  public Iterator<RecordReader> iterator() {
-    return new Iterator<RecordReader>() {
-      private JsonStreamRecordReader lastReader;
-      private JsonStreamRecordReader currentReader;
+  public Iterator<DocumentReader> iterator() {
+    return new Iterator<DocumentReader>() {
+      private JsonStreamDocumentReader lastReader;
+      private JsonStreamDocumentReader currentReader;
       private boolean eos = false;
 
       @Override
@@ -49,7 +49,7 @@ class JsonRecordReaderIterable implements Iterable<RecordReader> {
       }
 
       @Override
-      public RecordReader next() {
+      public DocumentReader next() {
         if (!hasNext()) {
           throw new NoSuchElementException();
         }
@@ -61,7 +61,7 @@ class JsonRecordReaderIterable implements Iterable<RecordReader> {
       @Override
       public boolean hasNext() {
         if (lastReader != null) {
-          // If a record was previously returned
+          // If a document was previously returned
           // ensure that its reader has consumed
           // its data from the underlying stream
           lastReader.readFully();
@@ -69,11 +69,11 @@ class JsonRecordReaderIterable implements Iterable<RecordReader> {
         }
         if (!eos && currentReader == null) {
           if (eventDelegate != null) {
-            currentReader = new DelegatingJsonRecordReader(jsonRecordStream, eventDelegate);
+            currentReader = new DelegatingJsonDocumentReader(jsonDocumentStream, eventDelegate);
           } else if (fieldPathTypeMap != null) {
-            currentReader = new TypeMappedJsonRecordReader(jsonRecordStream, fieldPathTypeMap);
+            currentReader = new TypeMappedJsonDocumentReader(jsonDocumentStream, fieldPathTypeMap);
           } else {
-            currentReader = new JsonStreamRecordReader(jsonRecordStream);
+            currentReader = new JsonStreamDocumentReader(jsonDocumentStream);
           }
           eos = currentReader.eor();
         }

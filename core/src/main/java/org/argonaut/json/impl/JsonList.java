@@ -209,19 +209,19 @@ class JsonList extends JsonValue implements List<Object> {
        * if the new value for the same field is not
        * a map then delete the existing value and write new
        */
-      JsonRecord newRecord;
+      JsonDocument newDocument;
       if ((oldJsonValue == null) || (oldJsonValue.getType() != Type.MAP)) {
-        newRecord = new JsonRecord();
-        newRecord.createOrInsert(iter, inJsonValue);
+        newDocument = new JsonDocument();
+        newDocument.createOrInsert(iter, inJsonValue);
         if (index >= list.size()) {
-          list.add(newRecord);
+          list.add(newDocument);
         }else {
-          list.set(index, newRecord);
+          list.set(index, newDocument);
         }
         return this;
       }
-      newRecord = (JsonRecord) oldJsonValue;
-      return newRecord.createOrInsert(iter, inJsonValue);
+      newDocument = (JsonDocument) oldJsonValue;
+      return newDocument.createOrInsert(iter, inJsonValue);
     }
 
     /* next field is an array element - like a[3][5] */
@@ -267,7 +267,7 @@ class JsonList extends JsonValue implements List<Object> {
       if (kv.getType() != Type.MAP) {
         return;
       }
-      ((JsonRecord)kv).delete(iter);
+      ((JsonDocument)kv).delete(iter);
     }
 
     if (kv.getType() != Type.ARRAY) {
@@ -303,7 +303,7 @@ class JsonList extends JsonValue implements List<Object> {
       if (kv.getType() != Type.MAP) {
         return null;
       }
-      return ((JsonRecord)kv).getKeyValueAt(iter);
+      return ((JsonDocument)kv).getKeyValueAt(iter);
     }
     if (kv.getType() != Type.ARRAY) {
       return null;

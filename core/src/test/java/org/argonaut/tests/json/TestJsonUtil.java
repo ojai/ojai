@@ -17,10 +17,10 @@ package org.argonaut.tests.json;
 
 import java.io.InputStream;
 
-import org.argonaut.Record;
-import org.argonaut.RecordReader;
-import org.argonaut.RecordStream;
-import org.argonaut.RecordWriter;
+import org.argonaut.Document;
+import org.argonaut.DocumentReader;
+import org.argonaut.DocumentStream;
+import org.argonaut.DocumentBuilder;
 import org.argonaut.json.Json;
 import org.argonaut.tests.BaseTest;
 import org.junit.Test;
@@ -29,10 +29,10 @@ public class TestJsonUtil extends BaseTest {
 
   @Test
   public void testJsonSerialization() throws Exception {
-    try (InputStream in = getJsonStream("multirecord.json");
-        RecordStream<Record> stream = Json.newRecordStream(in)) {
-      for (RecordReader reader : stream.recordReaders()) {
-        RecordWriter writer = Json.newRecordWriter();
+    try (InputStream in = getJsonStream("multidocument.json");
+        DocumentStream<Document> stream = Json.newDocumentStream(in)) {
+      for (DocumentReader reader : stream.documentReaders()) {
+        DocumentBuilder writer = Json.newDocumentBuilder();
         Json.writeReaderToStream(reader, writer);
         System.out.println(writer);
       }

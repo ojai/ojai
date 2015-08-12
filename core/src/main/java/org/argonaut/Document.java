@@ -29,156 +29,156 @@ import org.argonaut.exceptions.TypeException;
 import org.argonaut.types.Interval;
 
 @API.Public
-public interface Record extends Iterable<Map.Entry<String, Value>> {
+public interface Document extends Iterable<Map.Entry<String, Value>> {
 
   /**
-   * @return the number of top level entries in the record.
+   * @return the number of top level entries in the document.
    */
   int size();
 
   /**
-   * Removes all of the entries from this record.
+   * Removes all of the entries from this document.
    */
-  Record empty();
+  Document empty();
 
-  Record set(String fieldPath, String value);
+  Document set(String fieldPath, String value);
 
-  Record set(FieldPath fieldPath, String value);
+  Document set(FieldPath fieldPath, String value);
 
-  Record set(String fieldPath, boolean value);
+  Document set(String fieldPath, boolean value);
 
-  Record set(FieldPath fieldPath, boolean value);
+  Document set(FieldPath fieldPath, boolean value);
 
-  Record set(String fieldPath, byte value);
+  Document set(String fieldPath, byte value);
 
-  Record set(FieldPath fieldPath, byte value);
+  Document set(FieldPath fieldPath, byte value);
 
-  Record set(String fieldPath, short value);
+  Document set(String fieldPath, short value);
 
-  Record set(FieldPath fieldPath, short value);
+  Document set(FieldPath fieldPath, short value);
 
-  Record set(String fieldPath, int value);
+  Document set(String fieldPath, int value);
 
-  Record set(FieldPath fieldPath, int value);
+  Document set(FieldPath fieldPath, int value);
 
-  Record set(String fieldPath, long value);
+  Document set(String fieldPath, long value);
 
-  Record set(FieldPath fieldPath, long value);
+  Document set(FieldPath fieldPath, long value);
 
-  Record set(String fieldPath, float value);
+  Document set(String fieldPath, float value);
 
-  Record set(FieldPath fieldPath, float value);
+  Document set(FieldPath fieldPath, float value);
 
-  Record set(String fieldPath, double value);
+  Document set(String fieldPath, double value);
 
-  Record set(FieldPath fieldPath, double value);
+  Document set(FieldPath fieldPath, double value);
 
-  Record set(String fieldPath, BigDecimal value);
+  Document set(String fieldPath, BigDecimal value);
 
-  Record set(FieldPath fieldPath, BigDecimal value);
+  Document set(FieldPath fieldPath, BigDecimal value);
 
-  Record set(String fieldPath, Time value);
+  Document set(String fieldPath, Time value);
 
-  Record set(FieldPath fieldPath, Time value);
+  Document set(FieldPath fieldPath, Time value);
 
-  Record set(String fieldPath, Date value);
+  Document set(String fieldPath, Date value);
 
-  Record set(FieldPath fieldPath, Date value);
+  Document set(FieldPath fieldPath, Date value);
 
-  Record set(String fieldPath, Timestamp value);
+  Document set(String fieldPath, Timestamp value);
 
-  Record set(FieldPath fieldPath, Timestamp value);
+  Document set(FieldPath fieldPath, Timestamp value);
 
-  Record set(String fieldPath, Interval value);
+  Document set(String fieldPath, Interval value);
 
-  Record set(FieldPath fieldPath, Interval value);
+  Document set(FieldPath fieldPath, Interval value);
 
-  Record set(String fieldPath, byte[] value);
+  Document set(String fieldPath, byte[] value);
 
-  Record set(FieldPath fieldPath, byte[] value);
+  Document set(FieldPath fieldPath, byte[] value);
 
-  Record set(String fieldPath, byte[] value, int off, int len);
+  Document set(String fieldPath, byte[] value, int off, int len);
 
-  Record set(FieldPath fieldPath, byte[] value, int off, int len);
+  Document set(FieldPath fieldPath, byte[] value, int off, int len);
 
-  Record set(String fieldPath, ByteBuffer value);
+  Document set(String fieldPath, ByteBuffer value);
 
-  Record set(FieldPath fieldPath, ByteBuffer value);
+  Document set(FieldPath fieldPath, ByteBuffer value);
 
-  Record set(String fieldPath, Map<String, ? extends Object> value);
+  Document set(String fieldPath, Map<String, ? extends Object> value);
 
-  Record set(FieldPath fieldPath, Map<String, ? extends Object> value);
+  Document set(FieldPath fieldPath, Map<String, ? extends Object> value);
 
-  Record set(String fieldPath, Record value);
+  Document set(String fieldPath, Document value);
 
-  Record set(FieldPath fieldPath, Record value);
+  Document set(FieldPath fieldPath, Document value);
 
-  Record set(String fieldPath, Value value);
+  Document set(String fieldPath, Value value);
 
-  Record set(FieldPath fieldPath, Value value);
+  Document set(FieldPath fieldPath, Value value);
 
-  Record set(String fieldPath, List<? extends Object> value);
+  Document set(String fieldPath, List<? extends Object> value);
 
-  Record set(FieldPath fieldPath, List<? extends Object> value);
+  Document set(FieldPath fieldPath, List<? extends Object> value);
 
-  Record setArray(String fieldPath, boolean[] values);
+  Document setArray(String fieldPath, boolean[] values);
 
-  Record setArray(FieldPath fieldPath, boolean[] values);
+  Document setArray(FieldPath fieldPath, boolean[] values);
 
-  Record setArray(String fieldPath, byte[] values);
+  Document setArray(String fieldPath, byte[] values);
 
-  Record setArray(FieldPath fieldPath, byte[] values);
+  Document setArray(FieldPath fieldPath, byte[] values);
 
-  Record setArray(String fieldPath, short[] values);
+  Document setArray(String fieldPath, short[] values);
 
-  Record setArray(FieldPath fieldPath, short[] values);
+  Document setArray(FieldPath fieldPath, short[] values);
 
-  Record setArray(String fieldPath, int[] values);
+  Document setArray(String fieldPath, int[] values);
 
-  Record setArray(FieldPath fieldPath, int[] values);
+  Document setArray(FieldPath fieldPath, int[] values);
 
-  Record setArray(String fieldPath, long[] values);
+  Document setArray(String fieldPath, long[] values);
 
-  Record setArray(FieldPath fieldPath, long[] values);
+  Document setArray(FieldPath fieldPath, long[] values);
 
-  Record setArray(String fieldPath, float[] values);
+  Document setArray(String fieldPath, float[] values);
 
-  Record setArray(FieldPath fieldPath, float[] values);
+  Document setArray(FieldPath fieldPath, float[] values);
 
-  Record setArray(String fieldPath, double[] values);
+  Document setArray(String fieldPath, double[] values);
 
-  Record setArray(FieldPath fieldPath, double[] values);
+  Document setArray(FieldPath fieldPath, double[] values);
 
-  Record setArray(String fieldPath, String[] values);
+  Document setArray(String fieldPath, String[] values);
 
-  Record setArray(FieldPath fieldPath, String[] values);
+  Document setArray(FieldPath fieldPath, String[] values);
 
-  Record setArray(String fieldPath, Object... values);
+  Document setArray(String fieldPath, Object... values);
 
-  Record setArray(FieldPath fieldPath, Object... values);
+  Document setArray(FieldPath fieldPath, Object... values);
 
-  Record setNull(String fieldPath);
+  Document setNull(String fieldPath);
 
-  Record setNull(FieldPath fieldPath);
+  Document setNull(FieldPath fieldPath);
 
   /**
    * Deletes the value at the specified {@code FieldPath} if exists.
-   * @param fieldPath The {@code fieldPath} to delete from the record.
+   * @param fieldPath The {@code fieldPath} to delete from the document.
    * @return {@code this} for chaining.
    */
-  Record delete(String fieldPath);
+  Document delete(String fieldPath);
 
   /**
    * Deletes the value at the specified {@code FieldPath} if exists.
-   * @param fieldPath The {@code fieldPath} to delete from the record.
+   * @param fieldPath The {@code fieldPath} to delete from the document.
    * @return {@code this} for chaining.
    */
-  Record delete(FieldPath fieldPath);
+  Document delete(FieldPath fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@code String}
    * object or {@code null} if the specified {@code FieldPath} does
-   * not exist in the record.
+   * not exist in the document.
    *
    * @throws TypeException If the value at the fieldPath is not of
    *         <code>STRING</code> type.
@@ -188,7 +188,7 @@ public interface Record extends Iterable<Map.Entry<String, Value>> {
   /**
    * Returns the value at the specified fieldPath as a {@code String}
    * object or {@code null} if the specified {@code FieldPath} does
-   * not exist in the record.
+   * not exist in the document.
    *
    * @throws TypeException If the value at the fieldPath is not of
    *         <code>STRING</code> type.
@@ -201,7 +201,7 @@ public interface Record extends Iterable<Map.Entry<String, Value>> {
    * @throws TypeException If the value at the fieldPath is not of
    *         <code>BOOLEAN</code> type.
    * @throws NoSuchElementException If the specified field does not
-   *         exist in the {@code Record}.
+   *         exist in the {@code Document}.
    */
   boolean getBoolean(String fieldPath);
 
@@ -211,14 +211,14 @@ public interface Record extends Iterable<Map.Entry<String, Value>> {
    * @throws TypeException If the value at the fieldPath is not of
    *         <code>BOOLEAN</code> type.
    * @throws NoSuchElementException If the specified field does not
-   *         exist in the {@code Record}.
+   *         exist in the {@code Document}.
    */
   boolean getBoolean(FieldPath fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@code Boolean}
    * object or {@code null} if the specified {@code FieldPath} does
-   * not exist in the record.
+   * not exist in the document.
    *
    * @throws TypeException If the value at the fieldPath is not of
    *         <code>BOOLEAN</code> type.
@@ -228,7 +228,7 @@ public interface Record extends Iterable<Map.Entry<String, Value>> {
   /**
    * Returns the value at the specified fieldPath as a {@code Boolean}
    * object or {@code null} if the specified {@code FieldPath} does
-   * not exist in the record.
+   * not exist in the document.
    *
    * @throws TypeException If the value at the fieldPath is not of
    *         <code>BOOLEAN</code> type.
@@ -242,7 +242,7 @@ public interface Record extends Iterable<Map.Entry<String, Value>> {
    * @throws TypeException If the value at the fieldPath is not of
    *         <code>BYTE</code> type.
    * @throws NoSuchElementException If the specified field does not
-   *         exist in the {@code Record}.
+   *         exist in the {@code Document}.
    */
   byte getByte(String fieldPath);
 
@@ -253,14 +253,14 @@ public interface Record extends Iterable<Map.Entry<String, Value>> {
    * @throws TypeException If the value at the fieldPath is not of
    *         <code>BYTE</code> type.
    * @throws NoSuchElementException If the specified field does not
-   *         exist in the {@code Record}.
+   *         exist in the {@code Document}.
    */
   byte getByte(FieldPath fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@code Byte}
    * object or {@code null} if the specified {@code FieldPath} does
-   * not exist in the record.
+   * not exist in the document.
    *
    * @throws TypeException If the value at the fieldPath is not of
    *         <code>BYTE</code> type.
@@ -270,7 +270,7 @@ public interface Record extends Iterable<Map.Entry<String, Value>> {
   /**
    * Returns the value at the specified fieldPath as a {@code Byte}
    * object or {@code null} if the specified {@code FieldPath} does
-   * not exist in the record.
+   * not exist in the document.
    *
    * @throws TypeException If the value at the fieldPath is not of
    *         <code>BYTE</code> type.
@@ -283,7 +283,7 @@ public interface Record extends Iterable<Map.Entry<String, Value>> {
    * @throws TypeException If the value at the fieldPath is not of
    *         <code>SHORT</code> type.
    * @throws NoSuchElementException If the specified field does not
-   *         exist in the {@code Record}.
+   *         exist in the {@code Document}.
    */
   short getShort(String fieldPath);
 
@@ -293,14 +293,14 @@ public interface Record extends Iterable<Map.Entry<String, Value>> {
    * @throws TypeException If the value at the fieldPath is not of
    *         <code>SHORT</code> type.
    * @throws NoSuchElementException If the specified field does not
-   *         exist in the {@code Record}.
+   *         exist in the {@code Document}.
    */
   short getShort(FieldPath fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@code Short}
    * object or {@code null} if the specified {@code FieldPath} does
-   * not exist in the record.
+   * not exist in the document.
    *
    * @throws TypeException If the value at the fieldPath is not of
    *         <code>SHORT</code> type.
@@ -310,7 +310,7 @@ public interface Record extends Iterable<Map.Entry<String, Value>> {
   /**
    * Returns the value at the specified fieldPath as a {@code Short}
    * object or {@code null} if the specified {@code FieldPath} does
-   * not exist in the record.
+   * not exist in the document.
    *
    * @throws TypeException If the value at the fieldPath is not of
    *         <code>SHORT</code> type.
@@ -324,7 +324,7 @@ public interface Record extends Iterable<Map.Entry<String, Value>> {
    * @throws TypeException If the value at the fieldPath is not of
    *         <code>INT</code> type.
    * @throws NoSuchElementException If the specified field does not
-   *         exist in the {@code Record}.
+   *         exist in the {@code Document}.
    */
   int getInt(String fieldPath);
 
@@ -335,14 +335,14 @@ public interface Record extends Iterable<Map.Entry<String, Value>> {
    * @throws TypeException If the value at the fieldPath is not of
    *         <code>INT</code> type.
    * @throws NoSuchElementException If the specified field does not
-   *         exist in the {@code Record}.
+   *         exist in the {@code Document}.
    */
   int getInt(FieldPath fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@code Integer}
    * object or {@code null} if the specified {@code FieldPath} does
-   * not exist in the record.
+   * not exist in the document.
    *
    * @throws TypeException If the value at the fieldPath is not of
    *         <code>INT</code> type.
@@ -352,7 +352,7 @@ public interface Record extends Iterable<Map.Entry<String, Value>> {
   /**
    * Returns the value at the specified fieldPath as a {@code Integer}
    * object or {@code null} if the specified {@code FieldPath} does
-   * not exist in the record.
+   * not exist in the document.
    *
    * @throws TypeException If the value at the fieldPath is not of
    *         <code>INT</code> type.
@@ -366,7 +366,7 @@ public interface Record extends Iterable<Map.Entry<String, Value>> {
    * @throws TypeException If the value at the fieldPath is not of
    *         <code>LONG</code> type.
    * @throws NoSuchElementException If the specified field does not
-   *         exist in the {@code Record}.
+   *         exist in the {@code Document}.
    */
   long getLong(String fieldPath);
 
@@ -377,14 +377,14 @@ public interface Record extends Iterable<Map.Entry<String, Value>> {
    * @throws TypeException If the value at the fieldPath is not of
    *         <code>LONG</code> type.
    * @throws NoSuchElementException If the specified field does not
-   *         exist in the {@code Record}.
+   *         exist in the {@code Document}.
    */
   long getLong(FieldPath fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@code Long}
    * object or {@code null} if the specified {@code FieldPath} does
-   * not exist in the record.
+   * not exist in the document.
    *
    * @throws TypeException If the value at the fieldPath is not of
    *         <code>LONG</code> type.
@@ -394,7 +394,7 @@ public interface Record extends Iterable<Map.Entry<String, Value>> {
   /**
    * Returns the value at the specified fieldPath as a {@code Long}
    * object or {@code null} if the specified {@code FieldPath} does
-   * not exist in the record.
+   * not exist in the document.
    *
    * @throws TypeException If the value at the fieldPath is not of
    *         <code>LONG</code> type.
@@ -408,7 +408,7 @@ public interface Record extends Iterable<Map.Entry<String, Value>> {
    * @throws TypeException If the value at the fieldPath is not of
    *         <code>FLOAT</code> type.
    * @throws NoSuchElementException If the specified field does not
-   *         exist in the {@code Record}.
+   *         exist in the {@code Document}.
    */
   float getFloat(String fieldPath);
 
@@ -419,14 +419,14 @@ public interface Record extends Iterable<Map.Entry<String, Value>> {
    * @throws TypeException If the value at the fieldPath is not of
    *         <code>FLOAT</code> type.
    * @throws NoSuchElementException If the specified field does not
-   *         exist in the {@code Record}.
+   *         exist in the {@code Document}.
    */
   float getFloat(FieldPath fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@code Float}
    * object or {@code null} if the specified {@code FieldPath} does
-   * not exist in the record.
+   * not exist in the document.
    *
    * @throws TypeException If the value at the fieldPath is not of
    *         <code>FLOAT</code> type.
@@ -436,7 +436,7 @@ public interface Record extends Iterable<Map.Entry<String, Value>> {
   /**
    * Returns the value at the specified fieldPath as a {@code Float}
    * object or {@code null} if the specified {@code FieldPath} does
-   * not exist in the record.
+   * not exist in the document.
    *
    * @throws TypeException If the value at the fieldPath is not of
    *         <code>FLOAT</code> type.
@@ -450,7 +450,7 @@ public interface Record extends Iterable<Map.Entry<String, Value>> {
    * @throws TypeException If the value at the fieldPath is not of
    *         <code>DOUBLE</code> type.
    * @throws NoSuchElementException If the specified field does not
-   *         exist in the {@code Record}.
+   *         exist in the {@code Document}.
    */
   double getDouble(String fieldPath);
 
@@ -461,14 +461,14 @@ public interface Record extends Iterable<Map.Entry<String, Value>> {
    * @throws TypeException If the value at the fieldPath is not of
    *         <code>DOUBLE</code> type.
    * @throws NoSuchElementException If the specified field does not
-   *         exist in the {@code Record}.
+   *         exist in the {@code Document}.
    */
   double getDouble(FieldPath fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@code Double}
    * object or {@code null} if the specified {@code FieldPath} does
-   * not exist in the record.
+   * not exist in the document.
    *
    * @throws TypeException If the value at the fieldPath is not of
    *         <code>DOUBLE</code> type.
@@ -478,7 +478,7 @@ public interface Record extends Iterable<Map.Entry<String, Value>> {
   /**
    * Returns the value at the specified fieldPath as a {@code Double}
    * object or {@code null} if the specified {@code FieldPath} does
-   * not exist in the record.
+   * not exist in the document.
    *
    * @throws TypeException If the value at the fieldPath is not of
    *         <code>DOUBLE</code> type.
@@ -488,8 +488,8 @@ public interface Record extends Iterable<Map.Entry<String, Value>> {
   /**
    * Returns the value at the specified fieldPath as a {@link BigDecimal}
    * object or {@code null} if the specified {@code FieldPath} does not
-   * exist in the record. Modifying the returned object does not alter the
-   * content of the record.
+   * exist in the document. Modifying the returned object does not alter the
+   * content of the document.
    *
    * @throws TypeException If the value at the fieldPath is not of
    *         <code>DECIMAL</code> type.
@@ -499,8 +499,8 @@ public interface Record extends Iterable<Map.Entry<String, Value>> {
   /**
    * Returns the value at the specified fieldPath as a {@link BigDecimal}
    * object or {@code null} if the specified {@code FieldPath} does not
-   * exist in the record. Modifying the returned object does not alter the
-   * content of the record.
+   * exist in the document. Modifying the returned object does not alter the
+   * content of the document.
    *
    * @throws TypeException If the value at the fieldPath is not of
    *         <code>DECIMAL</code> type.
@@ -510,8 +510,8 @@ public interface Record extends Iterable<Map.Entry<String, Value>> {
   /**
    * Returns the value at the specified fieldPath as a {@link java.sql.Time}
    * object or {@code null} if the specified {@code FieldPath} does not
-   * exist in the record. Modifying the returned object does not alter the
-   * content of the record.
+   * exist in the document. Modifying the returned object does not alter the
+   * content of the document.
    *
    * @throws TypeException If the value at the fieldPath is not of
    *         <code>TIME</code> type.
@@ -521,8 +521,8 @@ public interface Record extends Iterable<Map.Entry<String, Value>> {
   /**
    * Returns the value at the specified fieldPath as a {@link java.sql.Time}
    * object or {@code null} if the specified {@code FieldPath} does not
-   * exist in the record. Modifying the returned object does not alter the
-   * content of the record.
+   * exist in the document. Modifying the returned object does not alter the
+   * content of the document.
    *
    * @throws TypeException If the value at the fieldPath is not of
    *         <code>TIME</code> type.
@@ -532,8 +532,8 @@ public interface Record extends Iterable<Map.Entry<String, Value>> {
   /**
    * Returns the value at the specified fieldPath as a {@link java.sql.Date}
    * object or {@code null} if the specified {@code FieldPath} does not
-   * exist in the record. Modifying the returned object does not alter the
-   * content of the record.
+   * exist in the document. Modifying the returned object does not alter the
+   * content of the document.
    *
    * @throws TypeException If the value at the fieldPath is not of
    *         <code>DATE</code> type.
@@ -543,8 +543,8 @@ public interface Record extends Iterable<Map.Entry<String, Value>> {
   /**
    * Returns the value at the specified fieldPath as a {@link java.sql.Date}
    * object or {@code null} if the specified {@code FieldPath} does not
-   * exist in the record. Modifying the returned object does not alter the
-   * content of the record.
+   * exist in the document. Modifying the returned object does not alter the
+   * content of the document.
    *
    * @throws TypeException If the value at the fieldPath is not of
    *         <code>DATE</code> type.
@@ -554,8 +554,8 @@ public interface Record extends Iterable<Map.Entry<String, Value>> {
   /**
    * Returns the value at the specified fieldPath as a {@link java.sql.Timestamp}
    * object or {@code null} if the specified {@code FieldPath} does not
-   * exist in the record. Modifying the returned object does not alter the
-   * content of the record.
+   * exist in the document. Modifying the returned object does not alter the
+   * content of the document.
    *
    * @throws TypeException If the value at the fieldPath is not of
    *         <code>TIMESTAMP</code> type.
@@ -565,8 +565,8 @@ public interface Record extends Iterable<Map.Entry<String, Value>> {
   /**
    * Returns the value at the specified fieldPath as a {@link java.sql.Timestamp}
    * object or {@code null} if the specified {@code FieldPath} does not
-   * exist in the record. Modifying the returned object does not alter the
-   * content of the record.
+   * exist in the document. Modifying the returned object does not alter the
+   * content of the document.
    *
    * @throws TypeException If the value at the fieldPath is not of
    *         <code>TIMESTAMP</code> type.
@@ -576,8 +576,8 @@ public interface Record extends Iterable<Map.Entry<String, Value>> {
   /**
    * Returns the value at the specified fieldPath as a {@link ByteBuffer}
    * object or {@code null} if the specified {@code FieldPath} does not
-   * exist in the record. Modifying the returned object does not alter the
-   * content of the record.
+   * exist in the document. Modifying the returned object does not alter the
+   * content of the document.
    *
    * @throws TypeException If the value at the fieldPath is not of
    *         <code>BINARY</code> type.
@@ -587,8 +587,8 @@ public interface Record extends Iterable<Map.Entry<String, Value>> {
   /**
    * Returns the value at the specified fieldPath as a {@link ByteBuffer}
    * object or {@code null} if the specified {@code FieldPath} does not
-   * exist in the record. Modifying the returned object does not alter the
-   * content of the record.
+   * exist in the document. Modifying the returned object does not alter the
+   * content of the document.
    *
    * @throws TypeException If the value at the fieldPath is not of
    *         <code>BINARY</code> type.
@@ -598,8 +598,8 @@ public interface Record extends Iterable<Map.Entry<String, Value>> {
   /**
    * Returns the value at the specified fieldPath as a {@link Interval}
    * object or {@code null} if the specified {@code FieldPath} does not
-   * exist in the record. Modifying the returned object does not alter the
-   * content of the record.
+   * exist in the document. Modifying the returned object does not alter the
+   * content of the document.
    *
    * @throws TypeException If the value at the fieldPath is not of
    *         <code>INTERVAL</code> type.
@@ -609,8 +609,8 @@ public interface Record extends Iterable<Map.Entry<String, Value>> {
   /**
    * Returns the value at the specified fieldPath as a {@link Interval}
    * object or {@code null} if the specified {@code FieldPath} does not
-   * exist in the record. Modifying the returned object does not alter the
-   * content of the record.
+   * exist in the document. Modifying the returned object does not alter the
+   * content of the document.
    *
    * @throws TypeException If the value at the fieldPath is not of
    *         <code>INTERVAL</code> type.
@@ -620,24 +620,24 @@ public interface Record extends Iterable<Map.Entry<String, Value>> {
   /**
    * Returns the value at the specified fieldPath as a {@link Value}
    * object or {@code null} if the specified {@code FieldPath} does not
-   * exist in the record. Modifying the returned object does not alter the
-   * content of the record.
+   * exist in the document. Modifying the returned object does not alter the
+   * content of the document.
    */
   Value getValue(String fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@link Value}
    * object or {@code null} if the specified {@code FieldPath} does not
-   * exist in the record. Modifying the returned object does not alter the
-   * content of the record.
+   * exist in the document. Modifying the returned object does not alter the
+   * content of the document.
    */
   Value getValue(FieldPath fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@link Map}
    * object or {@code null} if the specified {@code FieldPath} does not
-   * exist in the record. Modifying the returned object does not alter the
-   * content of the record.
+   * exist in the document. Modifying the returned object does not alter the
+   * content of the document.
    *
    * @throws TypeException If the value at the fieldPath is not of
    *         <code>MAP</code> type.
@@ -647,8 +647,8 @@ public interface Record extends Iterable<Map.Entry<String, Value>> {
   /**
    * Returns the value at the specified fieldPath as a {@link Map}
    * object or {@code null} if the specified {@code FieldPath} does not
-   * exist in the record. Modifying the returned object does not alter the
-   * content of the record.
+   * exist in the document. Modifying the returned object does not alter the
+   * content of the document.
    *
    * @throws TypeException If the value at the fieldPath is not of
    *         <code>MAP</code> type.
@@ -658,8 +658,8 @@ public interface Record extends Iterable<Map.Entry<String, Value>> {
   /**
    * Returns the value at the specified fieldPath as a {@link List}
    * object or {@code null} if the specified {@code FieldPath} does not
-   * exist in the record. Modifying the returned object does not alter the
-   * content of the record.
+   * exist in the document. Modifying the returned object does not alter the
+   * content of the document.
    *
    * @throws TypeException If the value at the fieldPath is not of
    *         <code>ARRAY</code> type.
@@ -669,8 +669,8 @@ public interface Record extends Iterable<Map.Entry<String, Value>> {
   /**
    * Returns the value at the specified fieldPath as a {@link List}
    * object or {@code null} if the specified {@code FieldPath} does not
-   * exist in the record. Modifying the returned object does not alter the
-   * content of the record.
+   * exist in the document. Modifying the returned object does not alter the
+   * content of the document.
    *
    * @throws TypeException If the value at the fieldPath is not of
    *         <code>ARRAY</code> type.
@@ -678,20 +678,20 @@ public interface Record extends Iterable<Map.Entry<String, Value>> {
   List<Object> getList(FieldPath fieldPath);
 
   /**
-   * @return A new {@link RecordReader} over the current <code>Record</code>.
+   * @return A new {@link documentReader} over the current <code>document</code>.
    */
-  RecordReader asReader();
+  DocumentReader asReader();
 
   /**
-   * @return A new {@link RecordReader} over the node specified by the
+   * @return A new {@link DocumentReader} over the node specified by the
    *         fieldPath or <code>null</code> if the node does not exist.
    */
-  RecordReader asReader(String fieldPath);
+  DocumentReader asReader(String fieldPath);
 
   /**
-   * @return A new {@link RecordReader} over the node specified by the
+   * @return A new {@link DocumentReader} over the node specified by the
    *         fieldPath or <code>null</code> if the node does not exist.
    */
-  RecordReader asReader(FieldPath fieldPath);
+  DocumentReader asReader(FieldPath fieldPath);
 
 }

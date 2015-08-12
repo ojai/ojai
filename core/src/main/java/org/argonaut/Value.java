@@ -334,9 +334,9 @@ public interface Value {
   Object getObject();
 
   /**
-   * Returns a {@link RecordReader} over the current record.
+   * Returns a {@link DocumentReader} over the current document.
    * @return
    */
-  RecordReader getStream();
+  DocumentReader getStream();
 
 }

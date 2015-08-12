@@ -25,14 +25,14 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Stack;
 
-import org.argonaut.RecordReader;
+import org.argonaut.DocumentReader;
 import org.argonaut.Value;
 import org.argonaut.Value.Type;
 import org.argonaut.exceptions.TypeException;
 import org.argonaut.types.Interval;
 import org.argonaut.util.Types;
 
-class JsonDOMRecordReader implements RecordReader {
+class JsonDOMDocumentReader implements DocumentReader {
 
   class IteratorWithType {
     Iterator<JsonValue> iter;
@@ -53,13 +53,13 @@ class JsonDOMRecordReader implements RecordReader {
   private JsonValue jsonValue;
 
 
-  JsonDOMRecordReader(Value value) {
+  JsonDOMDocumentReader(Value value) {
     stateStack = new Stack<IteratorWithType>();
     /* analyze the type of value object and initialize events and stacks */
     Type t = value.getType();
     Iterator<?> iter;
     if (t == Type.MAP) {
-      iter = ((JsonRecord)value).iterator();
+      iter = ((JsonDocument)value).iterator();
       stateStack.push(new IteratorWithType(iter, t));
       event = EventType.START_MAP;
     } else if (t == Type.ARRAY) {
@@ -107,7 +107,7 @@ class JsonDOMRecordReader implements RecordReader {
         if (kvpairType == Type.MAP) {
           event = EventType.FIELD_NAME;
           nextEvent = EventType.START_MAP;
-          stateStack.push(new IteratorWithType(((JsonRecord)jsonValue).iterator(), kvpairType));
+          stateStack.push(new IteratorWithType(((JsonDocument)jsonValue).iterator(), kvpairType));
         } else if (kvpairType == Type.ARRAY) {
           event = EventType.FIELD_NAME;
           nextEvent = EventType.START_ARRAY;
@@ -125,7 +125,7 @@ class JsonDOMRecordReader implements RecordReader {
           stateStack.push(new IteratorWithType(((JsonList)jsonValue).iterator(), t));
         } else if (t == Type.MAP) {
           event = EventType.START_MAP;
-          stateStack.push(new IteratorWithType(((JsonRecord)jsonValue).iterator(), t));
+          stateStack.push(new IteratorWithType(((JsonDocument)jsonValue).iterator(), t));
         } else {
           event = Types.getEventTypeForType(t);
         }

@@ -27,115 +27,115 @@ import org.argonaut.annotation.API;
 import org.argonaut.types.Interval;
 
 @API.Public
-public abstract class BaseRecord implements Record {
+public abstract class DocumentBase implements Document {
 
   @Override
-  public Record set(String fieldPath, String value) {
+  public Document set(String fieldPath, String value) {
     return set(FieldPath.parseFrom(fieldPath), value);
   }
 
   @Override
-  public Record set(String fieldPath, boolean value) {
+  public Document set(String fieldPath, boolean value) {
     return set(FieldPath.parseFrom(fieldPath), value);
   }
 
   @Override
-  public Record set(String fieldPath, byte value) {
+  public Document set(String fieldPath, byte value) {
     return set(FieldPath.parseFrom(fieldPath), value);
   }
 
   @Override
-  public Record set(String fieldPath, short value) {
+  public Document set(String fieldPath, short value) {
     return set(FieldPath.parseFrom(fieldPath), value);
   }
 
   @Override
-  public Record set(String fieldPath, int value) {
+  public Document set(String fieldPath, int value) {
     return set(FieldPath.parseFrom(fieldPath), value);
   }
 
   @Override
-  public Record set(String fieldPath, long value) {
+  public Document set(String fieldPath, long value) {
     return set(FieldPath.parseFrom(fieldPath), value);
   }
 
   @Override
-  public Record set(String fieldPath, float value) {
+  public Document set(String fieldPath, float value) {
     return set(FieldPath.parseFrom(fieldPath), value);
   }
 
   @Override
-  public Record set(String fieldPath, double value) {
+  public Document set(String fieldPath, double value) {
     return set(FieldPath.parseFrom(fieldPath), value);
   }
 
   @Override
-  public Record set(String fieldPath, Time value) {
+  public Document set(String fieldPath, Time value) {
     return set(FieldPath.parseFrom(fieldPath), value);
   }
 
   @Override
-  public Record set(String fieldPath, Date value) {
+  public Document set(String fieldPath, Date value) {
     return set(FieldPath.parseFrom(fieldPath), value);
   }
 
   @Override
-  public Record set(String fieldPath, Timestamp value) {
+  public Document set(String fieldPath, Timestamp value) {
     return set(FieldPath.parseFrom(fieldPath), value);
   }
 
   @Override
-  public Record set(String fieldPath, BigDecimal value) {
+  public Document set(String fieldPath, BigDecimal value) {
     return set(FieldPath.parseFrom(fieldPath), value);
   }
 
   @Override
-  public Record set(String fieldPath, byte[] value) {
+  public Document set(String fieldPath, byte[] value) {
     return set(FieldPath.parseFrom(fieldPath), value);
   }
 
   @Override
-  public Record set(String fieldPath, byte[] value, int off, int len) {
+  public Document set(String fieldPath, byte[] value, int off, int len) {
     return set(FieldPath.parseFrom(fieldPath), value);
   }
 
   @Override
-  public Record set(String fieldPath, ByteBuffer value) {
+  public Document set(String fieldPath, ByteBuffer value) {
     return set(FieldPath.parseFrom(fieldPath), value);
   }
 
   @Override
-  public Record set(String fieldPath, Interval value) {
+  public Document set(String fieldPath, Interval value) {
     return set(FieldPath.parseFrom(fieldPath), value);
   }
 
   @Override
-  public Record set(String fieldPath, Map<String, ? extends Object> value) {
+  public Document set(String fieldPath, Map<String, ? extends Object> value) {
     return set(FieldPath.parseFrom(fieldPath), value);
   }
 
   @Override
-  public Record set(String fieldPath, Record value) {
+  public Document set(String fieldPath, Document value) {
     return set(FieldPath.parseFrom(fieldPath), value);
   }
 
   @Override
-  public Record set(String fieldPath, Value value) {
+  public Document set(String fieldPath, Value value) {
     return set(FieldPath.parseFrom(fieldPath), value);
   }
 
   @Override
-  public Record setArray(String fieldPath, Object... value) {
+  public Document setArray(String fieldPath, Object... value) {
     return setArray(FieldPath.parseFrom(fieldPath), value);
   }
 
   @Override
-  public Record set(String fieldPath, List<? extends Object> value) {
+  public Document set(String fieldPath, List<? extends Object> value) {
     return set(FieldPath.parseFrom(fieldPath), value);
   }
 
   @Override
-  public Record delete(String fieldPath) {
+  public Document delete(String fieldPath) {
     return delete(FieldPath.parseFrom(fieldPath));
   }
 
@@ -250,47 +250,47 @@ public abstract class BaseRecord implements Record {
   }
 
   @Override
-  public RecordReader asReader(String fieldPath) {
+  public DocumentReader asReader(String fieldPath) {
     return asReader(FieldPath.parseFrom(fieldPath));
   }
 
   @Override
-  public Record setArray(String fieldPath, byte[] values) {
+  public Document setArray(String fieldPath, byte[] values) {
     return setArray(FieldPath.parseFrom(fieldPath), values);
   }
 
   @Override
-  public Record setArray(String fieldPath, short[] values) {
+  public Document setArray(String fieldPath, short[] values) {
     return setArray(FieldPath.parseFrom(fieldPath), values);
   }
 
   @Override
-  public Record setArray(String fieldPath, int[] values) {
+  public Document setArray(String fieldPath, int[] values) {
     return setArray(FieldPath.parseFrom(fieldPath), values);
   }
 
   @Override
-  public Record setArray(String fieldPath, long[] values) {
+  public Document setArray(String fieldPath, long[] values) {
     return setArray(FieldPath.parseFrom(fieldPath), values);
   }
 
   @Override
-  public Record setArray(String fieldPath, float[] values) {
+  public Document setArray(String fieldPath, float[] values) {
     return setArray(FieldPath.parseFrom(fieldPath), values);
   }
 
   @Override
-  public Record setArray(String fieldPath, double[] values) {
+  public Document setArray(String fieldPath, double[] values) {
     return setArray(FieldPath.parseFrom(fieldPath), values);
   }
 
   @Override
-  public Record setArray(String fieldPath, String[] values) {
+  public Document setArray(String fieldPath, String[] values) {
     return setArray(FieldPath.parseFrom(fieldPath), values);
   }
 
   @Override
-  public Record setNull(String fieldPath) {
+  public Document setNull(String fieldPath) {
     return setNull(FieldPath.parseFrom(fieldPath));
   }
 

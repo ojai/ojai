@@ -19,22 +19,22 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Stack;
 
-import org.argonaut.Record;
-import org.argonaut.RecordReader;
-import org.argonaut.RecordReader.EventType;
+import org.argonaut.Document;
+import org.argonaut.DocumentReader;
+import org.argonaut.DocumentReader.EventType;
 import org.argonaut.annotation.API;
 import org.argonaut.exceptions.DecodingException;
 import org.argonaut.util.Fields;
 
 @API.Internal
-public class JsonRecordIterator implements Iterator<Record> {
-  Iterator<RecordReader> it = null;
-  JsonRecord record;
-  RecordReader reader;
+public class JsonDocumentIterator implements Iterator<Document> {
+  Iterator<DocumentReader> it = null;
+  JsonDocument document;
+  DocumentReader reader;
   private boolean done = false;
 
-  public JsonRecordIterator(JsonRecordStream s) {
-    it = s.recordReaders().iterator();
+  public JsonDocumentIterator(JsonDocumentStream s) {
+    it = s.documentReaders().iterator();
   }
 
   @Override
@@ -53,26 +53,26 @@ public class JsonRecordIterator implements Iterator<Record> {
   }
 
   @Override
-  public Record next() {
+  public Document next() {
     if (!hasNext()) {
       throw new NoSuchElementException("next() called after hasNext() returned false");
     }
-    Record rec = getRecordFromStreamReader();
+    Document rec = getDocumentFromStreamReader();
     reader = null;
     return rec;
   }
 
-  private Record getRecordFromStreamReader() {
+  private Document getDocumentFromStreamReader() {
     Stack<JsonValue> containerStack = new Stack<JsonValue>();
     EventType event;
-    JsonRecord lastRecord = null;
+    JsonDocument lastDocument = null;
     String currentFieldName = null;
     JsonValue currentContainer = null;
 
     while ((event = reader.next()) != null) {
       switch(event) {
       case START_MAP:
-        JsonValue newRec = new JsonRecord();
+        JsonValue newRec = new JsonDocument();
         if (currentContainer != null) {
           appendTo(currentContainer, currentFieldName, newRec);
         }
@@ -80,13 +80,13 @@ public class JsonRecordIterator implements Iterator<Record> {
         containerStack.push(currentContainer);
         break;
       case END_MAP:
-        if (!containerStack.empty() && containerStack.peek() instanceof JsonRecord) {
-          lastRecord = (JsonRecord) containerStack.pop();
+        if (!containerStack.empty() && containerStack.peek() instanceof JsonDocument) {
+          lastDocument = (JsonDocument) containerStack.pop();
           if (!containerStack.empty()) {
             currentContainer = containerStack.peek();
           }
         } else {
-          throw new DecodingException("Unable to decode record stream: " + containerStack.toString());
+          throw new DecodingException("Unable to decode document stream: " + containerStack.toString());
         }
         break;
       case START_ARRAY:
@@ -104,7 +104,7 @@ public class JsonRecordIterator implements Iterator<Record> {
             currentContainer = containerStack.peek();
           }
         } else {
-          throw new DecodingException("Unable to decode record stream: " + containerStack.toString());
+          throw new DecodingException("Unable to decode document stream: " + containerStack.toString());
         }
         break;
       case FIELD_NAME:
@@ -160,20 +160,20 @@ public class JsonRecordIterator implements Iterator<Record> {
       }
     }
     if (!containerStack.empty()) {
-      //this means we did not got the end of the record.
-      throw new DecodingException("Error processing record");
+      //this means we did not got the end of the document.
+      throw new DecodingException("Error processing document");
     }
-    return lastRecord;
+    return lastDocument;
   }
 
   private void appendTo(JsonValue currentContainer, String fieldName,
       JsonValue value) {
-    if (currentContainer instanceof JsonRecord) {
-      ((JsonRecord)currentContainer).getRootMap().put(fieldName, value);
+    if (currentContainer instanceof JsonDocument) {
+      ((JsonDocument)currentContainer).getRootMap().put(fieldName, value);
     } else if (currentContainer instanceof JsonList) {
       ((JsonList)currentContainer).getRootList().add(value);
     } else {
-      throw new DecodingException("Unable to decode record stream: " + currentContainer.toString());
+      throw new DecodingException("Unable to decode document stream: " + currentContainer.toString());
     }
   }
 

@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.argonaut.json.mapreduce;
 
 import java.io.DataOutputStream;
@@ -30,13 +29,13 @@ import org.apache.hadoop.mapreduce.RecordWriter;
 import org.apache.hadoop.mapreduce.TaskAttemptContext;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.ReflectionUtils;
-import org.argonaut.Record;
+import org.argonaut.Document;
 
 public class JSONFileOutputFormat extends
-FileOutputFormat<LongWritable, Record> {
+FileOutputFormat<LongWritable, Document> {
 
   @Override
-  public RecordWriter<LongWritable, Record> getRecordWriter(
+  public RecordWriter<LongWritable, Document> getRecordWriter(
       TaskAttemptContext job) throws IOException, InterruptedException {
 
     Configuration conf = job.getConfiguration();

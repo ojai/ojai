@@ -21,26 +21,26 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.InputStream;
 
-import org.argonaut.Record;
-import org.argonaut.RecordReader;
-import org.argonaut.RecordReader.EventType;
-import org.argonaut.RecordStream;
+import org.argonaut.Document;
+import org.argonaut.DocumentReader;
+import org.argonaut.DocumentReader.EventType;
+import org.argonaut.DocumentStream;
 import org.argonaut.json.Json;
 import org.argonaut.tests.BaseTest;
 import org.argonaut.util.Values;
 import org.junit.Test;
 
-public class TestJsonRecordReader extends BaseTest {
+public class TestJsonDocumentReader extends BaseTest {
 
   @Test
   public void testAll() throws Exception {
 
 
     try (InputStream testJson = getJsonStream("test.json");
-        RecordStream<Record> stream = Json.newRecordStream(testJson);) {
+        DocumentStream<Document> stream = Json.newDocumentStream(testJson);) {
       EventType et = null;
       String fieldName = null;
-      RecordReader r = stream.recordReaders().iterator().next();
+      DocumentReader r = stream.documentReaders().iterator().next();
       while ((et = r.next()) != null) {
         if (et == EventType.FIELD_NAME) {
           fieldName = r.getFieldName();

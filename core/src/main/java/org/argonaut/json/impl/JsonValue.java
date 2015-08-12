@@ -25,7 +25,7 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
-import org.argonaut.RecordReader;
+import org.argonaut.DocumentReader;
 import org.argonaut.Value;
 import org.argonaut.annotation.API;
 import org.argonaut.exceptions.TypeException;
@@ -284,7 +284,7 @@ public class JsonValue implements Value {
   @Override
   public Map<String, Object> getMap() {
     checkType(Type.MAP);
-    return (JsonRecord)this;
+    return (JsonDocument)this;
   }
 
   @Override
@@ -294,7 +294,7 @@ public class JsonValue implements Value {
   }
 
   @Override
-  public RecordReader getStream() {
+  public DocumentReader getStream() {
     return null;
   }
 

@@ -20,7 +20,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.regex.Pattern;
 
-import org.argonaut.Record;
+import org.argonaut.Document;
 import org.argonaut.json.Json;
 import org.argonaut.tests.BaseTest;
 import org.junit.Test;
@@ -28,11 +28,11 @@ import org.junit.Test;
 public class TestJson extends BaseTest {
 
   @Test
-  public void testJson_NewRecord() {
-    Record rec = Json.newRecord("{}");
+  public void testJson_NewDocument() {
+    Document rec = Json.newDocument("{}");
     assertTrue(rec.size() == 0);
 
-    rec = Json.newRecord(
+    rec = Json.newDocument(
         "{\n" +
         "  \"business_id\": \"vcNAWiLM4dR7D2nwwJ7nCA\",\n" +
         "  \"full_address\": \"4840 E Indian School Rd\\nSte 101\\nPhoenix, AZ 85018\",\n" +

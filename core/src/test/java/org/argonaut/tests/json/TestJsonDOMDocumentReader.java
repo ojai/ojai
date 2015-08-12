@@ -23,26 +23,26 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.argonaut.Record;
-import org.argonaut.RecordReader;
-import org.argonaut.RecordReader.EventType;
+import org.argonaut.Document;
+import org.argonaut.DocumentReader;
+import org.argonaut.DocumentReader.EventType;
 import org.argonaut.json.Json;
 import org.argonaut.tests.BaseTest;
 import org.junit.Before;
 import org.junit.Test;
 
-public class TestJsonDOMRecordReader extends BaseTest {
+public class TestJsonDOMDocumentReader extends BaseTest {
 
-  Record record = Json.newRecord();
+  Document document = Json.newDocument();
 
   @Before
   public void setUp() {
-    record.set("map.num1", (byte)127);
-    record.set("map.name.first", "John");
-    record.set("map.name.last", "Doe");
-    record.set("map.address.street.no", 350);
-    record.set("map.address.street.name", "Front St");
-    record.set("map.address.zip", (long)95134);
+    document.set("map.num1", (byte)127);
+    document.set("map.name.first", "John");
+    document.set("map.name.last", "Doe");
+    document.set("map.address.street.no", 350);
+    document.set("map.address.street.name", "Front St");
+    document.set("map.address.zip", (long)95134);
     List<Object> values = new ArrayList<Object>();
     values.add("Field1");
     values.add(new Short((short)500));
@@ -55,14 +55,14 @@ public class TestJsonDOMRecordReader extends BaseTest {
     l.add(123.4567);
     l.add(true);
     values.add(l);
-    record.set("map.list", values);
+    document.set("map.list", values);
   }
 
   @Test
-  public void testDOMRecordReader() throws IOException {
+  public void testDOMDocumentReader() throws IOException {
     boolean isArray = false;
 
-    RecordReader r = record.asReader();
+    DocumentReader r = document.asReader();
     EventType et;
     String fieldName = null;
     while ((et = r.next()) != null) {
@@ -100,7 +100,7 @@ public class TestJsonDOMRecordReader extends BaseTest {
 
   @Test
   public void testDOMReader() {
-    RecordReader reader = record.asReader("map.list");
+    DocumentReader reader = document.asReader("map.list");
     EventType et;
 
     while ((et = reader.next()) != null) {
@@ -112,7 +112,7 @@ public class TestJsonDOMRecordReader extends BaseTest {
 
   @Test
   public void testScalarTypeReader() {
-    RecordReader reader = record.asReader("map.num1");
+    DocumentReader reader = document.asReader("map.num1");
     EventType et;
     while ((et = reader.next()) != null) {
       assertEquals(EventType.BYTE, et);

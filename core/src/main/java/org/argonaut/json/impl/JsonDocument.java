@@ -32,27 +32,27 @@ import java.util.Set;
 
 import org.argonaut.FieldPath;
 import org.argonaut.FieldSegment;
-import org.argonaut.Record;
-import org.argonaut.RecordReader;
+import org.argonaut.Document;
+import org.argonaut.DocumentReader;
 import org.argonaut.Value;
 import org.argonaut.annotation.API;
 import org.argonaut.types.Interval;
 
 @API.Internal
-public class JsonRecord extends JsonValue implements Record, Map<String, Object> {
+public class JsonDocument extends JsonValue implements Document, Map<String, Object> {
 
-  private final JsonStreamRecordReader jsonRecordReader;
+  private final JsonStreamDocumentReader jsonDocumentReader;
 
-  public JsonRecord() {
+  public JsonDocument() {
     this(null);
   }
 
-  JsonRecord(JsonStreamRecordReader reader) {
-    jsonRecordReader = reader;
+  JsonDocument(JsonStreamDocumentReader reader) {
+    jsonDocumentReader = reader;
     valueType = Type.MAP;
   }
 
-  JsonRecord createOrInsert(Iterator<FieldSegment> iter, JsonValue newKeyValue) {
+  JsonDocument createOrInsert(Iterator<FieldSegment> iter, JsonValue newKeyValue) {
     FieldSegment field;
     field = iter.next();
     String key = field.getNameSegment().getName();
@@ -73,17 +73,17 @@ public class JsonRecord extends JsonValue implements Record, Map<String, Object>
        * if the new value for the same field is not
        * a map then delete the existing value and write new
        */
-      JsonRecord newRecord;
+      JsonDocument newDocument;
       if ((oldKeyValue == null) || (oldKeyValue.getType() != Type.MAP)) {
-        newRecord = new JsonRecord();
-        newRecord.createOrInsert(iter, newKeyValue);
-        getRootMap().put(key, newRecord);
+        newDocument = new JsonDocument();
+        newDocument.createOrInsert(iter, newKeyValue);
+        getRootMap().put(key, newDocument);
         return this;
       }
 
       // Inserting into an existing child of map type
-      newRecord = (JsonRecord) oldKeyValue;
-      return newRecord.createOrInsert(iter, newKeyValue);
+      newDocument = (JsonDocument) oldKeyValue;
+      return newDocument.createOrInsert(iter, newKeyValue);
     }
 
     JsonList newList;
@@ -102,118 +102,118 @@ public class JsonRecord extends JsonValue implements Record, Map<String, Object>
   }
 
 
-  private JsonRecord setCommon(FieldPath fieldPath, JsonValue value) {
+  private JsonDocument setCommon(FieldPath fieldPath, JsonValue value) {
     Iterator<FieldSegment> iter = fieldPath.iterator();
     createOrInsert(iter, value);
     return this;
   }
 
   @Override
-  public Record set(FieldPath fieldPath, String value) {
+  public Document set(FieldPath fieldPath, String value) {
     return setCommon(fieldPath, new JsonValue(value, Type.STRING));
   }
 
   @Override
-  public Record set(FieldPath fieldPath, boolean value) {
+  public Document set(FieldPath fieldPath, boolean value) {
     return setCommon(fieldPath, new JsonValue(value, Type.BOOLEAN));
   }
 
   @Override
-  public Record set(FieldPath fieldPath, byte value) {
+  public Document set(FieldPath fieldPath, byte value) {
     return setCommon(fieldPath, new JsonValue(value, Type.BYTE));
   }
 
   @Override
-  public Record set(FieldPath fieldPath, short value) {
+  public Document set(FieldPath fieldPath, short value) {
 
     return setCommon(fieldPath, new JsonValue(value, Type.SHORT));
   }
 
   @Override
-  public Record set(FieldPath fieldPath, int value) {
+  public Document set(FieldPath fieldPath, int value) {
 
     return setCommon(fieldPath, new JsonValue(value, Type.INT));
   }
 
   @Override
-  public Record set(FieldPath fieldPath, long value) {
+  public Document set(FieldPath fieldPath, long value) {
 
     return setCommon(fieldPath, new JsonValue(value, Type.LONG));
   }
 
   @Override
-  public Record set(FieldPath fieldPath, float value) {
+  public Document set(FieldPath fieldPath, float value) {
     return setCommon(fieldPath, JsonValueBuilder.initFrom(value));
   }
 
   @Override
-  public Record set(FieldPath fieldPath, double value) {
+  public Document set(FieldPath fieldPath, double value) {
     return setCommon(fieldPath, JsonValueBuilder.initFrom(value));
   }
 
   @Override
-  public Record set(FieldPath fieldPath, BigDecimal value) {
+  public Document set(FieldPath fieldPath, BigDecimal value) {
     return setCommon(fieldPath, JsonValueBuilder.initFrom(value));
   }
 
   @Override
-  public Record set(String fieldPath, Timestamp value) {
+  public Document set(String fieldPath, Timestamp value) {
     return set(FieldPath.parseFrom(fieldPath), value);
   }
 
   @Override
-  public Record set(FieldPath fieldPath, Timestamp value) {
+  public Document set(FieldPath fieldPath, Timestamp value) {
     return setCommon(fieldPath, JsonValueBuilder.initFrom(value));
   }
 
   @Override
-  public Record set(String fieldPath, Interval value) {
+  public Document set(String fieldPath, Interval value) {
     return set(FieldPath.parseFrom(fieldPath), value);
   }
 
   @Override
-  public Record set(FieldPath fieldPath, Interval value) {
+  public Document set(FieldPath fieldPath, Interval value) {
     return setCommon(fieldPath, JsonValueBuilder.initFrom(value));
   }
 
   @Override
-  public Record set(FieldPath fieldPath, Time value) {
+  public Document set(FieldPath fieldPath, Time value) {
     return setCommon(fieldPath, JsonValueBuilder.initFrom(value));
   }
 
   @Override
-  public Record set(FieldPath fieldPath, Date value) {
+  public Document set(FieldPath fieldPath, Date value) {
     return setCommon(fieldPath, JsonValueBuilder.initFrom(value));
   }
 
   @Override
-  public JsonRecord set(String field, Record value) {
+  public JsonDocument set(String field, Document value) {
     return setCommon(FieldPath.parseFrom(field), JsonValueBuilder.initFrom(value));
   }
   @Override
-  public JsonRecord set(FieldPath field, Record value) {
+  public JsonDocument set(FieldPath field, Document value) {
     return setCommon(field, JsonValueBuilder.initFrom(value));
   }
 
   @Override
-  public JsonRecord set(String field, Value value) {
+  public JsonDocument set(String field, Value value) {
     return setCommon(FieldPath.parseFrom(field), JsonValueBuilder.initFrom(value));
   }
 
   @Override
-  public JsonRecord set(FieldPath field, Value value) {
+  public JsonDocument set(FieldPath field, Value value) {
     return setCommon(field, JsonValueBuilder.initFrom(value));
   }
 
   @Override
-  public Record setNull(FieldPath fieldPath) {
+  public Document setNull(FieldPath fieldPath) {
     return setCommon(fieldPath, JsonValue.NULLKEYVALUE);
   }
 
   /*
-   * deletes an element from the record. it returns the change in size
+   * deletes an element from the document. it returns the change in size
    */
-  Record delete(Iterator<FieldSegment> iter) {
+  Document delete(Iterator<FieldSegment> iter) {
     FieldSegment field = iter.next();
     if (field == null) return null;
 
@@ -235,7 +235,7 @@ public class JsonRecord extends JsonValue implements Record, Map<String, Object>
       if (kv.getType() != Type.MAP) {
         return null;
       }
-      return ((JsonRecord)kv).delete(iter);
+      return ((JsonDocument)kv).delete(iter);
     }
 
     if (kv.getType() != Type.ARRAY) {
@@ -246,22 +246,22 @@ public class JsonRecord extends JsonValue implements Record, Map<String, Object>
   }
 
   @Override
-  public Record delete(String field) {
+  public Document delete(String field) {
     delete(FieldPath.parseFrom(field));
     return this;
   }
 
   @Override
-  public Record delete(FieldPath path) {
+  public Document delete(FieldPath path) {
     delete(path.iterator());
     return this;
   }
 
-  /* iterator over the Record object */
-  class JsonRecordIterator implements Iterator<java.util.Map.Entry<String, Value>> {
+  /* iterator over the Document object */
+  class JsonDocumentIterator implements Iterator<java.util.Map.Entry<String, Value>> {
 
     Iterator<String> keyIter;
-    JsonRecordIterator() {
+    JsonDocumentIterator() {
       keyIter = getRootMap().keySet().iterator();
     }
     @Override
@@ -303,7 +303,7 @@ public class JsonRecord extends JsonValue implements Record, Map<String, Object>
       if (kv.getType() != Type.MAP) {
         return null;
       }
-      return ((JsonRecord)kv).getKeyValueAt(iter);
+      return ((JsonDocument)kv).getKeyValueAt(iter);
     }
 
     if (kv.getType() != Type.ARRAY) {
@@ -457,34 +457,34 @@ public class JsonRecord extends JsonValue implements Record, Map<String, Object>
   }
 
   @Override
-  public JsonRecord empty() {
+  public JsonDocument empty() {
     getRootMap().clear();
     return this;
   }
 
   @Override
-  public RecordReader asReader() {
-    if (jsonRecordReader == null) {
-      return new JsonDOMRecordReader(this);
+  public DocumentReader asReader() {
+    if (jsonDocumentReader == null) {
+      return new JsonDOMDocumentReader(this);
     }
-    return jsonRecordReader;
+    return jsonDocumentReader;
   }
 
   @Override
-  public RecordReader asReader(FieldPath fieldPath) {
+  public DocumentReader asReader(FieldPath fieldPath) {
     Value val = getValue(fieldPath);
-    return new JsonDOMRecordReader(val);
+    return new JsonDOMDocumentReader(val);
 
   }
 
   @Override
-  public RecordReader asReader(String fieldPath) {
+  public DocumentReader asReader(String fieldPath) {
     return asReader(FieldPath.parseFrom(fieldPath));
   }
 
   @Override
   public Iterator<java.util.Map.Entry<String, Value>> iterator() {
-    return new JsonRecordIterator();
+    return new JsonDocumentIterator();
   }
 
   @Override
@@ -567,178 +567,178 @@ public class JsonRecord extends JsonValue implements Record, Map<String, Object>
   }
 
   @Override
-  public Record set(String fieldPath, String value) {
+  public Document set(String fieldPath, String value) {
     return set(FieldPath.parseFrom(fieldPath), value);
   }
 
   @Override
-  public Record set(String fieldPath, boolean value) {
+  public Document set(String fieldPath, boolean value) {
     return set(FieldPath.parseFrom(fieldPath), value);
   }
 
   @Override
-  public Record set(String fieldPath, byte value) {
+  public Document set(String fieldPath, byte value) {
     return set(FieldPath.parseFrom(fieldPath), value);
   }
 
   @Override
-  public Record set(String fieldPath, short value) {
+  public Document set(String fieldPath, short value) {
     return set(FieldPath.parseFrom(fieldPath), value);
   }
 
   @Override
-  public Record set(String fieldPath, int value) {
+  public Document set(String fieldPath, int value) {
     return set(FieldPath.parseFrom(fieldPath), value);
   }
 
   @Override
-  public Record set(String fieldPath, long value) {
+  public Document set(String fieldPath, long value) {
     return set(FieldPath.parseFrom(fieldPath), value);
   }
 
   @Override
-  public Record set(String fieldPath, float value) {
+  public Document set(String fieldPath, float value) {
     return setCommon(FieldPath.parseFrom(fieldPath), JsonValueBuilder.initFrom(value));
   }
 
   @Override
-  public Record set(String fieldPath, double value) {
+  public Document set(String fieldPath, double value) {
     return setCommon(FieldPath.parseFrom(fieldPath), JsonValueBuilder.initFrom(value));
   }
 
   @Override
-  public Record set(String fieldPath, BigDecimal value) {
+  public Document set(String fieldPath, BigDecimal value) {
     return setCommon(FieldPath.parseFrom(fieldPath), JsonValueBuilder.initFrom(value));
   }
 
   @Override
-  public Record set(String fieldPath, Time value) {
+  public Document set(String fieldPath, Time value) {
     return setCommon(FieldPath.parseFrom(fieldPath), JsonValueBuilder.initFrom(value));
   }
 
   @Override
-  public Record set(String fieldPath, Date value) {
+  public Document set(String fieldPath, Date value) {
     return setCommon(FieldPath.parseFrom(fieldPath), JsonValueBuilder.initFrom(value));
   }
 
   @Override
-  public JsonRecord set(String field, byte[] value) {
+  public JsonDocument set(String field, byte[] value) {
     return setCommon(FieldPath.parseFrom(field),
         JsonValueBuilder.initFrom(ByteBuffer.wrap(value)));
   }
 
   @Override
-  public JsonRecord set(FieldPath field, byte[] value) {
+  public JsonDocument set(FieldPath field, byte[] value) {
     return setCommon(field, JsonValueBuilder.initFrom(ByteBuffer.wrap(value)));
   }
 
   @Override
-  public JsonRecord set(String field, byte[] value, int off, int len) {
+  public JsonDocument set(String field, byte[] value, int off, int len) {
     return setCommon(FieldPath.parseFrom(field),
         JsonValueBuilder.initFrom(ByteBuffer.wrap(value, off, len)));
   }
 
   @Override
-  public JsonRecord set(FieldPath field, byte[] value, int off, int len) {
+  public JsonDocument set(FieldPath field, byte[] value, int off, int len) {
     return setCommon(field, JsonValueBuilder.initFrom(ByteBuffer.wrap(value, off, len)));
   }
 
   @Override
-  public JsonRecord set(String field, ByteBuffer value) {
+  public JsonDocument set(String field, ByteBuffer value) {
     return setCommon(FieldPath.parseFrom(field), JsonValueBuilder.initFrom(value));
   }
 
   @Override
-  public JsonRecord set(FieldPath field, ByteBuffer value) {
+  public JsonDocument set(FieldPath field, ByteBuffer value) {
     return setCommon(field, JsonValueBuilder.initFrom(value));
   }
 
-  private Record setCommonFromObjectArray(FieldPath field, Object[] values) {
+  private Document setCommonFromObjectArray(FieldPath field, Object[] values) {
     return setCommon(field, JsonValueBuilder.initFromArray(values));
   }
 
   @Override
-  public Record setArray(String fieldPath, byte[] values) {
+  public Document setArray(String fieldPath, byte[] values) {
     return setArray(FieldPath.parseFrom(fieldPath), values);
   }
 
   @Override
-  public Record setArray(FieldPath fieldPath, byte[] values) {
+  public Document setArray(FieldPath fieldPath, byte[] values) {
     return setCommon(fieldPath, JsonValueBuilder.initFromArray(values));
   }
 
   @Override
-  public Record setArray(String fieldPath, short[] values) {
+  public Document setArray(String fieldPath, short[] values) {
     return setArray(FieldPath.parseFrom(fieldPath), values);
   }
 
   @Override
-  public Record setArray(FieldPath fieldPath, short[] values) {
+  public Document setArray(FieldPath fieldPath, short[] values) {
     return setCommon(fieldPath, JsonValueBuilder.initFromArray(values));
   }
 
   @Override
-  public Record setArray(String fieldPath, int[] values) {
+  public Document setArray(String fieldPath, int[] values) {
     return setArray(FieldPath.parseFrom(fieldPath), values);
   }
 
   @Override
-  public Record setArray(FieldPath fieldPath, int[] values) {
+  public Document setArray(FieldPath fieldPath, int[] values) {
     return setCommon(fieldPath, JsonValueBuilder.initFromArray(values));
   }
 
   @Override
-  public Record setArray(String fieldPath, long[] values) {
+  public Document setArray(String fieldPath, long[] values) {
     return setArray(FieldPath.parseFrom(fieldPath), values);
   }
 
   @Override
-  public Record setArray(FieldPath fieldPath, long[] values) {
+  public Document setArray(FieldPath fieldPath, long[] values) {
     return setCommon(fieldPath, JsonValueBuilder.initFromArray(values));
   }
 
   @Override
-  public Record setArray(String fieldPath, float[] values) {
+  public Document setArray(String fieldPath, float[] values) {
     return setArray(FieldPath.parseFrom(fieldPath), values);
   }
 
   @Override
-  public Record setArray(FieldPath fieldPath, float[] values) {
+  public Document setArray(FieldPath fieldPath, float[] values) {
     return setCommon(fieldPath, JsonValueBuilder.initFromArray(values));
   }
 
   @Override
-  public Record setArray(String fieldPath, double[] values) {
+  public Document setArray(String fieldPath, double[] values) {
     return setArray(FieldPath.parseFrom(fieldPath), values);
   }
 
   @Override
-  public Record setArray(FieldPath fieldPath, double[] values) {
+  public Document setArray(FieldPath fieldPath, double[] values) {
     return setCommon(fieldPath, JsonValueBuilder.initFromArray(values));
   }
 
   @Override
-  public Record setArray(String fieldPath, String[] values) {
+  public Document setArray(String fieldPath, String[] values) {
     return setArray(FieldPath.parseFrom(fieldPath), values);
   }
 
   @Override
-  public Record setArray(FieldPath fieldPath, String[] values) {
+  public Document setArray(FieldPath fieldPath, String[] values) {
     return setCommonFromObjectArray(fieldPath, values);
   }
 
   @Override
-  public Record setArray(String fieldPath, Object... values) {
+  public Document setArray(String fieldPath, Object... values) {
     return setArray(FieldPath.parseFrom(fieldPath), values);
   }
 
   @Override
-  public Record setArray(FieldPath fieldPath, Object... values) {
+  public Document setArray(FieldPath fieldPath, Object... values) {
     return setCommonFromObjectArray(fieldPath, values);
   }
 
   @Override
-  public Record setNull(String fieldPath) {
+  public Document setNull(String fieldPath) {
     return setNull(FieldPath.parseFrom(fieldPath));
   }
 
@@ -904,28 +904,28 @@ public class JsonRecord extends JsonValue implements Record, Map<String, Object>
   }
 
   @Override
-  public Record set(String fieldPath, Map<String, ? extends Object> value) {
+  public Document set(String fieldPath, Map<String, ? extends Object> value) {
     return set(FieldPath.parseFrom(fieldPath), value);
   }
 
   @Override
-  public Record set(FieldPath fieldPath, Map<String, ? extends Object> value) {
+  public Document set(FieldPath fieldPath, Map<String, ? extends Object> value) {
     return setCommon(fieldPath, JsonValueBuilder.initFrom(value));
   }
 
   @Override
-  public Record set(String fieldPath, List<? extends Object> value) {
+  public Document set(String fieldPath, List<? extends Object> value) {
     return set(FieldPath.parseFrom(fieldPath), value);
   }
 
   @Override
-  public Record set(FieldPath fieldPath, List<? extends Object> value) {
+  public Document set(FieldPath fieldPath, List<? extends Object> value) {
     return setCommon(fieldPath, JsonValueBuilder.initFrom(value));
   }
 
   @Override
-  public JsonRecord shallowCopy() {
-    JsonRecord rec = new JsonRecord();
+  public JsonDocument shallowCopy() {
+    JsonDocument rec = new JsonDocument();
     rec.objValue = objValue;
     rec.jsonValue = jsonValue;
     return rec;
@@ -940,12 +940,12 @@ public class JsonRecord extends JsonValue implements Record, Map<String, Object>
   }
 
   @Override
-  public Record setArray(String fieldPath, boolean[] values) {
+  public Document setArray(String fieldPath, boolean[] values) {
     return setArray(FieldPath.parseFrom(fieldPath), values);
   }
 
   @Override
-  public Record setArray(FieldPath fieldPath, boolean[] values) {
+  public Document setArray(FieldPath fieldPath, boolean[] values) {
     return setCommon(fieldPath, JsonValueBuilder.initFromArray(values));
   }
 

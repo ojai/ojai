@@ -18,22 +18,22 @@ package org.argonaut;
 import org.argonaut.annotation.API;
 
 @API.Public
-public interface RecordListener {
+public interface DocumentListener {
 
   /**
-   * Called when a Record from the {@link RecordStream} is available for
+   * Called when a Document from the {@link DocumentStream} is available for
    * consumption.
    *
-   * @param record The available <code>Record</code>.
+   * @param document The available <code>Document</code>.
    *
    * @return The implementation should return <code>false</code> to stop
-   *         listening for more records at which point stream is closed.
+   *         listening for more documents at which point stream is closed.
    */
-  boolean recordArrived(Record record);
+  boolean documentArrived(Document document);
 
   /**
-   * Called when an <code>Exception</code> occurs while retrieving a Record.
-   * The {@code RecordListener} will be closed and no new record will be
+   * Called when an <code>Exception</code> occurs while retrieving a Document.
+   * The {@code DocumentListener} will be closed and no new document will be
    * returned.
    *
    * @param e The exception which describes the failure.
@@ -41,7 +41,7 @@ public interface RecordListener {
   void failed(Exception e);
 
   /**
-   * Called when the end of the record stream is reached. The stream is
+   * Called when the end of the document stream is reached. The stream is
    * is already closed at this point.
    */
   void eos();

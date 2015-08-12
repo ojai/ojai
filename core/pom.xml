@@ -24,7 +24,7 @@
   <parent>
     <groupId>org.argonaut</groupId>
     <artifactId>argonaut-root</artifactId>
-    <version>0.1.r2-SNAPSHOT</version>
+    <version>0.1.r3-SNAPSHOT</version>
     <relativePath>..</relativePath>
   </parent>
 

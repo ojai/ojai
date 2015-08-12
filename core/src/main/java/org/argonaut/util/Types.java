@@ -18,7 +18,7 @@ package org.argonaut.util;
 import java.util.Map;
 
 import org.argonaut.Value;
-import org.argonaut.RecordReader.EventType;
+import org.argonaut.DocumentReader.EventType;
 import org.argonaut.Value.Type;
 import org.argonaut.annotation.API;
 
