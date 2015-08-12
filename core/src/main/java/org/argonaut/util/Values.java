@@ -306,7 +306,7 @@ public class Values {
   public static String asJsonString(Value value) {
     StringBuilder sb = new StringBuilder();
     if (Types.isExtendedType(value)) {
-      sb.append('{').append(Types.getTypeTag(value)).append(':');
+      sb.append('{').append('"').append(Types.getTypeTag(value)).append('"').append(':');
       switch (value.getType()) {
       case DATE:
         sb.append('"').append(getDateFormatter().format(value.getDate())).append('"');

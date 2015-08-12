@@ -20,14 +20,16 @@ import org.argonaut.annotation.API;
 @API.Public
 public class Fields {
 
+  public static char SEGMENT_QUOTE_CHAR = '`';
+
   public static String quoteFieldName(String fieldName) {
-    if (fieldName.charAt(0)  == '`' && fieldName.charAt(fieldName.length()-1)  == '`') {
+    if (fieldName.charAt(0)  == SEGMENT_QUOTE_CHAR && fieldName.charAt(fieldName.length()-1)  == SEGMENT_QUOTE_CHAR) {
       return fieldName; // already quoted
     } else {
       for (int i = 0; i < fieldName.length(); i++) {
         char ch = fieldName.charAt(i);
         if ("`-/ \t\n\r\f".indexOf(ch) != -1) {
-          return '`' + fieldName + '`';
+          return SEGMENT_QUOTE_CHAR + fieldName + SEGMENT_QUOTE_CHAR;
         }
       }
     }
@@ -35,7 +37,7 @@ public class Fields {
   }
 
   public static String unquoteFieldName(String fieldName) {
-    if (fieldName.charAt(0)  == '`' && fieldName.charAt(fieldName.length()-1)  == '`') {
+    if (fieldName.charAt(0)  == SEGMENT_QUOTE_CHAR && fieldName.charAt(fieldName.length()-1)  == SEGMENT_QUOTE_CHAR) {
       return fieldName.substring(1, fieldName.length()-1); // quoted
     }
     return fieldName; // not quoted

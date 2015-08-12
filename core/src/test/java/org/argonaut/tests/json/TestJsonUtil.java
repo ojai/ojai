@@ -15,14 +15,17 @@
  */
 package org.argonaut.tests.json;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.InputStream;
 
 import org.argonaut.Document;
+import org.argonaut.DocumentBuilder;
 import org.argonaut.DocumentReader;
 import org.argonaut.DocumentStream;
-import org.argonaut.DocumentBuilder;
 import org.argonaut.json.Json;
 import org.argonaut.tests.BaseTest;
+import org.argonaut.util.Values;
 import org.junit.Test;
 
 public class TestJsonUtil extends BaseTest {
@@ -37,6 +40,15 @@ public class TestJsonUtil extends BaseTest {
         System.out.println(writer);
       }
     }
+  }
+
+  @Test
+  public void testValuesAsJsonString() {
+    Document r = Json.newDocument();
+    r.set("a", (long)1234);
+    r.set("b", Values.parseDate("2011-09-15"));
+
+    assertEquals("{\"$numberLong\":1234}", Values.asJsonString(r.getValue("a")));
   }
 
 }
