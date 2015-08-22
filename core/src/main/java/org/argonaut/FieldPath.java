@@ -65,7 +65,7 @@ public final class FieldPath implements Comparable<FieldPath>, Iterable<FieldSeg
       try {
         CommonTokenStream tokens = new CommonTokenStream(
             new FieldPathLexer(new ANTLRInputStream(fieldPath)));
-        FieldPathErrorListerner listener = new FieldPathErrorListerner();
+        FieldPathErrorListener listener = new FieldPathErrorListener();
         FieldPathParser parser = new FieldPathParser(tokens);
         parser.removeErrorListeners();
         parser.addErrorListener(listener);
@@ -262,7 +262,7 @@ public final class FieldPath implements Comparable<FieldPath>, Iterable<FieldSeg
     }
   }
 
-  final static class FieldPathErrorListerner extends BaseErrorListener {
+  final static class FieldPathErrorListener extends BaseErrorListener {
     private String errorMsg;
     private RecognitionException exception;
 

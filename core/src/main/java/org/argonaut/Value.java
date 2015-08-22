@@ -148,7 +148,7 @@ public interface Value {
         case 15: return BINARY;
         case 16: return MAP;
         case 17: return ARRAY;
-        default: throw new IllegalArgumentException("Unknown Type code: " + typeCode);
+        default: return null;
       }
     }
 
