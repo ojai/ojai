@@ -39,7 +39,7 @@ public class Types {
   public static final String TAG_TIME       = "$time";
   public static final String TAG_DATE       = "$dateDay";
   public static final String TAG_DECIMAL    = "$decimal";
-  public static final String TAG_LONG        = "$numberLong";
+  public static final String TAG_LONG       = "$numberLong";
   public static final String TAG_BYTE       = TAG_LONG;
   public static final String TAG_SHORT      = TAG_LONG;
   public static final String TAG_INT        = TAG_LONG;

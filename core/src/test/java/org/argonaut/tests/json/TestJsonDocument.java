@@ -238,7 +238,6 @@ public class TestJsonDocument {
 
     assertEquals(false, document.getBoolean("map.boolarray[1]"));
     assertEquals(true, document.getBoolean("map.boolarray[2]"));
-
   }
 
 }

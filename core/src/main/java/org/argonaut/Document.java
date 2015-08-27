@@ -26,6 +26,7 @@ import java.util.NoSuchElementException;
 
 import org.argonaut.annotation.API;
 import org.argonaut.exceptions.TypeException;
+import org.argonaut.json.JsonOptions;
 import org.argonaut.types.Interval;
 
 @API.Public
@@ -676,6 +677,16 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *         <code>ARRAY</code> type.
    */
   List<Object> getList(FieldPath fieldPath);
+
+  /**
+   * @return this Document serialized as Json string using the default options.
+   */
+  String asJsonString();
+
+  /**
+   * @return this Document serialized as Json string using the specified options.
+   */
+  String asJsonString(JsonOptions options);
 
   /**
    * @return A new {@link documentReader} over the current <code>document</code>.

@@ -18,10 +18,13 @@ package org.argonaut.tests.json;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.io.InputStream;
 import java.util.regex.Pattern;
 
 import org.argonaut.Document;
+import org.argonaut.DocumentStream;
 import org.argonaut.json.Json;
+import org.argonaut.json.JsonOptions;
 import org.argonaut.tests.BaseTest;
 import org.junit.Test;
 
@@ -83,6 +86,98 @@ public class TestJson extends BaseTest {
     Pattern p2 = Pattern.compile(".*\"longitude\".*:.*-111,.*", Pattern.DOTALL);
     assertTrue(p1.matcher(jsonString).matches());
     assertTrue(p2.matcher(jsonString).matches());
+  }
+
+  @Test
+  public void testJson_AsJsonString() throws Exception {
+    try (InputStream in = getJsonStream("test.json");
+         DocumentStream<Document> stream = Json.newDocumentStream(in)) {
+      Document rec = stream.iterator().next();
+
+      String s = Json.toJsonString(rec);
+      assertEquals("{\"map\":{\"null\":null,\"boolean\":true,\"string\":\"eureka\","
+          + "\"byte\":{\"$numberLong\":127},\"short\":{\"$numberLong\":32767},"
+          + "\"int\":{\"$numberLong\":2147483647},\"long\":{\"$numberLong\":9223372036854775807},"
+          + "\"float\":3.4028235,\"double\":9223372036854775807,"
+          + "\"decimal\":{\"$decimal\":\"123456789012345678901234567890123456789012345678901.23456789\"},"
+          + "\"date\":{\"$dateDay\":\"2012-10-20\"},\"time\":{\"$time\":\"07:42:46\"},"
+          + "\"timestamp\":{\"$date\":\"2012-10-20T14:42:46.123Z\"},\"interval\":{\"$interval\":172800000},"
+          + "\"binary\":{\"$binary\":\"YWJjZA==\"},\"array\":[42,\"open sesame\",3.14,{\"$dateDay\":\"2015-01-21\"}]}}", s);
+
+      s = Json.toJsonString(rec, new JsonOptions().withoutTags());
+      assertEquals("{\"map\":{\"null\":null,\"boolean\":true,\"string\":\"eureka\",\"byte\":127,\"short\":32767,"
+          + "\"int\":2147483647,\"long\":9223372036854775807,\"float\":3.4028235,\"double\":9223372036854775807,"
+          + "\"decimal\":123456789012345678901234567890123456789012345678901.23456789,\"date\":\"2012-10-20\","
+          + "\"time\":\"07:42:46\",\"timestamp\":\"2012-10-20T14:42:46.123Z\",\"interval\":172800000,"
+          + "\"binary\":\"YWJjZA==\",\"array\":[42,\"open sesame\",3.14,\"2015-01-21\"]}}", s);
+
+      s = Json.toJsonString(rec, new JsonOptions().pretty().withoutTags());
+      assertEquals("{\n" +
+          "  \"map\" : {\n" +
+          "    \"null\" : null,\n" +
+          "    \"boolean\" : true,\n" +
+          "    \"string\" : \"eureka\",\n" +
+          "    \"byte\" : 127,\n" +
+          "    \"short\" : 32767,\n" +
+          "    \"int\" : 2147483647,\n" +
+          "    \"long\" : 9223372036854775807,\n" +
+          "    \"float\" : 3.4028235,\n" +
+          "    \"double\" : 9223372036854775807,\n" +
+          "    \"decimal\" : 123456789012345678901234567890123456789012345678901.23456789,\n" +
+          "    \"date\" : \"2012-10-20\",\n" +
+          "    \"time\" : \"07:42:46\",\n" +
+          "    \"timestamp\" : \"2012-10-20T14:42:46.123Z\",\n" +
+          "    \"interval\" : 172800000,\n" +
+          "    \"binary\" : \"YWJjZA==\",\n" +
+          "    \"array\" : [ 42, \"open sesame\", 3.14, \"2015-01-21\" ]\n" +
+          "  }\n" +
+          "}", s);
+
+      s = Json.toJsonString(rec, new JsonOptions().pretty().withTags());
+      assertEquals("{\n" +
+          "  \"map\" : {\n" +
+          "    \"null\" : null,\n" +
+          "    \"boolean\" : true,\n" +
+          "    \"string\" : \"eureka\",\n" +
+          "    \"byte\" : {\n" +
+          "      \"$numberLong\" : 127\n" +
+          "    },\n" +
+          "    \"short\" : {\n" +
+          "      \"$numberLong\" : 32767\n" +
+          "    },\n" +
+          "    \"int\" : {\n" +
+          "      \"$numberLong\" : 2147483647\n" +
+          "    },\n" +
+          "    \"long\" : {\n" +
+          "      \"$numberLong\" : 9223372036854775807\n" +
+          "    },\n" +
+          "    \"float\" : 3.4028235,\n" +
+          "    \"double\" : 9223372036854775807,\n" +
+          "    \"decimal\" : {\n" +
+          "      \"$decimal\" : \"123456789012345678901234567890123456789012345678901.23456789\"\n" +
+          "    },\n" +
+          "    \"date\" : {\n" +
+          "      \"$dateDay\" : \"2012-10-20\"\n" +
+          "    },\n" +
+          "    \"time\" : {\n" +
+          "      \"$time\" : \"07:42:46\"\n" +
+          "    },\n" +
+          "    \"timestamp\" : {\n" +
+          "      \"$date\" : \"2012-10-20T14:42:46.123Z\"\n" +
+          "    },\n" +
+          "    \"interval\" : {\n" +
+          "      \"$interval\" : 172800000\n" +
+          "    },\n" +
+          "    \"binary\" : {\n" +
+          "      \"$binary\" : \"YWJjZA==\"\n" +
+          "    },\n" +
+          "    \"array\" : [ 42, \"open sesame\", 3.14, {\n" +
+          "      \"$dateDay\" : \"2015-01-21\"\n" +
+          "    } ]\n" +
+          "  }\n" +
+          "}", s);
+    }
+
   }
 
 }

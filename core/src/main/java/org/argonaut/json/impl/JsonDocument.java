@@ -37,6 +37,7 @@ import org.argonaut.DocumentReader;
 import org.argonaut.Value;
 import org.argonaut.annotation.API;
 import org.argonaut.json.Json;
+import org.argonaut.json.JsonOptions;
 import org.argonaut.types.Interval;
 
 @API.Internal
@@ -952,7 +953,17 @@ public class JsonDocument extends JsonValue implements Document, Map<String, Obj
 
   @Override
   public String toString() {
-    return Json.toJsonString(asReader(), false);
+    return asJsonString();
+  }
+
+  @Override
+  public String asJsonString() {
+    return asJsonString(JsonOptions.DEFAULT);
+  }
+
+  @Override
+  public String asJsonString(JsonOptions options) {
+    return Json.toJsonString(this, options);
   }
 
 }

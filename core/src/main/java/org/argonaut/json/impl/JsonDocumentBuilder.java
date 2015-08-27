@@ -33,13 +33,14 @@ import java.util.Map.Entry;
 import java.util.Stack;
 
 import org.argonaut.Document;
-import org.argonaut.DocumentStream;
 import org.argonaut.DocumentBuilder;
+import org.argonaut.DocumentStream;
 import org.argonaut.Value;
 import org.argonaut.Value.Type;
 import org.argonaut.annotation.API;
 import org.argonaut.exceptions.EncodingException;
 import org.argonaut.json.Json;
+import org.argonaut.json.JsonOptions;
 import org.argonaut.types.Interval;
 import org.argonaut.util.Decimals;
 import org.argonaut.util.Types;
@@ -49,6 +50,9 @@ import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.util.DefaultIndenter;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
+import com.google.common.base.Preconditions;
 
 @API.Internal
 public class JsonDocumentBuilder implements DocumentBuilder {
@@ -62,37 +66,54 @@ public class JsonDocumentBuilder implements DocumentBuilder {
   private JsonGenerator jsonGenerator;
   private ByteArrayWriterOutputStream b;
   private String cachedJson;
-  private Stack<BuilderContext> allDocuments;
+  private Stack<BuilderContext> ctxStack;
   private BuilderContext currentContext;
+  private JsonOptions jsonOptions;
 
   public JsonDocumentBuilder() {
     b = new ByteArrayWriterOutputStream();
-    this.initJsonGenerator(b);
+    initJsonGenerator(b);
   }
 
   protected JsonDocumentBuilder(OutputStream out) {
-    this.initJsonGenerator(out);
+    initJsonGenerator(out);
+  }
+
+  private static final DefaultPrettyPrinter PRETTY_PRINTER;
+  static {
+    PRETTY_PRINTER = new DefaultPrettyPrinter();
+    PRETTY_PRINTER.indentObjectsWith(// standardize on Unix line terminator
+        DefaultIndenter.SYSTEM_LINEFEED_INSTANCE.withLinefeed("\n"));
+  }
+  public JsonDocumentBuilder setJsonOptions(JsonOptions options) {
+    if (jsonOptions == null || jsonOptions.isPretty() != options.isPretty()) {
+      if (options.isPretty()) {
+        jsonGenerator.setPrettyPrinter(PRETTY_PRINTER);
+      } else {
+        jsonGenerator.setPrettyPrinter(null);
+      }
+    }
+    jsonOptions = options;
+    return this;
   }
 
   private void initJsonGenerator(OutputStream out) {
     JsonFactory jFactory = new JsonFactory();
     try {
       jsonGenerator = jFactory.createGenerator(out, JsonEncoding.UTF8);
+      ctxStack = new Stack<BuilderContext>();
+      currentContext = BuilderContext.NONE;
+      setJsonOptions(JsonOptions.DEFAULT);
     } catch (IOException io) {
       throw new EncodingException(io);
     }
-
-    allDocuments = new Stack<BuilderContext>();
-    currentContext = BuilderContext.NONE;
   }
 
   private void checkContext(BuilderContext expectedContext) {
-    if (currentContext != expectedContext) {
-      throw new IllegalStateException("Mismatch in writeContext. Expected " +
-          expectedContext.name() + " but found "+currentContext.name());
-    }
+    Preconditions.checkState((currentContext == expectedContext),
+        "Mismatch in writeContext. Expected %s but found %s",
+        expectedContext.name(), currentContext.name());
   }
-
 
   @Override
   public JsonDocumentBuilder put(String field, boolean value) {
@@ -123,76 +144,37 @@ public class JsonDocumentBuilder implements DocumentBuilder {
   @Override
   public JsonDocumentBuilder put(String field, byte value) {
     checkContext(BuilderContext.MAPCONTEXT);
-    putNewMap(field);
-    try {
-      jsonGenerator.writeNumberField(Types.TAG_BYTE, value);
-      endMap();
-    } catch (JsonGenerationException e) {
-      throw new IllegalStateException(e);
-    } catch (IOException ie) {
-      throw new EncodingException(ie);
-    }
-    return this;
+    return putLongWithTag(field, Types.TAG_BYTE, value);
   }
 
   @Override
   public JsonDocumentBuilder put(String field, short value) {
     checkContext(BuilderContext.MAPCONTEXT);
-    try {
-      this.putNewMap(field);
-      jsonGenerator.writeNumberField(Types.TAG_SHORT, value);
-      this.endMap();
-
-    } catch (JsonGenerationException e) {
-      throw new IllegalStateException(e);
-    } catch (IOException e) {
-      throw new EncodingException(e);
-    }
-    return this;
+    return putLongWithTag(field, Types.TAG_SHORT, value);
   }
 
   @Override
   public JsonDocumentBuilder put(String field, int value) {
     checkContext(BuilderContext.MAPCONTEXT);
-    try {
-      this.putNewMap(field);
-      jsonGenerator.writeNumberField(Types.TAG_INT, value);
-      this.endMap();
-
-    } catch (JsonGenerationException e) {
-      throw new IllegalStateException(e);
-    } catch (IOException e) {
-      throw new EncodingException(e);
-    }
-    return this;
+    return putLongWithTag(field, Types.TAG_INT, value);
   }
 
   @Override
   public JsonDocumentBuilder put(String field, long value) {
     checkContext(BuilderContext.MAPCONTEXT);
-    try {
-      this.putNewMap(field);
-      jsonGenerator.writeNumberField(Types.TAG_LONG, value);
-      this.endMap();
-    } catch (JsonGenerationException e) {
-      throw new IllegalStateException(e);
-    } catch (IOException ie) {
-      throw new EncodingException(ie);
-    }
-    return this;
+    return putLongWithTag(field, Types.TAG_LONG, value);
   }
 
   @Override
   public JsonDocumentBuilder put(String field, float value) {
-    put(field, (double)value);
-    return this;
+    return put(field, (double)value);
   }
 
   @Override
   public JsonDocumentBuilder put(String field, double value) {
     checkContext(BuilderContext.MAPCONTEXT);
     try {
-      if ((value == Math.floor(value)) && !Double.isInfinite(value)) {
+      if (isWholeNumber(value)) {
         jsonGenerator.writeNumberField(field, (long)value);
       } else {
         jsonGenerator.writeNumberField(field, value);
@@ -209,9 +191,13 @@ public class JsonDocumentBuilder implements DocumentBuilder {
   public JsonDocumentBuilder put(String field, BigDecimal value) {
     checkContext(BuilderContext.MAPCONTEXT);
     try {
-      putNewMap(field);
-      jsonGenerator.writeNumberField(Types.TAG_DECIMAL, value);
-      endMap();
+      if (jsonOptions.isWithTags()) {
+        putNewMap(field);
+        jsonGenerator.writeStringField(Types.TAG_DECIMAL, value.toString());
+        endMap();
+      } else {
+        jsonGenerator.writeNumberField(field, value);
+      }
     } catch (JsonGenerationException e) {
       throw new IllegalStateException(e);
     } catch (IOException ie) {
@@ -241,19 +227,21 @@ public class JsonDocumentBuilder implements DocumentBuilder {
   }
 
   @Override
-  public JsonDocumentBuilder putDecimal(String field, byte[] unscaledValue,
-      int scale) {
-    return put(field,
-        Decimals.convertByteToBigDecimal(unscaledValue, scale));
+  public JsonDocumentBuilder putDecimal(String field, byte[] unscaledValue, int scale) {
+    return put(field, Decimals.convertByteToBigDecimal(unscaledValue, scale));
   }
 
   @Override
   public JsonDocumentBuilder put(String field, byte[] value) {
     checkContext(BuilderContext.MAPCONTEXT);
     try {
-      putNewMap(field);
-      jsonGenerator.writeBinaryField(Types.TAG_BINARY, value);
-      endMap();
+      if (jsonOptions.isWithTags()) {
+        putNewMap(field);
+        jsonGenerator.writeBinaryField(Types.TAG_BINARY, value);
+        endMap();
+      } else {
+        jsonGenerator.writeBinaryField(field, value);
+      }
     } catch (JsonGenerationException e) {
       throw new IllegalStateException(e);
     } catch (IOException ie) {
@@ -266,10 +254,15 @@ public class JsonDocumentBuilder implements DocumentBuilder {
   public JsonDocumentBuilder put(String field, byte[] value, int offset, int length) {
     checkContext(BuilderContext.MAPCONTEXT);
     try {
-      putNewMap(field);
-      jsonGenerator.writeFieldName(Types.TAG_BINARY);
-      jsonGenerator.writeBinary(value, offset, length);
-      endMap();
+      if (jsonOptions.isWithTags()) {
+        putNewMap(field);
+        jsonGenerator.writeFieldName(Types.TAG_BINARY);
+        jsonGenerator.writeBinary(value, offset, length);
+        endMap();
+      } else {
+        jsonGenerator.writeFieldName(field);
+        jsonGenerator.writeBinary(value, offset, length);
+      }
     } catch (JsonGenerationException e) {
       throw new IllegalStateException(e);
     } catch (IOException ie) {
@@ -281,16 +274,20 @@ public class JsonDocumentBuilder implements DocumentBuilder {
   @Override
   public JsonDocumentBuilder put(String field, ByteBuffer value) {
     byte[] bytes = new byte[value.remaining()];
-    value.get(bytes);
+    value.slice().get(bytes);
     return put(field, bytes);
   }
 
   private JsonDocumentBuilder putLongWithTag(String fieldname, String fieldTag, long value) {
     checkContext(BuilderContext.MAPCONTEXT);
     try {
-      putNewMap(fieldname);
-      jsonGenerator.writeNumberField(fieldTag, value);
-      endMap();
+      if (jsonOptions.isWithTags()) {
+        putNewMap(fieldname);
+        jsonGenerator.writeNumberField(fieldTag, value);
+        endMap();
+      } else {
+        jsonGenerator.writeNumberField(fieldname, value);
+      }
     } catch (JsonGenerationException e) {
       throw new IllegalStateException(e);
     } catch (IOException ie) {
@@ -302,9 +299,13 @@ public class JsonDocumentBuilder implements DocumentBuilder {
   private JsonDocumentBuilder putStringWithTag(String fieldname, String fieldTag, String value) {
     checkContext(BuilderContext.MAPCONTEXT);
     try {
-      putNewMap(fieldname);
-      jsonGenerator.writeStringField(fieldTag, value);
-      endMap();
+      if (jsonOptions.isWithTags()) {
+        putNewMap(fieldname);
+        jsonGenerator.writeStringField(fieldTag, value);
+        endMap();
+      } else {
+        jsonGenerator.writeStringField(fieldname, value);
+      }
     } catch (JsonGenerationException e) {
       throw new IllegalStateException(e);
     } catch (IOException ie) {
@@ -374,7 +375,7 @@ public class JsonDocumentBuilder implements DocumentBuilder {
     } catch (IOException ie) {
       throw new EncodingException(ie);
     }
-    allDocuments.push(currentContext);
+    ctxStack.push(currentContext);
     return this;
   }
 
@@ -390,7 +391,7 @@ public class JsonDocumentBuilder implements DocumentBuilder {
       throw new EncodingException(ie);
     }
     currentContext = BuilderContext.ARRAYCONTEXT;
-    allDocuments.push(currentContext);
+    ctxStack.push(currentContext);
     return this;
   }
 
@@ -490,6 +491,11 @@ public class JsonDocumentBuilder implements DocumentBuilder {
   }
 
   @Override
+  public JsonDocumentBuilder put(String field, Map<String, Object> value) {
+    return put(field, JsonValueBuilder.initFrom(value));
+  }
+
+  @Override
   public JsonDocumentBuilder put(String field, Document value) {
     // iterate over the document interface and extract tokens.
     // Add them to the writer.
@@ -527,56 +533,56 @@ public class JsonDocumentBuilder implements DocumentBuilder {
 
   @Override
   public JsonDocumentBuilder add(byte value) {
-    return addInt(Types.TAG_BYTE, value);
+    return addLong(Types.TAG_BYTE, value);
   }
 
   @Override
   public JsonDocumentBuilder add(short value) {
-    return addInt(Types.TAG_SHORT, value);
-  }
-
-  private JsonDocumentBuilder addInt(String field, long value) {
-    checkContext(BuilderContext.ARRAYCONTEXT);
-    try {
-      jsonGenerator.writeStartObject();
-      jsonGenerator.writeNumberField(field, value);
-      jsonGenerator.writeEndObject();
-    } catch (JsonGenerationException e) {
-      throw new IllegalStateException(e);
-    } catch (IOException ie) {
-      throw new EncodingException(ie);
-    }
-    return this;
+    return addLong(Types.TAG_SHORT, value);
   }
 
   @Override
   public JsonDocumentBuilder add(int value) {
-    return addInt(Types.TAG_INT, value);
+    return addLong(Types.TAG_INT, value);
   }
 
   @Override
   public JsonDocumentBuilder add(long value) {
-    return addInt(Types.TAG_LONG, value);
+    return addLong(Types.TAG_LONG, value);
   }
 
-  @Override
-  public JsonDocumentBuilder add(float value) {
+  private JsonDocumentBuilder addLong(String tagName, long value) {
     checkContext(BuilderContext.ARRAYCONTEXT);
     try {
-      jsonGenerator.writeNumber(value);
+      if (jsonOptions.isWithTags()) {
+        jsonGenerator.writeStartObject();
+        jsonGenerator.writeNumberField(tagName, value);
+        jsonGenerator.writeEndObject();
+      } else {
+        jsonGenerator.writeNumber(value);
+      }
     } catch (JsonGenerationException e) {
       throw new IllegalStateException(e);
     } catch (IOException ie) {
       throw new EncodingException(ie);
     }
     return this;
+  }
+
+  @Override
+  public JsonDocumentBuilder add(float value) {
+    return add((double)value);
   }
 
   @Override
   public JsonDocumentBuilder add(double value) {
     checkContext(BuilderContext.ARRAYCONTEXT);
     try {
-      jsonGenerator.writeNumber(value);
+      if (isWholeNumber(value)) {
+        jsonGenerator.writeNumber((long)value);
+      } else {
+        jsonGenerator.writeNumber(value);
+      }
     } catch (JsonGenerationException e) {
       throw new IllegalStateException(e);
     } catch (IOException ie) {
@@ -589,9 +595,13 @@ public class JsonDocumentBuilder implements DocumentBuilder {
   public JsonDocumentBuilder add(BigDecimal value) {
     checkContext(BuilderContext.ARRAYCONTEXT);
     try {
-      jsonGenerator.writeStartObject();
-      jsonGenerator.writeNumberField(Types.TAG_DECIMAL, value);
-      jsonGenerator.writeEndObject();
+      if (jsonOptions.isWithTags()) {
+        jsonGenerator.writeStartObject();
+        jsonGenerator.writeStringField(Types.TAG_DECIMAL, value.toPlainString());
+        jsonGenerator.writeEndObject();
+      } else {
+        jsonGenerator.writeNumber(value);
+      }
     } catch (JsonGenerationException e) {
       throw new IllegalStateException(e);
     } catch (IOException ie) {
@@ -604,9 +614,13 @@ public class JsonDocumentBuilder implements DocumentBuilder {
   public JsonDocumentBuilder addDecimal(long decimalValue) {
     checkContext(BuilderContext.ARRAYCONTEXT);
     try {
-      jsonGenerator.writeStartObject();
-      jsonGenerator.writeNumberField(Types.TAG_DECIMAL, decimalValue);
-      jsonGenerator.writeEndObject();
+      if (jsonOptions.isWithTags()) {
+        jsonGenerator.writeStartObject();
+        jsonGenerator.writeStringField(Types.TAG_DECIMAL, String.valueOf(decimalValue));
+        jsonGenerator.writeEndObject();
+      } else {
+        jsonGenerator.writeNumber(decimalValue);
+      }
     } catch (JsonGenerationException e) {
       throw new IllegalStateException(e);
     } catch (IOException ie) {
@@ -619,9 +633,13 @@ public class JsonDocumentBuilder implements DocumentBuilder {
   public JsonDocumentBuilder addDecimal(double decimalValue) {
     checkContext(BuilderContext.ARRAYCONTEXT);
     try {
-      jsonGenerator.writeStartObject();
-      jsonGenerator.writeNumberField(Types.TAG_DECIMAL, decimalValue);
-      jsonGenerator.writeEndObject();
+      if (jsonOptions.isWithTags()) {
+        jsonGenerator.writeStartObject();
+        jsonGenerator.writeStringField(Types.TAG_DECIMAL, String.valueOf(decimalValue));
+        jsonGenerator.writeEndObject();
+      } else {
+        jsonGenerator.writeNumber(decimalValue);
+      }
     } catch (JsonGenerationException e) {
       throw new IllegalStateException(e);
     } catch (IOException ie) {
@@ -649,9 +667,13 @@ public class JsonDocumentBuilder implements DocumentBuilder {
   public JsonDocumentBuilder add(byte[] value) {
     checkContext(BuilderContext.ARRAYCONTEXT);
     try {
-      jsonGenerator.writeStartObject();
-      jsonGenerator.writeBinaryField(Types.TAG_BINARY, value);
-      jsonGenerator.writeEndObject();
+      if (jsonOptions.isWithTags()) {
+        jsonGenerator.writeStartObject();
+        jsonGenerator.writeBinaryField(Types.TAG_BINARY, value);
+        jsonGenerator.writeEndObject();
+      } else {
+        jsonGenerator.writeBinary(value);
+      }
     } catch (JsonGenerationException e) {
       throw new IllegalStateException(e);
     } catch (IOException ie) {
@@ -664,10 +686,14 @@ public class JsonDocumentBuilder implements DocumentBuilder {
   public JsonDocumentBuilder add(byte[] value, int offset, int length) {
     checkContext(BuilderContext.ARRAYCONTEXT);
     try {
-      jsonGenerator.writeStartObject();
-      jsonGenerator.writeFieldName(Types.TAG_BINARY);
-      jsonGenerator.writeBinary(value, offset, length);
-      jsonGenerator.writeEndObject();
+      if (jsonOptions.isWithTags()) {
+        jsonGenerator.writeStartObject();
+        jsonGenerator.writeFieldName(Types.TAG_BINARY);
+        jsonGenerator.writeBinary(value, offset, length);
+        jsonGenerator.writeEndObject();
+      } else {
+        jsonGenerator.writeBinary(value, offset, length);
+      }
     } catch (JsonGenerationException e) {
       throw new IllegalStateException(e);
     } catch (IOException ie) {
@@ -679,7 +705,7 @@ public class JsonDocumentBuilder implements DocumentBuilder {
   @Override
   public JsonDocumentBuilder add(ByteBuffer value) {
     byte[] bytes = new byte[value.remaining()];
-    value.get(bytes);
+    value.slice().get(bytes);
     return add(bytes);
   }
 
@@ -775,16 +801,14 @@ public class JsonDocumentBuilder implements DocumentBuilder {
     } catch (IOException ie) {
       throw new EncodingException(ie);
     }
-    allDocuments.push(BuilderContext.ARRAYCONTEXT);
+    ctxStack.push(BuilderContext.ARRAYCONTEXT);
     return this;
   }
 
   @Override
   public JsonDocumentBuilder addNewMap() {
-    if (currentContext == BuilderContext.MAPCONTEXT) {
-      throw new IllegalStateException("Context mismatch : addNewMap() can not be called at "+
-          currentContext.name());
-    }
+    Preconditions.checkState((currentContext != BuilderContext.MAPCONTEXT),
+          "Context mismatch : addNewMap() can not be called at %s", currentContext.name());
     try {
       jsonGenerator.writeStartObject();
     } catch (JsonGenerationException e) {
@@ -793,22 +817,8 @@ public class JsonDocumentBuilder implements DocumentBuilder {
       throw new EncodingException(ie);
     }
     currentContext = BuilderContext.MAPCONTEXT;
-    allDocuments.push(currentContext);
+    ctxStack.push(currentContext);
 
-    return this;
-  }
-
-  private JsonDocumentBuilder addLongWithTag(String tagName, long value) {
-    checkContext(BuilderContext.ARRAYCONTEXT);
-    try {
-      jsonGenerator.writeStartObject();
-      jsonGenerator.writeNumberField(tagName, value);
-      jsonGenerator.writeEndObject();
-    } catch (JsonGenerationException e) {
-      throw new IllegalStateException(e);
-    } catch (IOException ie) {
-      throw new EncodingException(ie);
-    }
     return this;
   }
 
@@ -816,9 +826,13 @@ public class JsonDocumentBuilder implements DocumentBuilder {
   private JsonDocumentBuilder addStringWithTag(String tagName, String value) {
     checkContext(BuilderContext.ARRAYCONTEXT);
     try {
-      jsonGenerator.writeStartObject();
-      jsonGenerator.writeStringField(tagName, value);
-      jsonGenerator.writeEndObject();
+      if (jsonOptions.isWithTags()) {
+        jsonGenerator.writeStartObject();
+        jsonGenerator.writeStringField(tagName, value);
+        jsonGenerator.writeEndObject();
+      } else {
+        jsonGenerator.writeString(value);
+      }
     } catch (JsonGenerationException e) {
       throw new IllegalStateException(e);
     } catch (IOException ie) {
@@ -867,6 +881,24 @@ public class JsonDocumentBuilder implements DocumentBuilder {
     return addLongWithTag(Types.TAG_INTERVAL, durationInMs);
   }
 
+  private JsonDocumentBuilder addLongWithTag(String tagName, long value) {
+    checkContext(BuilderContext.ARRAYCONTEXT);
+    try {
+      if (jsonOptions.isWithTags()) {
+        jsonGenerator.writeStartObject();
+        jsonGenerator.writeNumberField(tagName, value);
+        jsonGenerator.writeEndObject();
+      } else {
+        jsonGenerator.writeNumber(value);
+      }
+    } catch (JsonGenerationException e) {
+      throw new IllegalStateException(e);
+    } catch (IOException ie) {
+      throw new EncodingException(ie);
+    }
+    return this;
+  }
+
   @Override
   public JsonDocumentBuilder endArray() {
     checkContext(BuilderContext.ARRAYCONTEXT);
@@ -877,9 +909,9 @@ public class JsonDocumentBuilder implements DocumentBuilder {
     } catch (IOException ie) {
       throw new EncodingException(ie);
     }
-    allDocuments.pop();
+    ctxStack.pop();
 
-    currentContext = allDocuments.peek();
+    currentContext = ctxStack.peek();
 
     return this;
   }
@@ -897,9 +929,9 @@ public class JsonDocumentBuilder implements DocumentBuilder {
     } catch (IOException ie) {
       throw new EncodingException(ie);
     }
-    allDocuments.pop();
-    if (!allDocuments.empty()) {
-      currentContext = allDocuments.peek();
+    ctxStack.pop();
+    if (!ctxStack.empty()) {
+      currentContext = ctxStack.peek();
     } else {
       //close the generator
       try {
@@ -924,10 +956,7 @@ public class JsonDocumentBuilder implements DocumentBuilder {
   }
 
   public String asUTF8String() {
-    if (!jsonGenerator.isClosed()) {
-      throw new IllegalStateException("The document has not been built.");
-    }
-
+    Preconditions.checkState(jsonGenerator.isClosed(), "The document has not been built.");
     if (cachedJson == null) {
       cachedJson = toString();
     }
@@ -940,7 +969,6 @@ public class JsonDocumentBuilder implements DocumentBuilder {
 
   /* private function that adds an array as value of k-v pair */
   private JsonDocumentBuilder putArray(String field, List<Object> values) {
-
     try {
       if (field != null) {
         checkContext(BuilderContext.MAPCONTEXT);
@@ -950,16 +978,14 @@ public class JsonDocumentBuilder implements DocumentBuilder {
       }
       jsonGenerator.writeStartArray();
       currentContext = BuilderContext.ARRAYCONTEXT;
-      allDocuments.push(currentContext);
+      ctxStack.push(currentContext);
 
-      for (Iterator<Object> it = values.iterator(); it
-          .hasNext();) {
-        Object e = it.next();
+      for (Object e : values) {
         add(JsonValueBuilder.initFromObject(e));
       }
       jsonGenerator.writeEndArray();
-      allDocuments.pop();
-      currentContext = allDocuments.peek();
+      ctxStack.pop();
+      currentContext = ctxStack.peek();
     } catch (JsonGenerationException je) {
       throw new IllegalStateException(je);
     } catch (IOException ie) {
@@ -968,19 +994,13 @@ public class JsonDocumentBuilder implements DocumentBuilder {
     return this;
   }
 
-  public void enablePrettyPrinting(boolean enable) {
-    if (enable) {
-      jsonGenerator.useDefaultPrettyPrinter();
-    } else {
-      jsonGenerator.setPrettyPrinter(null);
-    }
+  private boolean isWholeNumber(double value) {
+    return (value == Math.floor(value)) && !Double.isInfinite(value);
   }
 
   @Override
   public Document getDocument() {
-    if (!jsonGenerator.isClosed()) {
-      throw new IllegalStateException("Document is not written completely");
-    }
+    Preconditions.checkState(jsonGenerator.isClosed(), "The document has not been built.");
 
     if (b != null) {
       byte[] barray = b.getByteArray();
@@ -993,11 +1013,6 @@ public class JsonDocumentBuilder implements DocumentBuilder {
       }
     }
     return null;
-  }
-
-  @Override
-  public DocumentBuilder put(String field, Map<String, Object> value) {
-    return put(field, JsonValueBuilder.initFrom(value));
   }
 
 }

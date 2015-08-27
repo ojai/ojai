@@ -23,7 +23,7 @@
 
   <groupId>org.argonaut</groupId>
   <artifactId>argonaut-root</artifactId>
-  <version>0.1.r3-SNAPSHOT</version>
+  <version>0.1.r4-SNAPSHOT</version>
 
   <name>Argonaut Root Pom</name>
   <packaging>pom</packaging>
@@ -33,6 +33,7 @@
   <properties>
     <slf4j.version>1.7.12</slf4j.version>
     <hadoop.version>2.5.1</hadoop.version>
+    <jackson.version>2.6.1</jackson.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
@@ -130,7 +131,7 @@
       <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-core</artifactId>
-        <version>2.5.1</version>
+        <version>${jackson.version}</version>
       </dependency>
       <dependency>
         <groupId>org.argonaut</groupId>

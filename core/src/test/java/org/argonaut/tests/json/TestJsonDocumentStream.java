@@ -28,6 +28,7 @@ import org.argonaut.DocumentStream;
 import org.argonaut.DocumentReader.EventType;
 import org.argonaut.Value.Type;
 import org.argonaut.json.Json;
+import org.argonaut.json.JsonOptions;
 import org.argonaut.tests.BaseTest;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -97,7 +98,7 @@ public class TestJsonDocumentStream extends BaseTest {
       int documentCount = 0;
       for (DocumentReader reader : stream.documentReaders()) {
         documentCount++;
-        logger.debug(Json.toJsonString(reader, false));
+        logger.debug(Json.toJsonString(reader, JsonOptions.DEFAULT));
       }
       assertEquals(5, documentCount);
     }

@@ -35,6 +35,8 @@ import org.argonaut.json.impl.JsonDocumentStream;
 import org.argonaut.json.impl.JsonDocumentBuilder;
 import org.argonaut.json.impl.JsonUtils;
 
+import com.google.common.base.Preconditions;
+
 /**
  * This class serves as factory for JSON implementation
  * of all Argonaut interfaces.
@@ -76,6 +78,10 @@ public final class Json {
     return new JsonDocumentBuilder();
   }
 
+  public static DocumentBuilder newDocumentBuilder(JsonOptions options) {
+    return new JsonDocumentBuilder().setJsonOptions(options);
+  }
+
   public static DocumentStream<Document> newDocumentStream(InputStream in) {
     return new JsonDocumentStream(in, null, null);
   }
@@ -108,19 +114,27 @@ public final class Json {
     return JsonDocumentStream.newDocumentStream(fs, path, null, eventDelegate);
   }
 
-  public static String toJsonString(DocumentReader r) {
-    return Json.toJsonString(r, true);
+  public static String toJsonString(Document d) {
+    return Json.toJsonString(d.asReader(), JsonOptions.DEFAULT);
   }
 
-  public static String toJsonString(DocumentReader r, boolean pretty) {
-    EventType e = r.next();
-    assert e == EventType.START_MAP;
+  public static String toJsonString(Document d, JsonOptions options) {
+    return Json.toJsonString(d.asReader(), options);
+  }
 
-    JsonDocumentBuilder w = new JsonDocumentBuilder();
-    w.addNewMap();
-    w.enablePrettyPrinting(pretty);
-    JsonUtils.addToMap(r, w);
-    return w.asUTF8String();
+  public static String toJsonString(DocumentReader r) {
+    return toJsonString(r, JsonOptions.DEFAULT);
+  }
+
+  public static String toJsonString(DocumentReader r, JsonOptions options) {
+    EventType e = r.next();
+    Preconditions.checkState((e == EventType.START_MAP),
+        "Expected %s, found %s", EventType.START_MAP, e);
+    JsonDocumentBuilder builder = new JsonDocumentBuilder()
+        .setJsonOptions(options)
+        .addNewMap();
+    JsonUtils.addToMap(r, builder);
+    return builder.asUTF8String();
   }
 
   public static void writeReaderToStream(DocumentReader r, DocumentBuilder w) {
