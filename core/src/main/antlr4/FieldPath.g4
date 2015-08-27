@@ -80,7 +80,7 @@ Integer
   ;
 
 Identifier
-  : ('a'..'z' | 'A'..'Z' | '_' | '$' | Digit)+
+  : ('a'..'z' | 'A'..'Z' | '_' | '-' | '$' | Digit)+
   ;
 
 Space

@@ -40,6 +40,22 @@ public class TestFieldPath {
   }
 
   @Test
+  public void testPathWithUnderscore() {
+    FieldPath fp = FieldPath.parseFrom("work_phone");
+    assertTrue(fp.getRootSegment().isLeaf());
+    assertEquals("`work_phone`", fp.asPathString(true));
+    assertEquals("work_phone", fp.asPathString());
+  }
+
+  @Test
+  public void testPathWithHyphen() {
+    FieldPath fp = FieldPath.parseFrom("work-phone");
+    assertTrue(fp.getRootSegment().isLeaf());
+    assertEquals("`work-phone`", fp.asPathString(true));
+    assertEquals("work-phone", fp.asPathString());
+  }
+
+  @Test
   public void testSimplePathSingleSegment() {
     FieldPath fp = FieldPath.parseFrom("a");
     assertTrue(fp.getRootSegment().isLeaf());
