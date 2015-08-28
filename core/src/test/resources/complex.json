@@ -1,0 +1,31 @@
+{
+  "first": "Sam",
+  "last": "LNU",
+  "age": 23,
+  "sex": "F",
+  "salary": 315000,
+  "active": true,
+  "interests": [ "Reading", "Hiking", {"passive": ["sleeping", "dreaming"]} ],
+  "favorites": {
+    "color": "Red",
+    "sport": "Cricket",
+    "food": "Nasi Goreng"
+  }, 
+  "skills": [
+    {
+      "category": "Economics",
+      "tests": [
+        { "name": "ECO101", "score": 90 },
+        { "name": "ECO212", "score": 96 },
+        ["ECO152", 87, "ECO162", 91]
+      ] 
+    },
+    {
+      "category": "Computer Science",
+      "tests": [
+        { "name": "CS404", "score": 99 },
+        { "name": "CS301", "score": 93 }
+      ] 
+    }
+  ]
+}

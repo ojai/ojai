@@ -89,7 +89,60 @@ public class TestJson extends BaseTest {
   }
 
   @Test
-  public void testJson_AsJsonString() throws Exception {
+  public void testJson_AsJsonStringComplex() throws Exception {
+    try (InputStream in = getJsonStream("complex.json");
+         DocumentStream<Document> stream = Json.newDocumentStream(in)) {
+      Document rec = stream.iterator().next();
+      String s = Json.toJsonString(rec);
+      assertEquals("{\"first\":\"Sam\",\"last\":\"LNU\",\"age\":23,\"sex\":\"F\",\"salary\":315000,"
+          + "\"active\":true,\"interests\":[\"Reading\",\"Hiking\",{\"passive\":[\"sleeping\","
+          + "\"dreaming\"]}],\"favorites\":{\"color\":\"Red\",\"sport\":\"Cricket\","
+          + "\"food\":\"Nasi Goreng\"},\"skills\":[{\"category\":\"Economics\","
+          + "\"tests\":[{\"name\":\"ECO101\",\"score\":90},{\"name\":\"ECO212\",\"score\":96},"
+          + "[\"ECO152\",87,\"ECO162\",91]]},{\"category\":\"Computer Science\","
+          + "\"tests\":[{\"name\":\"CS404\",\"score\":99},{\"name\":\"CS301\",\"score\":93}]}]}", s);
+
+      s = Json.toJsonString(rec, new JsonOptions().pretty());
+      assertEquals("{\n" + 
+          "  \"first\" : \"Sam\",\n" + 
+          "  \"last\" : \"LNU\",\n" + 
+          "  \"age\" : 23,\n" + 
+          "  \"sex\" : \"F\",\n" + 
+          "  \"salary\" : 315000,\n" + 
+          "  \"active\" : true,\n" + 
+          "  \"interests\" : [ \"Reading\", \"Hiking\", {\n" + 
+          "    \"passive\" : [ \"sleeping\", \"dreaming\" ]\n" + 
+          "  } ],\n" + 
+          "  \"favorites\" : {\n" + 
+          "    \"color\" : \"Red\",\n" + 
+          "    \"sport\" : \"Cricket\",\n" + 
+          "    \"food\" : \"Nasi Goreng\"\n" + 
+          "  },\n" + 
+          "  \"skills\" : [ {\n" + 
+          "    \"category\" : \"Economics\",\n" + 
+          "    \"tests\" : [ {\n" + 
+          "      \"name\" : \"ECO101\",\n" + 
+          "      \"score\" : 90\n" + 
+          "    }, {\n" + 
+          "      \"name\" : \"ECO212\",\n" + 
+          "      \"score\" : 96\n" + 
+          "    }, [ \"ECO152\", 87, \"ECO162\", 91 ] ]\n" + 
+          "  }, {\n" + 
+          "    \"category\" : \"Computer Science\",\n" + 
+          "    \"tests\" : [ {\n" + 
+          "      \"name\" : \"CS404\",\n" + 
+          "      \"score\" : 99\n" + 
+          "    }, {\n" + 
+          "      \"name\" : \"CS301\",\n" + 
+          "      \"score\" : 93\n" + 
+          "    } ]\n" + 
+          "  } ]\n" + 
+          "}", s);
+    }
+  }
+
+  @Test
+  public void testJson_AsJsonStringIncludingTags() throws Exception {
     try (InputStream in = getJsonStream("test.json");
          DocumentStream<Document> stream = Json.newDocumentStream(in)) {
       Document rec = stream.iterator().next();
@@ -177,7 +230,6 @@ public class TestJson extends BaseTest {
           "  }\n" +
           "}", s);
     }
-
   }
 
 }

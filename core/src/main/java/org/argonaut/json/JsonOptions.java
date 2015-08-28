@@ -83,4 +83,9 @@ public class JsonOptions {
     }
   }
 
+  @Override
+  public String toString() {
+    return "{\"pretty\":" + pretty + ", \"withTags\":" + withTags + "}";
+  }
+
 }

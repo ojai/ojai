@@ -113,7 +113,6 @@ public class JsonUtils {
 
   private static void addToArray(DocumentReader r, DocumentBuilder w) {
     EventType e;
-    String currentFieldName = null;
     while((e = r.next()) != null) {
       switch (e) {
       case NULL:
@@ -169,7 +168,7 @@ public class JsonUtils {
         w.endMap();
         break;
       case START_ARRAY:
-        w.putNewArray(currentFieldName);
+        w.addNewArray();
         addToArray(r, w);
         break;
       case END_ARRAY:
