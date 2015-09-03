@@ -80,11 +80,11 @@ Integer
   ;
 
 Identifier
-  : ('a'..'z' | 'A'..'Z' | '_' | '-' | '$' | Digit)+
+  : ('a'..'z' | 'A'..'Z' | '_' | '-' | '$' | ' ' | Digit)+
   ;
 
 Space
-  :  (' ' | '\t' | '\r' | '\n' | '\u000C') {skip();}
+  :  ('\t' | '\r' | '\n' | '\u000C') {skip();}
   ;
 
 QuotedIdentifier
