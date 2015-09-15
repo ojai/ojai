@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014 MapR, Inc.
+ * Copyright (c) 2015 MapR, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,9 @@ import java.util.Map;
 import org.ojai.annotation.API;
 import org.ojai.types.Interval;
 
+/**
+ * A template abstract class which implements the Document interface.
+ */
 @API.Public
 public abstract class DocumentBase implements Document {
 

@@ -20,10 +20,9 @@ import java.math.BigInteger;
 
 import org.ojai.annotation.API;
 
-/*
+/**
  * Utility class with functions for data type conversions.
  */
-
 @API.Public
 public class Decimals {
 
