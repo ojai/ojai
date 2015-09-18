@@ -101,7 +101,7 @@ public class JsonValueBuilder {
   public static JsonValue initFrom(Date value) {
     JsonValue v = new JsonValue(Type.DATE);
     /* just take the portion of time which has completed days */
-    v.setPrimValue((int) (value.getTime() / MILLISECONDSPERDAY));
+    v.setPrimValue(value.getTime() / MILLISECONDSPERDAY);
     return v;
   }
 

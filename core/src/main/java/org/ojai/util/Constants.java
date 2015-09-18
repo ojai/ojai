@@ -15,7 +15,11 @@
  */
 package org.ojai.util;
 
+import java.util.TimeZone;
+
 public class Constants {
+
+  public static final long TIMEZONE_OFFSET = TimeZone.getDefault().getRawOffset();
 
   public final static long MILLISECONDSPERDAY = 24 * 60 * 60 * 1000L;
 

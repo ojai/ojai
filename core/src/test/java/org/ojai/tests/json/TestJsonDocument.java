@@ -19,6 +19,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,12 +31,12 @@ import org.ojai.DocumentReader;
 import org.ojai.DocumentReader.EventType;
 import org.ojai.Value.Type;
 import org.ojai.json.Json;
+import org.ojai.util.Values;
 
 public class TestJsonDocument {
 
   @Test
   public void testAllTypes() {
-
     Document rec = Json.newDocument();
     rec.set("map.field1", (byte) 100);
     rec.set("map.field2", (short) 10000);
@@ -157,7 +158,6 @@ public class TestJsonDocument {
         assertEquals("string", myReader.getString());
       }
     }
-
   }
 
   @Test
@@ -188,7 +188,6 @@ public class TestJsonDocument {
         assertEquals(123456789, myReader.getLong());
       }
     }
-
   }
 
   /*
@@ -238,6 +237,35 @@ public class TestJsonDocument {
 
     assertEquals(false, document.getBoolean("map.boolarray[1]"));
     assertEquals(true, document.getBoolean("map.boolarray[2]"));
+  }
+
+  @Test
+  public void testDateWithLongMaxMin() {
+    Document doc = Json.newDocument();
+    Date d1 = new Date(Long.MAX_VALUE);
+    Date d2 = new Date(Long.MIN_VALUE);
+    doc.set("maxdate", d1);
+    doc.set("boolean", false);
+    doc.set("mindate", d2);
+
+    System.out.println(d1.getTime());
+    System.out.println(doc.getDate("maxdate").getTime());
+
+    assertEquals(true, doc.getValue("maxdate").equals(d1));
+    assertEquals(true, doc.getValue("mindate").equals(d2));
+  }
+
+  @Test
+  public void testDate() {
+    Document doc = Json.newDocument();
+    doc.set("d1", Values.parseDate("2005-06-22"));
+    Date d = new Date(new java.util.Date().getTime());
+    doc.set("d2", d);
+    System.out.println(doc.getDate("d1"));
+    System.out.println(doc.getDate("d2"));
+
+    assertEquals(true, doc.getDate("d1").toString().equals("2005-06-22"));
+    assertEquals(true, doc.getDate("d2").toString().equals(d.toString()));
   }
 
 }
