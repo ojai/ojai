@@ -24,11 +24,12 @@ import org.apache.hadoop.fs.FileSystem;
 import org.ojai.Document;
 import org.ojai.DocumentBuilder;
 import org.ojai.DocumentReader;
+import org.ojai.DocumentReader.EventType;
 import org.ojai.DocumentStream;
 import org.ojai.FieldPath;
-import org.ojai.DocumentReader.EventType;
 import org.ojai.Value.Type;
 import org.ojai.annotation.API;
+import org.ojai.beans.BeanCodec;
 import org.ojai.exceptions.DecodingException;
 import org.ojai.json.impl.JsonDocument;
 import org.ojai.json.impl.JsonDocumentBuilder;
@@ -39,15 +40,21 @@ import com.google.common.base.Preconditions;
 
 /**
  * This class serves as factory for JSON implementation
- * of all Ojai interfaces.
+ * of all OJAI interfaces.
  */
 @API.Public
 public final class Json {
 
+  /**
+   * Returns a new, empty Document.
+   */
   public static Document newDocument() {
     return new JsonDocument();
   }
 
+  /**
+   * Returns a Document built from the specified Json string.
+   */
   public static Document newDocument(String jsonString)
       throws DecodingException {
     try {
@@ -61,6 +68,16 @@ public final class Json {
     }
   }
 
+  /**
+   * Returns a new instance of Document built from the specified Java bean.
+   */
+  public static Document newDocument(Object bean) throws DecodingException {
+    return BeanCodec.decode(newDocumentBuilder(), bean);
+  }
+
+  /**
+   * Returns a new instance of Json DocumentReader
+   */
   public static DocumentReader newDocumentReader(String jsonString)
       throws DecodingException {
     try {
@@ -74,18 +91,31 @@ public final class Json {
     }
   }
 
+  /**
+   * Returns a new instance of Json DocumentBuilder
+   */
   public static DocumentBuilder newDocumentBuilder() {
     return new JsonDocumentBuilder();
   }
 
+  /**
+   * Returns a new instance of Json DocumentBuilder with the specified JsonOptions
+   */
   public static DocumentBuilder newDocumentBuilder(JsonOptions options) {
     return new JsonDocumentBuilder().setJsonOptions(options);
   }
 
+  /**
+   * Returns a new instance of Json DocumentStream from the specified InputStream
+   */
   public static DocumentStream<Document> newDocumentStream(InputStream in) {
     return new JsonDocumentStream(in, null, null);
   }
 
+  /**
+   * Returns a new instance of Json DocumentStream from the specified InputStream
+   * using the FieldPath => Type mapping to decode the Json tokens from the stream.
+   */
   public static DocumentStream<Document> newDocumentStream(
       InputStream in, Map<FieldPath, Type> fieldPathTypeMap) {
     return new JsonDocumentStream(in, fieldPathTypeMap, null);
@@ -137,7 +167,7 @@ public final class Json {
     return builder.asUTF8String();
   }
 
-  public static void writeReaderToStream(DocumentReader r, DocumentBuilder w) {
+  public static void writeReaderToBuilder(DocumentReader r, DocumentBuilder w) {
     JsonUtils.addToMap(r, w);
   }
 

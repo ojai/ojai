@@ -279,7 +279,7 @@ public class JsonValue implements Value {
   @Override
   public ByteBuffer getBinary() {
     checkType(Type.BINARY);
-    return (ByteBuffer) objValue;
+    return ((ByteBuffer) objValue).slice();
   }
 
   @Override

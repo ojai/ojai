@@ -103,7 +103,7 @@ Serialization<JsonDocument> {
       }
 
       DocumentReader reader = arg0.asReader();
-      Json.writeReaderToStream(reader, writer);
+      Json.writeReaderToBuilder(reader, writer);
     }
 
   }

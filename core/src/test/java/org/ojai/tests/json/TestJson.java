@@ -151,7 +151,7 @@ public class TestJson extends BaseTest {
       assertEquals("{\"map\":{\"null\":null,\"boolean\":true,\"string\":\"eureka\","
           + "\"byte\":{\"$numberLong\":127},\"short\":{\"$numberLong\":32767},"
           + "\"int\":{\"$numberLong\":2147483647},\"long\":{\"$numberLong\":9223372036854775807},"
-          + "\"float\":3.4028235,\"double\":9223372036854775807,"
+          + "\"float\":3.4028235,\"double\":1.7976931348623157E308,"
           + "\"decimal\":{\"$decimal\":\"123456789012345678901234567890123456789012345678901.23456789\"},"
           + "\"date\":{\"$dateDay\":\"2012-10-20\"},\"time\":{\"$time\":\"07:42:46\"},"
           + "\"timestamp\":{\"$date\":\"2012-10-20T14:42:46.123Z\"},\"interval\":{\"$interval\":172800000},"
@@ -159,7 +159,7 @@ public class TestJson extends BaseTest {
 
       s = Json.toJsonString(rec, new JsonOptions().withoutTags());
       assertEquals("{\"map\":{\"null\":null,\"boolean\":true,\"string\":\"eureka\",\"byte\":127,\"short\":32767,"
-          + "\"int\":2147483647,\"long\":9223372036854775807,\"float\":3.4028235,\"double\":9223372036854775807,"
+          + "\"int\":2147483647,\"long\":9223372036854775807,\"float\":3.4028235,\"double\":1.7976931348623157E308,"
           + "\"decimal\":123456789012345678901234567890123456789012345678901.23456789,\"date\":\"2012-10-20\","
           + "\"time\":\"07:42:46\",\"timestamp\":\"2012-10-20T14:42:46.123Z\",\"interval\":172800000,"
           + "\"binary\":\"YWJjZA==\",\"array\":[42,\"open sesame\",3.14,\"2015-01-21\"]}}", s);
@@ -175,7 +175,7 @@ public class TestJson extends BaseTest {
           "    \"int\" : 2147483647,\n" +
           "    \"long\" : 9223372036854775807,\n" +
           "    \"float\" : 3.4028235,\n" +
-          "    \"double\" : 9223372036854775807,\n" +
+          "    \"double\" : 1.7976931348623157E308,\n" +
           "    \"decimal\" : 123456789012345678901234567890123456789012345678901.23456789,\n" +
           "    \"date\" : \"2012-10-20\",\n" +
           "    \"time\" : \"07:42:46\",\n" +
@@ -205,7 +205,7 @@ public class TestJson extends BaseTest {
           "      \"$numberLong\" : 9223372036854775807\n" +
           "    },\n" +
           "    \"float\" : 3.4028235,\n" +
-          "    \"double\" : 9223372036854775807,\n" +
+          "    \"double\" : 1.7976931348623157E308,\n" +
           "    \"decimal\" : {\n" +
           "      \"$decimal\" : \"123456789012345678901234567890123456789012345678901.23456789\"\n" +
           "    },\n" +

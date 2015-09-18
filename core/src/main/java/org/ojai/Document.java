@@ -24,7 +24,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+import org.ojai.Value.Type;
 import org.ojai.annotation.API;
+import org.ojai.exceptions.DecodingException;
 import org.ojai.exceptions.TypeException;
 import org.ojai.json.JsonOptions;
 import org.ojai.types.Interval;
@@ -38,128 +40,614 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
   int size();
 
   /**
+   * Convert this Document to an instance of the specified class.
+   *
+   * @param beanClass the class of instance
+   * @return an instance of the specified class converted from this Document
+   */
+  public <T> T toJavaBean(Class<T> beanClass) throws DecodingException;
+
+  /**
    * Removes all of the entries from this document.
    */
   Document empty();
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified String.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the String value
+   * @return {@code this} for chaining.
+   */
   Document set(String fieldPath, String value);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified String.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the String value
+   * @return {@code this} for chaining.
+   */
   Document set(FieldPath fieldPath, String value);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified boolean value.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the boolean value
+   * @return {@code this} for chaining.
+   */
   Document set(String fieldPath, boolean value);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified boolean value.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the boolean value
+   * @return {@code this} for chaining.
+   */
   Document set(FieldPath fieldPath, boolean value);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified byte value.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the byte value
+   * @return {@code this} for chaining.
+   */
   Document set(String fieldPath, byte value);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified byte value.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the byte value
+   * @return {@code this} for chaining.
+   */
   Document set(FieldPath fieldPath, byte value);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified short value.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the short value
+   * @return {@code this} for chaining.
+   */
   Document set(String fieldPath, short value);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified short value.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the short value
+   * @return {@code this} for chaining.
+   */
   Document set(FieldPath fieldPath, short value);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified int value.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the int value
+   * @return {@code this} for chaining.
+   */
   Document set(String fieldPath, int value);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified int value.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the int value
+   * @return {@code this} for chaining.
+   */
   Document set(FieldPath fieldPath, int value);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified long value.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the long value
+   * @return {@code this} for chaining.
+   */
   Document set(String fieldPath, long value);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified long value.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the long value
+   * @return {@code this} for chaining.
+   */
   Document set(FieldPath fieldPath, long value);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified float value.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the float value
+   * @return {@code this} for chaining.
+   */
   Document set(String fieldPath, float value);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified float value.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the float value
+   * @return {@code this} for chaining.
+   */
   Document set(FieldPath fieldPath, float value);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified double value.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the double value
+   * @return {@code this} for chaining.
+   */
   Document set(String fieldPath, double value);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified double value.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the double value
+   * @return {@code this} for chaining.
+   */
   Document set(FieldPath fieldPath, double value);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified BigDecimal.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the BigDecimal value
+   * @return {@code this} for chaining.
+   */
   Document set(String fieldPath, BigDecimal value);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified BigDecimal.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the BigDecimal value
+   * @return {@code this} for chaining.
+   */
   Document set(FieldPath fieldPath, BigDecimal value);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified Time.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the Time value
+   * @return {@code this} for chaining.
+   */
   Document set(String fieldPath, Time value);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified Time.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the Time value
+   * @return {@code this} for chaining.
+   */
   Document set(FieldPath fieldPath, Time value);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified Date.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the Date value
+   * @return {@code this} for chaining.
+   */
   Document set(String fieldPath, Date value);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified Date.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the Date value
+   * @return {@code this} for chaining.
+   */
   Document set(FieldPath fieldPath, Date value);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified Timestamp.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the Timestamp value
+   * @return {@code this} for chaining.
+   */
   Document set(String fieldPath, Timestamp value);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified Timestamp.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the Timestamp value
+   * @return {@code this} for chaining.
+   */
   Document set(FieldPath fieldPath, Timestamp value);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified Interval.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the Interval value
+   * @return {@code this} for chaining.
+   */
   Document set(String fieldPath, Interval value);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified Interval.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the Interval value
+   * @return {@code this} for chaining.
+   */
   Document set(FieldPath fieldPath, Interval value);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified binary value.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the byte array containing the binary value
+   * @return {@code this} for chaining.
+   */
   Document set(String fieldPath, byte[] value);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified binary value.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the byte array containing the binary value
+   * @return {@code this} for chaining.
+   */
   Document set(FieldPath fieldPath, byte[] value);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified binary value.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the byte array containing the binary value
+   * @return {@code this} for chaining.
+   */
   Document set(String fieldPath, byte[] value, int off, int len);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified binary value.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the byte array containing the binary value
+   * @return {@code this} for chaining.
+   */
   Document set(FieldPath fieldPath, byte[] value, int off, int len);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified ByteBuffer.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the ByteBuffer
+   * @return {@code this} for chaining.
+   */
   Document set(String fieldPath, ByteBuffer value);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified ByteBuffer.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the ByteBuffer
+   * @return {@code this} for chaining.
+   */
   Document set(FieldPath fieldPath, ByteBuffer value);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified Map.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the Map value
+   * @return {@code this} for chaining.
+   */
   Document set(String fieldPath, Map<String, ? extends Object> value);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified Map.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the Map value
+   * @return {@code this} for chaining.
+   */
   Document set(FieldPath fieldPath, Map<String, ? extends Object> value);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified Document.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the Document
+   * @return {@code this} for chaining.
+   */
   Document set(String fieldPath, Document value);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified Document.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the Document
+   * @return {@code this} for chaining.
+   */
   Document set(FieldPath fieldPath, Document value);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified Value.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the Value
+   * @return {@code this} for chaining.
+   */
   Document set(String fieldPath, Value value);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified Value.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the Value
+   * @return {@code this} for chaining.
+   */
   Document set(FieldPath fieldPath, Value value);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified Object List.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the Object List
+   * @return {@code this} for chaining.
+   */
   Document set(String fieldPath, List<? extends Object> value);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified Object List.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the Object List
+   * @return {@code this} for chaining.
+   */
   Document set(FieldPath fieldPath, List<? extends Object> value);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified boolean array.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the boolean array
+   * @return {@code this} for chaining.
+   */
   Document setArray(String fieldPath, boolean[] values);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified boolean array.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the boolean array
+   * @return {@code this} for chaining.
+   */
   Document setArray(FieldPath fieldPath, boolean[] values);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified byte array.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the byte array
+   * @return {@code this} for chaining.
+   */
   Document setArray(String fieldPath, byte[] values);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified byte array.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the byte array
+   * @return {@code this} for chaining.
+   */
   Document setArray(FieldPath fieldPath, byte[] values);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified short array.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the short array
+   * @return {@code this} for chaining.
+   */
   Document setArray(String fieldPath, short[] values);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified short array.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the short array
+   * @return {@code this} for chaining.
+   */
   Document setArray(FieldPath fieldPath, short[] values);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified int array.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the int array
+   * @return {@code this} for chaining.
+   */
   Document setArray(String fieldPath, int[] values);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified int array.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the int array
+   * @return {@code this} for chaining.
+   */
   Document setArray(FieldPath fieldPath, int[] values);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified long array.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the long array
+   * @return {@code this} for chaining.
+   */
   Document setArray(String fieldPath, long[] values);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified long array.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the long array
+   * @return {@code this} for chaining.
+   */
   Document setArray(FieldPath fieldPath, long[] values);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified float array.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the float array
+   * @return {@code this} for chaining.
+   */
   Document setArray(String fieldPath, float[] values);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified float array.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the float array
+   * @return {@code this} for chaining.
+   */
   Document setArray(FieldPath fieldPath, float[] values);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified double array.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the double array
+   * @return {@code this} for chaining.
+   */
   Document setArray(String fieldPath, double[] values);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified double array.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the double array
+   * @return {@code this} for chaining.
+   */
   Document setArray(FieldPath fieldPath, double[] values);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified String array.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the String array
+   * @return {@code this} for chaining.
+   */
   Document setArray(String fieldPath, String[] values);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified String array.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the String array
+   * @return {@code this} for chaining.
+   */
   Document setArray(FieldPath fieldPath, String[] values);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified Object array.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the Object array
+   * @return {@code this} for chaining.
+   */
   Document setArray(String fieldPath, Object... values);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to the
+   * specified Object array.
+   *
+   * @param fieldPath the FieldPath to set
+   * @param value the Object array
+   * @return {@code this} for chaining.
+   */
   Document setArray(FieldPath fieldPath, Object... values);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to
+   * {@link Type#NULL}.
+   *
+   * @param fieldPath the FieldPath to set
+   * @return {@code this} for chaining.
+   */
   Document setNull(String fieldPath);
 
+  /**
+   * Sets the value of the specified fieldPath in this Document to
+   * {@link Type#NULL}.
+   *
+   * @param fieldPath the FieldPath to set
+   * @return {@code this} for chaining.
+   */
   Document setNull(FieldPath fieldPath);
 
   /**

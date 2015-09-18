@@ -174,7 +174,7 @@ public class JsonDocumentBuilder implements DocumentBuilder {
   public JsonDocumentBuilder put(String field, double value) {
     checkContext(BuilderContext.MAPCONTEXT);
     try {
-      if (isWholeNumber(value)) {
+      if (isWholeNumberInLongRange(value)) {
         jsonGenerator.writeNumberField(field, (long)value);
       } else {
         jsonGenerator.writeNumberField(field, value);
@@ -578,7 +578,7 @@ public class JsonDocumentBuilder implements DocumentBuilder {
   public JsonDocumentBuilder add(double value) {
     checkContext(BuilderContext.ARRAYCONTEXT);
     try {
-      if (isWholeNumber(value)) {
+      if (isWholeNumberInLongRange(value)) {
         jsonGenerator.writeNumber((long)value);
       } else {
         jsonGenerator.writeNumber(value);
@@ -994,8 +994,10 @@ public class JsonDocumentBuilder implements DocumentBuilder {
     return this;
   }
 
-  private boolean isWholeNumber(double value) {
-    return (value == Math.floor(value)) && !Double.isInfinite(value);
+  private boolean isWholeNumberInLongRange(double value) {
+    return (value == Math.floor(value))
+        && !Double.isInfinite(value)
+        && (value >= Long.MIN_VALUE && value <= Long.MAX_VALUE);
   }
 
   @Override

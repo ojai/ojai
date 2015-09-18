@@ -36,7 +36,7 @@ public class TestJsonUtil extends BaseTest {
         DocumentStream<Document> stream = Json.newDocumentStream(in)) {
       for (DocumentReader reader : stream.documentReaders()) {
         DocumentBuilder writer = Json.newDocumentBuilder();
-        Json.writeReaderToStream(reader, writer);
+        Json.writeReaderToBuilder(reader, writer);
         System.out.println(writer);
       }
     }

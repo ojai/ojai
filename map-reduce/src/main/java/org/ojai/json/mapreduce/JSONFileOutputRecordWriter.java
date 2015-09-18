@@ -48,7 +48,7 @@ RecordWriter<LongWritable, Document> {
 
     writer = (JsonDocumentBuilder) Json.newDocumentBuilder();
     DocumentReader reader = document.asReader();
-    Json.writeReaderToStream(reader, writer);
+    Json.writeReaderToBuilder(reader, writer);
     byte[] bytes = writer.getOutputStream();
     out.write(bytes);
   }

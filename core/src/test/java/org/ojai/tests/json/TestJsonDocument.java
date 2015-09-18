@@ -115,9 +115,7 @@ public class TestJsonDocument {
       assertEquals(readBuf.get(), bytes[1 + i]);
     }
     readBuf = rec.getBinary("map.binary3");
-    for (int i = 0; i < bbuf.capacity(); ++i) {
-      assertEquals(readBuf.get(i), bbuf.get(i));
-    }
+    assertEquals(readBuf, bbuf);
 
     try {
       List<Object> l = rec.getValue("map.list").getList();

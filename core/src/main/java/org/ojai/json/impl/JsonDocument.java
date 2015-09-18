@@ -36,6 +36,8 @@ import org.ojai.FieldPath;
 import org.ojai.FieldSegment;
 import org.ojai.Value;
 import org.ojai.annotation.API;
+import org.ojai.beans.BeanCodec;
+import org.ojai.exceptions.DecodingException;
 import org.ojai.json.Json;
 import org.ojai.json.JsonOptions;
 import org.ojai.types.Interval;
@@ -964,6 +966,11 @@ public class JsonDocument extends JsonValue implements Document, Map<String, Obj
   @Override
   public String asJsonString(JsonOptions options) {
     return Json.toJsonString(this, options);
+  }
+
+  @Override
+  public <T> T toJavaBean(Class<T> beanClass) throws DecodingException {
+    return BeanCodec.encode(asReader(), beanClass);
   }
 
 }
