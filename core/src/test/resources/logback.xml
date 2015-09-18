@@ -31,7 +31,7 @@
     </encoder>
   </appender>
 
-  <logger name="org.argonaut" additivity="false">
+  <logger name="org.ojai" additivity="false">
     <level value="debug" />
     <appender-ref ref="FILE" />
   </logger>

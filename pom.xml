@@ -21,14 +21,14 @@
   xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.argonaut</groupId>
-  <artifactId>argonaut-root</artifactId>
-  <version>0.1.r4-SNAPSHOT</version>
+  <groupId>org.ojai</groupId>
+  <artifactId>ojai-root</artifactId>
+  <version>0.1.r0-SNAPSHOT</version>
 
-  <name>Argonaut Root Pom</name>
+  <name>Ojai Root Pom</name>
   <packaging>pom</packaging>
-  <description>JSON API for Hadoop</description>
-  <url>https://github.com/mapr/argonaut</url>
+  <description>Open JSON Application Interface</description>
+  <url>https://github.com/ojai</url>
 
   <properties>
     <slf4j.version>1.7.12</slf4j.version>
@@ -134,14 +134,15 @@
         <version>${jackson.version}</version>
       </dependency>
       <dependency>
-        <groupId>org.argonaut</groupId>
-        <artifactId>argonaut</artifactId>
+        <groupId>org.ojai</groupId>
+        <artifactId>ojai</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.hadoop</groupId>
         <artifactId>hadoop-mapreduce-client-core</artifactId>
         <version>${hadoop.version}</version>
+        <optional>true</optional>
         <exclusions>
           <exclusion>
             <!-- requires maven 3.2.1 -->
@@ -155,6 +156,7 @@
         <groupId>org.apache.hadoop</groupId>
         <artifactId>hadoop-common</artifactId>
         <version>${hadoop.version}</version>
+        <optional>true</optional>
         <exclusions>
           <exclusion>
             <!-- requires maven 3.2.1 -->

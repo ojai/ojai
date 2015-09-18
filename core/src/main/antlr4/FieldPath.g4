@@ -20,12 +20,12 @@ options {
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.argonaut;
+package org.ojai;
 
-import org.argonaut.FieldPath;
-import org.argonaut.FieldSegment;
-import org.argonaut.FieldSegment.IndexSegment;
-import org.argonaut.FieldSegment.NameSegment;
+import org.ojai.FieldPath;
+import org.ojai.FieldSegment;
+import org.ojai.FieldSegment.IndexSegment;
+import org.ojai.FieldSegment.NameSegment;
 }
 
 /**

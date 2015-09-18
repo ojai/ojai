@@ -22,15 +22,14 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.argonaut</groupId>
-    <artifactId>argonaut-root</artifactId>
-    <version>0.1.r4-SNAPSHOT</version>
+    <groupId>org.ojai</groupId>
+    <artifactId>ojai-root</artifactId>
+    <version>0.1.r0-SNAPSHOT</version>
     <relativePath>..</relativePath>
   </parent>
 
-  <groupId>org.argonaut.mapreduce</groupId>
-  <artifactId>argonaut-mapreduce</artifactId>
-  <name>Argonaut Map-Reduce Library</name>
+  <artifactId>ojai-mapreduce</artifactId>
+  <name>Ojai Map-Reduce Library</name>
   <packaging>jar</packaging>
 
   <dependencies>
@@ -39,8 +38,8 @@
       <artifactId>slf4j-api</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.argonaut</groupId>
-      <artifactId>argonaut</artifactId>
+      <groupId>org.ojai</groupId>
+      <artifactId>ojai</artifactId>
     </dependency>
     <dependency>
       <groupId>org.apache.hadoop</groupId>
