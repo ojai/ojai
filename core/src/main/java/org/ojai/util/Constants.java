@@ -19,8 +19,14 @@ import java.util.TimeZone;
 
 public class Constants {
 
+  /**
+   * A long value equals to the time zone offset from the GMT in milliseconds.
+   */
   public static final long TIMEZONE_OFFSET = TimeZone.getDefault().getRawOffset();
 
+  /**
+   * A long value equals to the number of milliseconds in a day
+   */
   public final static long MILLISECONDSPERDAY = 24 * 60 * 60 * 1000L;
 
 }

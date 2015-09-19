@@ -51,7 +51,8 @@ public final class FieldPath implements Comparable<FieldPath>, Iterable<FieldSeg
    *
    * @return An immutable instance of {@link FieldPath} parsed from the input string.
    *
-   * @throws IllegalArgumentException If the string is null or empty or has syntax error.
+   * @throws NullPointerException If the input string is null.
+   * @throws IllegalArgumentException If the input string has syntax error.
    */
   public static FieldPath parseFrom(String fieldPath) {
     if (fieldPath == null) {

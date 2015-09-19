@@ -75,16 +75,16 @@ OBracket : '[';
 CBracket : ']';
 SingleQuote: '\'';
 
+Space
+  :  (' ' | '\t' | '\r' | '\n' | '\u000C') {skip();}
+  ;
+
 Integer
   :  Digit+
   ;
 
 Identifier
   : ('a'..'z' | 'A'..'Z' | '_' | '-' | '$' | ' ' | Digit)+
-  ;
-
-Space
-  :  ('\t' | '\r' | '\n' | '\u000C') {skip();}
   ;
 
 QuotedIdentifier

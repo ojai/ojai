@@ -256,6 +256,11 @@ public class JsonValueBuilder {
       return initFrom((List<Object>) value);
     }
 
+    // must be tried as last
+    if (value instanceof Value) {
+      return initFrom((Value) value);
+    }
+
     // Its an array of primitive or object type
     if (value.getClass().isArray()) {
       return initFromArray(value);

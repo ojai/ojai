@@ -21,6 +21,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.Iterator;
 
@@ -53,6 +54,18 @@ public class TestFieldPath {
     assertTrue(fp.getRootSegment().isLeaf());
     assertEquals("`work-phone`", fp.asPathString(true));
     assertEquals("work-phone", fp.asPathString());
+  }
+
+  @Test
+  public void testPathWithSpace() {
+    FieldPath fp = FieldPath.parseFrom("work phone");
+    assertTrue(fp.getRootSegment().isLeaf());
+    assertEquals("`work phone`", fp.asPathString(true));
+    assertEquals("work phone", fp.asPathString());
+
+    fp = FieldPath.parseFrom("a[ ]");
+    assertEquals("`a`[]", fp.asPathString(true));
+    assertEquals("a[]", fp.asPathString());
   }
 
   @Test
@@ -157,6 +170,17 @@ public class TestFieldPath {
     assertTrue(fp.getRootSegment().getChild().getChild().isLeaf());
     assertEquals("`a.b`[].`c`", fp.asPathString(true));
     assertEquals("`a.b`[].c", fp.asPathString());
+  }
+
+  @Test
+  public void testPathWithIlleagalArrayIndex() {
+    char[] illegalArrayIndices = {0, 5, 16, 'a', '\u4251'};
+    for (char ch : illegalArrayIndices) {
+      try {
+        FieldPath.parseFrom("a[" + ch + "]");
+        fail("Parsing should fail for character with code " + (int) ch);
+      } catch (IllegalArgumentException e) { }
+    }
   }
 
   @Test
