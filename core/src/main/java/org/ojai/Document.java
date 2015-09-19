@@ -35,6 +35,23 @@ import org.ojai.types.Interval;
 public interface Document extends Iterable<Map.Entry<String, Value>> {
 
   /**
+   * Sets the the "_id" field of this Document to the specified Value.
+   * @param _id Value to set as the value of "_id" field.
+   */
+  public Document setId(Value _idValue);
+
+  /**
+   * @return the "_id" field of this Document.
+   */
+  public Value getId();
+
+  /**
+   * Returns {@code true} if this Document does not support any write
+   * operations like set/delete etc.
+   */
+  public boolean isReadOnly();
+
+  /**
    * @return the number of top level entries in the document.
    */
   int size();

@@ -15,6 +15,8 @@
  */
 package org.ojai.json.impl;
 
+import static org.ojai.DocumentConstants.ID_FIELD;
+
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
 import java.sql.Date;
@@ -49,6 +51,22 @@ public class JsonDocument extends JsonValue implements Document, Map<String, Obj
 
   public JsonDocument() {
     this(null);
+  }
+
+  @Override
+  public JsonDocument setId(Value value) {
+    set(ID_FIELD, value);
+    return this;
+  }
+
+  @Override
+  public Value getId() {
+    return getValue(ID_FIELD);
+  }
+
+  @Override
+  public boolean isReadOnly() {
+    return false;
   }
 
   JsonDocument(JsonStreamDocumentReader reader) {
