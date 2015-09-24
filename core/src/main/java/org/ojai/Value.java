@@ -83,12 +83,14 @@ public interface Value {
 
     /**
      * 32-bit integer representing the number of DAYS since epoch,
-     * i.e. January 1, 1970 00:00:00 UTC.
+     * i.e. January 1, 1970 00:00:00 UTC. The value is absolute and
+     * is time-zone independent.
      */
     DATE(11),
 
     /**
      * 32-bit integer representing time of the day in milliseconds.
+     * The value is absolute and is time-zone independent.
      */
     TIME(12),
 
@@ -174,7 +176,7 @@ public interface Value {
   short getShort();
 
   /**
-   * Returns the value as an <code>int</code>.
+   * Returns the value as an {@code int}.
    *
    * @throws TypeException if this value is not of <code>INT</code> type.
    */
@@ -246,7 +248,7 @@ public interface Value {
   Date getDate();
 
   /**
-   * Returns a <code>int</code> representing the number of DAYS since epoch.
+   * Returns a {@code int} representing the number of DAYS since Unix epoch.
    *
    * @throws TypeException if this value is not of <code>DATE</code> type.
    */
@@ -261,7 +263,7 @@ public interface Value {
   Time getTime();
 
   /**
-   * Returns a <code>int</code> representing the number of milliseconds since midnight.
+   * Returns a {@code int} representing the number of milliseconds since midnight.
    *
    * @throws TypeException if this value is not of <code>TIME</code> type.
    */

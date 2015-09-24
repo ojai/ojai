@@ -16,7 +16,6 @@
 package org.ojai.json.impl;
 
 import static org.ojai.util.Constants.MILLISECONDSPERDAY;
-import static org.ojai.util.Constants.TIMEZONE_OFFSET;
 
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
@@ -233,8 +232,7 @@ public class JsonValue implements Value {
   public Date getDate() {
     checkType(Type.DATE);
     if (objValue == null) {
-      Date date = new Date((jsonValue * MILLISECONDSPERDAY) - TIMEZONE_OFFSET);
-      objValue = date;
+      objValue = JsonUtils.numDaysToDate(jsonValue);
     }
     return (Date) objValue;
   }
@@ -387,7 +385,7 @@ public class JsonValue implements Value {
      * return same result.
      */
     if (obj instanceof Date) {
-      long dateAsLong = ((Date)obj).getTime()/MILLISECONDSPERDAY;
+      long dateAsLong = JsonUtils.dateToNumDays((Date)obj);
       return dateAsLong == jsonValue;
     }
 

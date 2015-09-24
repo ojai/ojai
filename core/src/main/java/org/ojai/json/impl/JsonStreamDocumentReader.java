@@ -453,7 +453,7 @@ public class JsonStreamDocumentReader implements DocumentReader {
   @Override
   public int getDateInt() {
     checkEventType(EventType.DATE);
-    return (int) (((Date) currentObjValue).getTime() / MILLISECONDSPERDAY);
+    return (int) JsonUtils.dateToNumDays((Date) currentObjValue);
   }
 
   @Override

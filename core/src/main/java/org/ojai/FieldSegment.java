@@ -85,22 +85,23 @@ public abstract class FieldSegment implements Comparable<FieldSegment> {
   @Override
   public abstract FieldSegment clone();
 
+  @API.Internal
   public static final class IndexSegment extends FieldSegment {
     private final int index;
 
-    public IndexSegment(int index) {
+    IndexSegment(int index) {
       this(index, null);
     }
 
-    public IndexSegment(String numberAsText, FieldSegment child) {
+    IndexSegment(String numberAsText, FieldSegment child) {
       this(numberAsText == null ? -1 : Integer.parseInt(numberAsText), child);
     }
 
-    public IndexSegment(FieldSegment child) {
+    IndexSegment(FieldSegment child) {
       this(-1, child);
     }
 
-    public IndexSegment(int index, FieldSegment child) {
+    IndexSegment(int index, FieldSegment child) {
       super(child);
       if (index < -1) {
         throw new IllegalArgumentException();
@@ -176,17 +177,18 @@ public abstract class FieldSegment implements Comparable<FieldSegment> {
 
   }
 
+  @API.Internal
   public static final class NameSegment extends FieldSegment {
     private final String name;
     private final boolean quoted;
 
-    protected NameSegment(String n) {
+    NameSegment(String n) {
       super(null);
       this.name = Fields.unquoteFieldName(n);
       this.quoted = (this.name != n);
     }
 
-    public NameSegment(String n, FieldSegment child, boolean quoted) {
+    NameSegment(String n, FieldSegment child, boolean quoted) {
       super(child);
       this.name = n;
       this.quoted = quoted;

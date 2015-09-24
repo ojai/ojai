@@ -32,10 +32,10 @@ public class TestJson extends BaseTest {
 
   @Test
   public void testJson_NewDocument() {
-    Document rec = Json.newDocument("{}");
-    assertTrue(rec.size() == 0);
+    Document doc = Json.newDocument("{}");
+    assertTrue(doc.size() == 0);
 
-    rec = Json.newDocument(
+    doc = Json.newDocument(
         "{\n" +
         "  \"business_id\": \"vcNAWiLM4dR7D2nwwJ7nCA\",\n" +
         "  \"full_address\": \"4840 E Indian School Rd\\nSte 101\\nPhoenix, AZ 85018\",\n" +
@@ -77,11 +77,11 @@ public class TestJson extends BaseTest {
         "  },\n" +
         "  \"type\": \"business\"\n" +
         "}");
-    assertEquals(15, rec.size());
-    assertEquals("08:00", rec.getString("hours.Wednesday.open"));
-    assertEquals("Health & Medical", rec.getString("categories[1]"));
+    assertEquals(15, doc.size());
+    assertEquals("08:00", doc.getString("hours.Wednesday.open"));
+    assertEquals("Health & Medical", doc.getString("categories[1]"));
 
-    String jsonString = Json.toJsonString(rec.asReader());
+    String jsonString = Json.toJsonString(doc.asReader());
     Pattern p1 = Pattern.compile(".*\"review_count\".*:.*7,.*", Pattern.DOTALL);
     Pattern p2 = Pattern.compile(".*\"longitude\".*:.*-111,.*", Pattern.DOTALL);
     assertTrue(p1.matcher(jsonString).matches());
@@ -92,8 +92,8 @@ public class TestJson extends BaseTest {
   public void testJson_AsJsonStringComplex() throws Exception {
     try (InputStream in = getJsonStream("complex.json");
          DocumentStream<Document> stream = Json.newDocumentStream(in)) {
-      Document rec = stream.iterator().next();
-      String s = Json.toJsonString(rec);
+      Document doc = stream.iterator().next();
+      String s = Json.toJsonString(doc);
       assertEquals("{\"first\":\"Sam\",\"last\":\"LNU\",\"age\":23,\"sex\":\"F\",\"salary\":315000,"
           + "\"active\":true,\"interests\":[\"Reading\",\"Hiking\",{\"passive\":[\"sleeping\","
           + "\"dreaming\"]}],\"favorites\":{\"color\":\"Red\",\"sport\":\"Cricket\","
@@ -102,41 +102,41 @@ public class TestJson extends BaseTest {
           + "[\"ECO152\",87,\"ECO162\",91]]},{\"category\":\"Computer Science\","
           + "\"tests\":[{\"name\":\"CS404\",\"score\":99},{\"name\":\"CS301\",\"score\":93}]}]}", s);
 
-      s = Json.toJsonString(rec, new JsonOptions().pretty());
-      assertEquals("{\n" + 
-          "  \"first\" : \"Sam\",\n" + 
-          "  \"last\" : \"LNU\",\n" + 
-          "  \"age\" : 23,\n" + 
-          "  \"sex\" : \"F\",\n" + 
-          "  \"salary\" : 315000,\n" + 
-          "  \"active\" : true,\n" + 
-          "  \"interests\" : [ \"Reading\", \"Hiking\", {\n" + 
-          "    \"passive\" : [ \"sleeping\", \"dreaming\" ]\n" + 
-          "  } ],\n" + 
-          "  \"favorites\" : {\n" + 
-          "    \"color\" : \"Red\",\n" + 
-          "    \"sport\" : \"Cricket\",\n" + 
-          "    \"food\" : \"Nasi Goreng\"\n" + 
-          "  },\n" + 
-          "  \"skills\" : [ {\n" + 
-          "    \"category\" : \"Economics\",\n" + 
-          "    \"tests\" : [ {\n" + 
-          "      \"name\" : \"ECO101\",\n" + 
-          "      \"score\" : 90\n" + 
-          "    }, {\n" + 
-          "      \"name\" : \"ECO212\",\n" + 
-          "      \"score\" : 96\n" + 
-          "    }, [ \"ECO152\", 87, \"ECO162\", 91 ] ]\n" + 
-          "  }, {\n" + 
-          "    \"category\" : \"Computer Science\",\n" + 
-          "    \"tests\" : [ {\n" + 
-          "      \"name\" : \"CS404\",\n" + 
-          "      \"score\" : 99\n" + 
-          "    }, {\n" + 
-          "      \"name\" : \"CS301\",\n" + 
-          "      \"score\" : 93\n" + 
-          "    } ]\n" + 
-          "  } ]\n" + 
+      s = Json.toJsonString(doc, new JsonOptions().pretty());
+      assertEquals("{\n" +
+          "  \"first\" : \"Sam\",\n" +
+          "  \"last\" : \"LNU\",\n" +
+          "  \"age\" : 23,\n" +
+          "  \"sex\" : \"F\",\n" +
+          "  \"salary\" : 315000,\n" +
+          "  \"active\" : true,\n" +
+          "  \"interests\" : [ \"Reading\", \"Hiking\", {\n" +
+          "    \"passive\" : [ \"sleeping\", \"dreaming\" ]\n" +
+          "  } ],\n" +
+          "  \"favorites\" : {\n" +
+          "    \"color\" : \"Red\",\n" +
+          "    \"sport\" : \"Cricket\",\n" +
+          "    \"food\" : \"Nasi Goreng\"\n" +
+          "  },\n" +
+          "  \"skills\" : [ {\n" +
+          "    \"category\" : \"Economics\",\n" +
+          "    \"tests\" : [ {\n" +
+          "      \"name\" : \"ECO101\",\n" +
+          "      \"score\" : 90\n" +
+          "    }, {\n" +
+          "      \"name\" : \"ECO212\",\n" +
+          "      \"score\" : 96\n" +
+          "    }, [ \"ECO152\", 87, \"ECO162\", 91 ] ]\n" +
+          "  }, {\n" +
+          "    \"category\" : \"Computer Science\",\n" +
+          "    \"tests\" : [ {\n" +
+          "      \"name\" : \"CS404\",\n" +
+          "      \"score\" : 99\n" +
+          "    }, {\n" +
+          "      \"name\" : \"CS301\",\n" +
+          "      \"score\" : 93\n" +
+          "    } ]\n" +
+          "  } ]\n" +
           "}", s);
     }
   }
@@ -145,26 +145,26 @@ public class TestJson extends BaseTest {
   public void testJson_AsJsonStringIncludingTags() throws Exception {
     try (InputStream in = getJsonStream("test.json");
          DocumentStream<Document> stream = Json.newDocumentStream(in)) {
-      Document rec = stream.iterator().next();
+      Document doc = stream.iterator().next();
 
-      String s = Json.toJsonString(rec);
+      String s = Json.toJsonString(doc);
       assertEquals("{\"map\":{\"null\":null,\"boolean\":true,\"string\":\"eureka\","
           + "\"byte\":{\"$numberLong\":127},\"short\":{\"$numberLong\":32767},"
           + "\"int\":{\"$numberLong\":2147483647},\"long\":{\"$numberLong\":9223372036854775807},"
           + "\"float\":3.4028235,\"double\":1.7976931348623157E308,"
           + "\"decimal\":{\"$decimal\":\"123456789012345678901234567890123456789012345678901.23456789\"},"
           + "\"date\":{\"$dateDay\":\"2012-10-20\"},\"time\":{\"$time\":\"07:42:46\"},"
-          + "\"timestamp\":{\"$date\":\"2012-10-20T14:42:46.123Z\"},\"interval\":{\"$interval\":172800000},"
+          + "\"timestamp\":{\"$date\":\"2012-10-20T07:42:46.123-07:00\"},\"interval\":{\"$interval\":172800000},"
           + "\"binary\":{\"$binary\":\"YWJjZA==\"},\"array\":[42,\"open sesame\",3.14,{\"$dateDay\":\"2015-01-21\"}]}}", s);
 
-      s = Json.toJsonString(rec, new JsonOptions().withoutTags());
+      s = Json.toJsonString(doc, new JsonOptions().withoutTags());
       assertEquals("{\"map\":{\"null\":null,\"boolean\":true,\"string\":\"eureka\",\"byte\":127,\"short\":32767,"
           + "\"int\":2147483647,\"long\":9223372036854775807,\"float\":3.4028235,\"double\":1.7976931348623157E308,"
           + "\"decimal\":123456789012345678901234567890123456789012345678901.23456789,\"date\":\"2012-10-20\","
-          + "\"time\":\"07:42:46\",\"timestamp\":\"2012-10-20T14:42:46.123Z\",\"interval\":172800000,"
+          + "\"time\":\"07:42:46\",\"timestamp\":\"2012-10-20T07:42:46.123-07:00\",\"interval\":172800000,"
           + "\"binary\":\"YWJjZA==\",\"array\":[42,\"open sesame\",3.14,\"2015-01-21\"]}}", s);
 
-      s = Json.toJsonString(rec, new JsonOptions().pretty().withoutTags());
+      s = Json.toJsonString(doc, new JsonOptions().pretty().withoutTags());
       assertEquals("{\n" +
           "  \"map\" : {\n" +
           "    \"null\" : null,\n" +
@@ -179,14 +179,14 @@ public class TestJson extends BaseTest {
           "    \"decimal\" : 123456789012345678901234567890123456789012345678901.23456789,\n" +
           "    \"date\" : \"2012-10-20\",\n" +
           "    \"time\" : \"07:42:46\",\n" +
-          "    \"timestamp\" : \"2012-10-20T14:42:46.123Z\",\n" +
+          "    \"timestamp\" : \"2012-10-20T07:42:46.123-07:00\",\n" +
           "    \"interval\" : 172800000,\n" +
           "    \"binary\" : \"YWJjZA==\",\n" +
           "    \"array\" : [ 42, \"open sesame\", 3.14, \"2015-01-21\" ]\n" +
           "  }\n" +
           "}", s);
 
-      s = Json.toJsonString(rec, new JsonOptions().pretty().withTags());
+      s = Json.toJsonString(doc, new JsonOptions().pretty().withTags());
       assertEquals("{\n" +
           "  \"map\" : {\n" +
           "    \"null\" : null,\n" +
@@ -216,7 +216,7 @@ public class TestJson extends BaseTest {
           "      \"$time\" : \"07:42:46\"\n" +
           "    },\n" +
           "    \"timestamp\" : {\n" +
-          "      \"$date\" : \"2012-10-20T14:42:46.123Z\"\n" +
+          "      \"$date\" : \"2012-10-20T07:42:46.123-07:00\"\n" +
           "    },\n" +
           "    \"interval\" : {\n" +
           "      \"$interval\" : 172800000\n" +

@@ -23,6 +23,7 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.TimeZone;
 
 import org.ojai.Value;
@@ -37,17 +38,52 @@ import com.google.common.io.BaseEncoding;
  */
 @API.Public
 public class Values {
+  private static final TimeZone LOCAL = Calendar.getInstance().getTimeZone();
 
-  private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd");
-  private static final SimpleDateFormat SHORT_DATE_FORMATTER = new SimpleDateFormat("yyyy-MM");
-  private static final SimpleDateFormat SHORT_TIME_FORMATTER = new SimpleDateFormat("HH:mm");
-  private static final SimpleDateFormat TIME_FORMATTER = new SimpleDateFormat("HH:mm:ss");
-  private static final SimpleDateFormat FULL_TIME_FORMATTER = new SimpleDateFormat("HH:mm:ss.SSS");
-  private static final SimpleDateFormat TIMESTAMP_FORMATTER = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
-  private static final TimeZone GMT = TimeZone.getTimeZone("GMT");
-  private static final int shortTimeStringLen = SHORT_TIME_FORMATTER.toPattern().length();
-  private static final int timeStringLen = TIME_FORMATTER.toPattern().length();
-  private static final int shortDateStringLen = SHORT_DATE_FORMATTER.toPattern().length();
+  private static final String DATE_FORMATTER_STR = "yyyy-MM-dd";
+  private static final ThreadLocal<SimpleDateFormat> DATE_FORMATTER = new ThreadLocal<SimpleDateFormat>() {
+    @Override protected SimpleDateFormat initialValue() {
+        return new SimpleDateFormat(DATE_FORMATTER_STR);
+    }
+  };
+
+  private static final String SHORT_DATE_FORMATTER_STR = "yyyy-MM";
+  private static final int shortDateStringLen = SHORT_DATE_FORMATTER_STR.length();
+  private static final ThreadLocal<SimpleDateFormat> SHORT_DATE_FORMATTER = new ThreadLocal<SimpleDateFormat>() {
+    @Override protected SimpleDateFormat initialValue() {
+      return new SimpleDateFormat(SHORT_DATE_FORMATTER_STR);
+    }
+  };
+
+  private static final String SHORT_TIME_FORMATTER_STR = "HH:mm";
+  private static final int shortTimeStringLen = SHORT_TIME_FORMATTER_STR.length();
+  private static final ThreadLocal<SimpleDateFormat> SHORT_TIME_FORMATTER = new ThreadLocal<SimpleDateFormat>() {
+    @Override protected SimpleDateFormat initialValue() {
+      return new SimpleDateFormat(SHORT_TIME_FORMATTER_STR);
+    }
+  };
+
+  private static final String TIME_FORMATTER_STR = "HH:mm:ss";
+  private static final int timeStringLen = TIME_FORMATTER_STR.length();
+  private static final ThreadLocal<SimpleDateFormat> TIME_FORMATTER = new ThreadLocal<SimpleDateFormat>() {
+    @Override protected SimpleDateFormat initialValue() {
+        return new SimpleDateFormat(TIME_FORMATTER_STR);
+    }
+  };
+
+  private static final String FULL_TIME_FORMATTER_STR = "HH:mm:ss.SSS";
+  private static final ThreadLocal<SimpleDateFormat> FULL_TIME_FORMATTER = new ThreadLocal<SimpleDateFormat>() {
+    @Override protected SimpleDateFormat initialValue() {
+      return new SimpleDateFormat(FULL_TIME_FORMATTER_STR);
+    }
+  };
+
+  private static final String TIMESTAMP_FORMATTER_STR = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX";
+  private static final ThreadLocal<SimpleDateFormat> TIMESTAMP_FORMATTER = new ThreadLocal<SimpleDateFormat>() {
+    @Override protected SimpleDateFormat initialValue() {
+      return new SimpleDateFormat(TIMESTAMP_FORMATTER_STR);
+    }
+  };
 
   /**
    * @return Returns the specified value as a <code>byte</code>.
@@ -250,11 +286,11 @@ public class Values {
    * from {@link Timestamp#valueOf(String)} which uses current timezone.
    *
    * @param timestampe a <code>String</code> object representing a timestamp in
-   *        in the format "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+   *        in the format "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"
    * @return a <code>java.sql.Timestampe</code> object representing the
    *         given timestamp.
    * @throws IllegalArgumentException if the time given is not in the
-   *         ISO-8601 timestamp format "yyyy-MM-dd'T'HH:mm:ss.SSSZ".
+   *         ISO-8601 timestamp format "yyyy-MM-dd'T'HH:mm:ss.SSSXXX".
    */
   public static Timestamp parseTimestamp(String timestampe) {
     try {
@@ -356,33 +392,38 @@ public class Values {
   }
 
   private static DateFormat getShortDateFormatter() {
-    SHORT_DATE_FORMATTER.setTimeZone(GMT);
-    return SHORT_DATE_FORMATTER;
+    final SimpleDateFormat df = SHORT_DATE_FORMATTER.get();
+    df.setTimeZone(LOCAL);
+    return df;
   }
 
   private static DateFormat getDateFormatter() {
-    DATE_FORMATTER.setTimeZone(GMT);
-    return DATE_FORMATTER;
+    final SimpleDateFormat f = DATE_FORMATTER.get();
+    f.setTimeZone(LOCAL);
+    return f;
   }
 
   private static DateFormat getShortTimeFormatter() {
-    SHORT_TIME_FORMATTER.setTimeZone(GMT);
-    return SHORT_TIME_FORMATTER;
+    final SimpleDateFormat f = SHORT_TIME_FORMATTER.get();
+    f.setTimeZone(LOCAL);
+    return f;
   }
 
   private static DateFormat getTimeFormatter() {
-    TIME_FORMATTER.setTimeZone(GMT);
-    return TIME_FORMATTER;
+    final SimpleDateFormat f = TIME_FORMATTER.get();
+    f.setTimeZone(LOCAL);
+    return f;
   }
 
   private static DateFormat getFullTimeFormatter() {
-    FULL_TIME_FORMATTER.setTimeZone(GMT);
-    return FULL_TIME_FORMATTER;
+    final SimpleDateFormat f = FULL_TIME_FORMATTER.get();
+    f.setTimeZone(LOCAL);
+    return f;
   }
 
   private static DateFormat getTimestampFormatter() {
-    TIMESTAMP_FORMATTER.setTimeZone(GMT);
-    return TIMESTAMP_FORMATTER;
+    final SimpleDateFormat f = TIMESTAMP_FORMATTER.get();
+    return f;
   }
 
 }

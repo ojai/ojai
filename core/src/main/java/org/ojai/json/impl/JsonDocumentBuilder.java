@@ -321,7 +321,7 @@ public class JsonDocumentBuilder implements DocumentBuilder {
 
   @Override
   public JsonDocumentBuilder putDate(String field, int days) {
-    return putStringWithTag(field, Types.TAG_DATE, Values.toDateStr(new Date(days * MILLISECONDSPERDAY)));
+    return putStringWithTag(field, Types.TAG_DATE, Values.toDateStr(JsonUtils.numDaysToDate(days)));
   }
 
   @Override
@@ -858,7 +858,7 @@ public class JsonDocumentBuilder implements DocumentBuilder {
 
   @Override
   public JsonDocumentBuilder addDate(int days) {
-    return addStringWithTag(Types.TAG_DATE, Values.toDateStr(new Date(days * MILLISECONDSPERDAY)));
+    return addStringWithTag(Types.TAG_DATE, Values.toDateStr(JsonUtils.numDaysToDate(days)));
   }
 
   @Override

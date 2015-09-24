@@ -15,7 +15,11 @@
  */
 package org.ojai.json.impl;
 
+import static org.ojai.util.Constants.MILLISECONDSPERDAY;
+import static org.ojai.util.Constants.TIMEZONE_OFFSET;
+
 import java.io.UnsupportedEncodingException;
+import java.sql.Date;
 
 import org.ojai.DocumentBuilder;
 import org.ojai.DocumentReader;
@@ -31,6 +35,21 @@ public class JsonUtils {
       return string.getBytes("UTF-8");
     } catch (UnsupportedEncodingException e) {}
     return null;
+  }
+
+  @SuppressWarnings("deprecation")
+  public static long dateToNumDays(Date date) {
+    /* just take the portion of time which has completed days */
+    return (date.getTime() - date.getTimezoneOffset()*60*1000) / MILLISECONDSPERDAY;
+  }
+
+  public static Date numDaysToDate(long days) {
+    /*
+     * We store the date value as number of days since Unix epoch
+     * but the returned Date object must be the original date in
+     * the current timezone, hence subtract the timezone offset.
+     */
+    return new Date((days * MILLISECONDSPERDAY) - TIMEZONE_OFFSET);
   }
 
   public static void addToMap(DocumentReader r, DocumentBuilder w) {
