@@ -34,7 +34,7 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.io.BaseEncoding;
 
 /**
- * A helper class which provide convenience methods
+ * A helper class that provides convenience methods
  * to operate on a {@code Value}.
  */
 @API.Public
@@ -87,70 +87,70 @@ public class Values {
   };
 
   /**
-   * @return Returns the specified value as a <code>byte</code>.
+   * @return The specified value as a <code>byte</code>.
    * This may involve rounding or truncation.
-   * @throws IllegalArgumentException If the specified value is
-   * not one of the number types.
+   * @throws IllegalArgumentException if the specified value is
+   * not one of the number types
    */
   public static byte asByte(Value value) {
     return asNumber(value).byteValue();
   }
 
   /**
-   * @return Returns the specified value as a <code>short</code>.
+   * @return The specified value as a <code>short</code>.
    * This may involve rounding or truncation.
-   * @throws IllegalArgumentException If the specified value is
-   * not one of the number types.
+   * @throws IllegalArgumentException if the specified value is
+   * not one of the number types
    */
   public static short asShort(Value value) {
     return asNumber(value).shortValue();
   }
 
   /**
-   * @return Returns the specified value as a <code>int</code>.
+   * @return The specified value as an <code>int</code>.
    * This may involve rounding or truncation.
-   * @throws IllegalArgumentException If the specified value is
-   * not one of the number types.
+   * @throws IllegalArgumentException if the specified value is
+   * not one of the number types
    */
   public static int asInt(Value value) {
     return asNumber(value).intValue();
   }
 
   /**
-   * @return Returns the specified value as a <code>long</code>.
+   * @return The specified value as a <code>long</code>.
    * This may involve rounding or truncation.
-   * @throws IllegalArgumentException If the specified value is
-   * not one of the number types.
+   * @throws IllegalArgumentException if the specified value is
+   * not one of the number types
    */
   public static long asLong(Value value) {
     return asNumber(value).longValue();
   }
 
   /**
-   * @return Returns the specified value as a <code>float</code>.
+   * @return The specified value as a <code>float</code>.
    * This may involve rounding or truncation.
-   * @throws IllegalArgumentException If the specified value is
-   * not one of the number types.
+   * @throws IllegalArgumentException if the specified value is
+   * not one of the number types
    */
   public static float asFloat(Value value) {
     return asNumber(value).floatValue();
   }
 
   /**
-   * @return Returns the specified value as a <code>double</code>.
+   * @return The specified value as a <code>double</code>.
    * This may involve rounding or truncation.
-   * @throws IllegalArgumentException If the specified value is
-   * not one of the number types.
+   * @throws IllegalArgumentException if the specified value is
+   * not one of the number types
    */
   public static double asDouble(Value value) {
     return asNumber(value).doubleValue();
   }
 
   /**
-   * @return Returns the specified value as a <code>BigDecimal</code>.
+   * @return The specified value as a <code>BigDecimal</code>.
    * This may involve rounding or truncation.
-   * @throws IllegalArgumentException If the specified value is
-   * not one of the number types.
+   * @throws IllegalArgumentException uf the specified value is
+   * not one of the number types
    */
   public static BigDecimal asDecimal(Value value) {
     Number val = asNumber(value);
@@ -162,10 +162,10 @@ public class Values {
   }
 
   /**
-   * @return Returns the specified value as a <code>Number</code>.
+   * @return The specified value as a <code>Number</code>.
    * This may involve rounding or truncation.
-   * @throws IllegalArgumentException If the specified value is
-   * not one of the number types.
+   * @throws IllegalArgumentException if the specified value is
+   * not one of the number types
    */
   public static Number asNumber(Value value) {
     switch (value.getType()) {
@@ -197,15 +197,15 @@ public class Values {
 
   /**
    * Converts a string in ISO-8601 date format to a <code>Date</code> value.
-   * This assumes that the specified date string is in GMT. This is different
-   * from {@link Date#valueOf(String)} which uses current timezone.
+   * This method assumes that the specified date string is in GMT, unlike
+   * {@link Date#valueOf(String)}, which uses the current timezone.
    *
    * @param date a <code>String</code> object representing a date in
-   *        in the format "yyyy-mm-dd".
-   * @return a <code>java.sql.Date</code> object representing the
-   *         given date.
+   *        in the format "yyyy-mm-dd"
+   * @return A <code>java.sql.Date</code> object representing the
+   *         given date
    * @throws IllegalArgumentException if the date given is not in the
-   *         ISO-8601 date format (yyyy-mm-dd).
+   *         ISO-8601 date format (yyyy-mm-dd)
    */
   public static Date parseDate(String date) {
     try {
@@ -221,7 +221,7 @@ public class Values {
 
   /**
    * Returns the JDBC string representation ("yyyy-mm-dd") of the specified Date.
-   * @param date The {@code Date} value to stringify.
+   * @param date the {@code Date} value to stringify.
    * @return The formatted date string.
    */
   public static String toDateStr(Date date) {
@@ -230,15 +230,15 @@ public class Values {
 
   /**
    * Converts a string in ISO-8601 time format to a <code>Time</code> value.
-   * This assumes that the specified time string is in GMT. This is different
-   * from {@link Time#valueOf(String)} which uses current timezone.
+   * This assumes that the specified time string is in GMT, unlike
+   * {@link Time#valueOf(String)}, which uses current timezone.
    *
    * @param time a <code>String</code> object representing a time in
-   *        in the format "HH:mm", "HH:mm:ss" or "HH:mm:ss.SSS".
-   * @return a <code>java.sql.Time</code> object representing the
-   *         given time.
+   *        in the format "HH:mm", "HH:mm:ss" or "HH:mm:ss.SSS"
+   * @return A <code>java.sql.Time</code> object representing the
+   *         given time
    * @throws IllegalArgumentException if the time given is not in the
-   *         ISO-8601 date format "HH:mm:ss" or "HH:mm:ss.SSS".
+   *         ISO-8601 date format "HH:mm:ss" or "HH:mm:ss.SSS"
    */
   public static Time parseTime(String time) {
     try {
@@ -256,8 +256,8 @@ public class Values {
 
   /**
    * Returns the JDBC string representation ("HH:mm:ss") of the specified Time.
-   * @param time The {@code Time} value to stringify.
-   * @return The formatted time string.
+   * @param time the {@code Time} value to stringify
+   * @return The formatted time string
    */
   public static String toTimeStr(Time time) {
     return getTimeFormatter().format(time);
@@ -265,8 +265,8 @@ public class Values {
 
   /**
    * Returns the JDBC string representation ("HH:mm") of the specified Time.
-   * @param time The {@code Time} value to stringify.
-   * @return The formatted time string.
+   * @param time the {@code Time} value to stringify
+   * @return The formatted time string
    */
   public static String toShortTimeStr(Time time) {
     return getShortTimeFormatter().format(time);
@@ -274,8 +274,8 @@ public class Values {
 
   /**
    * Returns the JDBC string representation ("HH:mm") of the specified Time.
-   * @param time The {@code Time} value to stringify.
-   * @return The formatted time string.
+   * @param time the {@code Time} value to stringify
+   * @return The formatted time string
    */
   public static String toFullTimeStr(Time time) {
     return getFullTimeFormatter().format(time);
@@ -283,13 +283,13 @@ public class Values {
 
   /**
    * Converts a string in ISO-8601 time format to a <code>Time</code> value.
-   * This assumes that the specified time string is in GMT. This is different
-   * from {@link Timestamp#valueOf(String)} which uses current timezone.
+   * This assumes that the specified time string is in GMT, unlike
+   * {@link Timestamp#valueOf(String)}, which uses current timezone.
    *
    * @param timestampe a <code>String</code> object representing a timestamp in
    *        in the format "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"
-   * @return a <code>java.sql.Timestampe</code> object representing the
-   *         given timestamp.
+   * @return A <code>java.sql.Timestampe</code> object representing the
+   *         given timestamp
    * @throws IllegalArgumentException if the time given is not in the
    *         ISO-8601 timestamp format "yyyy-MM-dd'T'HH:mm:ss.SSSXXX".
    */
@@ -307,11 +307,11 @@ public class Values {
 
   /**
    * Converts a {@code Value} to its extended JSON representation.<br/><br/>
-   * The 7 intrinsic types, i.e. &nbsp;{@code null, boolean, string, long,
-   * double, array and map } are as their regular JSON representation. The
+   * The 7 intrinsic types, &nbsp;{@code null, boolean, string, long,
+   * double, array, and map }, are represented in regular JSON. The
    * extended types are converted to a singleton map with the type tag name
    * as the key and the value of the given {@code Value} as its value.
-   * Following is a sample illustration of the string representation of the
+   * The following sample illustrates the string representation of the
    * various types.
    *
    * <pre>
@@ -337,8 +337,8 @@ public class Values {
    * }
    * </pre>
    *
-   * @param value A <code>Value</code> which should be converted to JSON string.
-   * @return Extended JSON representation of the given value.
+   * @param value a <code>Value</code> that should be converted to JSON string
+   * @return The extended JSON representation of the given value
    */
   public static String asJsonString(Value value) {
     StringBuilder sb = new StringBuilder();

@@ -19,7 +19,7 @@ import org.ojai.DocumentStream;
 import org.ojai.annotation.API;
 
 /**
- * Exception thrown by implementations a {@link DocumentStream} is
+ * Exception thrown by implementations when a {@link DocumentStream} is
  * accessed in more than one way.
  */
 @API.Public

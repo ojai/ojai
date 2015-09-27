@@ -36,12 +36,13 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
 
   /**
    * Sets the the "_id" field of this Document to the specified Value.
-   * @param _id Value to set as the value of "_id" field.
+   * @param _id Value to set as the value of "_id" field
+   * @return {@code this} for chaining
    */
   public Document setId(Value _idValue);
 
   /**
-   * @return the "_id" field of this Document.
+   * @return The "_id" field of this Document
    */
   public Value getId();
 
@@ -52,15 +53,15 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
   public boolean isReadOnly();
 
   /**
-   * @return the number of top level entries in the document.
+   * @return The number of top level entries in the document.
    */
   int size();
 
   /**
-   * Convert this Document to an instance of the specified class.
+   * Converts this Document to an instance of the specified class.
    *
    * @param beanClass the class of instance
-   * @return an instance of the specified class converted from this Document
+   * @return An instance of the specified class converted from this Document
    */
   public <T> T toJavaBean(Class<T> beanClass) throws DecodingException;
 
@@ -75,7 +76,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the String value
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document set(String fieldPath, String value);
 
@@ -85,7 +86,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the String value
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document set(FieldPath fieldPath, String value);
 
@@ -95,7 +96,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the boolean value
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document set(String fieldPath, boolean value);
 
@@ -105,7 +106,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the boolean value
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document set(FieldPath fieldPath, boolean value);
 
@@ -115,7 +116,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the byte value
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document set(String fieldPath, byte value);
 
@@ -125,7 +126,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the byte value
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document set(FieldPath fieldPath, byte value);
 
@@ -135,7 +136,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the short value
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document set(String fieldPath, short value);
 
@@ -155,7 +156,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the int value
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document set(String fieldPath, int value);
 
@@ -165,7 +166,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the int value
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document set(FieldPath fieldPath, int value);
 
@@ -175,7 +176,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the long value
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document set(String fieldPath, long value);
 
@@ -185,7 +186,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the long value
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document set(FieldPath fieldPath, long value);
 
@@ -195,7 +196,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the float value
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document set(String fieldPath, float value);
 
@@ -205,7 +206,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the float value
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document set(FieldPath fieldPath, float value);
 
@@ -215,7 +216,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the double value
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document set(String fieldPath, double value);
 
@@ -225,7 +226,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the double value
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document set(FieldPath fieldPath, double value);
 
@@ -235,7 +236,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the BigDecimal value
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document set(String fieldPath, BigDecimal value);
 
@@ -245,7 +246,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the BigDecimal value
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document set(FieldPath fieldPath, BigDecimal value);
 
@@ -255,7 +256,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the Time value
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document set(String fieldPath, Time value);
 
@@ -265,7 +266,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the Time value
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document set(FieldPath fieldPath, Time value);
 
@@ -275,7 +276,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the Date value
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document set(String fieldPath, Date value);
 
@@ -285,7 +286,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the Date value
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document set(FieldPath fieldPath, Date value);
 
@@ -295,7 +296,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the Timestamp value
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document set(String fieldPath, Timestamp value);
 
@@ -305,7 +306,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the Timestamp value
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document set(FieldPath fieldPath, Timestamp value);
 
@@ -315,7 +316,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the Interval value
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document set(String fieldPath, Interval value);
 
@@ -325,7 +326,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the Interval value
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document set(FieldPath fieldPath, Interval value);
 
@@ -335,7 +336,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the byte array containing the binary value
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document set(String fieldPath, byte[] value);
 
@@ -355,7 +356,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the byte array containing the binary value
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document set(String fieldPath, byte[] value, int off, int len);
 
@@ -365,7 +366,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the byte array containing the binary value
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document set(FieldPath fieldPath, byte[] value, int off, int len);
 
@@ -375,7 +376,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the ByteBuffer
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document set(String fieldPath, ByteBuffer value);
 
@@ -385,7 +386,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the ByteBuffer
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document set(FieldPath fieldPath, ByteBuffer value);
 
@@ -395,7 +396,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the Map value
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document set(String fieldPath, Map<String, ? extends Object> value);
 
@@ -405,7 +406,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the Map value
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document set(FieldPath fieldPath, Map<String, ? extends Object> value);
 
@@ -415,7 +416,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the Document
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document set(String fieldPath, Document value);
 
@@ -425,7 +426,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the Document
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document set(FieldPath fieldPath, Document value);
 
@@ -435,7 +436,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the Value
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document set(String fieldPath, Value value);
 
@@ -445,7 +446,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the Value
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document set(FieldPath fieldPath, Value value);
 
@@ -455,7 +456,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the Object List
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document set(String fieldPath, List<? extends Object> value);
 
@@ -465,7 +466,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the Object List
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document set(FieldPath fieldPath, List<? extends Object> value);
 
@@ -475,7 +476,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the boolean array
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document setArray(String fieldPath, boolean[] values);
 
@@ -485,7 +486,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the boolean array
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document setArray(FieldPath fieldPath, boolean[] values);
 
@@ -495,7 +496,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the byte array
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document setArray(String fieldPath, byte[] values);
 
@@ -505,7 +506,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the byte array
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document setArray(FieldPath fieldPath, byte[] values);
 
@@ -515,7 +516,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the short array
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document setArray(String fieldPath, short[] values);
 
@@ -525,7 +526,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the short array
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document setArray(FieldPath fieldPath, short[] values);
 
@@ -535,7 +536,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the int array
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document setArray(String fieldPath, int[] values);
 
@@ -545,7 +546,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the int array
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document setArray(FieldPath fieldPath, int[] values);
 
@@ -555,7 +556,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the long array
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document setArray(String fieldPath, long[] values);
 
@@ -565,7 +566,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the long array
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document setArray(FieldPath fieldPath, long[] values);
 
@@ -575,7 +576,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the float array
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document setArray(String fieldPath, float[] values);
 
@@ -585,7 +586,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the float array
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document setArray(FieldPath fieldPath, float[] values);
 
@@ -595,7 +596,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the double array
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document setArray(String fieldPath, double[] values);
 
@@ -605,7 +606,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the double array
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document setArray(FieldPath fieldPath, double[] values);
 
@@ -615,7 +616,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the String array
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document setArray(String fieldPath, String[] values);
 
@@ -625,7 +626,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the String array
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document setArray(FieldPath fieldPath, String[] values);
 
@@ -635,7 +636,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the Object array
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document setArray(String fieldPath, Object... values);
 
@@ -645,7 +646,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    *
    * @param fieldPath the FieldPath to set
    * @param value the Object array
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document setArray(FieldPath fieldPath, Object... values);
 
@@ -654,7 +655,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * {@link Type#NULL}.
    *
    * @param fieldPath the FieldPath to set
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document setNull(String fieldPath);
 
@@ -663,21 +664,21 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * {@link Type#NULL}.
    *
    * @param fieldPath the FieldPath to set
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document setNull(FieldPath fieldPath);
 
   /**
-   * Deletes the value at the specified {@code FieldPath} if exists.
-   * @param fieldPath The {@code fieldPath} to delete from the document.
-   * @return {@code this} for chaining.
+   * Deletes the value at the specified {@code FieldPath} if it exists.
+   * @param fieldPath The {@code fieldPath} to delete from the document
+   * @return {@code this} for chaining
    */
   Document delete(String fieldPath);
 
   /**
-   * Deletes the value at the specified {@code FieldPath} if exists.
-   * @param fieldPath The {@code fieldPath} to delete from the document.
-   * @return {@code this} for chaining.
+   * Deletes the value at the specified {@code FieldPath} if it exists.
+   * @param fieldPath the {@code fieldPath} to delete from the document
+   * @return {@code this} for chaining
    */
   Document delete(FieldPath fieldPath);
 
@@ -686,8 +687,8 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * object or {@code null} if the specified {@code FieldPath} does
    * not exist in the document.
    *
-   * @throws TypeException If the value at the fieldPath is not of
-   *         <code>STRING</code> type.
+   * @throws TypeException if the value at the fieldPath is not of
+   *         the <code>STRING</code> type
    */
   String getString(String fieldPath);
 
@@ -696,28 +697,28 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * object or {@code null} if the specified {@code FieldPath} does
    * not exist in the document.
    *
-   * @throws TypeException If the value at the fieldPath is not of
-   *         <code>STRING</code> type.
+   * @throws TypeException if the value at the fieldPath is not of
+   *         the <code>STRING</code> type
    */
   String getString(FieldPath fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@code boolean}.
    *
-   * @throws TypeException If the value at the fieldPath is not of
-   *         <code>BOOLEAN</code> type.
-   * @throws NoSuchElementException If the specified field does not
-   *         exist in the {@code Document}.
+   * @throws TypeException if the value at the fieldPath is not of
+   *         <code>BOOLEAN</code> type
+   * @throws NoSuchElementException if the specified field does not
+   *         exist in the {@code Document}
    */
   boolean getBoolean(String fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@code boolean}.
    *
-   * @throws TypeException If the value at the fieldPath is not of
-   *         <code>BOOLEAN</code> type.
-   * @throws NoSuchElementException If the specified field does not
-   *         exist in the {@code Document}.
+   * @throws TypeException if the value at the fieldPath is not of
+   *         <code>BOOLEAN</code> type
+   * @throws NoSuchElementException if the specified field does not
+   *         exist in the {@code Document}
    */
   boolean getBoolean(FieldPath fieldPath);
 
@@ -726,8 +727,8 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * object or {@code null} if the specified {@code FieldPath} does
    * not exist in the document.
    *
-   * @throws TypeException If the value at the fieldPath is not of
-   *         <code>BOOLEAN</code> type.
+   * @throws TypeException if the value at the fieldPath is not of
+   *         the <code>BOOLEAN</code> type
    */
   Boolean getBooleanObj(String fieldPath);
 
@@ -736,8 +737,8 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * object or {@code null} if the specified {@code FieldPath} does
    * not exist in the document.
    *
-   * @throws TypeException If the value at the fieldPath is not of
-   *         <code>BOOLEAN</code> type.
+   * @throws TypeException if the value at the fieldPath is not of
+   *         the <code>BOOLEAN</code> type
    */
   Boolean getBooleanObj(FieldPath fieldPath);
 
@@ -745,10 +746,10 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
   /**
    * Returns the value at the specified fieldPath as a {@code byte}.
    *
-   * @throws TypeException If the value at the fieldPath is not of
-   *         <code>BYTE</code> type.
-   * @throws NoSuchElementException If the specified field does not
-   *         exist in the {@code Document}.
+   * @throws TypeException if the value at the fieldPath is not of
+   *         the <code>BYTE</code> type
+   * @throws NoSuchElementException if the specified field does not
+   *         exist in the {@code Document}
    */
   byte getByte(String fieldPath);
 
@@ -756,10 +757,10 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
   /**
    * Returns the value at the specified fieldPath as a {@code byte}.
    *
-   * @throws TypeException If the value at the fieldPath is not of
-   *         <code>BYTE</code> type.
-   * @throws NoSuchElementException If the specified field does not
-   *         exist in the {@code Document}.
+   * @throws TypeException if the value at the fieldPath is not of
+   *         the <code>BYTE</code> type
+   * @throws NoSuchElementException if the specified field does not
+   *         exist in the {@code Document}
    */
   byte getByte(FieldPath fieldPath);
 
@@ -768,8 +769,8 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * object or {@code null} if the specified {@code FieldPath} does
    * not exist in the document.
    *
-   * @throws TypeException If the value at the fieldPath is not of
-   *         <code>BYTE</code> type.
+   * @throws TypeException if the value at the fieldPath is not of
+   *         the <code>BYTE</code> type
    */
   Byte getByteObj(String fieldPath);
 
@@ -778,28 +779,28 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * object or {@code null} if the specified {@code FieldPath} does
    * not exist in the document.
    *
-   * @throws TypeException If the value at the fieldPath is not of
-   *         <code>BYTE</code> type.
+   * @throws TypeException if the value at the fieldPath is not of
+   *         the <code>BYTE</code> type
    */
   Byte getByteObj(FieldPath fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@code short}.
    *
-   * @throws TypeException If the value at the fieldPath is not of
-   *         <code>SHORT</code> type.
-   * @throws NoSuchElementException If the specified field does not
-   *         exist in the {@code Document}.
+   * @throws TypeException if the value at the fieldPath is not of
+   *         the <code>SHORT</code> type
+   * @throws NoSuchElementException if the specified field does not
+   *         exist in the {@code Document}
    */
   short getShort(String fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@code short}.
    *
-   * @throws TypeException If the value at the fieldPath is not of
-   *         <code>SHORT</code> type.
-   * @throws NoSuchElementException If the specified field does not
-   *         exist in the {@code Document}.
+   * @throws TypeException if the value at the fieldPath is not of
+   *         the <code>SHORT</code> type
+   * @throws NoSuchElementException if the specified field does not
+   *         exist in the {@code Document}
    */
   short getShort(FieldPath fieldPath);
 
@@ -808,8 +809,8 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * object or {@code null} if the specified {@code FieldPath} does
    * not exist in the document.
    *
-   * @throws TypeException If the value at the fieldPath is not of
-   *         <code>SHORT</code> type.
+   * @throws TypeException if the value at the fieldPath is not of
+   *         the <code>SHORT</code> type
    */
   Short getShortObj(String fieldPath);
 
@@ -818,50 +819,50 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * object or {@code null} if the specified {@code FieldPath} does
    * not exist in the document.
    *
-   * @throws TypeException If the value at the fieldPath is not of
-   *         <code>SHORT</code> type.
+   * @throws TypeException if the value at the fieldPath is not of
+   *         the <code>SHORT</code> type
    */
   Short getShortObj(FieldPath fieldPath);
 
 
   /**
-   * Returns the value at the specified fieldPath as a {@code int}.
+   * Returns the value at the specified fieldPath as an {@code int}.
    *
-   * @throws TypeException If the value at the fieldPath is not of
-   *         <code>INT</code> type.
-   * @throws NoSuchElementException If the specified field does not
-   *         exist in the {@code Document}.
+   * @throws TypeException if the value at the fieldPath is not of
+   *         the <code>INT</code> type
+   * @throws NoSuchElementException if the specified field does not
+   *         exist in the {@code Document}
    */
   int getInt(String fieldPath);
 
 
   /**
-   * Returns the value at the specified fieldPath as a {@code int}.
+   * Returns the value at the specified fieldPath as an {@code int}.
    *
-   * @throws TypeException If the value at the fieldPath is not of
-   *         <code>INT</code> type.
-   * @throws NoSuchElementException If the specified field does not
-   *         exist in the {@code Document}.
+   * @throws TypeException if the value at the fieldPath is not of
+   *         the <code>INT</code> type
+   * @throws NoSuchElementException if the specified field does not
+   *         exist in the {@code Document}
    */
   int getInt(FieldPath fieldPath);
 
   /**
-   * Returns the value at the specified fieldPath as a {@code Integer}
+   * Returns the value at the specified fieldPath as an {@code Integer}
    * object or {@code null} if the specified {@code FieldPath} does
    * not exist in the document.
    *
-   * @throws TypeException If the value at the fieldPath is not of
-   *         <code>INT</code> type.
+   * @throws TypeException if the value at the fieldPath is not of
+   *         the <code>INT</code> type
    */
   Integer getIntObj(String fieldPath);
 
   /**
-   * Returns the value at the specified fieldPath as a {@code Integer}
+   * Returns the value at the specified fieldPath as an {@code Integer}
    * object or {@code null} if the specified {@code FieldPath} does
    * not exist in the document.
    *
-   * @throws TypeException If the value at the fieldPath is not of
-   *         <code>INT</code> type.
+   * @throws TypeException if the value at the fieldPath is not of
+   *         the <code>INT</code> type
    */
   Integer getIntObj(FieldPath fieldPath);
 
@@ -869,10 +870,10 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
   /**
    * Returns the value at the specified fieldPath as a {@code long}.
    *
-   * @throws TypeException If the value at the fieldPath is not of
-   *         <code>LONG</code> type.
-   * @throws NoSuchElementException If the specified field does not
-   *         exist in the {@code Document}.
+   * @throws TypeException if the value at the fieldPath is not of
+   *         the <code>LONG</code> type
+   * @throws NoSuchElementException if the specified field does not
+   *         exist in the {@code Document}
    */
   long getLong(String fieldPath);
 
@@ -880,10 +881,10 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
   /**
    * Returns the value at the specified fieldPath as a {@code long}.
    *
-   * @throws TypeException If the value at the fieldPath is not of
-   *         <code>LONG</code> type.
-   * @throws NoSuchElementException If the specified field does not
-   *         exist in the {@code Document}.
+   * @throws TypeException if the value at the fieldPath is not of
+   *         the <code>LONG</code> type
+   * @throws NoSuchElementException if the specified field does not
+   *         exist in the {@code Document}
    */
   long getLong(FieldPath fieldPath);
 
@@ -892,8 +893,8 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * object or {@code null} if the specified {@code FieldPath} does
    * not exist in the document.
    *
-   * @throws TypeException If the value at the fieldPath is not of
-   *         <code>LONG</code> type.
+   * @throws TypeException if the value at the fieldPath is not of
+   *         the <code>LONG</code> type
    */
   Long getLongObj(String fieldPath);
 
@@ -902,8 +903,8 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * object or {@code null} if the specified {@code FieldPath} does
    * not exist in the document.
    *
-   * @throws TypeException If the value at the fieldPath is not of
-   *         <code>LONG</code> type.
+   * @throws TypeException if the value at the fieldPath is not of
+   *         the <code>LONG</code> type
    */
   Long getLongObj(FieldPath fieldPath);
 
@@ -911,10 +912,10 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
   /**
    * Returns the value at the specified fieldPath as a {@code float}.
    *
-   * @throws TypeException If the value at the fieldPath is not of
-   *         <code>FLOAT</code> type.
-   * @throws NoSuchElementException If the specified field does not
-   *         exist in the {@code Document}.
+   * @throws TypeException if the value at the fieldPath is not of
+   *         the <code>FLOAT</code> type
+   * @throws NoSuchElementException if the specified field does not
+   *         exist in the {@code Document}
    */
   float getFloat(String fieldPath);
 
@@ -922,10 +923,10 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
   /**
    * Returns the value at the specified fieldPath as a {@code float}.
    *
-   * @throws TypeException If the value at the fieldPath is not of
-   *         <code>FLOAT</code> type.
-   * @throws NoSuchElementException If the specified field does not
-   *         exist in the {@code Document}.
+   * @throws TypeException if the value at the fieldPath is not of
+   *         the <code>FLOAT</code> type
+   * @throws NoSuchElementException if the specified field does not
+   *         exist in the {@code Document}
    */
   float getFloat(FieldPath fieldPath);
 
@@ -934,8 +935,8 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * object or {@code null} if the specified {@code FieldPath} does
    * not exist in the document.
    *
-   * @throws TypeException If the value at the fieldPath is not of
-   *         <code>FLOAT</code> type.
+   * @throws TypeException if the value at the fieldPath is not of
+   *         the <code>FLOAT</code> type
    */
   Float getFloatObj(String fieldPath);
 
@@ -944,8 +945,8 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * object or {@code null} if the specified {@code FieldPath} does
    * not exist in the document.
    *
-   * @throws TypeException If the value at the fieldPath is not of
-   *         <code>FLOAT</code> type.
+   * @throws TypeException if the value at the fieldPath is not of
+   *         the <code>FLOAT</code> type
    */
   Float getFloatObj(FieldPath fieldPath);
 
@@ -953,10 +954,10 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
   /**
    * Returns the value at the specified fieldPath as a {@code double}.
    *
-   * @throws TypeException If the value at the fieldPath is not of
-   *         <code>DOUBLE</code> type.
-   * @throws NoSuchElementException If the specified field does not
-   *         exist in the {@code Document}.
+   * @throws TypeException if the value at the fieldPath is not of
+   *         the <code>DOUBLE</code> type
+   * @throws NoSuchElementException if the specified field does not
+   *         exist in the {@code Document}
    */
   double getDouble(String fieldPath);
 
@@ -964,10 +965,10 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
   /**
    * Returns the value at the specified fieldPath as a {@code double}.
    *
-   * @throws TypeException If the value at the fieldPath is not of
-   *         <code>DOUBLE</code> type.
-   * @throws NoSuchElementException If the specified field does not
-   *         exist in the {@code Document}.
+   * @throws TypeException if the value at the fieldPath is not of
+   *         the <code>DOUBLE</code> type
+   * @throws NoSuchElementException if the specified field does not
+   *         exist in the {@code Document}
    */
   double getDouble(FieldPath fieldPath);
 
@@ -976,8 +977,8 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * object or {@code null} if the specified {@code FieldPath} does
    * not exist in the document.
    *
-   * @throws TypeException If the value at the fieldPath is not of
-   *         <code>DOUBLE</code> type.
+   * @throws TypeException if the value at the fieldPath is not of
+   *         the <code>DOUBLE</code> type
    */
   Double getDoubleObj(String fieldPath);
 
@@ -986,8 +987,8 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * object or {@code null} if the specified {@code FieldPath} does
    * not exist in the document.
    *
-   * @throws TypeException If the value at the fieldPath is not of
-   *         <code>DOUBLE</code> type.
+   * @throws TypeException if the value at the fieldPath is not of
+   *         the <code>DOUBLE</code> type
    */
   Double getDoubleObj(FieldPath fieldPath);
 
@@ -997,8 +998,8 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * exist in the document. Modifying the returned object does not alter the
    * content of the document.
    *
-   * @throws TypeException If the value at the fieldPath is not of
-   *         <code>DECIMAL</code> type.
+   * @throws TypeException if the value at the fieldPath is not of
+   *         the <code>DECIMAL</code> type
    */
   BigDecimal getDecimal(String fieldPath);
 
@@ -1008,8 +1009,8 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * exist in the document. Modifying the returned object does not alter the
    * content of the document.
    *
-   * @throws TypeException If the value at the fieldPath is not of
-   *         <code>DECIMAL</code> type.
+   * @throws TypeException if the value at the fieldPath is not of
+   *         the <code>DECIMAL</code> type
    */
   BigDecimal getDecimal(FieldPath fieldPath);
 
@@ -1019,8 +1020,8 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * exist in the document. Modifying the returned object does not alter the
    * content of the document.
    *
-   * @throws TypeException If the value at the fieldPath is not of
-   *         <code>TIME</code> type.
+   * @throws TypeException if the value at the fieldPath is not of
+   *         the <code>TIME</code> type
    */
   Time getTime(String fieldPath);
 
@@ -1030,8 +1031,8 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * exist in the document. Modifying the returned object does not alter the
    * content of the document.
    *
-   * @throws TypeException If the value at the fieldPath is not of
-   *         <code>TIME</code> type.
+   * @throws TypeException if the value at the fieldPath is not of
+   *         the <code>TIME</code> type
    */
   Time getTime(FieldPath fieldPath);
 
@@ -1041,8 +1042,8 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * exist in the document. Modifying the returned object does not alter the
    * content of the document.
    *
-   * @throws TypeException If the value at the fieldPath is not of
-   *         <code>DATE</code> type.
+   * @throws TypeException if the value at the fieldPath is not of
+   *         the <code>DATE</code> type
    */
   Date getDate(String fieldPath);
 
@@ -1052,8 +1053,8 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * exist in the document. Modifying the returned object does not alter the
    * content of the document.
    *
-   * @throws TypeException If the value at the fieldPath is not of
-   *         <code>DATE</code> type.
+   * @throws TypeException if the value at the fieldPath is not of
+   *         the <code>DATE</code> type
    */
   Date getDate(FieldPath fieldPath);
 
@@ -1063,8 +1064,8 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * exist in the document. Modifying the returned object does not alter the
    * content of the document.
    *
-   * @throws TypeException If the value at the fieldPath is not of
-   *         <code>TIMESTAMP</code> type.
+   * @throws TypeException if the value at the fieldPath is not of
+   *         the <code>TIMESTAMP</code> type
    */
   Timestamp getTimestamp(String fieldPath);
 
@@ -1074,8 +1075,8 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * exist in the document. Modifying the returned object does not alter the
    * content of the document.
    *
-   * @throws TypeException If the value at the fieldPath is not of
-   *         <code>TIMESTAMP</code> type.
+   * @throws TypeException if the value at the fieldPath is not of
+   *         the <code>TIMESTAMP</code> type
    */
   Timestamp getTimestamp(FieldPath fieldPath);
 
@@ -1085,8 +1086,8 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * exist in the document. Modifying the returned object does not alter the
    * content of the document.
    *
-   * @throws TypeException If the value at the fieldPath is not of
-   *         <code>BINARY</code> type.
+   * @throws TypeException if the value at the fieldPath is not of
+   *         the <code>BINARY</code> type
    */
   ByteBuffer getBinary(String fieldPath);
 
@@ -1096,30 +1097,30 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * exist in the document. Modifying the returned object does not alter the
    * content of the document.
    *
-   * @throws TypeException If the value at the fieldPath is not of
-   *         <code>BINARY</code> type.
+   * @throws TypeException if the value at the fieldPath is not of
+   *         <code>BINARY</code> type
    */
   ByteBuffer getBinary(FieldPath fieldPath);
 
   /**
-   * Returns the value at the specified fieldPath as a {@link Interval}
+   * Returns the value at the specified fieldPath as an {@link Interval}
    * object or {@code null} if the specified {@code FieldPath} does not
    * exist in the document. Modifying the returned object does not alter the
    * content of the document.
    *
-   * @throws TypeException If the value at the fieldPath is not of
-   *         <code>INTERVAL</code> type.
+   * @throws TypeException if the value at the fieldPath is not of
+   *         the <code>INTERVAL</code> type
    */
   Interval getInterval(String fieldPath);
 
   /**
-   * Returns the value at the specified fieldPath as a {@link Interval}
+   * Returns the value at the specified fieldPath as an {@link Interval}
    * object or {@code null} if the specified {@code FieldPath} does not
    * exist in the document. Modifying the returned object does not alter the
    * content of the document.
    *
-   * @throws TypeException If the value at the fieldPath is not of
-   *         <code>INTERVAL</code> type.
+   * @throws TypeException if the value at the fieldPath is not of
+   *         the <code>INTERVAL</code> type
    */
   Interval getInterval(FieldPath fieldPath);
 
@@ -1145,8 +1146,8 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * exist in the document. Modifying the returned object does not alter the
    * content of the document.
    *
-   * @throws TypeException If the value at the fieldPath is not of
-   *         <code>MAP</code> type.
+   * @throws TypeException if the value at the fieldPath is not of
+   *         the <code>MAP</code> type
    */
   Map<String, Object> getMap(String fieldPath);
 
@@ -1156,8 +1157,8 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * exist in the document. Modifying the returned object does not alter the
    * content of the document.
    *
-   * @throws TypeException If the value at the fieldPath is not of
-   *         <code>MAP</code> type.
+   * @throws TypeException if the value at the fieldPath is not of
+   *         the <code>MAP</code> type
    */
   Map<String, Object> getMap(FieldPath fieldPath);
 
@@ -1167,8 +1168,8 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * exist in the document. Modifying the returned object does not alter the
    * content of the document.
    *
-   * @throws TypeException If the value at the fieldPath is not of
-   *         <code>ARRAY</code> type.
+   * @throws TypeException if the value at the fieldPath is not of
+   *         the <code>ARRAY</code> type
    */
   List<Object> getList(String fieldPath);
 
@@ -1178,35 +1179,35 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * exist in the document. Modifying the returned object does not alter the
    * content of the document.
    *
-   * @throws TypeException If the value at the fieldPath is not of
-   *         <code>ARRAY</code> type.
+   * @throws TypeException if the value at the fieldPath is not of
+   *         the <code>ARRAY</code> type
    */
   List<Object> getList(FieldPath fieldPath);
 
   /**
-   * @return this Document serialized as Json string using the default options.
+   * @return This Document serialized as Json string using the default options.
    */
   String asJsonString();
 
   /**
-   * @return this Document serialized as Json string using the specified options.
+   * @return This Document serialized as Json string using the specified options
    */
   String asJsonString(JsonOptions options);
 
   /**
-   * @return A new {@link documentReader} over the current <code>document</code>.
+   * @return A new {@link documentReader} over the current <code>document</code>
    */
   DocumentReader asReader();
 
   /**
    * @return A new {@link DocumentReader} over the node specified by the
-   *         fieldPath or <code>null</code> if the node does not exist.
+   *         fieldPath or <code>null</code> if the node does not exist
    */
   DocumentReader asReader(String fieldPath);
 
   /**
    * @return A new {@link DocumentReader} over the node specified by the
-   *         fieldPath or <code>null</code> if the node does not exist.
+   *         fieldPath or <code>null</code> if the node does not exist
    */
   DocumentReader asReader(FieldPath fieldPath);
 

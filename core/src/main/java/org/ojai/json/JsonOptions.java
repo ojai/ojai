@@ -16,7 +16,7 @@
 package org.ojai.json;
 
 /**
- * This class encapsulates various options to configure Json serializer
+ * This class encapsulates various options to configure a JSON serializer
  * for Documents.<br/><br/>
  * Currently, it supports the following options.
  * <ul>

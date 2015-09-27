@@ -125,6 +125,12 @@ public final class FieldPath implements Comparable<FieldPath>, Iterable<FieldSeg
    * segments are compared based on their index value. For same
    * position in a FieldPath, a name segment is considered greater
    * than the indexed segment.
+   *
+   * @return  The value {@code 0} if the specified FieldPath is equal to
+   *          this FieldPath; a value less than {@code 0} if this FieldPath
+   *          is smaller than the specified FieldPath; and a value greater
+   *          than {@code 0} if this FieldPath is greater than the specified
+   *          FieldPath.
    */
   @Override
   public int compareTo(FieldPath other) {

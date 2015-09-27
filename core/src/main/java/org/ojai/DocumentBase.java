@@ -27,7 +27,7 @@ import org.ojai.annotation.API;
 import org.ojai.types.Interval;
 
 /**
- * A template abstract class which implements the Document interface.
+ * A template abstract class that implements the Document interface.
  */
 @API.Public
 public abstract class DocumentBase implements Document {

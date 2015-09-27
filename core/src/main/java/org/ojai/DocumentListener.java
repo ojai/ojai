@@ -24,10 +24,10 @@ public interface DocumentListener {
    * Called when a Document from the {@link DocumentStream} is available for
    * consumption.
    *
-   * @param document The available <code>Document</code>.
+   * @param document the available <code>Document</code>
    *
    * @return The implementation should return <code>false</code> to stop
-   *         listening for more documents at which point stream is closed.
+   *         listening for more documents at which point the stream is closed.
    */
   boolean documentArrived(Document document);
 
@@ -36,13 +36,13 @@ public interface DocumentListener {
    * The {@code DocumentListener} will be closed and no new document will be
    * returned.
    *
-   * @param e The exception which describes the failure.
+   * @param e the exception that describes the failure
    */
   void failed(Exception e);
 
   /**
    * Called when the end of the document stream is reached. The stream is
-   * is already closed at this point.
+   * already closed at this point.
    */
   void eos();
 

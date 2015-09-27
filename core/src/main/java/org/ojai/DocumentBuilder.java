@@ -38,10 +38,10 @@ public interface DocumentBuilder {
    * {@code field} in the current map. Any previous association will be
    * overwritten.
    *
-   * @param field The name of the field.
-   * @param value The {@code boolean} value to append.
-   * @return {@code this} for chained invocation.
-   * @throws IllegalStateException If the builder is not in a MAP segment.
+   * @param field the name of the field
+   * @param value the {@code boolean} value to append
+   * @return {@code this} for chained invocation
+   * @throws IllegalStateException if the builder is not in a MAP segment
    */
   DocumentBuilder put(String field, boolean value);
 
@@ -50,10 +50,10 @@ public interface DocumentBuilder {
    * {@code field} in the current map. Any previous association will be
    * overwritten.
    *
-   * @param field The name of the field.
-   * @param value The {@code String} value to append.
-   * @return {@code this} for chained invocation.
-   * @throws IllegalStateException If the builder is not in a MAP segment.
+   * @param field the name of the field
+   * @param value the {@code String} value to append
+   * @return {@code this} for chained invocation
+   * @throws IllegalStateException if the builder is not in a MAP segment
    */
   DocumentBuilder put(String field, String value);
 
@@ -77,14 +77,14 @@ public interface DocumentBuilder {
   DocumentBuilder put(String field, Date value);
 
   /**
-   * Associates the specified {@code date} value represented as number of
-   * days since epoch with the specified {@code field} in the
+   * Associates the specified {@code date} value represented as the number
+   * of days since epoch with the specified {@code field} in the
    * current map. Any previous association will be overwritten.
    *
-   * @param  field The name of the field.
-   * @param  value The {@code date} value to append.
-   * @return {@code this} for chained invocation.
-   * @throws IllegalStateException If the builder is not in a MAP segment.
+   * @param  field the name of the field
+   * @param  value the {@code date} value to append
+   * @return {@code this} for chained invocation
+   * @throws IllegalStateException if the builder is not in a MAP segment
    */
   DocumentBuilder putDate(String field, int days);
 
@@ -95,26 +95,26 @@ public interface DocumentBuilder {
    * milliseconds since midnight with the specified {@code field} in the
    * current map. Any previous association will be overwritten.
    *
-   * @param  field The name of the field.
-   * @param  value The {@code time} value to append.
-   * @return {@code this} for chained invocation.
-   * @throws IllegalStateException If the builder is not in a MAP segment.
-   * @throws IllegalArgumentException If the value of {@code millis} is greater
-   *         than 86400000.
+   * @param  field the name of the field
+   * @param  value the {@code time} value to append
+   * @return {@code this} for chained invocation
+   * @throws IllegalStateException if the builder is not in a MAP segment
+   * @throws IllegalArgumentException if the value of {@code millis} is greater
+   *         than 86400000
    */
   DocumentBuilder putTime(String field, int millis);
 
   DocumentBuilder put(String field, Timestamp value);
 
   /**
-   * Associates the specified {@code timestamp} value represented as number of
-   * milliseconds since epoch with the specified {@code field} in the
+   * Associates the specified {@code timestamp} value represented as the number
+   * of milliseconds since epoch with the specified {@code field} in the
    * current map. Any previous association will be overwritten.
    *
-   * @param  field The name of the field.
-   * @param  value The {@code timestamp} value to append.
-   * @return {@code this} for chained invocation.
-   * @throws IllegalStateException If the builder is not in a MAP segment.
+   * @param  field the name of the field
+   * @param  value the {@code timestamp} value to append
+   * @return {@code this} for chained invocation
+   * @throws IllegalStateException if the builder is not in a MAP segment
    */
   DocumentBuilder putTimestamp(String field, long timeMillis);
 
@@ -138,89 +138,89 @@ public interface DocumentBuilder {
 
   /**
    * Appends a {@code boolean} value to the current array.
-   * @param value The {@code boolean} value to append.
-   * @return {@code this} for chained invocation.
-   * @throws IllegalStateException If the builder is not in an ARRAY segment.
+   * @param value the {@code boolean} value to append
+   * @return {@code this} for chained invocation
+   * @throws IllegalStateException if the builder is not in an ARRAY segment
    */
   DocumentBuilder add(boolean value);
 
   /**
    * Appends a {@code String} value to the current array.
-   * @param value The {@code String} value to append.
-   * @return {@code this} for chained invocation.
-   * @throws IllegalStateException If the builder is not in an ARRAY segment.
+   * @param value the {@code String} value to append
+   * @return {@code this} for chained invocation
+   * @throws IllegalStateException if the builder is not in an ARRAY segment
    */
   DocumentBuilder add(String value);
 
   /**
    * Appends a {@code byte} value to the current array.
-   * @param value The {@code byte} value to append.
-   * @return {@code this} for chained invocation.
-   * @throws IllegalStateException If the builder is not in an ARRAY segment.
+   * @param value the {@code byte} value to append
+   * @return {@code this} for chained invocation
+   * @throws IllegalStateException if the builder is not in an ARRAY segment
    */
   DocumentBuilder add(byte value);
 
   /**
    * Appends a {@code short} value to the current array.
-   * @param value The {@code short} value to append.
-   * @return {@code this} for chained invocation.
-   * @throws IllegalStateException If the builder is not in an ARRAY segment.
+   * @param value the {@code short} value to append
+   * @return {@code this} for chained invocation
+   * @throws IllegalStateException if the builder is not in an ARRAY segment
    */
   DocumentBuilder add(short value);
 
   /**
-   * Appends a {@code int} value to the current array.
-   * @param value The {@code int} value to append.
+   * Appends an {@code int} value to the current array.
+   * @param value the {@code int} value to append
    * @return {@code this} for chained invocation.
-   * @throws IllegalStateException If the builder is not in an ARRAY segment.
+   * @throws IllegalStateException if the builder is not in an ARRAY segment.
    */
   DocumentBuilder add(int value);
 
   /**
    * Appends a {@code long} value to the current array.
-   * @param value The {@code long} value to append.
-   * @return {@code this} for chained invocation.
-   * @throws IllegalStateException If the builder is not in an ARRAY segment.
+   * @param value the {@code long} value to append
+   * @return {@code this} for chained invocation
+   * @throws IllegalStateException if the builder is not in an ARRAY segment
    */
   DocumentBuilder add(long value);
 
   /**
    * Appends a {@code float} value to the current array.
-   * @param value The {@code float} value to append.
-   * @return {@code this} for chained invocation.
-   * @throws IllegalStateException If the builder is not in an ARRAY segment.
+   * @param value the {@code float} value to append
+   * @return {@code this} for chained invocation
+   * @throws IllegalStateException if the builder is not in an ARRAY segment
    */
   DocumentBuilder add(float value);
 
   /**
    * Appends a {@code double} value to the current array.
-   * @param value The {@code double} value to append.
-   * @return {@code this} for chained invocation.
-   * @throws IllegalStateException If the builder is not in an ARRAY segment.
+   * @param value the {@code double} value to append
+   * @return {@code this} for chained invocation
+   * @throws IllegalStateException if the builder is not in an ARRAY segment
    */
   DocumentBuilder add(double value);
 
   /**
    * Appends a {@code BigDecimal} value to the current array.
-   * @param value The {@code BigDecimal} value to append.
-   * @return {@code this} for chained invocation.
-   * @throws IllegalStateException If the builder is not in an ARRAY segment.
+   * @param value the {@code BigDecimal} value to append
+   * @return {@code this} for chained invocation
+   * @throws IllegalStateException if the builder is not in an ARRAY segment
    */
   DocumentBuilder add(BigDecimal value);
 
   /**
    * Appends a long number as a {@code DECIMAL} value to the current array.
-   * @param value The {@code long} value to append.
-   * @return {@code this} for chained invocation.
-   * @throws IllegalStateException If the builder is not in an ARRAY segment.
+   * @param value the {@code long} value to append
+   * @return {@code this} for chained invocation
+   * @throws IllegalStateException if the builder is not in an ARRAY segment
    */
   DocumentBuilder addDecimal(long decimalValue);
 
   /**
    * Appends a double number as a {@code DECIMAL} value to the current array.
-   * @param value The {@code double} value to append.
-   * @return {@code this} for chained invocation.
-   * @throws IllegalStateException If the builder is not in an ARRAY segment.
+   * @param value the {@code double} value to append
+   * @return {@code this} for chained invocation
+   * @throws IllegalStateException if the builder is not in an ARRAY segment
    */
   DocumentBuilder addDecimal(double decimalValue);
 
@@ -229,10 +229,10 @@ public interface DocumentBuilder {
    * {@code DECIMAL} value. The {@code DECIMAL} value is
    * <tt>(unscaledValue &times; 10<sup>-scale</sup>)</tt>.
    *
-   * @param unscaledValue unscaled value of the {@code DECIMAL}.
-   * @param scale scale of the {@code DECIMAL}.
-   * @return {@code this} for chained invocation.
-   * @throws IllegalStateException If the builder is not in an ARRAY segment.
+   * @param unscaledValue unscaled value of the {@code DECIMAL}
+   * @param scale scale of the {@code DECIMAL}
+   * @return {@code this} for chained invocation
+   * @throws IllegalStateException if the builder is not in an ARRAY segment
    */
   DocumentBuilder addDecimal(int unscaledValue, int scale);
 
@@ -241,75 +241,75 @@ public interface DocumentBuilder {
    * {@code DECIMAL} value. The {@code DECIMAL} value is
    * <tt>(unscaledValue &times; 10<sup>-scale</sup>)</tt>.
    *
-   * @param unscaledValue unscaled value of the {@code DECIMAL}.
-   * @param scale scale of the {@code DECIMAL}.
-   * @return {@code this} for chained invocation.
-   * @throws IllegalStateException If the builder is not in an ARRAY segment.
+   * @param unscaledValue unscaled value of the {@code DECIMAL}
+   * @param scale scale of the {@code DECIMAL}
+   * @return {@code this} for chained invocation
+   * @throws IllegalStateException if the builder is not in an ARRAY segment
    */
   DocumentBuilder addDecimal(long unscaledValue, int scale);
 
   /**
-   * Appends a byte array containing the two's-complement binary representation
+   * Appends a byte array containing the two's complement binary representation
    * and an {@code int} scale as a {@code DECIMAL} value. The input array is
    * assumed to be in <i>big-endian</i> byte-order: the most significant
    * byte is in the zeroth element.
    *
-   * @param unscaledValue unscaled value of the {@code DECIMAL}.
-   * @param scale scale of the {@code DECIMAL}.
-   * @return {@code this} for chained invocation.
-   * @throws IllegalStateException If the builder is not in an ARRAY segment.
+   * @param unscaledValue unscaled value of the {@code DECIMAL}
+   * @param scale scale of the {@code DECIMAL}
+   * @return {@code this} for chained invocation
+   * @throws IllegalStateException if the builder is not in an ARRAY segment
    */
   DocumentBuilder addDecimal(byte[] unscaledValue, int scale);
 
   /**
    * Appends the byte array as a {@code BINARY} value to the current array.
-   * @param value The byte array to append.
-   * @return {@code this} for chained invocation.
-   * @throws IllegalStateException If the builder is not in an ARRAY segment.
+   * @param value the byte array to append
+   * @return {@code this} for chained invocation
+   * @throws IllegalStateException if the builder is not in an ARRAY segment
    */
   DocumentBuilder add(byte[] value);
 
   /**
    * Appends the byte array bounded by offset and length as a {@code BINARY}
    * value to the current array.
-   * @param value The byte array to append.
-   * @param offset The start offset in the byte array.
-   * @param length The length from the offset.
-   * @return {@code this} for chained invocation.
-   * @throws IllegalStateException If the builder is not in an ARRAY segment.
-   * @throws IndexOutOfBoundsException If the offset or offset+length are outside
-   *         of byte array range.
+   * @param value the byte array to append
+   * @param offset the start offset in the byte array
+   * @param length the length from the offset
+   * @return {@code this} for chained invocation
+   * @throws IllegalStateException if the builder is not in an ARRAY segment
+   * @throws IndexOutOfBoundsException if the offset or offset+length are outside
+   *         of byte array range
    */
   DocumentBuilder add(byte[] value, int offset, int length);
 
   /**
    * Appends the {@code ByteBuffer} as a {@code BINARY} value to the current array.
-   * @param value The {@code ByteBuffer} to append.
-   * @return {@code this} for chained invocation.
-   * @throws IllegalStateException If the builder is not in an ARRAY segment.
+   * @param value the {@code ByteBuffer} to append
+   * @return {@code this} for chained invocation
+   * @throws IllegalStateException if the builder is not in an ARRAY segment
    */
   DocumentBuilder add(ByteBuffer value);
 
   /**
    * Appends a {@code NULL} value to the current array.
-   * @return {@code this} for chained invocation.
-   * @throws IllegalStateException If the builder is not in an ARRAY segment.
+   * @return {@code this} for chained invocation
+   * @throws IllegalStateException if the builder is not in an ARRAY segment
    */
   DocumentBuilder addNull();
 
   /**
    * Appends the {@code Value} to the current array.
-   * @param value The {@code Value} to append.
-   * @return {@code this} for chained invocation.
-   * @throws IllegalStateException If the builder is not in an ARRAY segment.
+   * @param value the {@code Value} to append
+   * @return {@code this} for chained invocation
+   * @throws IllegalStateException if the builder is not in an ARRAY segment
    */
   DocumentBuilder add(Value value);
 
   /**
    * Appends the {@code Document} to the current array.
-   * @param value The {@code Document} to append.
-   * @return {@code this} for chained invocation.
-   * @throws IllegalStateException If the builder is not in an ARRAY segment.
+   * @param value the {@code Document} to append
+   * @return {@code this} for chained invocation
+   * @throws IllegalStateException if the builder is not in an ARRAY segment
    */
   DocumentBuilder add(Document value);
 
@@ -323,25 +323,25 @@ public interface DocumentBuilder {
    * Appends the specified {@code time} value represented as number of
    * milliseconds since midnight to the current array.
    *
-   * @param  field The name of the field.
-   * @param  value The {@code time} value to append.
-   * @return {@code this} for chained invocation.
-   * @throws IllegalStateException If the builder is not in a ARRAY segment.
-   * @throws IllegalArgumentException If the value of {@code millis} is greater
-   *         than 86400000.
+   * @param  field the name of the field
+   * @param  value the {@code time} value to append
+   * @return {@code this} for chained invocation
+   * @throws IllegalStateException if the builder is not in a ARRAY segment
+   * @throws IllegalArgumentException if the value of {@code millis} is greater
+   *         than 86400000
    */
   DocumentBuilder addTime(int millis);
 
   DocumentBuilder add(Date value);
 
   /**
-   * Appends the specified {@code date} value represented as number of
+   * Appends the specified {@code date} value represented as the number of
    * days since epoch to the current array.
    *
-   * @param  field The name of the field.
-   * @param  value The {@code date} value to append.
-   * @return {@code this} for chained invocation.
-   * @throws IllegalStateException If the builder is not in a ARRAY segment.
+   * @param  field the name of the field
+   * @param  value the {@code date} value to append
+   * @return {@code this} for chained invocation
+   * @throws IllegalStateException if the builder is not in a ARRAY segment
    */
   DocumentBuilder addDate(int days);
 

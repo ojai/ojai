@@ -27,8 +27,8 @@ import com.google.common.collect.EnumBiMap;
 import com.google.common.collect.Maps;
 
 /**
- * A helper class which provide convenience methods
- * to operate on a {@code Type}.
+ * A helper class that provides methods for conveniently
+ * operating on a {@code Type}.
  */
 @API.Public
 public class Types {
@@ -45,7 +45,7 @@ public class Types {
   public static final String TAG_INT        = TAG_LONG;
 
   /**
-   * The map between type and their tag names for the non intrinsic JSON types.
+   * The map between a type and its tag names for the nonintrinsic JSON types.
    */
   private static final Map<Type, String> TYPE_TAG_MAP = Maps.newEnumMap(Type.class);
   static {
@@ -88,38 +88,38 @@ public class Types {
 
 
   /**
-   * @param value A <code>Value</code> which should tested.
+   * @param value a <code>Value</code> that should tested.
    * @return {@code true} if the given value is not of an intrinsic
-   *         JSON types.
+   *         JSON type.
    */
   public static boolean isExtendedType(Value value) {
     return isExtendedType(value.getType());
   }
 
   /**
-   * @param type A <code>Type</code> which should tested.
+   * @param type a <code>Type</code> that should tested
    * @return {@code true} if the given type is not an intrinsic
-   *         JSON types.
+   *         JSON type
    */
   public static boolean isExtendedType(Type type) {
     return TYPE_TAG_MAP.containsKey(type);
   }
 
   /**
-   * @param value A <code>Value</code> whose tag name should be returned.
+   * @param value a <code>Value</code> whose tag name should be returned
    * @return A {@code String} representing the extended tag name of the
    *         {@code Type} of the given value, if the type is not of an
-   *         intrinsic JSON types, {@code null} otherwise.
+   *         intrinsic JSON type, otherwise {@code null}
    */
   public static String getTypeTag(Value value) {
     return getTypeTag(value.getType());
   }
 
   /**
-   * @param type A <code>Type</code> whose tag name should be returned.
+   * @param type a <code>Type</code> whose tag name should be returned
    * @return A {@code String} representing the extended tag name of the
    *         given {@code Type} if the type is not of an intrinsic JSON
-   *         types, {@code null} otherwise.
+   *         type, otherwise {@code null}
    */
   public static String getTypeTag(Type type) {
     return TYPE_TAG_MAP.get(type);
@@ -127,7 +127,7 @@ public class Types {
 
   /**
    * Returns the {@code EventType} for the specified {@code Type}.
-   * @param type The {@code Type} to lookup
+   * @param type the {@code Type} to lookup
    * @return The corresponding {@code EventType}
    */
   public static EventType getEventTypeForType(Type type) {
@@ -136,7 +136,7 @@ public class Types {
 
   /**
    * Returns the {@code Type} for the specified {@code EventType}.
-   * @param event The {@code EventType} to lookup
+   * @param event the {@code EventType} to lookup
    * @return The corresponding {@code Type}
    */
   public static Type getTypeForEventType(EventType event) {
