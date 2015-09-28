@@ -30,6 +30,7 @@ import org.ojai.Value;
 import org.ojai.annotation.API;
 import org.ojai.exceptions.TypeException;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.io.BaseEncoding;
 
 /**
@@ -38,7 +39,7 @@ import com.google.common.io.BaseEncoding;
  */
 @API.Public
 public class Values {
-  private static final TimeZone LOCAL = Calendar.getInstance().getTimeZone();
+  private static TimeZone LOCAL = Calendar.getInstance().getTimeZone();
 
   private static final String DATE_FORMATTER_STR = "yyyy-MM-dd";
   private static final ThreadLocal<SimpleDateFormat> DATE_FORMATTER = new ThreadLocal<SimpleDateFormat>() {
@@ -391,6 +392,11 @@ public class Values {
     return sb.toString();
   }
 
+  @VisibleForTesting
+  public static void setTimeZone (TimeZone tz) {
+    LOCAL = (TimeZone) tz.clone();
+  }
+
   private static DateFormat getShortDateFormatter() {
     final SimpleDateFormat df = SHORT_DATE_FORMATTER.get();
     df.setTimeZone(LOCAL);
@@ -423,6 +429,7 @@ public class Values {
 
   private static DateFormat getTimestampFormatter() {
     final SimpleDateFormat f = TIMESTAMP_FORMATTER.get();
+    f.setTimeZone(LOCAL);
     return f;
   }
 
