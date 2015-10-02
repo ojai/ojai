@@ -36,7 +36,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
 
   /**
    * Sets the the "_id" field of this Document to the specified Value.
-   * @param _id Value to set as the value of "_id" field
+   * @param _idValue to set as the value of "_id" field
    * @return {@code this} for chaining
    */
   public Document setId(Value _idValue);
@@ -475,7 +475,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * specified boolean array.
    *
    * @param fieldPath the FieldPath to set
-   * @param value the boolean array
+   * @param values the boolean array
    * @return {@code this} for chaining
    */
   Document setArray(String fieldPath, boolean[] values);
@@ -485,7 +485,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * specified boolean array.
    *
    * @param fieldPath the FieldPath to set
-   * @param value the boolean array
+   * @param values the boolean array
    * @return {@code this} for chaining
    */
   Document setArray(FieldPath fieldPath, boolean[] values);
@@ -495,7 +495,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * specified byte array.
    *
    * @param fieldPath the FieldPath to set
-   * @param value the byte array
+   * @param values the byte array
    * @return {@code this} for chaining
    */
   Document setArray(String fieldPath, byte[] values);
@@ -505,7 +505,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * specified byte array.
    *
    * @param fieldPath the FieldPath to set
-   * @param value the byte array
+   * @param values the byte array
    * @return {@code this} for chaining
    */
   Document setArray(FieldPath fieldPath, byte[] values);
@@ -515,7 +515,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * specified short array.
    *
    * @param fieldPath the FieldPath to set
-   * @param value the short array
+   * @param values the short array
    * @return {@code this} for chaining
    */
   Document setArray(String fieldPath, short[] values);
@@ -525,7 +525,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * specified short array.
    *
    * @param fieldPath the FieldPath to set
-   * @param value the short array
+   * @param values the short array
    * @return {@code this} for chaining
    */
   Document setArray(FieldPath fieldPath, short[] values);
@@ -535,7 +535,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * specified int array.
    *
    * @param fieldPath the FieldPath to set
-   * @param value the int array
+   * @param values the int array
    * @return {@code this} for chaining
    */
   Document setArray(String fieldPath, int[] values);
@@ -545,7 +545,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * specified int array.
    *
    * @param fieldPath the FieldPath to set
-   * @param value the int array
+   * @param values the int array
    * @return {@code this} for chaining
    */
   Document setArray(FieldPath fieldPath, int[] values);
@@ -555,7 +555,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * specified long array.
    *
    * @param fieldPath the FieldPath to set
-   * @param value the long array
+   * @param values the long array
    * @return {@code this} for chaining
    */
   Document setArray(String fieldPath, long[] values);
@@ -565,7 +565,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * specified long array.
    *
    * @param fieldPath the FieldPath to set
-   * @param value the long array
+   * @param values the long array
    * @return {@code this} for chaining
    */
   Document setArray(FieldPath fieldPath, long[] values);
@@ -575,7 +575,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * specified float array.
    *
    * @param fieldPath the FieldPath to set
-   * @param value the float array
+   * @param values the float array
    * @return {@code this} for chaining
    */
   Document setArray(String fieldPath, float[] values);
@@ -585,7 +585,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * specified float array.
    *
    * @param fieldPath the FieldPath to set
-   * @param value the float array
+   * @param values the float array
    * @return {@code this} for chaining
    */
   Document setArray(FieldPath fieldPath, float[] values);
@@ -595,7 +595,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * specified double array.
    *
    * @param fieldPath the FieldPath to set
-   * @param value the double array
+   * @param values the double array
    * @return {@code this} for chaining
    */
   Document setArray(String fieldPath, double[] values);
@@ -605,7 +605,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * specified double array.
    *
    * @param fieldPath the FieldPath to set
-   * @param value the double array
+   * @param values the double array
    * @return {@code this} for chaining
    */
   Document setArray(FieldPath fieldPath, double[] values);
@@ -615,7 +615,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * specified String array.
    *
    * @param fieldPath the FieldPath to set
-   * @param value the String array
+   * @param values the String array
    * @return {@code this} for chaining
    */
   Document setArray(String fieldPath, String[] values);
@@ -625,7 +625,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * specified String array.
    *
    * @param fieldPath the FieldPath to set
-   * @param value the String array
+   * @param values the String array
    * @return {@code this} for chaining
    */
   Document setArray(FieldPath fieldPath, String[] values);
@@ -635,7 +635,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * specified Object array.
    *
    * @param fieldPath the FieldPath to set
-   * @param value the Object array
+   * @param values the Object array
    * @return {@code this} for chaining
    */
   Document setArray(String fieldPath, Object... values);
@@ -645,7 +645,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * specified Object array.
    *
    * @param fieldPath the FieldPath to set
-   * @param value the Object array
+   * @param values the Object array
    * @return {@code this} for chaining
    */
   Document setArray(FieldPath fieldPath, Object... values);
@@ -1195,7 +1195,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
   String asJsonString(JsonOptions options);
 
   /**
-   * @return A new {@link documentReader} over the current <code>document</code>
+   * @return A new {@link DocumentReader} over the current <code>document</code>
    */
   DocumentReader asReader();
 

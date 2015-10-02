@@ -82,7 +82,7 @@ public interface DocumentBuilder {
    * current map. Any previous association will be overwritten.
    *
    * @param  field the name of the field
-   * @param  value the {@code date} value to append
+   * @param  days the {@code date} value to append
    * @return {@code this} for chained invocation
    * @throws IllegalStateException if the builder is not in a MAP segment
    */
@@ -96,7 +96,7 @@ public interface DocumentBuilder {
    * current map. Any previous association will be overwritten.
    *
    * @param  field the name of the field
-   * @param  value the {@code time} value to append
+   * @param  millis the {@code time} value to append
    * @return {@code this} for chained invocation
    * @throws IllegalStateException if the builder is not in a MAP segment
    * @throws IllegalArgumentException if the value of {@code millis} is greater
@@ -112,7 +112,7 @@ public interface DocumentBuilder {
    * current map. Any previous association will be overwritten.
    *
    * @param  field the name of the field
-   * @param  value the {@code timestamp} value to append
+   * @param  timeMillis the {@code timestamp} value to append
    * @return {@code this} for chained invocation
    * @throws IllegalStateException if the builder is not in a MAP segment
    */
@@ -210,7 +210,7 @@ public interface DocumentBuilder {
 
   /**
    * Appends a long number as a {@code DECIMAL} value to the current array.
-   * @param value the {@code long} value to append
+   * @param decimalValue the {@code long} value to append
    * @return {@code this} for chained invocation
    * @throws IllegalStateException if the builder is not in an ARRAY segment
    */
@@ -218,7 +218,7 @@ public interface DocumentBuilder {
 
   /**
    * Appends a double number as a {@code DECIMAL} value to the current array.
-   * @param value the {@code double} value to append
+   * @param decimalValue the {@code double} value to append
    * @return {@code this} for chained invocation
    * @throws IllegalStateException if the builder is not in an ARRAY segment
    */
@@ -320,11 +320,10 @@ public interface DocumentBuilder {
   DocumentBuilder add(Time value);
 
   /**
-   * Appends the specified {@code time} value represented as number of
+   * Add the specified {@code time} value represented as number of
    * milliseconds since midnight to the current array.
    *
-   * @param  field the name of the field
-   * @param  value the {@code time} value to append
+   * @param  millis the {@code time} value to append
    * @return {@code this} for chained invocation
    * @throws IllegalStateException if the builder is not in a ARRAY segment
    * @throws IllegalArgumentException if the value of {@code millis} is greater
@@ -335,11 +334,10 @@ public interface DocumentBuilder {
   DocumentBuilder add(Date value);
 
   /**
-   * Appends the specified {@code date} value represented as the number of
+   * Add the specified {@code date} value represented as the number of
    * days since epoch to the current array.
    *
-   * @param  field the name of the field
-   * @param  value the {@code date} value to append
+   * @param  days the {@code date} value to append
    * @return {@code this} for chained invocation
    * @throws IllegalStateException if the builder is not in a ARRAY segment
    */
