@@ -991,4 +991,9 @@ public class JsonDocument extends JsonValue implements Document, Map<String, Obj
     return BeanCodec.encode(asReader(), beanClass);
   }
 
+  @Override
+  public Map<String, Object> toMap() {
+    return this;
+  }
+
 }
