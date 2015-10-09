@@ -23,7 +23,6 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.TimeZone;
 
 import org.ojai.Value;
@@ -39,7 +38,7 @@ import com.google.common.io.BaseEncoding;
  */
 @API.Public
 public class Values {
-  private static TimeZone LOCAL = Calendar.getInstance().getTimeZone();
+  private static TimeZone LOCAL = TimeZone.getDefault();
 
   private static final String DATE_FORMATTER_STR = "yyyy-MM-dd";
   private static final ThreadLocal<SimpleDateFormat> DATE_FORMATTER = new ThreadLocal<SimpleDateFormat>() {
