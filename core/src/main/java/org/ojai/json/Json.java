@@ -37,6 +37,7 @@ import org.ojai.json.impl.JsonDocumentStream;
 import org.ojai.json.impl.JsonUtils;
 
 import com.google.common.base.Preconditions;
+import org.ojai.json.impl.JsonValueBuilder;
 
 /**
  * This class serves as a factory for a JSON implementation
@@ -74,6 +75,18 @@ public final class Json {
   public static Document newDocument(Object bean) throws DecodingException {
     return BeanCodec.decode(newDocumentBuilder(), bean);
   }
+
+  /**
+   * Returns a new instance of a Document built from the specified Java bean.
+   */
+  public static Document newDocument(Map<String,Object> map) {
+    Document doc = newDocument();
+    for (Map.Entry<String, Object> element : map.entrySet()) {
+      doc.set(element.getKey(), JsonValueBuilder.initFromObject(element.getValue()));
+    }
+    return doc;
+  }
+
 
   /**
    * Returns a new instance of the JSON DocumentReader.

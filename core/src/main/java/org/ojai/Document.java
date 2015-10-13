@@ -66,6 +66,13 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
   public <T> T toJavaBean(Class<T> beanClass) throws DecodingException;
 
   /**
+   * Converts this Document to a Java Map.
+   *
+   * @return An instance of the specified class converted from this Document
+   */
+  public Map<String, Object> toMap();
+
+  /**
    * Removes all of the entries from this document.
    */
   Document empty();

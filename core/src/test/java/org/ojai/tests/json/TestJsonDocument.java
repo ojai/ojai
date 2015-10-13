@@ -21,6 +21,7 @@ import java.math.BigDecimal;
 import java.nio.ByteBuffer;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -264,6 +265,48 @@ public class TestJsonDocument {
 
     assertEquals(true, doc.getDate("d1").toString().equals("2005-06-22"));
     assertEquals(true, doc.getDate("d2").toString().equals(d.toString()));
+  }
+
+  @Test
+  public void testDocumentFromMap() {
+    Map map = new HashMap();
+    map.put("string", "string value");
+    map.put("list", Arrays.asList(0,1,2,3,4));
+    Map addMap = new HashMap();
+    addMap.put("city", "SFO");
+    addMap.put("zip_code", 95065);
+    map.put("address", addMap);
+    map.put("complex", Arrays.asList(0,"test",2.3,3, addMap ,4));
+    Document doc = Json.newDocument(map);
+    assertEquals(map.get("string"), doc.getString("string"));
+    assertEquals(((List)map.get("list")).size(), doc.getList("list").size());
+    assertEquals(((List)map.get("list")).get(2), doc.getList("list").get(2));
+    assertEquals(((Map)map.get("address")).size() , doc.getMap("address").size()  );
+    assertEquals(((Map)map.get("address")).get("zip_code") , doc.getMap("address").get("zip_code"));
+    assertEquals(((List)map.get("complex")).size() , doc.getList("complex").size()  );
+    assertEquals(((List)map.get("complex")).get(0) , doc.getList("complex").get(0)  );
+    assertEquals(((List)map.get("complex")).get(4) , doc.getList("complex").get(4)  );
+  }
+
+  @Test
+  public void testToMap() {
+    Document d = Json.newDocument();
+    d.set("string", "hello");
+    d.set("integer", 123);
+    d.set("map.key", "the_key");
+    d.set("map.value", "the_value");
+    d.set("list", Arrays.asList(0, 1, 2, 3));
+
+    Map map = d.toMap();
+
+    assertEquals(d.getString("string") , map.get("string"));
+    assertEquals(d.getInt("integer") , map.get("integer"));
+    assertEquals(123, map.get("integer"));
+    assertEquals("the_key", ((Map)map.get("map")).get("key") );
+    assertEquals("the_value", ((Map)map.get("map")).get("value") );
+    assertEquals(4, ((List)map.get("list")).size());
+    assertEquals(3, ((List)map.get("list")).get(3));
+
   }
 
 }
