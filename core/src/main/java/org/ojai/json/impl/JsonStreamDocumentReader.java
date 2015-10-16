@@ -193,17 +193,25 @@ public class JsonStreamDocumentReader implements DocumentReader {
 
   private void checkEventType(EventType eventType) throws TypeException {
     if (currentEventType != eventType) {
-      throw new TypeException("Event type mismatch");
+      throw new TypeException(String.format(
+          "Event type mismatch, expected %s, got %s", eventType, currentEventType));
     }
   }
 
   private void checkNumericEventType() throws TypeException {
-
-    if (currentEventType == EventType.LONG) {
+    switch (currentEventType) {
+    case BYTE:
+    case SHORT:
+    case INT:
+    case LONG:
+    case FLOAT:
+    case DOUBLE:
       return;
-    } else {
-      throw new TypeException("Event type mismatch");
+    default:
+      break;
     }
+    throw new TypeException("Event type mismatch. Expected numeric type, found "
+        + currentEventType);
   }
 
   protected JsonParser getParser() {
@@ -215,10 +223,6 @@ public class JsonStreamDocumentReader implements DocumentReader {
   }
 
   protected boolean isEventNumeric() {
-    return getParser().getCurrentToken().isNumeric();
-  }
-
-  protected boolean isNumericEvent() {
     return getParser().getCurrentToken().isNumeric();
   }
 
