@@ -18,7 +18,7 @@ package org.ojai.store.exceptions;
 import org.ojai.exceptions.OjaiException;
 
 /**
- * This class is the base class of all exceptions thrown from the {@link OjaiException}.
+ * This class is the base class of all exceptions thrown from the {@link DocumentStore}.
  */
 public class StoreException extends OjaiException {
   private static final long serialVersionUID = -6009041115768531693L;
