@@ -30,6 +30,7 @@ import org.ojai.FieldPath;
 import org.ojai.Value.Type;
 import org.ojai.annotation.API;
 import org.ojai.exceptions.DecodingException;
+import org.ojai.exceptions.OjaiException;
 import org.ojai.exceptions.StreamInUseException;
 import org.ojai.json.Events;
 
@@ -54,11 +55,15 @@ public class JsonDocumentStream implements DocumentStream<Document> {
     final InputStream in = fs.open(path);
     return new JsonDocumentStream(in, map, delegate) {
       @Override
-      public void close() throws IOException {
+      public void close() {
         try {
           super.close();
         } finally {
-          in.close();
+          try {
+            in.close();
+          } catch (IOException e) {
+            throw new OjaiException(e);
+          }
         }
       }
     };
@@ -111,16 +116,18 @@ public class JsonDocumentStream implements DocumentStream<Document> {
         l.documentArrived(document);
       }
     } catch (Exception e) {
-      try {
-        close();
-      } catch (IOException e1) {}
+      close();
       l.failed(e);
     }
   }
 
   @Override
-  public void close() throws IOException {
-    jsonParser.close();
+  public void close() {
+    try {
+      jsonParser.close();
+    } catch (IOException e) {
+      throw new OjaiException(e);
+    }
   }
 
   JsonParser getParser() {

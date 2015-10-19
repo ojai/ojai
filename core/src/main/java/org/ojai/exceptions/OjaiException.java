@@ -21,7 +21,7 @@ import org.ojai.annotation.API;
  * The parent class of all exceptions thrown from this library.
  */
 @API.Public
-public abstract class OjaiException extends RuntimeException {
+public class OjaiException extends RuntimeException {
 
   private static final long serialVersionUID = 0xd5abadb72d9d62edL;
 

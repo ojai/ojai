@@ -18,6 +18,7 @@ package org.ojai;
 import java.util.Iterator;
 
 import org.ojai.annotation.API;
+import org.ojai.exceptions.OjaiException;
 
 /**
  * A stream of documents.
@@ -41,4 +42,8 @@ public interface DocumentStream<T extends Document> extends AutoCloseable, Itera
    */
   Iterable<DocumentReader> documentReaders();
 
+  /**
+   * Overridden to remove checked exception
+   */
+  void close() throws OjaiException;
 }
