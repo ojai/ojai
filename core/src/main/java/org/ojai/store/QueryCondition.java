@@ -119,7 +119,7 @@ public interface QueryCondition {
 
   /**
    * Appends the specified condition to the current condition
-   * block. 
+   * block.
    * @return {@code this} for chaining
    */
   public QueryCondition condition(QueryCondition conditionToAdd);
@@ -283,6 +283,98 @@ public interface QueryCondition {
    * @return {@code this} for chained invocation
    */
   public QueryCondition notMatches(FieldPath path, String regex);
+
+  /**
+   * Adds a condition that tests if the {@code Value} at the specified
+   * {@code FieldPath} is a String and matches the specified SQL LIKE
+   * expression.
+   *
+   * @param path the {@code FieldPath} to test
+   * @param likeExpression the reference LIKE pattern
+   * @return {@code this} for chained invocation
+   */
+  public QueryCondition like(String path, String likeExpression);
+
+  /**
+   * Adds a condition that tests if the {@code Value} at the specified
+   * {@code FieldPath} is a String and matches the specified SQL LIKE
+   * expression.
+   *
+   * @param path the {@code FieldPath} to test
+   * @param likeExpression the reference LIKE pattern
+   * @return {@code this} for chained invocation
+   */
+  public QueryCondition like(FieldPath path, String likeExpression);
+
+  /**
+   * Adds a condition that tests if the {@code Value} at the specified
+   * {@code FieldPath} is a String and matches the specified SQL LIKE
+   * expression optionally escaped with the specified escape character.
+   *
+   * @param path the {@code FieldPath} to test
+   * @param likeExpression the reference LIKE pattern
+   * @param escapeChar the escape character in the LIKE pattern
+   * @return {@code this} for chained invocation
+   */
+  public QueryCondition like(String path, String likeExpression, Character escapeChar);
+
+  /**
+   * Adds a condition that tests if the {@code Value} at the specified
+   * {@code FieldPath} is a String and matches the specified SQL LIKE
+   * expression optionally escaped with the specified escape character.
+   *
+   * @param path the {@code FieldPath} to test
+   * @param likeExpression the reference LIKE pattern
+   * @param escapeChar the escape character in the LIKE pattern
+   * @return {@code this} for chained invocation
+   */
+  public QueryCondition like(FieldPath path, String likeExpression, Character escapeChar);
+
+  /**
+   * Adds a condition that tests if the {@code Value} at the specified
+   * {@code FieldPath} is a String and does not match the specified
+   * SQL LIKE expression.
+   *
+   * @param path the {@code FieldPath} to test
+   * @param likeExpression the reference LIKE pattern
+   * @return {@code this} for chained invocation
+   */
+  public QueryCondition notLike(String path, String likeExpression);
+
+  /**
+   * Adds a condition that tests if the {@code Value} at the specified
+   * {@code FieldPath} is a String and does not match the specified
+   * SQL LIKE expression.
+   *
+   * @param path the {@code FieldPath} to test
+   * @param likeExpression the reference LIKE pattern
+   * @return {@code this} for chained invocation
+   */
+  public QueryCondition notLike(FieldPath path, String likeExpression);
+
+  /**
+   * Adds a condition that tests if the {@code Value} at the specified
+   * {@code FieldPath} is a String and does not match the specified
+   * SQL LIKE expression optionally escaped with the specified escape character.
+   *
+   * @param path the {@code FieldPath} to test
+   * @param likeExpression the reference LIKE pattern
+   * @param escapeChar the escape character in the LIKE pattern
+   * @return {@code this} for chained invocation
+   */
+  public QueryCondition notLike(String path, String likeExpression, Character escapeChar);
+
+  /**
+   * Adds a condition that tests if the {@code Value} at the specified
+   * {@code FieldPath} is a String and does not match the specified
+   * SQL LIKE expression optionally escaped with the specified escape character.
+   *
+   * @param path the {@code FieldPath} to test
+   * @param likeExpression the reference LIKE pattern
+   * @param escapeChar the escape character in the LIKE pattern
+   * @return {@code this} for chained invocation
+   */
+  public QueryCondition notLike(FieldPath path, String likeExpression, Character escapeChar);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
