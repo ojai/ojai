@@ -382,6 +382,4 @@ public interface DocumentMutation extends Iterable<MutationOp> {
 
   public DocumentMutation delete(FieldPath path);
 
-  public DocumentMutation build();
-
 }
