@@ -382,7 +382,7 @@ public interface QueryCondition {
    * the specified {@code boolean} value.
    *
    * @param path the {@code FieldPath} to test
-   * @param op the {@code ConditionOp} to apply
+   * @param op the {@code QueryCondition.Op} to apply
    * @param value the reference boolean {@code Value}
    * @return {@code this} for chained invocation
    */
@@ -394,7 +394,7 @@ public interface QueryCondition {
    * the specified {@code boolean} value.
    *
    * @param path the {@code FieldPath} to test
-   * @param op the {@code ConditionOp} to apply
+   * @param op the {@code QueryCondition.Op} to apply
    * @param value the reference boolean {@code Value}
    * @return {@code this} for chained invocation
    */
@@ -406,7 +406,7 @@ public interface QueryCondition {
    * the specified {@code String} value.
    *
    * @param path the {@code FieldPath} to test
-   * @param op the {@code ConditionOp} to apply
+   * @param op the {@code QueryCondition.Op} to apply
    * @param value the reference String {@code Value}
    * @return {@code this} for chained invocation
    */
@@ -418,7 +418,7 @@ public interface QueryCondition {
    * the specified {@code String} value.
    *
    * @param path the {@code FieldPath} to test
-   * @param op the {@code ConditionOp} to apply
+   * @param op the {@code QueryCondition.Op} to apply
    * @param value the reference String {@code Value}
    * @return {@code this} for chained invocation
    */
@@ -430,7 +430,7 @@ public interface QueryCondition {
    * the specified {@code byte} value.
    *
    * @param path the {@code FieldPath} to test
-   * @param op the {@code ConditionOp} to apply
+   * @param op the {@code QueryCondition.Op} to apply
    * @param value the reference byte {@code Value}
    * @return {@code this} for chained invocation
    */
@@ -442,7 +442,7 @@ public interface QueryCondition {
    * the specified {@code byte} value.
    *
    * @param path the {@code FieldPath} to test
-   * @param op the {@code ConditionOp} to apply
+   * @param op the {@code QueryCondition.Op} to apply
    * @param value the reference byte {@code Value}
    * @return {@code this} for chained invocation
    */
@@ -454,7 +454,7 @@ public interface QueryCondition {
    * the specified {@code short} value.
    *
    * @param path the {@code FieldPath} to test
-   * @param op the {@code ConditionOp} to apply
+   * @param op the {@code QueryCondition.Op} to apply
    * @param value the reference short {@code Value}
    * @return {@code this} for chained invocation
    */
@@ -466,7 +466,7 @@ public interface QueryCondition {
    * the specified {@code short} value.
    *
    * @param path the {@code FieldPath} to test
-   * @param op the {@code ConditionOp} to apply
+   * @param op the {@code QueryCondition.Op} to apply
    * @param value the reference short {@code Value}
    * @return {@code this} for chained invocation
    */
@@ -478,7 +478,7 @@ public interface QueryCondition {
    * the specified {@code int} value.
    *
    * @param path the {@code FieldPath} to test
-   * @param op the {@code ConditionOp} to apply
+   * @param op the {@code QueryCondition.Op} to apply
    * @param value the reference int {@code Value}
    * @return {@code this} for chained invocation
    */
@@ -490,7 +490,7 @@ public interface QueryCondition {
    * the specified {@code int} value.
    *
    * @param path the {@code FieldPath} to test
-   * @param op the {@code ConditionOp} to apply
+   * @param op the {@code QueryCondition.Op} to apply
    * @param value the reference int {@code Value}
    * @return {@code this} for chained invocation
    */
@@ -502,7 +502,7 @@ public interface QueryCondition {
    * the specified {@code long} value.
    *
    * @param path the {@code FieldPath} to test
-   * @param op the {@code ConditionOp} to apply
+   * @param op the {@code QueryCondition.Op} to apply
    * @param value the reference long {@code Value}
    * @return {@code this} for chained invocation
    */
@@ -514,7 +514,7 @@ public interface QueryCondition {
    * the specified {@code long} value.
    *
    * @param path the {@code FieldPath} to test
-   * @param op the {@code ConditionOp} to apply
+   * @param op the {@code QueryCondition.Op} to apply
    * @param value the reference long {@code Value}
    * @return {@code this} for chained invocation
    */
@@ -526,7 +526,7 @@ public interface QueryCondition {
    * the specified {@code float} value.
    *
    * @param path the {@code FieldPath} to test
-   * @param op the {@code ConditionOp} to apply
+   * @param op the {@code QueryCondition.Op} to apply
    * @param value the reference float {@code Value}
    * @return {@code this} for chained invocation
    */
@@ -538,7 +538,7 @@ public interface QueryCondition {
    * the specified {@code float} value.
    *
    * @param path the {@code FieldPath} to test
-   * @param op the {@code ConditionOp} to apply
+   * @param op the {@code QueryCondition.Op} to apply
    * @param value the reference float {@code Value}
    * @return {@code this} for chained invocation
    */
@@ -550,7 +550,7 @@ public interface QueryCondition {
    * the specified {@code double} value.
    *
    * @param path the {@code FieldPath} to test
-   * @param op the {@code ConditionOp} to apply
+   * @param op the {@code QueryCondition.Op} to apply
    * @param value the reference double {@code Value}
    * @return {@code this} for chained invocation
    */
@@ -562,7 +562,7 @@ public interface QueryCondition {
    * the specified {@code double} value.
    *
    * @param path the {@code FieldPath} to test
-   * @param op the {@code ConditionOp} to apply
+   * @param op the {@code QueryCondition.Op} to apply
    * @param value the reference double {@code Value}
    * @return {@code this} for chained invocation
    */
@@ -574,7 +574,7 @@ public interface QueryCondition {
    * the specified {@code BigDecimal} value.
    *
    * @param path the {@code FieldPath} to test
-   * @param op the {@code ConditionOp} to apply
+   * @param op the {@code QueryCondition.Op} to apply
    * @param value the reference BigDecimal {@code Value}
    * @return {@code this} for chained invocation
    */
@@ -586,7 +586,7 @@ public interface QueryCondition {
    * the specified {@code BigDecimal} value.
    *
    * @param path the {@code FieldPath} to test
-   * @param op the {@code ConditionOp} to apply
+   * @param op the {@code QueryCondition.Op} to apply
    * @param value the reference BigDecimal {@code Value}
    * @return {@code this} for chained invocation
    */
@@ -598,7 +598,7 @@ public interface QueryCondition {
    * the specified {@code Date} value.
    *
    * @param path the {@code FieldPath} to test
-   * @param op the {@code ConditionOp} to apply
+   * @param op the {@code QueryCondition.Op} to apply
    * @param value the reference Date {@code Value}
    * @return {@code this} for chained invocation
    */
@@ -610,7 +610,7 @@ public interface QueryCondition {
    * the specified {@code Date} value.
    *
    * @param path the {@code FieldPath} to test
-   * @param op the {@code ConditionOp} to apply
+   * @param op the {@code QueryCondition.Op} to apply
    * @param value the reference Date {@code Value}
    * @return {@code this} for chained invocation
    */
@@ -622,7 +622,7 @@ public interface QueryCondition {
    * the specified {@code Time} value.
    *
    * @param path the {@code FieldPath} to test
-   * @param op the {@code ConditionOp} to apply
+   * @param op the {@code QueryCondition.Op} to apply
    * @param value the reference Time {@code Value}
    * @return {@code this} for chained invocation
    */
@@ -634,7 +634,7 @@ public interface QueryCondition {
    * the specified {@code Time} value.
    *
    * @param path the {@code FieldPath} to test
-   * @param op the {@code ConditionOp} to apply
+   * @param op the {@code QueryCondition.Op} to apply
    * @param value the reference Time {@code Value}
    * @return {@code this} for chained invocation
    */
@@ -646,7 +646,7 @@ public interface QueryCondition {
    * the specified {@code Timestamp} value.
    *
    * @param path the {@code FieldPath} to test
-   * @param op the {@code ConditionOp} to apply
+   * @param op the {@code QueryCondition.Op} to apply
    * @param value the reference Timestamp {@code Value}
    * @return {@code this} for chained invocation
    */
@@ -658,7 +658,7 @@ public interface QueryCondition {
    * the specified {@code Timestamp} value.
    *
    * @param path the {@code FieldPath} to test
-   * @param op the {@code ConditionOp} to apply
+   * @param op the {@code QueryCondition.Op} to apply
    * @param value the reference Timestamp {@code Value}
    * @return {@code this} for chained invocation
    */
@@ -670,7 +670,7 @@ public interface QueryCondition {
    * the specified {@code Interval} value.
    *
    * @param path the {@code FieldPath} to test
-   * @param op the {@code ConditionOp} to apply
+   * @param op the {@code QueryCondition.Op} to apply
    * @param value the reference Interval {@code Value}
    * @return {@code this} for chained invocation
    */
@@ -682,7 +682,7 @@ public interface QueryCondition {
    * the specified {@code Interval} value.
    *
    * @param path the {@code FieldPath} to test
-   * @param op the {@code ConditionOp} to apply
+   * @param op the {@code QueryCondition.Op} to apply
    * @param value the reference Interval {@code Value}
    * @return {@code this} for chained invocation
    */
@@ -697,7 +697,7 @@ public interface QueryCondition {
    * ByteBuffer state or content.
    *
    * @param path the {@code FieldPath} to test
-   * @param op the {@code ConditionOp} to apply
+   * @param op the {@code QueryCondition.Op} to apply
    * @param value the reference ByteBuffer {@code Value}
    * @return {@code this} for chained invocation
    */
@@ -712,7 +712,7 @@ public interface QueryCondition {
    * ByteBuffer state or content.
    *
    * @param path the {@code FieldPath} to test
-   * @param op the {@code ConditionOp} to apply
+   * @param op the {@code QueryCondition.Op} to apply
    * @param value the reference ByteBuffer {@code Value}
    * @return {@code this} for chained invocation
    */
@@ -751,7 +751,7 @@ public interface QueryCondition {
    * {@code FieldPath} equals the specified {@code List} value.
    *
    * @param path the {@code FieldPath} to test
-   * @param op the {@code ConditionOp} to apply
+   * @param op the {@code QueryCondition.Op} to apply
    * @param value the reference List {@code Value}
    * @return {@code this} for chained invocation
    * @throws TypeException if a value in the specified List is not one of
@@ -764,7 +764,7 @@ public interface QueryCondition {
    * {@code FieldPath} equals the specified {@code List} value.
    *
    * @param path the {@code FieldPath} to test
-   * @param op the {@code ConditionOp} to apply
+   * @param op the {@code QueryCondition.Op} to apply
    * @param value the reference List {@code Value}
    * @return {@code this} for chained invocation
    * @throws TypeException if a value in the specified List is not one of
@@ -805,7 +805,7 @@ public interface QueryCondition {
    * {@code FieldPath} does not equal the specified {@code List} value.
    *
    * @param path the {@code FieldPath} to test
-   * @param op the {@code ConditionOp} to apply
+   * @param op the {@code QueryCondition.Op} to apply
    * @param value the reference List {@code Value}
    * @return {@code this} for chained invocation
    * @throws TypeException if a value in the specified List is not one of
@@ -818,12 +818,38 @@ public interface QueryCondition {
    * {@code FieldPath} does not equal the specified {@code List} value.
    *
    * @param path the {@code FieldPath} to test
-   * @param op the {@code ConditionOp} to apply
+   * @param op the {@code QueryCondition.Op} to apply
    * @param value the reference List {@code Value}
    * @return {@code this} for chained invocation
    * @throws TypeException if a value in the specified List is not one of
    *         the {@code Value} types
    */
   public QueryCondition notEquals(FieldPath path, List<? extends Object> value);
+
+  /**
+   * Adds a condition that tests if the size of the {@code Value} at the
+   * specified {@code FieldPath} satisfies the given {@link Op} and the size.
+   * The value must be one of the following types: {@code STRING},
+   * {@code BINARY}, {@code MAP} or {@code ARRAY}.
+   *
+   * @param path the {@code FieldPath} to test
+   * @param op the {@code QueryCondition.Op} to apply
+   * @param size the reference size of {@code Value}
+   * @return {@code this} for chained invocation
+   */
+  public QueryCondition sizeOf(String path, Op op, long size);
+
+  /**
+   * Adds a condition that tests if the size of the {@code Value} at the
+   * specified {@code FieldPath} satisfies the given {@link Op} and the size.
+   * The value must be one of the following types: {@code STRING},
+   * {@code BINARY}, {@code MAP} or {@code ARRAY}.
+   *
+   * @param path the {@code FieldPath} to test
+   * @param op the {@code QueryCondition.Op} to apply
+   * @param size the reference size of {@code Value}
+   * @return {@code this} for chained invocation
+   */
+  public QueryCondition sizeOf(FieldPath path, Op op, long size);
 
 }
