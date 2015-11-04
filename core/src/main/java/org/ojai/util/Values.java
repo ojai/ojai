@@ -365,15 +365,18 @@ public class Values {
         sb.append(value.getIntervalAsLong());
         break;
       case BINARY:
+        int off = 0;
         byte[] bytes;
         ByteBuffer bbuf = value.getBinary();
+        int len = bbuf.remaining();
         if (bbuf.hasArray()) {
+          off = bbuf.arrayOffset();
           bytes = bbuf.array();
         } else {
           bytes = new byte[bbuf.remaining()];
           bbuf.get(bytes);
         }
-        sb.append('"').append(BaseEncoding.base64().encode(bytes)).append('"');
+        sb.append('"').append(BaseEncoding.base64().encode(bytes, off, len)).append('"');
         break;
       default:
         sb.append(value.getObject());

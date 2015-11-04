@@ -30,6 +30,7 @@ import org.ojai.Value;
 import org.ojai.annotation.API;
 import org.ojai.exceptions.TypeException;
 import org.ojai.types.Interval;
+import org.ojai.util.Values;
 
 @API.Internal
 public class JsonValue implements Value {
@@ -309,6 +310,10 @@ public class JsonValue implements Value {
     return newKeyValue;
   }
 
+  @Override
+  public String toString() {
+    return Values.asJsonString(this);
+  }
 
   @Override
   public boolean equals(Object obj) {
