@@ -36,8 +36,6 @@ import org.ojai.json.impl.JsonDocumentBuilder;
 import org.ojai.json.impl.JsonDocumentStream;
 import org.ojai.json.impl.JsonUtils;
 
-import com.google.common.base.Preconditions;
-
 /**
  * This class serves as a factory for a JSON implementation
  * of all OJAI interfaces.
@@ -157,13 +155,21 @@ public final class Json {
   }
 
   public static String toJsonString(DocumentReader r, JsonOptions options) {
+    JsonDocumentBuilder builder = new JsonDocumentBuilder().setJsonOptions(options);
     EventType e = r.next();
-    Preconditions.checkState((e == EventType.START_MAP),
-        "Expected %s, found %s", EventType.START_MAP, e);
-    JsonDocumentBuilder builder = new JsonDocumentBuilder()
-        .setJsonOptions(options)
-        .addNewMap();
-    JsonUtils.addToMap(r, builder);
+    switch (e) {
+    case START_MAP:
+      builder.addNewMap();
+      JsonUtils.addToMap(r, builder);
+      break;
+    case START_ARRAY:
+      builder.setCheckContext(false).addNewArray().setCheckContext(true);
+      JsonUtils.addToArray(r, builder);
+      break;
+    default:
+      JsonUtils.addReaderEvent(e, r, builder.setCheckContext(false));
+      break;
+    }
     return builder.asUTF8String();
   }
 

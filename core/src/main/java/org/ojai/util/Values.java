@@ -16,7 +16,6 @@
 package org.ojai.util;
 
 import java.math.BigDecimal;
-import java.nio.ByteBuffer;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
@@ -28,9 +27,10 @@ import java.util.TimeZone;
 import org.ojai.Value;
 import org.ojai.annotation.API;
 import org.ojai.exceptions.TypeException;
+import org.ojai.json.Json;
+import org.ojai.json.JsonOptions;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.io.BaseEncoding;
 
 /**
  * A helper class that provides convenience methods
@@ -319,19 +319,19 @@ public class Values {
    *     "null": null,
    *     "boolean" : true,
    *     "string": "eureka",
-   *     "byte" : {"$byte": 127},
-   *     "short": {"$short": 32767},
-   *     "int": {"$int": 2147483647},
-   *     "long": 9223372036854775807,
-   *     "float" : {"$float" : 3.4028235E38},
+   *     "byte" : {"$numberLong": 127},
+   *     "short": {"$numberLong": 32767},
+   *     "int": {"$numberLong": 2147483647},
+   *     "long": {"$numberLong":9223372036854775807},
+   *     "float" : 3.4028235E38,
    *     "double" : 1.7976931348623157e308,
    *     "decimal": {"$decimal": "12345678901234567890189012345678901.23456789"},
-   *     "date": {"$date": "&lt;yyyy-mm-dd&gt;"},
+   *     "date": {"$dateDay": "&lt;yyyy-mm-dd&gt;"},
    *     "time" : {"$time" : "&lt;HH:mm:ss[.sss]&gt;"},
-   *     "timestamp" : {"$timestamp" : "&lt;yyyy-MM-ddTHH:mm:ss.SSS+Z&gt;"},
+   *     "timestamp" : {"$date" : "&lt;yyyy-MM-ddTHH:mm:ss.SSSXXX&gt;"},
    *     "interval" : {"$interval" : &lt;number_of_millisecods&gt;},
    *     "binary" : {"$binary" : "&lt;base64_encoded_binary_value&gt;"},
-   *     "array" : [42, "open sesame", 3.14, {"$date": "2015-01-21"}]
+   *     "array" : [42, "open sesame", 3.14, {"$dateDay": "2015-01-21"}]
    *   }
    * }
    * </pre>
@@ -340,58 +340,7 @@ public class Values {
    * @return The extended JSON representation of the given value
    */
   public static String asJsonString(Value value) {
-    StringBuilder sb = new StringBuilder();
-    if (Types.isExtendedType(value)) {
-      sb.append('{').append('"').append(Types.getTypeTag(value)).append('"').append(':');
-      switch (value.getType()) {
-      case DATE:
-        sb.append('"').append(getDateFormatter().format(value.getDate())).append('"');
-        break;
-      case TIME:
-        int millis = value.getTimeAsInt();
-        if (millis % 1000 == 0) {
-          sb.append('"').append(getTimeFormatter().format(value.getTime())).append('"');
-        } else {
-          sb.append('"').append(getFullTimeFormatter().format(value.getTime())).append('"');
-        }
-        break;
-      case TIMESTAMP:
-        sb.append('"').append(getTimestampFormatter().format(value.getTimestamp())).append('"');
-        break;
-      case DECIMAL:
-        sb.append('"').append(value.getObject()).append('"');
-        break;
-      case INTERVAL:
-        sb.append(value.getIntervalAsLong());
-        break;
-      case BINARY:
-        int off = 0;
-        byte[] bytes;
-        ByteBuffer bbuf = value.getBinary();
-        int len = bbuf.remaining();
-        if (bbuf.hasArray()) {
-          off = bbuf.arrayOffset();
-          bytes = bbuf.array();
-        } else {
-          bytes = new byte[bbuf.remaining()];
-          bbuf.get(bytes);
-        }
-        sb.append('"').append(BaseEncoding.base64().encode(bytes, off, len)).append('"');
-        break;
-      default:
-        sb.append(value.getObject());
-      }
-      sb.append('}');
-    } else {
-      switch (value.getType()) {
-      case STRING:
-        sb.append('"').append(value.getString().replaceAll("[\n\r]+", "\\\\n")).append('"');
-        break;
-      default:
-        sb.append(value.getObject());
-      }
-    }
-    return sb.toString();
+    return Json.toJsonString(value.asReader(), JsonOptions.WITH_TAGS);
   }
 
   @VisibleForTesting

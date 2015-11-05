@@ -69,6 +69,7 @@ public class JsonDocumentBuilder implements DocumentBuilder {
   private Stack<BuilderContext> ctxStack;
   private BuilderContext currentContext;
   private JsonOptions jsonOptions;
+  private boolean checkContext;
 
   public JsonDocumentBuilder() {
     b = new ByteArrayWriterOutputStream();
@@ -103,14 +104,15 @@ public class JsonDocumentBuilder implements DocumentBuilder {
       jsonGenerator = jFactory.createGenerator(out, JsonEncoding.UTF8);
       ctxStack = new Stack<BuilderContext>();
       currentContext = BuilderContext.NONE;
-      setJsonOptions(JsonOptions.DEFAULT);
+      checkContext = true;
+      setJsonOptions(JsonOptions.WITH_TAGS);
     } catch (IOException io) {
       throw new EncodingException(io);
     }
   }
 
   private void checkContext(BuilderContext expectedContext) {
-    Preconditions.checkState((currentContext == expectedContext),
+    Preconditions.checkState((!checkContext || currentContext == expectedContext),
         "Mismatch in writeContext. Expected %s but found %s",
         expectedContext.name(), currentContext.name());
   }
@@ -801,7 +803,8 @@ public class JsonDocumentBuilder implements DocumentBuilder {
     } catch (IOException ie) {
       throw new EncodingException(ie);
     }
-    ctxStack.push(BuilderContext.ARRAYCONTEXT);
+    currentContext = BuilderContext.ARRAYCONTEXT;
+    ctxStack.push(currentContext);
     return this;
   }
 
@@ -911,7 +914,7 @@ public class JsonDocumentBuilder implements DocumentBuilder {
     }
     ctxStack.pop();
 
-    currentContext = ctxStack.peek();
+    currentContext = ctxStack.isEmpty() ? BuilderContext.NONE : ctxStack.peek();
 
     return this;
   }
@@ -956,7 +959,13 @@ public class JsonDocumentBuilder implements DocumentBuilder {
   }
 
   public String asUTF8String() {
-    Preconditions.checkState(jsonGenerator.isClosed(), "The document has not been built.");
+    if (!jsonGenerator.isClosed()) {
+      try {
+        jsonGenerator.close();
+      } catch (IOException e) {
+      throw new RuntimeException(e);
+      }
+    }
     if (cachedJson == null) {
       cachedJson = toString();
     }
@@ -1015,6 +1024,12 @@ public class JsonDocumentBuilder implements DocumentBuilder {
       }
     }
     return null;
+  }
+
+  @API.Internal
+  public JsonDocumentBuilder setCheckContext(boolean value) {
+    this.checkContext = value;
+    return this;
   }
 
 }

@@ -35,7 +35,6 @@ public class TestJsonDocumentReader extends BaseTest {
   @Test
   public void testAll() throws Exception {
 
-
     try (InputStream testJson = getJsonStream("test.json");
         DocumentStream<Document> stream = Json.newDocumentStream(testJson);) {
       EventType et = null;

@@ -339,6 +339,6 @@ public interface Value {
    * Returns a {@link DocumentReader} over the current document.
    * @return
    */
-  DocumentReader getStream();
+  DocumentReader asReader();
 
 }

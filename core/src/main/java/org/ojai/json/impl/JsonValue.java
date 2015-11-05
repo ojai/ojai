@@ -93,7 +93,7 @@ public class JsonValue implements Value {
     case LONG:
       return;
     default:
-      throw new TypeException("Value type is wrong");
+      throw new TypeException("Expected a integer type, found: " + valueType);
     }
   }
 
@@ -294,8 +294,8 @@ public class JsonValue implements Value {
   }
 
   @Override
-  public DocumentReader getStream() {
-    return null;
+  public DocumentReader asReader() {
+    return new JsonDOMDocumentReader(this);
   }
 
   /*

@@ -28,8 +28,10 @@ public class JsonOptions {
 
   public static final JsonOptions DEFAULT = new JsonOptions();
 
+  public static final JsonOptions WITH_TAGS = new JsonOptions().withTags();
+
   private boolean pretty = false;
-  private boolean withTags = true;
+  private boolean withTags = false;
 
   public JsonOptions() { }
 

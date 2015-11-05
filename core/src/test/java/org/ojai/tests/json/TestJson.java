@@ -147,7 +147,7 @@ public class TestJson extends BaseTest {
          DocumentStream<Document> stream = Json.newDocumentStream(in)) {
       Document doc = stream.iterator().next();
 
-      String s = Json.toJsonString(doc);
+      String s = Json.toJsonString(doc, JsonOptions.WITH_TAGS);
       assertEquals("{\"map\":{\"null\":null,\"boolean\":true,\"string\":\"eureka\","
           + "\"byte\":{\"$numberLong\":127},\"short\":{\"$numberLong\":32767},"
           + "\"int\":{\"$numberLong\":2147483647},\"long\":{\"$numberLong\":9223372036854775807},"
@@ -229,6 +229,59 @@ public class TestJson extends BaseTest {
           "    } ]\n" +
           "  }\n" +
           "}", s);
+    }
+  }
+
+  @Test
+  public void testJson_AsJsonStringNonDocument() throws Exception {
+    try (InputStream in = getJsonStream("test.json");
+         DocumentStream<Document> stream = Json.newDocumentStream(in)) {
+      Document doc = stream.iterator().next();
+
+      assertEquals("null",
+          Json.toJsonString(doc.getValue("map.null").asReader(), JsonOptions.WITH_TAGS));
+
+      assertEquals("true",
+          Json.toJsonString(doc.getValue("map.boolean").asReader(), JsonOptions.WITH_TAGS));
+
+      assertEquals("\"eureka\"",
+          Json.toJsonString(doc.getValue("map.string").asReader(), JsonOptions.WITH_TAGS));
+
+      assertEquals("{\"$numberLong\":127}",
+          Json.toJsonString(doc.getValue("map.byte").asReader(), JsonOptions.WITH_TAGS));
+
+      assertEquals("{\"$numberLong\":32767}",
+          Json.toJsonString(doc.getValue("map.short").asReader(), JsonOptions.WITH_TAGS));
+
+      assertEquals("{\"$numberLong\":2147483647}",
+          Json.toJsonString(doc.getValue("map.int").asReader(), JsonOptions.WITH_TAGS));
+
+      assertEquals("{\"$numberLong\":9223372036854775807}",
+          Json.toJsonString(doc.getValue("map.long").asReader(), JsonOptions.WITH_TAGS));
+
+      assertEquals("3.4028235",
+          Json.toJsonString(doc.getValue("map.float").asReader(), JsonOptions.WITH_TAGS));
+
+      assertEquals("1.7976931348623157E308",
+          Json.toJsonString(doc.getValue("map.double").asReader(), JsonOptions.WITH_TAGS));
+
+      assertEquals("{\"$decimal\":\"123456789012345678901234567890123456789012345678901.23456789\"}",
+          Json.toJsonString(doc.getValue("map.decimal").asReader(), JsonOptions.WITH_TAGS));
+
+      assertEquals("{\"$dateDay\":\"2012-10-20\"}",
+          Json.toJsonString(doc.getValue("map.date").asReader(), JsonOptions.WITH_TAGS));
+
+      assertEquals("{\"$time\":\"07:42:46\"}",
+          Json.toJsonString(doc.getValue("map.time").asReader(), JsonOptions.WITH_TAGS));
+
+      assertEquals("{\"$date\":\"2012-10-20T07:42:46.123-07:00\"}",
+          Json.toJsonString(doc.getValue("map.timestamp").asReader(), JsonOptions.WITH_TAGS));
+
+      assertEquals("{\"$binary\":\"YWJjZA==\"}",
+          Json.toJsonString(doc.getValue("map.binary").asReader(), JsonOptions.WITH_TAGS));
+
+      assertEquals("[42,\"open sesame\",3.14,{\"$dateDay\":\"2015-01-21\"}]",
+          Json.toJsonString(doc.getValue("map.array").asReader(), JsonOptions.WITH_TAGS));
     }
   }
 

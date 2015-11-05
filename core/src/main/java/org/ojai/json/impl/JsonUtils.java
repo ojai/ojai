@@ -130,75 +130,81 @@ public class JsonUtils {
     }
   }
 
-  private static void addToArray(DocumentReader r, DocumentBuilder w) {
+  public static void addToArray(DocumentReader r, DocumentBuilder w) {
     EventType e;
     while((e = r.next()) != null) {
-      switch (e) {
-      case NULL:
-        w.addNull();
-        break;
-      case BOOLEAN:
-        w.add(r.getBoolean());
-        break;
-      case STRING:
-        w.add(r.getString());
-        break;
-      case BYTE:
-        w.add(r.getByte());
-        break;
-      case SHORT:
-        w.add(r.getShort());
-        break;
-      case INT:
-        w.add(r.getInt());
-        break;
-      case LONG:
-        w.add(r.getLong());
-        break;
-      case FLOAT:
-        w.add(r.getFloat());
-        break;
-      case DOUBLE:
-        w.add(r.getDouble());
-        break;
-      case DECIMAL:
-        w.add(r.getDecimal());
-        break;
-      case DATE:
-        w.add(r.getDate());
-        break;
-      case TIME:
-        w.add(r.getTime());
-        break;
-      case TIMESTAMP:
-        w.add(r.getTimestamp());
-        break;
-      case INTERVAL:
-        w.add(r.getInterval());
-        break;
-      case BINARY:
-        w.add(r.getBinary());
-        break;
-      case START_MAP:
-        w.addNewMap();
-        addToMap(r, w);
-        break;
-      case END_MAP:
-        w.endMap();
-        break;
-      case START_ARRAY:
-        w.addNewArray();
-        addToArray(r, w);
-        break;
-      case END_ARRAY:
-        w.endArray();
+      if (!addReaderEvent(e, r, w)) {
         return;
-      case FIELD_NAME:
-        throw new DecodingException("FIELD_NAME event encountered while appending to an array");
-      default:
-        throw new DecodingException("Unknown event type: " + e);
       }
     }
   }
 
+  public static boolean addReaderEvent(EventType e, DocumentReader r, DocumentBuilder w) {
+    switch (e) {
+    case NULL:
+      w.addNull();
+      break;
+    case BOOLEAN:
+      w.add(r.getBoolean());
+      break;
+    case STRING:
+      w.add(r.getString());
+      break;
+    case BYTE:
+      w.add(r.getByte());
+      break;
+    case SHORT:
+      w.add(r.getShort());
+      break;
+    case INT:
+      w.add(r.getInt());
+      break;
+    case LONG:
+      w.add(r.getLong());
+      break;
+    case FLOAT:
+      w.add(r.getFloat());
+      break;
+    case DOUBLE:
+      w.add(r.getDouble());
+      break;
+    case DECIMAL:
+      w.add(r.getDecimal());
+      break;
+    case DATE:
+      w.add(r.getDate());
+      break;
+    case TIME:
+      w.add(r.getTime());
+      break;
+    case TIMESTAMP:
+      w.add(r.getTimestamp());
+      break;
+    case INTERVAL:
+      w.add(r.getInterval());
+      break;
+    case BINARY:
+      w.add(r.getBinary());
+      break;
+    case START_MAP:
+      w.addNewMap();
+      addToMap(r, w);
+      break;
+    case END_MAP:
+      w.endMap();
+      break;
+    case START_ARRAY:
+      w.addNewArray();
+      addToArray(r, w);
+      break;
+    case END_ARRAY:
+      w.endArray();
+      return false;
+    case FIELD_NAME:
+      throw new DecodingException("FIELD_NAME event encountered while appending to an array");
+    default:
+      throw new DecodingException("Unknown event type: " + e);
+    }
+    return true;
+  }
 }

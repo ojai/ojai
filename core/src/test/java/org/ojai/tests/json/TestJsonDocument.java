@@ -17,6 +17,8 @@ package org.ojai.tests.json;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
 import java.sql.Date;
@@ -28,12 +30,61 @@ import java.util.Map;
 import org.junit.Test;
 import org.ojai.Document;
 import org.ojai.DocumentReader;
+import org.ojai.DocumentStream;
 import org.ojai.DocumentReader.EventType;
 import org.ojai.Value.Type;
 import org.ojai.json.Json;
+import org.ojai.json.JsonOptions;
+import org.ojai.tests.BaseTest;
 import org.ojai.util.Values;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class TestJsonDocument {
+public class TestJsonDocument extends BaseTest {
+  private static Logger logger = LoggerFactory
+      .getLogger(TestJsonDocument.class);
+
+  public static final String docStrWithoutTags =
+      "{\"map\":{"
+        + "\"null\":null,"
+        + "\"boolean\":true,"
+        + "\"string\":\"eureka\","
+        + "\"byte\":127,"
+        + "\"short\":32767,"
+        + "\"int\":2147483647,"
+        + "\"long\":9223372036854775807,"
+        + "\"float\":3.4028235,"
+        + "\"double\":1.7976931348623157E308,"
+        + "\"decimal\":123456789012345678901234567890123456789012345678901.23456789,"
+        + "\"date\":\"2012-10-20\","
+        + "\"time\":\"07:42:46\","
+        + "\"timestamp\":\"2012-10-20T07:42:46.123-07:00\","
+        + "\"interval\":172800000,"
+        + "\"binary\":\"YWJjZA==\","
+        + "\"array\":[42,\"open sesame\",3.14,\"2015-01-21\"]"
+        + "}"
+      + "}";
+
+  public static final String docStrWithTags =
+      "{\"map\":{"
+        + "\"null\":null,"
+        + "\"boolean\":true,"
+        + "\"string\":\"eureka\","
+        + "\"byte\":{\"$numberLong\":127},"
+        + "\"short\":{\"$numberLong\":32767},"
+        + "\"int\":{\"$numberLong\":2147483647},"
+        + "\"long\":{\"$numberLong\":9223372036854775807},"
+        + "\"float\":3.4028235,"
+        + "\"double\":1.7976931348623157E308,"
+        + "\"decimal\":{\"$decimal\":\"123456789012345678901234567890123456789012345678901.23456789\"},"
+        + "\"date\":{\"$dateDay\":\"2012-10-20\"},"
+        + "\"time\":{\"$time\":\"07:42:46\"},"
+        + "\"timestamp\":{\"$date\":\"2012-10-20T07:42:46.123-07:00\"},"
+        + "\"interval\":{\"$interval\":172800000},"
+        + "\"binary\":{\"$binary\":\"YWJjZA==\"},"
+        + "\"array\":[42,\"open sesame\",3.14,{\"$dateDay\":\"2015-01-21\"}]"
+        + "}"
+      + "}";
 
   @Test
   public void testAllTypes() {
@@ -121,7 +172,7 @@ public class TestJsonDocument {
       List<Object> l = rec.getValue("map.list").getList();
       assertEquals(values, l);
     } catch (Exception e) {
-      System.out.println("Exception from list test " + e.getMessage());
+      logger.error("Exception from list test " + e.getMessage());
     }
   }
 
@@ -246,8 +297,8 @@ public class TestJsonDocument {
     doc.set("boolean", false);
     doc.set("mindate", d2);
 
-    System.out.println(d1.getTime());
-    System.out.println(doc.getDate("maxdate").getTime());
+    logger.info("{}", d1.getTime());
+    logger.info("{}", doc.getDate("maxdate").getTime());
 
     assertEquals(true, doc.getValue("maxdate").equals(d1));
     assertEquals(true, doc.getValue("mindate").equals(d2));
@@ -259,11 +310,23 @@ public class TestJsonDocument {
     doc.set("d1", Values.parseDate("2005-06-22"));
     Date d = new Date(new java.util.Date().getTime());
     doc.set("d2", d);
-    System.out.println(doc.getDate("d1"));
-    System.out.println(doc.getDate("d2"));
+    logger.info("{}", doc.getDate("d1"));
+    logger.info("{}", doc.getDate("d2"));
 
     assertEquals(true, doc.getDate("d1").toString().equals("2005-06-22"));
     assertEquals(true, doc.getDate("d2").toString().equals(d.toString()));
+  }
+
+  @Test
+  public void testToString() throws IOException {
+    try (InputStream in = getJsonStream("test.json");
+         DocumentStream<Document> stream = Json.newDocumentStream(in)) {
+      Document doc = stream.iterator().next();
+      assertEquals(docStrWithoutTags, doc.toString());
+      assertEquals(docStrWithoutTags, doc.asJsonString());
+      assertEquals(docStrWithTags, doc.asJsonString(JsonOptions.WITH_TAGS));
+    }
+
   }
 
 }

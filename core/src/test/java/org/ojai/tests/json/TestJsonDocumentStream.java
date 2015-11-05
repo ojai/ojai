@@ -98,7 +98,7 @@ public class TestJsonDocumentStream extends BaseTest {
       int documentCount = 0;
       for (DocumentReader reader : stream.documentReaders()) {
         documentCount++;
-        logger.debug(Json.toJsonString(reader, JsonOptions.DEFAULT));
+        logger.debug(Json.toJsonString(reader, JsonOptions.WITH_TAGS));
       }
       assertEquals(5, documentCount);
     }

@@ -40,8 +40,12 @@ import org.ojai.json.impl.JsonValueBuilder;
 import org.ojai.tests.BaseTest;
 import org.ojai.types.Interval;
 import org.ojai.util.Values;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TestJsonDocumentBuilder extends BaseTest {
+  private static Logger logger = LoggerFactory
+      .getLogger(TestJsonDocumentBuilder.class);
 
   private byte[] getByteArray(int size) {
     byte[] bytes = new byte[size];
@@ -101,11 +105,10 @@ public class TestJsonDocumentBuilder extends BaseTest {
 
     Document document = jsonBuilder.getDocument();
 
-    System.out.println(jsonBuilder);
+    logger.info(jsonBuilder.toString());
 
     assertEquals("santanu", document.getString("array1[0]"));
-    assertEquals(true, document.getValue("date1").equals(Values.parseDate("2013-10-22")));
-
+    assertEquals("2013-10-22", document.getDate("date1").toString());
   }
 
   @Rule
@@ -209,7 +212,7 @@ public class TestJsonDocumentBuilder extends BaseTest {
     builder.putDecimal("d7", Long.MAX_VALUE, 25);
     builder.putDecimal("d8", Long.MIN_VALUE, 25);
     builder.endMap();
-    System.out.println(builder);
+    logger.info(builder.toString());
   }
 
   @Test
@@ -230,8 +233,7 @@ public class TestJsonDocumentBuilder extends BaseTest {
     documentBuilder.put("document", document);
     documentBuilder.put("rootValue1", 1)
     .put("rootValue2", "2").endMap();
-    System.out.println(documentBuilder);
-
+    logger.info(documentBuilder.toString());
   }
 
 
@@ -270,8 +272,7 @@ public class TestJsonDocumentBuilder extends BaseTest {
     Document rec = builder.getDocument();
     //rerun assert on built document
     assertEquals(32900, rec.getInt("map.array[0].map.array[1].int"));
-    System.out.println(builder.asUTF8String());
-
+    logger.info(builder.asUTF8String());
   }
 
   @Test
@@ -290,7 +291,7 @@ public class TestJsonDocumentBuilder extends BaseTest {
     w.endMap();
 
     Document r = w.getDocument();
-    System.out.println(w.asUTF8String());
+    logger.info(w.asUTF8String());
     assertEquals(2, r.getInt("map.k2[1]"));
   }
 

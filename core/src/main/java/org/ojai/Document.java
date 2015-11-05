@@ -1187,6 +1187,12 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
   /**
    * @return This Document serialized as Json string using the default options.
    */
+  @Override
+  String toString();
+
+  /**
+   * @return This Document serialized as Json string using the default options.
+   */
   String asJsonString();
 
   /**

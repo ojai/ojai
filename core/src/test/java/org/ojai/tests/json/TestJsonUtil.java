@@ -27,17 +27,21 @@ import org.ojai.DocumentStream;
 import org.ojai.json.Json;
 import org.ojai.tests.BaseTest;
 import org.ojai.util.Values;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TestJsonUtil extends BaseTest {
+  private static Logger logger = LoggerFactory
+      .getLogger(TestJsonUtil.class);
 
   @Test
   public void testJsonSerialization() throws Exception {
     try (InputStream in = getJsonStream("multidocument.json");
         DocumentStream<Document> stream = Json.newDocumentStream(in)) {
       for (DocumentReader reader : stream.documentReaders()) {
-        DocumentBuilder writer = Json.newDocumentBuilder();
-        Json.writeReaderToBuilder(reader, writer);
-        System.out.println(writer);
+        DocumentBuilder builder = Json.newDocumentBuilder();
+        Json.writeReaderToBuilder(reader, builder);
+        logger.info(builder.toString());
       }
     }
   }
