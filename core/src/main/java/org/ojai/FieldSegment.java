@@ -15,6 +15,8 @@
  */
 package org.ojai;
 
+import static org.ojai.util.Fields.SEGMENT_QUOTE_CHAR;
+
 import org.ojai.annotation.API;
 import org.ojai.util.Fields;
 
@@ -166,7 +168,7 @@ public abstract class FieldSegment implements Comparable<FieldSegment> {
     }
 
     @Override
-    protected StringBuilder writeSegment(StringBuilder sb, boolean escape) {
+    protected StringBuilder writeSegment(StringBuilder sb, boolean quote) {
       sb.append('[');
       if (index >= 0) {
         sb.append(index);
@@ -180,18 +182,18 @@ public abstract class FieldSegment implements Comparable<FieldSegment> {
   @API.Internal
   public static final class NameSegment extends FieldSegment {
     private final String name;
-    private final boolean quoted;
+    private final boolean isQuoted;
 
     NameSegment(String n) {
       super(null);
       this.name = Fields.unquoteFieldName(n);
-      this.quoted = (this.name != n);
+      this.isQuoted = (this.name != n);
     }
 
     NameSegment(String n, FieldSegment child, boolean quoted) {
       super(child);
       this.name = n;
-      this.quoted = quoted;
+      this.isQuoted = quoted;
     }
 
     public String getName() {
@@ -241,21 +243,104 @@ public abstract class FieldSegment implements Comparable<FieldSegment> {
 
     @Override
     public NameSegment clone() {
-      return new NameSegment(this.name, (child != null ? child.clone() : null), this.quoted);
+      return new NameSegment(this.name, (child != null ? child.clone() : null), this.isQuoted);
     }
 
     @Override
     NameSegment cloneWithNewChild(FieldSegment newChild) {
       return new NameSegment(this.name,
-          (child != null ? child.cloneWithNewChild(newChild) : newChild), this.quoted);
+          (child != null ? child.cloneWithNewChild(newChild) : newChild), this.isQuoted);
     }
 
     @Override
-    protected StringBuilder writeSegment(StringBuilder sb, boolean escape) {
-      if (escape || quoted) sb.append('`');
-      sb.append(name);
-      if (escape || quoted) sb.append('`');
+    protected StringBuilder writeSegment(StringBuilder sb, boolean quote) {
+      if (quote || isQuoted) sb.append(SEGMENT_QUOTE_CHAR);
+      escape(sb, quote);
+      if (quote || isQuoted) sb.append(SEGMENT_QUOTE_CHAR);
       return sb;
+    }
+
+    protected StringBuilder escape(StringBuilder sb, boolean quote) {
+      for (int i = 0; i < name.length(); i++) {
+        char ch = name.charAt(i);
+        switch (ch) {
+        case '"':
+        case '`':
+        case '\\':
+          sb.append('\\').append(ch);
+          break;
+        case '\b': sb.append("\\b"); break;
+        case '\f': sb.append("\\f"); break;
+        case '\n': sb.append("\\n"); break;
+        case '\r': sb.append("\\r"); break;
+        case '\t': sb.append("\\t"); break;
+        // special chars
+        case '.':
+        case '[':
+        case ']':
+          if (!quote && !isQuoted) {
+            sb.append('\\');
+          }
+          // falls through;
+        default:
+          sb.append(ch >= ' ' ? ch : String.format("\\u%04X", (int)ch));
+          break;
+        }
+      }
+      return sb;
+    }
+
+    public static String unEscape(final String rawString) {
+      boolean inEscape = false;
+      StringBuilder sb = new StringBuilder();
+      for (int i = 0; i < rawString.length(); i++) {
+        char ch = rawString.charAt(i);
+        if (inEscape) {
+          switch (ch) {
+          case 'u':
+            if (i+4 >= rawString.length()) {
+              throw new IllegalArgumentException(String.format(
+                  "Illegal unicode sequnce found in string '%s' at position %d", rawString, i-1));
+            }
+            sb.append((char)Integer.parseInt(rawString.substring(i+1, i+5), 16));
+            i += 4;
+            break;
+          case '"':
+          case '`':
+          case '\\':
+          case '/':
+          case '.':
+          case '[':
+          case ']':
+            sb.append(ch);
+            break;
+          case 'b': sb.append('\b'); break;
+          case 'f': sb.append('\f'); break;
+          case 'n': sb.append('\n'); break;
+          case 'r': sb.append('\r'); break;
+          case 't': sb.append('\t'); break;
+          default:
+            throw new IllegalArgumentException(String.format(
+                "Illegal escape char %c found in string '%s' at position %d", ch, rawString, i-1));
+          }
+          inEscape = false;
+        } else if (ch == '\\') {
+          inEscape = true;
+        } else {
+          sb.append(ch);
+        }
+      }
+      return sb.toString();
+    }
+
+    public static String unQuote(final String rawString) {
+      if (rawString == null
+          || rawString.length() < 2
+          || "\"`".indexOf(rawString.charAt(0)) == -1
+          || "\"`".indexOf(rawString.charAt(rawString.length()-1)) == -1) {
+        throw new IllegalArgumentException(String.format("%s is not a valid quoted identifier.", rawString));
+      }
+      return unEscape(rawString.substring(1, rawString.length()-1));
     }
 
   }
@@ -268,22 +353,22 @@ public abstract class FieldSegment implements Comparable<FieldSegment> {
     throw new UnsupportedOperationException();
   }
 
-  protected abstract StringBuilder writeSegment(StringBuilder sb, boolean escape);
+  protected abstract StringBuilder writeSegment(StringBuilder sb, boolean quoted);
 
   @Override
   public final String toString() {
     return asPathString(true);
   }
 
-  final String asPathString(boolean escape) {
+  final String asPathString(boolean quote) {
     StringBuilder sb = new StringBuilder();
     FieldSegment seg = this;
-    seg.writeSegment(sb, escape);
+    seg.writeSegment(sb, quote);
     while ((seg = seg.getChild()) != null) {
       if (seg.isNamed()) {
         sb.append('.');
       }
-      seg.writeSegment(sb, escape);
+      seg.writeSegment(sb, quote);
     }
     return sb.toString();
   }

@@ -20,7 +20,7 @@ import org.ojai.annotation.API;
 @API.Public
 public class Fields {
 
-  public static char SEGMENT_QUOTE_CHAR = '`';
+  public static char SEGMENT_QUOTE_CHAR = '"';
 
   public static String quoteFieldName(String fieldName) {
     if (fieldName.charAt(0)  == SEGMENT_QUOTE_CHAR && fieldName.charAt(fieldName.length()-1)  == SEGMENT_QUOTE_CHAR) {

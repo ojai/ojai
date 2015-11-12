@@ -71,7 +71,7 @@ public final class FieldPath implements Comparable<FieldPath>, Iterable<FieldSeg
         parser.removeErrorListeners();
         parser.addErrorListener(listener);
 
-        fp = parser.parse().e;
+        fp = parser.parse().fp;
         if (listener.isError()) {
           throw new IllegalArgumentException(
               "'" + fieldPath + "' is not a valid FieldPath: "
@@ -85,7 +85,7 @@ public final class FieldPath implements Comparable<FieldPath>, Iterable<FieldSeg
       }
     }
 
-    return fp;
+    return EMPTY.equals(fp) ? EMPTY : fp;
   }
 
   @Override
@@ -139,15 +139,15 @@ public final class FieldPath implements Comparable<FieldPath>, Iterable<FieldSeg
 
   /**
    * Return the {@code String} representation of this field path, quoting
-   * the name segments which were parsed from a quoted identifier.
+   * only those name segments which were parsed from a quoted identifier.
    * @return The {@code String} representation of this {@code FieldPath}.
    */
   public String asPathString() {
     return rootSegment.asPathString(false);
   }
 
-  public String asPathString(boolean escape) {
-    return rootSegment.asPathString(escape);
+  public String asPathString(boolean quote) {
+    return rootSegment.asPathString(quote);
   }
 
   public FieldSegment getRootSegment() {

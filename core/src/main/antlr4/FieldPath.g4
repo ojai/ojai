@@ -22,6 +22,9 @@ options {
  */
 package org.ojai;
 
+import static org.ojai.FieldSegment.NameSegment.unEscape;
+import static org.ojai.FieldSegment.NameSegment.unQuote;
+
 import org.ojai.FieldPath;
 import org.ojai.FieldSegment;
 import org.ojai.FieldSegment.IndexSegment;
@@ -31,8 +34,8 @@ import org.ojai.FieldSegment.NameSegment;
 /**
  * Parser rules
  */
-parse returns [FieldPath e]
-  : fieldSegment {$e = new FieldPath($fieldSegment.seg); }
+parse returns [FieldPath fp]
+  : fieldSegment {$fp = new FieldPath($fieldSegment.seg); }
   ;
 
 fieldSegment returns [NameSegment seg]
@@ -41,13 +44,12 @@ fieldSegment returns [NameSegment seg]
 
 nameSegment returns [NameSegment seg]
   : QuotedIdentifier ((Period s1=fieldSegment) | s2=indexSegment)? {
-      $seg = new NameSegment(
-        $QuotedIdentifier.text.substring(1, $QuotedIdentifier.text.length()-1).replaceAll("\\\\(.)", "$1"),
+      $seg = new NameSegment(unQuote($QuotedIdentifier.text),
         ($s1.start == null ? ($s2.start == null ? null : $s2.seg) : $s1.seg)
       , true);
     }
   | Identifier ((Period s1=fieldSegment) | s2=indexSegment)? {
-      $seg = new NameSegment($Identifier.text,
+      $seg = new NameSegment(unEscape($Identifier.text),
         ($s1.start == null ? ($s2.start == null ? null : $s2.seg) : $s1.seg)
       , false);
     }
@@ -66,17 +68,17 @@ indexSegment returns [FieldSegment seg]
     }
   ;
 
-
 /**
  * Lexer rules
  */
 Period : '.';
 OBracket : '[';
 CBracket : ']';
-SingleQuote: '\'';
+DoubleQuote: '"';
+BackTick: '`';
 
 Space
-  :  (' ' | '\t' | '\r' | '\n' | '\u000C') {skip();}
+  :  ' ' {skip();}
   ;
 
 Integer
@@ -84,17 +86,50 @@ Integer
   ;
 
 Identifier
-  : ('a'..'z' | 'A'..'Z' | '_' | '-' | '$' | ' ' | Digit)+
+  :  IdentifierChar+
   ;
 
 QuotedIdentifier
-  :  '`'  (~('`' | '\\')  | '\\' ('\\' | '`'))+ '`'
+  :  DoubleQuote QuotedIdentifierChar* DoubleQuote
+  |  BackTick QuotedIdentifierChar* BackTick
   ;
 
 fragment Digit
-  :  '0'..'9'
+  :  [0-9]
+  ;
+
+fragment HexDigit
+  :  [0-9a-fA-F]
+  ;
+
+fragment IdentifierChar
+  :  ~[`"\\\b\f\n\r\t.[\]]
+  |  EscapeChar
+  ;
+
+fragment QuotedIdentifierChar
+  :  ~[`"\\\b\f\n\r\t]
+  |  EscapeChar
+  ;
+
+fragment EscapeChar
+  :  SpecialChar
+  |  ControlChar
+  |  UnicodeChar
+  ;
+
+fragment SpecialChar
+  :  '\\' [`"\\.[\]/] /* '/' can be appear without escaping */
+  ;
+
+fragment ControlChar
+  :  '\\' [bfnrt]
+  ;
+
+fragment UnicodeChar
+  :  '\\u' HexDigit HexDigit HexDigit HexDigit
   ;
 
 ErrorChar
- : .
- ;
+  :  .
+  ;
