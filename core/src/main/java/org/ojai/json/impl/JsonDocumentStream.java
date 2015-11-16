@@ -95,6 +95,13 @@ public class JsonDocumentStream implements DocumentStream<Document> {
     }
   }
 
+  /**
+   * Returns the current position in the underlying InputStream
+   */
+  public long getInputStreamPosition() {
+    return jsonParser.getTokenLocation().getByteOffset();
+  }
+
   @Override
   public Iterable<DocumentReader> documentReaders() {
     checkStateForIteration();

@@ -29,13 +29,13 @@ import org.apache.hadoop.mapreduce.RecordReader;
 import org.apache.hadoop.mapreduce.TaskAttemptContext;
 import org.apache.hadoop.mapreduce.lib.input.FileSplit;
 import org.ojai.Document;
-import org.ojai.DocumentStream;
 import org.ojai.json.Json;
+import org.ojai.json.impl.JsonDocumentStream;
 
 public class JSONFileRecordReader extends RecordReader<LongWritable, Document> {
 
   private FSDataInputStream inputStream;
-  private DocumentStream<Document> documentStream;
+  private JsonDocumentStream documentStream;
   private Iterator<Document> it;
   private long documentCount;
   private LongWritable key = null;
@@ -147,7 +147,7 @@ public class JSONFileRecordReader extends RecordReader<LongWritable, Document> {
     /* Initialize a stream reader so that it can read multiple documents from */
     /* the file */
 
-    documentStream = Json.newDocumentStream(inputStream);
+    documentStream = (JsonDocumentStream)Json.newDocumentStream(inputStream);
     it = documentStream.iterator();
 
   }
@@ -156,7 +156,7 @@ public class JSONFileRecordReader extends RecordReader<LongWritable, Document> {
   public boolean nextKeyValue() throws IOException, InterruptedException {
     boolean hasNextKeyVal = false;
 
-    long thisPos = inputStream.getPos();
+    long thisPos = documentStream.getInputStreamPosition();
     if (thisPos >= (start + blockLength)) {
       return false;
     }
