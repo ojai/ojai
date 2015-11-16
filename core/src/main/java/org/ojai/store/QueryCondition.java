@@ -22,6 +22,7 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.PatternSyntaxException;
 
 import org.ojai.FieldPath;
 import org.ojai.Value;
@@ -248,6 +249,7 @@ public interface QueryCondition {
    * @param path the {@code FieldPath} to test
    * @param regex the reference regular expression
    * @return {@code this} for chained invocation
+   * @throws PatternSyntaxException if the expression's syntax is invalid
    */
   public QueryCondition matches(String path, String regex);
 
@@ -259,6 +261,7 @@ public interface QueryCondition {
    * @param path the {@code FieldPath} to test
    * @param regex the reference regular expression
    * @return {@code this} for chained invocation
+   * @throws PatternSyntaxException if the expression's syntax is invalid
    */
   public QueryCondition matches(FieldPath path, String regex);
 
@@ -270,6 +273,7 @@ public interface QueryCondition {
    * @param path the {@code FieldPath} to test
    * @param regex the reference regular expression
    * @return {@code this} for chained invocation
+   * @throws PatternSyntaxException if the expression's syntax is invalid
    */
   public QueryCondition notMatches(String path, String regex);
 
@@ -281,6 +285,7 @@ public interface QueryCondition {
    * @param path the {@code FieldPath} to test
    * @param regex the reference regular expression
    * @return {@code this} for chained invocation
+   * @throws PatternSyntaxException if the expression's syntax is invalid
    */
   public QueryCondition notMatches(FieldPath path, String regex);
 

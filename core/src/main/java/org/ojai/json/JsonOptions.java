@@ -40,19 +40,19 @@ public class JsonOptions {
   }
 
   public JsonOptions setPretty(boolean pretty) {
-    checkMutationOfDefault();
+    checkMutationOfConstants();
     this.pretty = pretty;
     return this;
   }
 
   public JsonOptions pretty() {
-    checkMutationOfDefault();
+    checkMutationOfConstants();
     this.pretty = true;
     return this;
   }
 
   public JsonOptions compact() {
-    checkMutationOfDefault();
+    checkMutationOfConstants();
     this.pretty = false;
     return this;
   }
@@ -62,26 +62,27 @@ public class JsonOptions {
   }
 
   public JsonOptions setWithTags(boolean withTags) {
-    checkMutationOfDefault();
+    checkMutationOfConstants();
     this.withTags = withTags;
     return this;
   }
 
   public JsonOptions withTags() {
-    checkMutationOfDefault();
+    checkMutationOfConstants();
     this.withTags = true;
     return this;
   }
 
   public JsonOptions withoutTags() {
-    checkMutationOfDefault();
+    checkMutationOfConstants();
     this.withTags = false;
     return this;
   }
 
-  private void checkMutationOfDefault() {
-    if (this == DEFAULT) {
-      throw new UnsupportedOperationException("Can not modify default options.");
+  private void checkMutationOfConstants() {
+    if (this == DEFAULT
+        || this == WITH_TAGS) {
+      throw new UnsupportedOperationException("Can not modify constants options.");
     }
   }
 
