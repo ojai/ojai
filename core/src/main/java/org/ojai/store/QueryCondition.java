@@ -756,7 +756,6 @@ public interface QueryCondition {
    * {@code FieldPath} equals the specified {@code List} value.
    *
    * @param path the {@code FieldPath} to test
-   * @param op the {@code QueryCondition.Op} to apply
    * @param value the reference List {@code Value}
    * @return {@code this} for chained invocation
    * @throws TypeException if a value in the specified List is not one of
@@ -769,7 +768,6 @@ public interface QueryCondition {
    * {@code FieldPath} equals the specified {@code List} value.
    *
    * @param path the {@code FieldPath} to test
-   * @param op the {@code QueryCondition.Op} to apply
    * @param value the reference List {@code Value}
    * @return {@code this} for chained invocation
    * @throws TypeException if a value in the specified List is not one of
@@ -810,7 +808,6 @@ public interface QueryCondition {
    * {@code FieldPath} does not equal the specified {@code List} value.
    *
    * @param path the {@code FieldPath} to test
-   * @param op the {@code QueryCondition.Op} to apply
    * @param value the reference List {@code Value}
    * @return {@code this} for chained invocation
    * @throws TypeException if a value in the specified List is not one of
@@ -823,7 +820,6 @@ public interface QueryCondition {
    * {@code FieldPath} does not equal the specified {@code List} value.
    *
    * @param path the {@code FieldPath} to test
-   * @param op the {@code QueryCondition.Op} to apply
    * @param value the reference List {@code Value}
    * @return {@code this} for chained invocation
    * @throws TypeException if a value in the specified List is not one of

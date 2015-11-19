@@ -16,6 +16,7 @@
 package org.ojai.store.exceptions;
 
 import org.ojai.exceptions.OjaiException;
+import org.ojai.store.DocumentStore;
 
 /**
  * This class is the base class of all exceptions thrown from the {@link DocumentStore}.

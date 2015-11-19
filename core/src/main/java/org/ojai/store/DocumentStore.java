@@ -90,34 +90,62 @@ public interface DocumentStore extends AutoCloseable {
       throws StoreException;
 
   /**
+   * Inserts or replace a new document in this DocumentStore.
+   * <br/><br/>
+   * The specified Document must contain an {@code "_id"} field or the operation
+   * will fail.
+   * <br/><br/>
+   * If the document with the given _id exists in the DocumentStore then that
+   * document will be replaced by the specified document.
+   *
+   * @param doc The Document to be inserted or replaced in the DocumentStore.
+   * @throws StoreException
+   */
+  public void insertOrReplace(Document doc) throws StoreException;
+
+  /**
    * Inserts or replace a new document in this DocumentStore with the given _id.
    * <br/><br/>
-   * The {@code _id} value is either explicitly specified as the parameter
-   * {@code _id} or it is implicitly included as the field {@code "_id"} in the
-   * specified document. If the _id parameter is explicitly specified then the
-   * document should either not contain an {@code "_id"} field or its value should
-   * be same as the explicitly specified _id or the operation will fail.<br/><br/>
-   *
+   * The specified document should either not contain an {@code "_id"} field or
+   * its value should be same as the specified _id or the operation will fail.
+   * <br/><br/>
    * If the document with the given _id exists in the DocumentStore then that
-   * document will be replaced by the specified document.<br/><br/>
-   *
-   * If a different field in the document other that "_id" is to be used as the
-   * _id of this document, its FieldPath can be specified using the parameter
-   * {@code fieldAsKey}. When provided, the value at {@code fieldAsKey} will
-   * also be stored as the {@code "_id"} field in the stored document. If an
-   * "_id" field is present in the document, an error will be thrown.
+   * document will be replaced by the specified document.
    *
    * @param doc The Document to be inserted or replaced in the DocumentStore.
    * @param _id value to be used as the _id for this document
+   * @throws StoreException
+   */
+  public void insertOrReplace(Value _id, Document doc) throws StoreException;
+
+  /**
+   * Inserts or replace a new document in this DocumentStore with the value of
+   * the specified Field as the {@code _id}.
+   * <br/><br/>
+   * If the document with the given _id exists in the DocumentStore then that
+   * document will be replaced by the specified document.
+   *
+   * @param doc The Document to be inserted or replaced in the DocumentStore.
    * @param fieldAsKey document's field to be used as the key when an id is not
    *                   passed in and the document doesn't have an "_id" field or
    *                   a different field is desired to be used as _id.
    * @throws StoreException
    */
-  public void insertOrReplace(Document doc) throws StoreException;
-  public void insertOrReplace(Value _id, Document doc) throws StoreException;
-
   public void insertOrReplace(Document doc, FieldPath fieldAsKey) throws StoreException;
+
+  /**
+   * Inserts or replace a new document in this DocumentStore with the value of
+   * the specified Field as the {@code _id}.
+   * <br/><br/>
+   * If the document with the given _id exists in the DocumentStore then that
+   * document will be replaced by the specified document.
+   *
+   * @param doc The Document to be inserted or replaced in the DocumentStore.
+   * @param fieldAsKey document's field to be used as the key when an id is not
+   *                   passed in and the document doesn't have an "_id" field or
+   *                   a different field is desired to be used as _id.
+   * @throws StoreException
+   */
   public void insertOrReplace(Document doc, String fieldAsKey) throws StoreException;
 
   /**

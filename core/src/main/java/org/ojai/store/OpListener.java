@@ -23,7 +23,7 @@ public interface OpListener<T extends Document> {
   /**
    * Called when a Document from the async operation is available.
    *
-   * @param record the available <code>Document</code>
+   * @param document the available <code>Document</code>
    */
   public void onSuccess(T document);
 
