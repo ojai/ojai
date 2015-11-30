@@ -231,6 +231,10 @@ public class JsonValueBuilder {
       return initFrom(((Date) value));
     }
 
+    if (value instanceof Timestamp) {
+      return initFrom(((Timestamp) value));
+    }
+
     if (value instanceof BigDecimal) {
       return initFrom(((BigDecimal) value));
     }

@@ -16,6 +16,8 @@
 package org.ojai.tests.json;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,9 +35,12 @@ import org.ojai.DocumentReader;
 import org.ojai.DocumentStream;
 import org.ojai.DocumentReader.EventType;
 import org.ojai.Value.Type;
+import org.ojai.exceptions.EncodingException;
 import org.ojai.json.Json;
 import org.ojai.json.JsonOptions;
+import org.ojai.json.impl.JsonDocument;
 import org.ojai.tests.BaseTest;
+import org.ojai.util.MapEncoder;
 import org.ojai.util.Values;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -329,4 +334,75 @@ public class TestJsonDocument extends BaseTest {
 
   }
 
+  @Test
+  public void testToMap() throws Exception {
+    Document doc = Json.newDocument();
+    Document docInArr1 = Json.newDocument();
+    Document docInArr2 = Json.newDocument();
+    Document docInArr3 = Json.newDocument();
+    Document dateTimeDoc = Json.newDocument();
+
+    dateTimeDoc.set("dateLong", new Date(System.currentTimeMillis() / 1000))
+               .set("dateParsed", Values.parseDate("2015-11-25"))
+               .set("dateTime", Values.parseTime("10:25:32"))
+               .set("dateTimestamp", Values.parseTimestamp("2015-11-25T13:26:59.223Z"));
+
+    docInArr1.set("arr1string", "string")
+             .set("arr1boolean", false)
+             .set("arr1long", (long)Integer.MIN_VALUE);
+
+    String byteStr = "bytebuffer";
+    docInArr2.set("arr2int", (int)123456)
+             .set("arr2long", (long)234567)
+             .set("arr2short", (short)123)
+             .set("arr2null", "")
+             .set("arr2bytes", ByteBuffer.wrap(byteStr.getBytes()))
+             .set("arr2bigdecimal", new BigDecimal("1000000000.11111111111111111111"));
+
+    docInArr3.setArray("arr3", new Object[] {"arr3", true, (long)123456, (float)12345.6789, (double)123.4567890, dateTimeDoc});
+
+    doc.set("a.b", "value1")
+       .set("a.c", true)
+       .setArray("a.docInception", new Object[] {docInArr1, docInArr2, docInArr3});
+
+    Map<String, Object> mapDoc = doc.asMap();
+    assertNotNull(mapDoc);
+
+    Document copyDoc = Json.newDocument(mapDoc);
+    assertEquals(copyDoc, doc);
+
+    //Negative tests
+    //1. Malformed document with null
+    String jsonStr = "{";
+    DocumentReader dr = Json.newDocumentReader(jsonStr);
+    try {
+      doc = (Document) MapEncoder.encode(dr);
+    } catch (Exception e) {
+      logger.info("Encoding document as map got exception: " + e.getMessage());
+      e.printStackTrace();
+      assertTrue(e instanceof EncodingException);
+    }
+
+    //2. Malformed document with Array not closed
+    jsonStr = "{\"a\":{\"b\":[true,1234,\"string\"}}";
+    dr = Json.newDocumentReader(jsonStr);
+    try {
+      doc = (Document) MapEncoder.encode(dr);
+    } catch (Exception e) {
+      logger.info("Encoding document " + jsonStr + " as map got exception: " + e.getMessage());
+      e.printStackTrace();
+      assertTrue(e instanceof EncodingException);
+    }
+
+    //3. Malformed document with Map not closed
+    jsonStr = "{\"a\":{\"b\":[true,1234,\"string\"]}";
+    dr = Json.newDocumentReader(jsonStr);
+    try {
+      doc = (Document) MapEncoder.encode(dr);
+    } catch (Exception e) {
+      logger.info("Encoding document " + jsonStr + " as map got exception: " + e.getMessage());
+      e.printStackTrace();
+      assertTrue(e instanceof EncodingException);
+    }
+  }
 }

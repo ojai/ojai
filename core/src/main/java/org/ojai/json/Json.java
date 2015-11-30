@@ -35,6 +35,7 @@ import org.ojai.json.impl.JsonDocument;
 import org.ojai.json.impl.JsonDocumentBuilder;
 import org.ojai.json.impl.JsonDocumentStream;
 import org.ojai.json.impl.JsonUtils;
+import org.ojai.json.impl.JsonValueBuilder;
 
 /**
  * This class serves as a factory for a JSON implementation
@@ -71,6 +72,14 @@ public final class Json {
    */
   public static Document newDocument(Object bean) throws DecodingException {
     return BeanCodec.decode(newDocumentBuilder(), bean);
+  }
+
+  /**
+   * Returns a new instance of a Document built from the specified Map
+   */
+  public static <T extends Object> Document newDocument(Map<String, T> map)
+      throws DecodingException {
+    return (Document) JsonValueBuilder.initFrom(map);
   }
 
   /**

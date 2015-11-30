@@ -1217,4 +1217,9 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    */
   DocumentReader asReader(FieldPath fieldPath);
 
+  /**
+   * @return A new {@link Map} representing the Document.
+   */
+  Map<String, Object> asMap();
+
 }

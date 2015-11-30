@@ -106,8 +106,6 @@ public class JsonStreamDocumentReader implements DocumentReader {
           }
         }
       }
-    } catch (JsonParseException e) {
-      throw new IllegalStateException(e);
     } catch (IOException ie) {
       throw new DecodingException(ie);
     }
@@ -229,8 +227,6 @@ public class JsonStreamDocumentReader implements DocumentReader {
   protected String getValueAsString() {
     try {
       return getParser().getText();
-    } catch (JsonParseException e) {
-      throw new IllegalStateException(e);
     } catch (IOException ie) {
       throw new DecodingException(ie);
     }
@@ -288,8 +284,6 @@ public class JsonStreamDocumentReader implements DocumentReader {
       if (mapLevel == 0) {
         eor = true;
       }
-    } catch (JsonParseException jp) {
-      throw new IllegalStateException(jp);
     } catch (IOException e) {
       throw new DecodingException(e);
     }
@@ -327,8 +321,6 @@ public class JsonStreamDocumentReader implements DocumentReader {
         }
       }
       eor = true;
-    } catch (JsonParseException e) {
-      throw new IllegalStateException(e);
     } catch (IOException e) {
       throw new DecodingException(e);
     }

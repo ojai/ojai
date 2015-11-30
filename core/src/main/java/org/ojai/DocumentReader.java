@@ -57,6 +57,7 @@ public interface DocumentReader {
    *
    * @return The {@code EventType} for the current node or {@code null} if the
    *         reader is past the end of the document
+   * @throws DecodingException if the document is malformed or incomplete.
    */
   DocumentReader.EventType next();
 

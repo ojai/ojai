@@ -17,6 +17,7 @@ package org.ojai.json.impl;
 
 import static org.ojai.DocumentConstants.ID_FIELD;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
 import java.sql.Date;
@@ -43,6 +44,7 @@ import org.ojai.exceptions.DecodingException;
 import org.ojai.json.Json;
 import org.ojai.json.JsonOptions;
 import org.ojai.types.Interval;
+import org.ojai.util.MapEncoder;
 
 @API.Internal
 public class JsonDocument extends JsonValue implements Document, Map<String, Object> {
@@ -991,4 +993,8 @@ public class JsonDocument extends JsonValue implements Document, Map<String, Obj
     return BeanCodec.encode(asReader(), beanClass);
   }
 
+  @Override
+  public Map<String, Object> asMap() throws DecodingException {
+    return MapEncoder.encode(asReader());
+  }
 }
