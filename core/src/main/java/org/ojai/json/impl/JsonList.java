@@ -144,9 +144,18 @@ class JsonList extends JsonValue implements List<Object> {
     throw new UnsupportedOperationException();
   }
 
+  /**
+   * Modified version of {@link List#add(int, Object)} which
+   * fills null in the empty spaces if index &gt; size()
+   * instead of throwing IndexOutOfBoundsException.
+   */
   @Override
   public void add(int index, Object element) {
-    throw new UnsupportedOperationException();
+    int size = list.size();
+    while (index > size++) {
+      list.add(null);
+    }
+    list.add(JsonValueBuilder.initFromObject(element));
   }
 
   @Override
@@ -312,7 +321,7 @@ class JsonList extends JsonValue implements List<Object> {
   }
 
   class JsonListIterator implements ListIterator<Object> {
-    ListIterator<JsonValue> iter;
+    final ListIterator<JsonValue> iter;
 
     public JsonListIterator(int index) {
       iter = list.listIterator(index);
@@ -321,6 +330,7 @@ class JsonList extends JsonValue implements List<Object> {
     public JsonListIterator() {
       iter = list.listIterator();
     }
+
     @Override
     public boolean hasNext() {
       return iter.hasNext();

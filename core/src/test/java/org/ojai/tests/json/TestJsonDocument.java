@@ -17,6 +17,8 @@ package org.ojai.tests.json;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,6 +27,7 @@ import java.nio.ByteBuffer;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -183,10 +186,10 @@ public class TestJsonDocument extends BaseTest {
   public void testAsReaderFull() {
     Document document = Json.newDocument();
     document.set("map.byte", (byte)127);
-    document.set("map.long", 123456789);
-    Map<String, Object> map = new HashMap<String, Object>();
+    document.set("map.long", 123456789L);
+    Map<String, Object> map = new LinkedHashMap<String, Object>();
     map.put("first","John");
-    map.put("first", "Doe");
+    map.put("last", "Doe");
     document.set("map.name", map);
     List<Object> mylist = new ArrayList<Object>();
     mylist.add(true);
@@ -194,22 +197,88 @@ public class TestJsonDocument extends BaseTest {
     mylist.add(123.456);
     document.set("map.array", mylist);
 
-    DocumentReader myReader = document.asReader();
-    EventType et ;
-    String fieldName = null;
-    while ((et = myReader.next()) != null) {
-      if (et == EventType.FIELD_NAME) {
-        fieldName = myReader.getFieldName();
-      }
-      if ((et == EventType.BYTE) && (fieldName.equals("byte"))) {
+    DocumentReader r = document.asReader();
+    EventType et = null;
+    assertTrue((et = r.next()) != null);
+    assertTrue(r.inMap());
+    assertEquals(EventType.START_MAP, et);
 
-        assertEquals((byte)127, myReader.getByte());
-      }
-      if ((et == EventType.STRING) && (fieldName.equals("array"))) {
+    assertTrue((et = r.next()) != null);
+    assertTrue(r.inMap());
+    assertEquals(EventType.START_MAP, et);
+    assertEquals("map", r.getFieldName());
 
-        assertEquals("string", myReader.getString());
-      }
-    }
+    assertTrue((et = r.next()) != null);
+    assertTrue(r.inMap());
+    assertEquals(EventType.BYTE, et);
+    assertEquals("byte", r.getFieldName());
+    assertEquals(127, r.getByte());
+
+    assertTrue((et = r.next()) != null);
+    assertTrue(r.inMap());
+    assertEquals(EventType.LONG, et);
+    assertEquals("long", r.getFieldName());
+    assertEquals(123456789, r.getLong());
+
+    assertTrue((et = r.next()) != null);
+    assertTrue(r.inMap());
+    assertEquals(EventType.START_MAP, et);
+    assertEquals("name", r.getFieldName());
+
+    assertTrue((et = r.next()) != null);
+    assertTrue(r.inMap());
+    assertEquals(EventType.STRING, et);
+    assertEquals("first", r.getFieldName());
+    assertEquals("John", r.getString());
+
+    assertTrue((et = r.next()) != null);
+    assertTrue(r.inMap());
+    assertEquals(EventType.STRING, et);
+    assertEquals("last", r.getFieldName());
+    assertEquals("Doe", r.getString());
+
+    assertTrue((et = r.next()) != null);
+    assertTrue(r.inMap());
+    assertEquals(EventType.END_MAP, et);
+    assertEquals("name", r.getFieldName());
+
+    assertTrue((et = r.next()) != null);
+    assertTrue(r.inMap());
+    assertEquals(EventType.START_ARRAY, et);
+    assertEquals("array", r.getFieldName());
+
+    assertTrue((et = r.next()) != null);
+    assertTrue(!r.inMap());
+    assertEquals(EventType.BOOLEAN, et);
+    assertEquals(0, r.getArrayIndex());
+    assertEquals(true, r.getBoolean());
+
+    assertTrue((et = r.next()) != null);
+    assertTrue(!r.inMap());
+    assertEquals(EventType.STRING, et);
+    assertEquals(1, r.getArrayIndex());
+    assertEquals("string", r.getString());
+
+    assertTrue((et = r.next()) != null);
+    assertTrue(!r.inMap());
+    assertEquals(EventType.DOUBLE, et);
+    assertEquals(2, r.getArrayIndex());
+    assertEquals(123.456, r.getDouble(), 0.000001);
+
+    assertTrue((et = r.next()) != null);
+    assertTrue(r.inMap());
+    assertEquals(EventType.END_ARRAY, et);
+    assertEquals("array", r.getFieldName());
+
+    assertTrue((et = r.next()) != null);
+    assertTrue(r.inMap());
+    assertEquals(EventType.END_MAP, et);
+    assertEquals("map", r.getFieldName());
+
+    assertTrue((et = r.next()) != null);
+    assertTrue(r.inMap());
+    assertEquals(EventType.END_MAP, et);
+    assertNull(r.getFieldName());
   }
 
   @Test
@@ -227,17 +296,12 @@ public class TestJsonDocument extends BaseTest {
     mylist.add("string");
     mylist.add(123.456);
     document.set("map.array", mylist);
-    DocumentReader myReader = document.asReader("map.name");
+    DocumentReader r = document.asReader("map.name");
     EventType event;
-    String fieldName = null;
-    while ((event = myReader.next()) != null) {
-      if (event == EventType.FIELD_NAME) {
-        fieldName = myReader.getFieldName();
-      }
-
+    while ((event = r.next()) != null) {
       if (event == EventType.LONG) {
-        assertEquals("id", fieldName);
-        assertEquals(123456789, myReader.getLong());
+        assertEquals("id", r.getFieldName());
+        assertEquals(123456789, r.getLong());
       }
     }
   }

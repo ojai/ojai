@@ -131,6 +131,10 @@ public interface Value {
       return code;
     }
 
+    public boolean isScalar() {
+      return this != MAP && this != ARRAY;
+    }
+
     public static Type valueOf(int typeCode) {
       switch (typeCode) {
         case 1: return NULL;

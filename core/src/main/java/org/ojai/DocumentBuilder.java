@@ -137,7 +137,21 @@ public interface DocumentBuilder {
    */
 
   /**
-   * Appends a {@code boolean} value to the current array.
+   * Sets the index in the current array at which the next value will be added.
+   *
+   * @param index the index at which the next value will be added.
+   * @return {@code this} for chained invocation
+   *
+   * @throws IllegalArgumentException if the index is not larger than the last
+   *         written index.
+   * @throws IllegalStateException if the builder is not in an ARRAY segment
+   */
+  DocumentBuilder setArrayIndex(int index);
+
+  /**
+   * Adds a {@code boolean} value at the current index in the current array and
+   * advances the current index by 1.
+   *
    * @param value the {@code boolean} value to append
    * @return {@code this} for chained invocation
    * @throws IllegalStateException if the builder is not in an ARRAY segment
@@ -145,7 +159,9 @@ public interface DocumentBuilder {
   DocumentBuilder add(boolean value);
 
   /**
-   * Appends a {@code String} value to the current array.
+   * Adds a {@code String} value at the current index in the current array and
+   * advances the current index by 1.
+   *
    * @param value the {@code String} value to append
    * @return {@code this} for chained invocation
    * @throws IllegalStateException if the builder is not in an ARRAY segment
@@ -153,7 +169,9 @@ public interface DocumentBuilder {
   DocumentBuilder add(String value);
 
   /**
-   * Appends a {@code byte} value to the current array.
+   * Adds a {@code byte} value at the current index in the current array and
+   * advances the current index by 1.
+   *
    * @param value the {@code byte} value to append
    * @return {@code this} for chained invocation
    * @throws IllegalStateException if the builder is not in an ARRAY segment
@@ -161,7 +179,9 @@ public interface DocumentBuilder {
   DocumentBuilder add(byte value);
 
   /**
-   * Appends a {@code short} value to the current array.
+   * Adds a {@code short} value at the current index in the current array and
+   * advances the current index by 1.
+   *
    * @param value the {@code short} value to append
    * @return {@code this} for chained invocation
    * @throws IllegalStateException if the builder is not in an ARRAY segment
@@ -169,7 +189,9 @@ public interface DocumentBuilder {
   DocumentBuilder add(short value);
 
   /**
-   * Appends an {@code int} value to the current array.
+   * Adds an {@code int} value at the current index in the current array and
+   * advances the current index by 1.
+   *
    * @param value the {@code int} value to append
    * @return {@code this} for chained invocation.
    * @throws IllegalStateException if the builder is not in an ARRAY segment.
@@ -177,7 +199,9 @@ public interface DocumentBuilder {
   DocumentBuilder add(int value);
 
   /**
-   * Appends a {@code long} value to the current array.
+   * Adds a {@code long} value at the current index in the current array and
+   * advances the current index by 1.
+   *
    * @param value the {@code long} value to append
    * @return {@code this} for chained invocation
    * @throws IllegalStateException if the builder is not in an ARRAY segment
@@ -185,7 +209,9 @@ public interface DocumentBuilder {
   DocumentBuilder add(long value);
 
   /**
-   * Appends a {@code float} value to the current array.
+   * Adds a {@code float} value at the current index in the current array and
+   * advances the current index by 1.
+   *
    * @param value the {@code float} value to append
    * @return {@code this} for chained invocation
    * @throws IllegalStateException if the builder is not in an ARRAY segment
@@ -193,7 +219,9 @@ public interface DocumentBuilder {
   DocumentBuilder add(float value);
 
   /**
-   * Appends a {@code double} value to the current array.
+   * Adds a {@code double} value at the current index in the current array and
+   * advances the current index by 1.
+   *
    * @param value the {@code double} value to append
    * @return {@code this} for chained invocation
    * @throws IllegalStateException if the builder is not in an ARRAY segment
@@ -201,7 +229,9 @@ public interface DocumentBuilder {
   DocumentBuilder add(double value);
 
   /**
-   * Appends a {@code BigDecimal} value to the current array.
+   * Adds a {@code BigDecimal} value at the current index in the current array
+   * and advances the current index by 1.
+   *
    * @param value the {@code BigDecimal} value to append
    * @return {@code this} for chained invocation
    * @throws IllegalStateException if the builder is not in an ARRAY segment
@@ -209,7 +239,9 @@ public interface DocumentBuilder {
   DocumentBuilder add(BigDecimal value);
 
   /**
-   * Appends a long number as a {@code DECIMAL} value to the current array.
+   * Adds a long number as a {@code DECIMAL} value at the current index in the
+   * current array and advances the current index by 1.
+   *
    * @param decimalValue the {@code long} value to append
    * @return {@code this} for chained invocation
    * @throws IllegalStateException if the builder is not in an ARRAY segment
@@ -217,7 +249,9 @@ public interface DocumentBuilder {
   DocumentBuilder addDecimal(long decimalValue);
 
   /**
-   * Appends a double number as a {@code DECIMAL} value to the current array.
+   * Adds a double number as a {@code DECIMAL} value at the current index in the
+   * current array and advances the current index by 1.
+   *
    * @param decimalValue the {@code double} value to append
    * @return {@code this} for chained invocation
    * @throws IllegalStateException if the builder is not in an ARRAY segment
@@ -225,8 +259,9 @@ public interface DocumentBuilder {
   DocumentBuilder addDecimal(double decimalValue);
 
   /**
-   * Appends an {@code int} unscaled value and an {@code int} scale as a
-   * {@code DECIMAL} value. The {@code DECIMAL} value is
+   * Adds an {@code int} unscaled value and an {@code int} scale as a
+   * {@code DECIMAL} value at the current index in the current array
+   * and advances the current index by 1. The {@code DECIMAL} value is
    * <tt>(unscaledValue &times; 10<sup>-scale</sup>)</tt>.
    *
    * @param unscaledValue unscaled value of the {@code DECIMAL}
@@ -237,8 +272,9 @@ public interface DocumentBuilder {
   DocumentBuilder addDecimal(int unscaledValue, int scale);
 
   /**
-   * Appends an {@code long} unscaled value and an {@code int} scale as a
-   * {@code DECIMAL} value. The {@code DECIMAL} value is
+   * Adds an {@code long} unscaled value and an {@code int} scale as a
+   * {@code DECIMAL} value at the current index in the current array
+   * and advances the current index by 1. The {@code DECIMAL} value is
    * <tt>(unscaledValue &times; 10<sup>-scale</sup>)</tt>.
    *
    * @param unscaledValue unscaled value of the {@code DECIMAL}
@@ -249,9 +285,10 @@ public interface DocumentBuilder {
   DocumentBuilder addDecimal(long unscaledValue, int scale);
 
   /**
-   * Appends a byte array containing the two's complement binary representation
-   * and an {@code int} scale as a {@code DECIMAL} value. The input array is
-   * assumed to be in <i>big-endian</i> byte-order: the most significant
+   * Adds a byte array containing the two's complement binary representation
+   * and an {@code int} scale as a {@code DECIMAL} value at the current index
+   * in the current array and advances the current index by 1. The input array
+   * is assumed to be in <i>big-endian</i> byte-order: the most significant
    * byte is in the zeroth element.
    *
    * @param unscaledValue unscaled value of the {@code DECIMAL}

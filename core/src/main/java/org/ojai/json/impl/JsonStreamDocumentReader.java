@@ -16,6 +16,13 @@
 package org.ojai.json.impl;
 
 import static org.ojai.util.Constants.MILLISECONDSPERDAY;
+import static org.ojai.util.Types.TAG_BINARY;
+import static org.ojai.util.Types.TAG_DATE;
+import static org.ojai.util.Types.TAG_DECIMAL;
+import static org.ojai.util.Types.TAG_INTERVAL;
+import static org.ojai.util.Types.TAG_LONG;
+import static org.ojai.util.Types.TAG_TIME;
+import static org.ojai.util.Types.TAG_TIMESTAMP;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -24,13 +31,15 @@ import java.nio.ByteBuffer;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.LinkedList;
+import java.util.Stack;
 
 import org.ojai.DocumentReader;
+import org.ojai.Value.Type;
 import org.ojai.annotation.API;
 import org.ojai.exceptions.DecodingException;
 import org.ojai.exceptions.TypeException;
 import org.ojai.types.Interval;
-import org.ojai.util.Types;
 import org.ojai.util.Values;
 
 import com.fasterxml.jackson.core.JsonParser;
@@ -40,163 +49,160 @@ import com.fasterxml.jackson.core.JsonToken;
 public class JsonStreamDocumentReader implements DocumentReader {
 
   private final JsonDocumentStream documentStream;
-  private JsonToken currentToken; /* current token read from stream */
-  private JsonToken nextToken; /* next token from stream */
   private int mapLevel;
   private boolean eor;
 
-  protected long currentLongValue = 0;
-  protected Object currentObjValue = null;
-  protected double currentDoubleValue = 0;
-  protected EventType currentEventType;
+  private long currentLongValue = 0;
+  private Object currentObjValue = null;
+  private double currentDoubleValue = 0;
+  private EventType currentEvent;
 
-  /* flag used to lookup next token to determine extended types */
-  private boolean lookupToken = false;
-  /*
-   * isExtendedType is used to track if we are parsing extended type from stream.
-   * If we do, we need to ignore the END_OBJECT token.
-   */
-  private boolean isExtendedType = false;
+  private String fieldName;
+  private LinkedList<JsonToken> cachedTokens;
+  private Stack<ContainerContext> containerStack;
+  private ContainerContext currentContainer;
 
   JsonStreamDocumentReader(JsonDocumentStream stream) {
+    containerStack = new Stack<ContainerContext>();
+    cachedTokens = new LinkedList<JsonToken>();
     documentStream = stream;
-    currentToken = null;
-    nextToken = null;
     mapLevel = 0;
     eor = false;
   }
 
   /*
-   * Get next token. If it's FIELD_NAME then if it starts with '$' then it's
-   * extended type. Find the type and return it before advancing to next value
-   * token.
+   * Get next token which should be a field name. If it's one of the extended
+   * type, find the type and the value. Verify that the map ends with a single
+   * field and consume the following END_OBJECT token.
    */
-  private EventType nextType() {
+  private EventType parseMap() {
+    // we just entered a Map, look ahead to see if
+    // the field name matches an extended type
+    JsonToken nextToken = peekToken();
+    if (nextToken == JsonToken.END_OBJECT) {
+      return EventType.START_MAP; // empty Map
+    } else if (nextToken != JsonToken.FIELD_NAME) {
+      throw new DecodingException("Encountered " + nextToken
+          + " while looking for a field name.");
+    }
+
+    String field_name = getCurrentName();
+    if (field_name.startsWith("$")) {
+      // determine extended type
+      switch(field_name) {
+      case TAG_LONG:
+        setCurrentEventType(EventType.LONG);
+        break;
+      case TAG_DECIMAL:
+        setCurrentEventType(EventType.DECIMAL);
+        break;
+      case TAG_DATE:
+        setCurrentEventType(EventType.DATE);
+        break;
+      case TAG_TIME:
+        setCurrentEventType(EventType.TIME);
+        break;
+      case TAG_TIMESTAMP:
+        setCurrentEventType(EventType.TIMESTAMP);
+        break;
+      case TAG_INTERVAL:
+        setCurrentEventType(EventType.INTERVAL);
+        break;
+      case TAG_BINARY:
+        setCurrentEventType(EventType.BINARY);
+        break;
+      default:
+        // regular map, return without consuming the field name.
+        return EventType.START_MAP;
+      }
+
+      // At this point, we have determined that the current map is
+      // one of the extended type, so let's consume the field name
+      nextToken();
+      // and move forward so that the parser is at field value,
+      nextToken = nextToken();
+      // then cache the current value
+      cacheCurrentValue();
+      // finally, consume the END_OBJECT tag
+      nextToken = nextToken();
+      if (nextToken != JsonToken.END_OBJECT) {
+        throw new DecodingException("Encountered " + nextToken
+            + " while looking for end object token.");
+      }
+      return currentEvent;
+    } else {
+      return EventType.START_MAP;
+    }
+  }
+
+  /**
+   * Reads and caches the current Value from the stream.
+   * The parser must be positioned at the value and the
+   * current {@link EventType} must be set by calling
+   * {@link #setCurrentEventType(EventType)}.
+   */
+  protected void cacheCurrentValue() {
     try {
-      nextToken = getParser().nextToken();
-      lookupToken = true;
-
-      if (nextToken == JsonToken.FIELD_NAME) {
-        String field_name = getParser().getCurrentName();
-
-        if (field_name.startsWith("$")) {
-          currentToken = getParser().nextToken();
-          lookupToken = false;
-          isExtendedType = true;
-
-          // determine extended type
-          switch(field_name) {
-          case Types.TAG_LONG:
-            return EventType.LONG;
-          case Types.TAG_DECIMAL:
-            return EventType.DECIMAL;
-          case Types.TAG_DATE:
-            return EventType.DATE;
-          case Types.TAG_TIME:
-            return EventType.TIME;
-          case Types.TAG_TIMESTAMP:
-            return EventType.TIMESTAMP;
-          case Types.TAG_INTERVAL:
-            return EventType.INTERVAL;
-          case Types.TAG_BINARY:
-            return EventType.BINARY;
-          default:
-            break;
-          }
-        }
+      switch (currentEvent) {
+      case BOOLEAN:
+        currentObjValue = isEventBoolean() ? getParser().getBooleanValue()
+            : Boolean.valueOf(getValueAsString());
+        break;
+      case STRING:
+        currentObjValue = getParser().getText();
+        break;
+      case BYTE:
+        currentLongValue = (getParser().getLongValue() & 0xff);
+        break;
+      case SHORT:
+        currentLongValue = (getParser().getLongValue() & 0xffff);
+        break;
+      case INT:
+        currentLongValue = (getParser().getLongValue() & 0xffffffff);
+        break;
+      case LONG:
+        currentLongValue = getParser().getLongValue();
+        break;
+      case FLOAT:
+      case DOUBLE:
+        currentDoubleValue = getParser().getDoubleValue();
+        break;
+      case DECIMAL:
+        currentObjValue = Values.parseBigDecimal(getParser().getText());
+        break;
+      case DATE:
+        currentObjValue = Values.parseDate(getParser().getText());
+        break;
+      case TIME:
+        currentObjValue = Values.parseTime(getParser().getText());
+        break;
+      case TIMESTAMP:
+        currentObjValue = Values.parseTimestamp(getParser().getText());
+        break;
+      case INTERVAL:
+        currentLongValue = getParser().getLongValue();
+        break;
+      case BINARY:
+        currentObjValue = ByteBuffer.wrap(getParser().getBinaryValue());
+        break;
+      default:
+        // ARRAY, MAP and NULL need not be cached
+        break;
       }
     } catch (IOException ie) {
       throw new DecodingException(ie);
     }
-    return EventType.START_MAP;
-  }
-
-  /* returns the eventType associated with the currentToken */
-  private EventType eventType() {
-    switch (currentToken) {
-    case START_OBJECT:
-      return nextType();
-    case START_ARRAY:
-      return EventType.START_ARRAY;
-    case VALUE_NULL:
-      return EventType.NULL;
-    case VALUE_TRUE:
-    case VALUE_FALSE:
-      return EventType.BOOLEAN;
-    case VALUE_STRING:
-      return EventType.STRING;
-    case END_OBJECT:
-      return EventType.END_MAP;
-    case END_ARRAY:
-      return EventType.END_ARRAY;
-    case VALUE_NUMBER_INT:
-    case VALUE_NUMBER_FLOAT:
-      return EventType.DOUBLE;
-    case FIELD_NAME:
-      return EventType.FIELD_NAME;
-    default:
-      throw new DecodingException("Encountered unexpected token of type: " + currentToken);
-    }
-  }
-
-  protected void cacheCurrentValue() throws IOException {
-    switch (currentEventType) {
-    case BOOLEAN:
-      currentObjValue = isEventBoolean() ? getParser().getBooleanValue() : Boolean.valueOf(getValueAsString());
-      break;
-    case STRING:
-    case FIELD_NAME:
-      currentObjValue = getParser().getText();
-      break;
-    case BYTE:
-      currentLongValue = (getParser().getLongValue() & 0xff);
-      break;
-    case SHORT:
-      currentLongValue = (getParser().getLongValue() & 0xffff);
-      break;
-    case INT:
-      currentLongValue = (getParser().getLongValue() & 0xffffffff);
-      break;
-    case LONG:
-      currentLongValue = getParser().getLongValue();
-      break;
-    case FLOAT:
-    case DOUBLE:
-      currentDoubleValue = getParser().getDoubleValue();
-      break;
-    case DECIMAL:
-      currentObjValue = Values.parseBigDecimal(getParser().getText());
-      break;
-    case DATE:
-      currentObjValue = Values.parseDate(getParser().getText());
-      break;
-    case TIME:
-      currentObjValue = Values.parseTime(getParser().getText());
-      break;
-    case TIMESTAMP:
-      currentObjValue = Values.parseTimestamp(getParser().getText());
-      break;
-    case INTERVAL:
-      currentLongValue = getParser().getLongValue();
-      break;
-    case BINARY:
-      currentObjValue = ByteBuffer.wrap(getParser().getBinaryValue());
-      break;
-    default:
-      // ARRAY, MAP and NULL need not be cached
-      break;
-    }
   }
 
   private void checkEventType(EventType eventType) throws TypeException {
-    if (currentEventType != eventType) {
+    if (currentEvent != eventType) {
       throw new TypeException(String.format(
-          "Event type mismatch, expected %s, got %s", eventType, currentEventType));
+          "Event type mismatch, expected %s, got %s", eventType, currentEvent));
     }
   }
 
   private void checkNumericEventType() throws TypeException {
-    switch (currentEventType) {
+    switch (currentEvent) {
     case BYTE:
     case SHORT:
     case INT:
@@ -208,22 +214,18 @@ public class JsonStreamDocumentReader implements DocumentReader {
       break;
     }
     throw new TypeException("Event type mismatch. Expected numeric type, found "
-        + currentEventType);
+        + currentEvent);
   }
 
-  protected JsonParser getParser() {
+  private JsonParser getParser() {
     return documentStream.getParser();
   }
 
-  protected boolean isEventBoolean() {
+  private boolean isEventBoolean() {
     return getParser().getCurrentToken().isBoolean();
   }
 
-  protected boolean isEventNumeric() {
-    return getParser().getCurrentToken().isNumeric();
-  }
-
-  protected String getValueAsString() {
+  private String getValueAsString() {
     try {
       return getParser().getText();
     } catch (IOException ie) {
@@ -236,58 +238,87 @@ public class JsonStreamDocumentReader implements DocumentReader {
    *         of the current document or end of the underlying stream has been
    *         reached.
    */
-  boolean eor() {
-    if (eor) {
-      return true;
-    }
-    try {
-      nextToken = getParser().nextToken();
-      lookupToken = true;
-      return nextToken == null;
-    } catch (IOException e) {
-      throw new DecodingException(e);
-    }
+  protected boolean eor() {
+    return eor || !hasMoreTokens();
   }
 
   @Override
   public EventType next() {
-    if (eor) {
+    if (eor()) {
       return null;
     }
 
-    EventType et = null;
-    try {
-      if (lookupToken) {
-        currentToken = nextToken;
-        lookupToken = false;
-      } else {
-        currentToken = getParser().nextToken();
-      }
+    JsonToken currentToken = nextToken();
+    if (currentToken == JsonToken.FIELD_NAME) {
+      fieldName = getCurrentName();
+      currentToken = nextToken();
+    }
+    updateCurrentContainer();
 
-      if (currentToken != null) {
-        /* cache current event type */
-        et = currentEventType = eventType();
-        cacheCurrentValue();
+    switch (currentToken) {
+    case START_OBJECT:
+      setCurrentEventType(parseMap());
+      if (currentEvent == EventType.START_MAP) {
+        containerStack.push(new ContainerContext(Type.MAP, fieldName));
       }
-
-      if (et == EventType.START_MAP) {
-        mapLevel++;
-      } else if (et == EventType.END_MAP) {
-        if (!isExtendedType) {
-          mapLevel--;
-        } else {
-          isExtendedType = false;
-          return next();
-        }
+      break;
+    case END_OBJECT:
+      setCurrentEventType(EventType.END_MAP);
+      ContainerContext lastContainer = containerStack.pop();
+      if (lastContainer.getType() == Type.MAP) {
+        fieldName = lastContainer.getFieldName();
       }
-      if (mapLevel == 0) {
-        eor = true;
+      updateCurrentContainer();
+      break;
+    case START_ARRAY:
+      setCurrentEventType(EventType.START_ARRAY);
+      if (!inMap()) {
+        currentContainer.incrementIndex();
       }
-    } catch (IOException e) {
-      throw new DecodingException(e);
+      containerStack.push(new ContainerContext(Type.ARRAY));
+      break;
+    case END_ARRAY:
+      setCurrentEventType(EventType.END_ARRAY);
+      containerStack.pop();
+      updateCurrentContainer();
+      break;
+    case VALUE_NULL:
+      setCurrentEventType(EventType.NULL).cacheCurrentValue();
+      break;
+    case VALUE_TRUE:
+    case VALUE_FALSE:
+      setCurrentEventType(EventType.BOOLEAN).cacheCurrentValue();
+      break;
+    case VALUE_STRING:
+      setCurrentEventType(EventType.STRING).cacheCurrentValue();
+      break;
+    case VALUE_NUMBER_INT:
+    case VALUE_NUMBER_FLOAT:
+      setCurrentEventType(EventType.DOUBLE).cacheCurrentValue();
+      break;
+    default:
+      throw new DecodingException(
+          "Encountered unexpected token of type: " + currentToken);
     }
 
-    return et;
+    if (!inMap()
+        && currentEvent != EventType.END_MAP
+        && currentEvent != EventType.START_ARRAY
+        && currentEvent != EventType.END_ARRAY) {
+      // if traversing an array, increment the index
+      currentContainer.incrementIndex();
+    }
+
+    if (currentEvent == EventType.START_MAP) {
+      mapLevel++;
+    } else if (currentEvent == EventType.END_MAP) {
+      mapLevel--;
+    }
+    if (mapLevel == 0) {
+      eor = true;
+    }
+
+    return currentEvent;
   }
 
   /**
@@ -302,35 +333,46 @@ public class JsonStreamDocumentReader implements DocumentReader {
      *        the parser stream and discard them. Instead we need to cache
      *        the token and return them in next() and getXXXX() calls.
      */
-    try {
-      JsonToken token;
-      while((token = getParser().nextToken()) != null) {
-        switch (token) {
-        case START_OBJECT:
-          mapLevel++;
-          break;
-        case END_OBJECT:
-          mapLevel--;
-          break;
-        default:
-        }
-
-        if (mapLevel == 0) {
-          break;
-        }
+    JsonToken token;
+    while((token = nextToken()) != null) {
+      switch (token) {
+      case START_OBJECT:
+        mapLevel++;
+        break;
+      case END_OBJECT:
+        mapLevel--;
+        break;
+      default:
       }
-      eor = true;
-    } catch (IOException e) {
-      throw new DecodingException(e);
+
+      if (mapLevel == 0) {
+        break;
+      }
     }
+    eor = true;
+  }
+
+  @Override
+  public boolean inMap() {
+    return currentContainer == null
+        || currentContainer.getType() == Type.MAP;
   }
 
   @Override
   public String getFieldName() {
-    checkEventType(EventType.FIELD_NAME);
-    return (String) currentObjValue;
+    if (!inMap()) {
+      throw new IllegalStateException("Not traversing a map!");
+    }
+    return fieldName;
   }
 
+  @Override
+  public int getArrayIndex() {
+    if (inMap()) {
+      throw new IllegalStateException("Not traversing an array!");
+    }
+    return currentContainer.getIndex();
+  }
 
   @Override
   public byte getByte() {
@@ -491,6 +533,77 @@ public class JsonStreamDocumentReader implements DocumentReader {
   public ByteBuffer getBinary() {
     checkEventType(EventType.BINARY);
     return (ByteBuffer) currentObjValue;
+  }
+
+  private void updateCurrentContainer() {
+    currentContainer = containerStack.isEmpty() ? null : containerStack.peek();
+  }
+
+  protected JsonToken peekToken() {
+    if (hasMoreTokens()) {
+      return cachedTokens.peek();
+    }
+    throw new DecodingException("No more Json tokens.");
+  }
+
+  protected JsonToken nextToken() {
+    if (hasMoreTokens()) {
+        return cachedTokens.remove();
+    }
+    throw new DecodingException("No more Json tokens.");
+  }
+
+  protected boolean hasMoreTokens() {
+    try {
+      if (!cachedTokens.isEmpty()) return true;
+      JsonToken token = getParser().nextToken();
+      if (token == null) return false;
+      cachedTokens.add(token);
+      return true;
+    } catch (IOException e) {
+      throw new DecodingException(e);
+    }
+  }
+
+  protected String getCurrentName() {
+    try {
+      return getParser().getCurrentName();
+    } catch (IOException ie) {
+      throw new DecodingException(ie);
+    }
+  }
+
+  protected Object getCurrentObj() {
+    return currentObjValue;
+  }
+
+  protected void setCurrentObj(Object obj) {
+    this.currentObjValue = obj;
+  }
+
+  protected EventType getCurrentEventType() {
+    return currentEvent;
+  }
+
+  protected JsonStreamDocumentReader setCurrentEventType(EventType eventType) {
+    this.currentEvent = eventType;
+    return this;
+  }
+
+  protected long getCurrentLongValue() {
+    return currentLongValue;
+  }
+
+  protected void setCurrentLongValue(long value) {
+    this.currentLongValue = value;
+  }
+
+  protected double getCurrentDoubleValue() {
+    return currentDoubleValue;
+  }
+
+  protected void setCurrentDoubleValue(double value) {
+    this.currentDoubleValue = value;
   }
 
 }

@@ -17,15 +17,17 @@ package org.ojai.tests.json;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.InputStream;
+import java.math.BigDecimal;
 
 import org.junit.Test;
 import org.ojai.Document;
 import org.ojai.DocumentReader;
-import org.ojai.DocumentStream;
 import org.ojai.DocumentReader.EventType;
+import org.ojai.DocumentStream;
 import org.ojai.json.Json;
 import org.ojai.tests.BaseTest;
 import org.ojai.util.Values;
@@ -33,67 +35,222 @@ import org.ojai.util.Values;
 public class TestJsonDocumentReader extends BaseTest {
 
   @Test
-  public void testAll() throws Exception {
+  public void testStreamReader() throws Exception {
 
-    try (InputStream testJson = getJsonStream("test.json");
+    try (InputStream testJson = getJsonStream("test2.json");
         DocumentStream<Document> stream = Json.newDocumentStream(testJson);) {
-      EventType et = null;
-      String fieldName = null;
       DocumentReader r = stream.documentReaders().iterator().next();
-      while ((et = r.next()) != null) {
-        if (et == EventType.FIELD_NAME) {
-          fieldName = r.getFieldName();
-        }
-        else if (et == EventType.LONG) {
-          if (fieldName.equals("byte")) {
-            assertEquals((byte)127, r.getByte());
-          }
-          else if (fieldName.equals("short")) {
-            assertEquals((short)32767, r.getShort());
-          }
-          else if (fieldName.equals("int")) {
-            assertEquals(2147483647, r.getInt());
-          }
-          else if (fieldName.equals("long")) {
-            long l = r.getLong();
-            assertEquals(Long.valueOf("9223372036854775807").longValue(), l);
-          }
-
-        }
-        else if (et == EventType.BOOLEAN) {
-          boolean b = r.getBoolean();
-          assertEquals(true, b);
-        } else if (et == EventType.STRING) {
-          String s = r.getString();
-          assertEquals("eureka", s);
-        }
-        else if (et == EventType.INTERVAL) {
-          int days = r.getIntervalDays();
-          assertEquals(2, days);
-        }
-        else if (et == EventType.START_ARRAY) {
-          et = r.next();
-          assertNotNull(et);
-          assertTrue(et == EventType.DOUBLE);
-          assertEquals(42.0, r.getDouble(), 0.0);
-
-          et = r.next();
-          assertNotNull(et);
-          assertTrue(et == EventType.STRING);
-          assertEquals("open sesame", r.getString());
-
-          et = r.next();
-          assertNotNull(et);
-          assertTrue(et == EventType.DOUBLE);
-          assertEquals(3.14, r.getDouble(), 0.0001);
-
-          et = r.next();
-          assertNotNull(et);
-          assertTrue(et == EventType.DATE);
-          assertEquals(Values.parseDate("2015-01-21"), r.getDate());
-        }
-      }
+      testReader(r);
     }
+  }
+
+  @Test
+  public void testDOMReader() throws Exception {
+
+    try (InputStream testJson = getJsonStream("test2.json");
+        DocumentStream<Document> stream = Json.newDocumentStream(testJson);) {
+      DocumentReader r = stream.iterator().next().asReader();
+      testReader(r);
+    }
+  }
+
+  private void testReader(DocumentReader r) {
+    EventType et = null;
+    assertNotNull((et = r.next()));
+    assertTrue(r.inMap());
+    assertEquals(EventType.START_MAP, et);
+
+    assertNotNull((et = r.next()));
+    assertTrue(r.inMap());
+    assertEquals(EventType.START_MAP, et);
+    assertEquals("map", r.getFieldName());
+
+    assertNotNull((et = r.next()));
+    assertTrue(r.inMap());
+    assertEquals(EventType.NULL, et);
+    assertEquals("null", r.getFieldName());
+
+    assertNotNull((et = r.next()));
+    assertTrue(r.inMap());
+    assertEquals(EventType.BOOLEAN, et);
+    assertEquals("boolean", r.getFieldName());
+    assertEquals(true, r.getBoolean());
+
+    assertNotNull((et = r.next()));
+    assertTrue(r.inMap());
+    assertEquals(EventType.STRING, et);
+    assertEquals("string", r.getFieldName());
+    assertEquals("eureka", r.getString());
+
+    assertNotNull((et = r.next()));
+    assertTrue(r.inMap());
+    assertEquals(EventType.LONG, et);
+    assertEquals("byte", r.getFieldName());
+    assertEquals(127, r.getLong());
+
+    assertNotNull((et = r.next()));
+    assertTrue(r.inMap());
+    assertEquals(EventType.LONG, et);
+    assertEquals("short", r.getFieldName());
+    assertEquals(32767, r.getLong());
+
+    assertNotNull((et = r.next()));
+    assertTrue(r.inMap());
+    assertEquals(EventType.LONG, et);
+    assertEquals("int", r.getFieldName());
+    assertEquals(2147483647, r.getLong());
+
+    assertNotNull((et = r.next()));
+    assertTrue(r.inMap());
+    assertEquals(EventType.LONG, et);
+    assertEquals("long", r.getFieldName());
+    assertEquals(9223372036854775807L, r.getLong());
+
+    assertNotNull((et = r.next()));
+    assertTrue(r.inMap());
+    assertEquals(EventType.DOUBLE, et);
+    assertEquals("float", r.getFieldName());
+    assertEquals(3.4028235, r.getDouble(), 0);
+
+    assertNotNull((et = r.next()));
+    assertTrue(r.inMap());
+    assertEquals(EventType.DOUBLE, et);
+    assertEquals("double", r.getFieldName());
+    assertEquals(1.7976931348623157e308, r.getDouble(), 0);
+
+    assertNotNull((et = r.next()));
+    assertTrue(r.inMap());
+    assertEquals(EventType.DECIMAL, et);
+    assertEquals("decimal", r.getFieldName());
+    assertEquals(new BigDecimal("123456789012345678901234567890123456789012345678901.23456789"), r.getDecimal());
+
+    assertNotNull((et = r.next()));
+    assertTrue(r.inMap());
+    assertEquals(EventType.DATE, et);
+    assertEquals("date", r.getFieldName());
+    assertEquals("2012-10-20", r.getDate().toString());
+
+    assertNotNull((et = r.next()));
+    assertTrue(r.inMap());
+    assertEquals(EventType.TIME, et);
+    assertEquals("time", r.getFieldName());
+    assertEquals("07:42:46", r.getTime().toString());
+
+    assertNotNull((et = r.next()));
+    assertTrue(r.inMap());
+    assertEquals(EventType.TIMESTAMP, et);
+    assertEquals("timestamp", r.getFieldName());
+    assertEquals("2012-10-20 07:42:46.123", r.getTimestamp().toString());
+
+    assertNotNull((et = r.next()));
+    assertTrue(r.inMap());
+    assertEquals(EventType.INTERVAL, et);
+    assertEquals("interval", r.getFieldName());
+    assertEquals(172800000, r.getInterval().getTimeInMillis());
+
+    assertNotNull((et = r.next()));
+    assertTrue(r.inMap());
+    assertEquals(EventType.BINARY, et);
+    assertEquals("binary", r.getFieldName());
+    assertEquals(Values.parseBinary("YWJjZA=="), r.getBinary());
+
+    assertNotNull((et = r.next()));
+    assertTrue(r.inMap());
+    assertEquals(EventType.START_ARRAY, et);
+    assertEquals("array", r.getFieldName());
+
+    assertNotNull((et = r.next()));
+    assertTrue(!r.inMap());
+    assertEquals(EventType.DOUBLE, et);
+    assertEquals(0, r.getArrayIndex());
+    assertEquals(42, r.getDouble(), 0);
+
+    assertNotNull((et = r.next()));
+    assertTrue(!r.inMap());
+    assertEquals(EventType.STRING, et);
+    assertEquals(1, r.getArrayIndex());
+    assertEquals("open sesame", r.getString());
+
+    assertNotNull((et = r.next()));
+    assertTrue(!r.inMap());
+    assertEquals(EventType.DOUBLE, et);
+    assertEquals(2, r.getArrayIndex());
+    assertEquals(3.14, r.getDouble(), 0);
+
+    assertNotNull((et = r.next()));
+    assertTrue(!r.inMap());
+    assertEquals(EventType.DATE, et);
+    assertEquals(3, r.getArrayIndex());
+    assertEquals("2015-01-21", r.getDate().toString());
+
+    assertNotNull((et = r.next()));
+    assertTrue(!r.inMap());
+    assertEquals(EventType.START_MAP, et);
+    assertEquals(4, r.getArrayIndex());
+
+    assertNotNull((et = r.next()));
+    assertTrue(r.inMap());
+    assertEquals(EventType.START_ARRAY, et);
+    assertEquals("nested", r.getFieldName());
+
+    assertNotNull((et = r.next()));
+    assertTrue(!r.inMap());
+    assertEquals(EventType.START_ARRAY, et);
+    assertEquals(0, r.getArrayIndex());
+
+    assertNotNull((et = r.next()));
+    assertTrue(!r.inMap());
+    assertEquals(EventType.END_ARRAY, et);
+    assertEquals(0, r.getArrayIndex());
+
+    assertNotNull((et = r.next()));
+    assertTrue(!r.inMap());
+    assertEquals(EventType.START_MAP, et);
+    assertEquals(1, r.getArrayIndex());
+
+    assertNotNull((et = r.next()));
+    assertTrue(!r.inMap());
+    assertEquals(EventType.END_MAP, et);
+    assertEquals(1, r.getArrayIndex());
+
+    assertNotNull((et = r.next()));
+    assertTrue(!r.inMap());
+    assertEquals(EventType.DOUBLE, et);
+    assertEquals(2, r.getArrayIndex());
+    assertEquals(0, r.getDouble(), 0);
+
+    assertNotNull((et = r.next()));
+    assertTrue(!r.inMap());
+    assertEquals(EventType.STRING, et);
+    assertEquals(3, r.getArrayIndex());
+    assertEquals("", r.getString());
+
+    assertNotNull((et = r.next()));
+    assertTrue(r.inMap());
+    assertEquals(EventType.END_ARRAY, et);
+    assertEquals("nested", r.getFieldName());
+
+    assertNotNull((et = r.next()));
+    assertTrue(!r.inMap());
+    assertEquals(EventType.END_MAP, et);
+    assertEquals(4, r.getArrayIndex());
+
+    assertNotNull((et = r.next()));
+    assertTrue(r.inMap());
+    assertEquals(EventType.END_ARRAY, et);
+    assertEquals("array", r.getFieldName());
+
+    assertNotNull((et = r.next()));
+    assertTrue(r.inMap());
+    assertEquals(EventType.END_MAP, et);
+    assertEquals("map", r.getFieldName());
+
+    assertNotNull((et = r.next()));
+    assertTrue(r.inMap());
+    assertEquals(EventType.END_MAP, et);
+    assertNull(r.getFieldName());
+
+    assertNull((et = r.next()));
   }
 
 }

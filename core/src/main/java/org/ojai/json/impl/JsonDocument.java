@@ -100,6 +100,7 @@ public class JsonDocument extends JsonValue implements Document, Map<String, Obj
       if ((oldKeyValue == null) || (oldKeyValue.getType() != Type.MAP)) {
         newDocument = new JsonDocument();
         newDocument.createOrInsert(iter, newKeyValue);
+        newDocument.setKey(key);
         getRootMap().put(key, newDocument);
         return this;
       }
@@ -495,9 +496,8 @@ public class JsonDocument extends JsonValue implements Document, Map<String, Obj
 
   @Override
   public DocumentReader asReader(FieldPath fieldPath) {
-    Value val = getValue(fieldPath);
+    JsonValue val = getValue(fieldPath);
     return new JsonDOMDocumentReader(val);
-
   }
 
   @Override

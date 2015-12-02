@@ -24,7 +24,6 @@ import org.ojai.DocumentReader;
 import org.ojai.DocumentReader.EventType;
 import org.ojai.annotation.API;
 import org.ojai.exceptions.DecodingException;
-import org.ojai.util.Fields;
 
 @API.Internal
 public class JsonDocumentIterator implements Iterator<Document> {
@@ -66,7 +65,6 @@ public class JsonDocumentIterator implements Iterator<Document> {
     Stack<JsonValue> containerStack = new Stack<JsonValue>();
     EventType event;
     JsonDocument lastDocument = null;
-    String currentFieldName = null;
     JsonValue currentContainer = null;
 
     while ((event = reader.next()) != null) {
@@ -74,7 +72,7 @@ public class JsonDocumentIterator implements Iterator<Document> {
       case START_MAP:
         JsonValue newRec = new JsonDocument();
         if (currentContainer != null) {
-          appendTo(currentContainer, currentFieldName, newRec);
+          appendTo(currentContainer, newRec);
         }
         currentContainer = newRec;
         containerStack.push(currentContainer);
@@ -92,7 +90,7 @@ public class JsonDocumentIterator implements Iterator<Document> {
       case START_ARRAY:
         JsonValue newList = new JsonList();
         if (currentContainer != null) {
-          appendTo(currentContainer, currentFieldName, newList);
+          appendTo(currentContainer, newList);
         }
         currentContainer = newList;
         containerStack.push(currentContainer);
@@ -107,53 +105,50 @@ public class JsonDocumentIterator implements Iterator<Document> {
           throw new DecodingException("Unable to decode document stream: " + containerStack.toString());
         }
         break;
-      case FIELD_NAME:
-        currentFieldName = Fields.quoteFieldName(reader.getFieldName());
-        break;
       case NULL:
-        appendTo(currentContainer, currentFieldName, JsonValue.NULLKEYVALUE);
+        appendTo(currentContainer, JsonValue.NULLKEYVALUE);
         break;
       case BOOLEAN:
-        appendTo(currentContainer, currentFieldName, JsonValueBuilder.initFrom(reader.getBoolean()));
+        appendTo(currentContainer, JsonValueBuilder.initFrom(reader.getBoolean()));
         break;
       case BINARY:
-        appendTo(currentContainer, currentFieldName, JsonValueBuilder.initFrom(reader.getBinary()));
+        appendTo(currentContainer, JsonValueBuilder.initFrom(reader.getBinary()));
         break;
       case BYTE:
-        appendTo(currentContainer, currentFieldName, JsonValueBuilder.initFrom(reader.getByte()));
+        appendTo(currentContainer, JsonValueBuilder.initFrom(reader.getByte()));
         break;
       case SHORT:
-        appendTo(currentContainer, currentFieldName, JsonValueBuilder.initFrom(reader.getShort()));
+        appendTo(currentContainer, JsonValueBuilder.initFrom(reader.getShort()));
         break;
       case INT:
-        appendTo(currentContainer, currentFieldName, JsonValueBuilder.initFrom(reader.getInt()));
+        appendTo(currentContainer, JsonValueBuilder.initFrom(reader.getInt()));
         break;
       case LONG:
-        appendTo(currentContainer, currentFieldName, JsonValueBuilder.initFrom(reader.getLong()));
+        appendTo(currentContainer, JsonValueBuilder.initFrom(reader.getLong()));
         break;
       case FLOAT:
-        appendTo(currentContainer, currentFieldName, JsonValueBuilder.initFrom(reader.getFloat()));
+        appendTo(currentContainer, JsonValueBuilder.initFrom(reader.getFloat()));
         break;
       case DOUBLE:
-        appendTo(currentContainer, currentFieldName, JsonValueBuilder.initFrom(reader.getDouble()));
+        appendTo(currentContainer, JsonValueBuilder.initFrom(reader.getDouble()));
         break;
       case DECIMAL:
-        appendTo(currentContainer, currentFieldName, JsonValueBuilder.initFrom(reader.getDecimal()));
+        appendTo(currentContainer, JsonValueBuilder.initFrom(reader.getDecimal()));
         break;
       case STRING:
-        appendTo(currentContainer, currentFieldName, JsonValueBuilder.initFrom(reader.getString()));
+        appendTo(currentContainer, JsonValueBuilder.initFrom(reader.getString()));
         break;
       case DATE:
-        appendTo(currentContainer, currentFieldName, JsonValueBuilder.initFrom(reader.getDate()));
+        appendTo(currentContainer, JsonValueBuilder.initFrom(reader.getDate()));
         break;
       case TIME:
-        appendTo(currentContainer, currentFieldName, JsonValueBuilder.initFrom(reader.getTime()));
+        appendTo(currentContainer, JsonValueBuilder.initFrom(reader.getTime()));
         break;
       case TIMESTAMP:
-        appendTo(currentContainer, currentFieldName, JsonValueBuilder.initFrom(reader.getTimestamp()));
+        appendTo(currentContainer, JsonValueBuilder.initFrom(reader.getTimestamp()));
         break;
       case INTERVAL:
-        appendTo(currentContainer, currentFieldName, JsonValueBuilder.initFrom(reader.getInterval()));
+        appendTo(currentContainer, JsonValueBuilder.initFrom(reader.getInterval()));
         break;
       default:
         throw new DecodingException("Unknown token type " + event + " from stream reader");
@@ -166,12 +161,12 @@ public class JsonDocumentIterator implements Iterator<Document> {
     return lastDocument;
   }
 
-  private void appendTo(JsonValue currentContainer, String fieldName,
-      JsonValue value) {
+  private void appendTo(JsonValue currentContainer, JsonValue value) {
     if (currentContainer instanceof JsonDocument) {
-      ((JsonDocument)currentContainer).getRootMap().put(fieldName, value);
+      value.setKey(reader.getFieldName());
+      ((JsonDocument)currentContainer).getRootMap().put(reader.getFieldName(), value);
     } else if (currentContainer instanceof JsonList) {
-      ((JsonList)currentContainer).getRootList().add(value);
+      ((JsonList)currentContainer).add(reader.getArrayIndex(), value);
     } else {
       throw new DecodingException("Unable to decode document stream: " + currentContainer.toString());
     }

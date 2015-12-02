@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
+import java.util.LinkedList;
 
 import org.ojai.DocumentReader;
 import org.ojai.DocumentReader.EventType;
@@ -41,9 +42,11 @@ public class DocumentParser extends ParserMinimalBase {
   protected EventType _currEventType;
   protected ObjectCodec _objectCodec;
   protected boolean _closed = false;
+  protected LinkedList<JsonToken> tokens;
 
   public DocumentParser(DocumentReader dr) {
     r = dr;
+    tokens = new LinkedList<JsonToken>();
   }
 
   @Override
@@ -68,42 +71,49 @@ public class DocumentParser extends ParserMinimalBase {
 
   @Override
   public JsonToken nextToken() throws IOException, JsonParseException {
-    _currEventType = r.next();
-    switch (_currEventType) {
-    case FIELD_NAME:
-      _currToken = JsonToken.FIELD_NAME;
-      break;
-    case START_ARRAY:
-      _currToken = JsonToken.START_ARRAY;
-      break;
-    case END_ARRAY:
-      _currToken = JsonToken.END_ARRAY;
-      break;
-    case START_MAP:
-      _currToken = JsonToken.START_OBJECT;
-      break;
-    case END_MAP:
-      _currToken = JsonToken.END_OBJECT;
-      break;
-    case NULL:
-      _currToken = JsonToken.VALUE_NULL;
-      break;
-    case STRING:
-      _currToken = JsonToken.VALUE_STRING;
-      break;
-    case BYTE: case SHORT: case INT: case LONG:
-      _currToken = JsonToken.VALUE_NUMBER_INT;
-      break;
-    case DECIMAL: case DOUBLE: case FLOAT:
-      _currToken = JsonToken.VALUE_NUMBER_FLOAT;
-      break;
-    case BOOLEAN:
-      _currToken = r.getBoolean() ? JsonToken.VALUE_TRUE : JsonToken.VALUE_FALSE;
-      break;
-    case DATE: case TIME: case TIMESTAMP: case INTERVAL: case BINARY:
-      _currToken = JsonToken.VALUE_EMBEDDED_OBJECT;
-      break;
+    if (tokens.isEmpty()
+        && (_currEventType = r.next()) != null) {
+      if (r.inMap()
+          && r.getFieldName() != null
+          && _currEventType != EventType.END_MAP
+          && _currEventType != EventType.END_ARRAY) {
+        tokens.add(JsonToken.FIELD_NAME);
+      }
+
+      switch (_currEventType) {
+      case START_ARRAY:
+        tokens.add(JsonToken.START_ARRAY);
+        break;
+      case END_ARRAY:
+        tokens.add(JsonToken.END_ARRAY);
+        break;
+      case START_MAP:
+        tokens.add(JsonToken.START_OBJECT);
+        break;
+      case END_MAP:
+        tokens.add(JsonToken.END_OBJECT);
+        break;
+      case NULL:
+        tokens.add(JsonToken.VALUE_NULL);
+        break;
+      case STRING:
+        tokens.add(JsonToken.VALUE_STRING);
+        break;
+      case BYTE: case SHORT: case INT: case LONG:
+        tokens.add(JsonToken.VALUE_NUMBER_INT);
+        break;
+      case DECIMAL: case DOUBLE: case FLOAT:
+        tokens.add(JsonToken.VALUE_NUMBER_FLOAT);
+        break;
+      case BOOLEAN:
+        tokens.add(r.getBoolean() ? JsonToken.VALUE_TRUE : JsonToken.VALUE_FALSE);
+        break;
+      case DATE: case TIME: case TIMESTAMP: case INTERVAL: case BINARY:
+        tokens.add(JsonToken.VALUE_EMBEDDED_OBJECT);
+        break;
+      }
     }
+    _currToken = tokens.isEmpty() ? JsonToken.NOT_AVAILABLE : tokens.remove();
     return _currToken;
   }
 
@@ -124,7 +134,7 @@ public class DocumentParser extends ParserMinimalBase {
 
   @Override
   public String getText() throws IOException {
-    return _currEventType == EventType.FIELD_NAME ? r.getFieldName() : r.getString();
+    return (_currToken == JsonToken.FIELD_NAME) ? r.getFieldName() : r.getString();
   }
 
   @Override

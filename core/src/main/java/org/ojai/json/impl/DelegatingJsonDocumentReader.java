@@ -73,59 +73,58 @@ public class DelegatingJsonDocumentReader extends JsonStreamDocumentReader {
   }
 
   private EventType updateCurrentValue(TypeValuePair head) {
-    currentEventType = head.eventType;
+    setCurrentEventType(head.eventType);
     Value value = head.value;
 
-    switch (currentEventType) {
+    switch (getCurrentEventType()) {
     case BOOLEAN:
-      currentObjValue = value.getBoolean();
+      setCurrentObj(value.getBoolean());
       break;
     case STRING:
-    case FIELD_NAME:
-      currentObjValue = value.getString();
+      setCurrentObj(value.getString());
       break;
     case BYTE:
-      currentLongValue = value.getByte();
+      setCurrentLongValue(value.getByte());
       break;
     case SHORT:
-      currentLongValue = value.getShort();
+      setCurrentLongValue(value.getShort());
       break;
     case INT:
-      currentLongValue = value.getInt();
+      setCurrentLongValue(value.getInt());
       break;
     case LONG:
-      currentLongValue = value.getLong();
+      setCurrentLongValue(value.getLong());
       break;
     case FLOAT:
-      currentDoubleValue = value.getFloat();
+      setCurrentDoubleValue(value.getFloat());
       break;
     case DOUBLE:
-      currentDoubleValue = value.getDouble();
+      setCurrentDoubleValue(value.getDouble());
       break;
     case DECIMAL:
-      currentObjValue = value.getDecimal();
+      setCurrentObj(value.getDecimal());
       break;
     case DATE:
-      currentObjValue = value.getDate();
+      setCurrentObj(value.getDate());
       break;
     case TIME:
-      currentObjValue = value.getTime();
+      setCurrentObj(value.getTime());
       break;
     case TIMESTAMP:
-      currentObjValue = value.getTimestamp();
+      setCurrentObj(value.getTimestamp());
       break;
     case INTERVAL:
-      currentLongValue = value.getIntervalAsLong();
+      setCurrentLongValue(value.getIntervalAsLong());
       break;
     case BINARY:
-      currentObjValue = value.getBinary();
+      setCurrentObj(value.getBinary());
       break;
     default:
       // ARRAY, MAP and NULL need not be cached
       break;
     }
 
-    return currentEventType;
+    return getCurrentEventType();
   }
 
 }

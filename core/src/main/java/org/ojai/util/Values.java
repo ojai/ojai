@@ -16,6 +16,7 @@
 package org.ojai.util;
 
 import java.math.BigDecimal;
+import java.nio.ByteBuffer;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
@@ -31,6 +32,7 @@ import org.ojai.json.Json;
 import org.ojai.json.JsonOptions;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.io.BaseEncoding;
 
 /**
  * A helper class that provides convenience methods
@@ -187,11 +189,18 @@ public class Values {
     }
   }
 
-  /*
+  /**
    * Converts a string to BigDecimal object.
    */
   public static BigDecimal parseBigDecimal(String s) {
     return new BigDecimal(s);
+  }
+
+  /**
+   * Converts a base-64 encoded string to ByteBuffer.
+   */
+  public static ByteBuffer parseBinary(String s) {
+    return ByteBuffer.wrap(BaseEncoding.base64().decode(s));
   }
 
   /**

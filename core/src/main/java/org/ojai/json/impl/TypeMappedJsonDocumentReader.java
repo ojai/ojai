@@ -15,17 +15,13 @@
  */
 package org.ojai.json.impl;
 
-import java.io.IOException;
 import java.util.Map;
 import java.util.Stack;
 
 import org.ojai.FieldPath;
 import org.ojai.Value.Type;
 import org.ojai.annotation.API;
-import org.ojai.exceptions.DecodingException;
 import org.ojai.util.Types;
-
-import com.fasterxml.jackson.core.JsonParseException;
 
 @API.Internal
 public class TypeMappedJsonDocumentReader extends JsonStreamDocumentReader {
@@ -48,10 +44,6 @@ public class TypeMappedJsonDocumentReader extends JsonStreamDocumentReader {
   public EventType next() {
     EventType et = super.next();
     switch (et) {
-    case FIELD_NAME:
-      currentFieldName = getFieldName();
-      calculateCurrentFieldPath();
-      break;
     case START_MAP:
       if (currentFieldName != null) {
         fieldSegmentStack.push(currentFieldName);
@@ -66,17 +58,16 @@ public class TypeMappedJsonDocumentReader extends JsonStreamDocumentReader {
     case END_ARRAY:
       break;
     default:
+      if (inMap()) {
+        currentFieldName = getFieldName();
+        calculateCurrentFieldPath();
+      }
       Type mappedType = typeMap.get(currentFieldPath);
       if (mappedType != null) {
         Type currentFieldType = mappedType;
-        et = currentEventType = Types.getEventTypeForType(currentFieldType);
-        try {
-          cacheCurrentValue();
-        } catch (JsonParseException jp) {
-          throw new IllegalStateException(jp);
-        } catch (IOException e) {
-          throw new DecodingException(e);
-        }
+        et = Types.getEventTypeForType(currentFieldType);
+        setCurrentEventType(et);
+        cacheCurrentValue();
       }
       break;
     }

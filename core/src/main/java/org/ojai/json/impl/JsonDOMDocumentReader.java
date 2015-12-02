@@ -22,11 +22,11 @@ import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Iterator;
+import java.util.ListIterator;
 import java.util.Map.Entry;
 import java.util.Stack;
 
 import org.ojai.DocumentReader;
-import org.ojai.Value;
 import org.ojai.Value.Type;
 import org.ojai.exceptions.TypeException;
 import org.ojai.types.Interval;
@@ -34,47 +34,23 @@ import org.ojai.util.Types;
 
 class JsonDOMDocumentReader implements DocumentReader {
 
-  class IteratorWithType {
-    Iterator<JsonValue> iter;
-    Type iterType;
-
-    @SuppressWarnings("unchecked")
-    IteratorWithType(Iterator<?> i, Type t) {
-      iter = (Iterator<JsonValue>)i;
-      iterType = t;
-    }
-  }
-
   //define data structures
   private Stack<IteratorWithType> stateStack = null;
-  private EventType event = null;
+  private IteratorWithType currentItr = null;
   private EventType nextEvent = null;
   private EventType currentEvent = null;
   private JsonValue jsonValue;
 
-
-  JsonDOMDocumentReader(Value value) {
+  JsonDOMDocumentReader(JsonValue value) {
     stateStack = new Stack<IteratorWithType>();
     /* analyze the type of value object and initialize events and stacks */
-    Type t = value.getType();
-    Iterator<?> iter;
-    if (t == Type.MAP) {
-      iter = ((JsonDocument)value).iterator();
-      stateStack.push(new IteratorWithType(iter, t));
-      event = EventType.START_MAP;
-    } else if (t == Type.ARRAY) {
-      iter = ((JsonList)value).iterator();
-      stateStack.push(new IteratorWithType(iter, t));
-      event = EventType.START_ARRAY;
-    } else {
-      jsonValue = (JsonValue)value;
-      event = Types.getEventTypeForType(value.getType());
+    jsonValue = value;
+    Type type = value.getType();
+    nextEvent = Types.getEventTypeForType(type);
+    if (!type.isScalar()) {
+      stateStack.push(new IteratorWithType(value));
     }
   }
-
-  /*private void setNextType(Value v) {
-    nextEvent = Types.getEventTypeForType(v.getType());
-  }*/
 
   /* Main method for traversing the DFS structure.
    * We use a stack to keep track of iterators at each level of
@@ -89,82 +65,74 @@ class JsonDOMDocumentReader implements DocumentReader {
    * variables et and nextEt.
    */
   @SuppressWarnings("unchecked")
-  private void ProcessNextNode() {
+  private void processNextNode() {
     if (stateStack.empty()) {
       /* We are done with the document */
-      event = null;
+      nextEvent = null;
       return;
     }
-    IteratorWithType iterElem = stateStack.peek();
-    Iterator<JsonValue> iter = iterElem.iter;
-    if (iter.hasNext()) {
-      Object o = iter.next();
-      if (o instanceof Entry<?,?>) {
-        Entry<String, JsonValue> kvpair = (Entry<String,JsonValue>)o;
-        jsonValue = kvpair.getValue();
-        jsonValue.setKey(kvpair.getKey());
-        Type kvpairType = jsonValue.getType();
-        if (kvpairType == Type.MAP) {
-          event = EventType.FIELD_NAME;
-          nextEvent = EventType.START_MAP;
-          stateStack.push(new IteratorWithType(((JsonDocument)jsonValue).iterator(), kvpairType));
-        } else if (kvpairType == Type.ARRAY) {
-          event = EventType.FIELD_NAME;
-          nextEvent = EventType.START_ARRAY;
-          stateStack.push(new IteratorWithType(((JsonList)jsonValue).iterator(), kvpairType));
-        } else {
-          event = EventType.FIELD_NAME;
-          nextEvent = Types.getEventTypeForType(jsonValue.getType());
-        }
-      } else {
-        //inside array
+
+    currentItr = stateStack.peek();
+    if (currentItr.hasNext()) {
+      Object o = currentItr.next();
+      if (inMap()) {
+        jsonValue = ((Entry<String, JsonValue>) o).getValue();
+      } else { //inside array
         jsonValue = JsonValueBuilder.initFromObject(o);
-        Type t = jsonValue.getType();
-        if (t == Type.ARRAY) {
-          event = EventType.START_ARRAY;
-          stateStack.push(new IteratorWithType(((JsonList)jsonValue).iterator(), t));
-        } else if (t == Type.MAP) {
-          event = EventType.START_MAP;
-          stateStack.push(new IteratorWithType(((JsonDocument)jsonValue).iterator(), t));
-        } else {
-          event = Types.getEventTypeForType(t);
-        }
+      }
+      nextEvent = Types.getEventTypeForType(jsonValue.getType());
+      if (!jsonValue.getType().isScalar()) {
+        stateStack.push(new IteratorWithType(jsonValue));
       }
     } else {
-      iterElem = stateStack.pop();
-      event = (iterElem.iterType == Type.MAP) ? EventType.END_MAP : EventType.END_ARRAY;
-      return;
+      IteratorWithType iter = stateStack.pop();
+      jsonValue = iter.getValue();
+      nextEvent = (iter.getType() == Type.MAP) ? EventType.END_MAP : EventType.END_ARRAY;
+      currentItr = stateStack.isEmpty() ? null : stateStack.peek();
     }
   }
-
 
   @Override
   public EventType next() {
     currentEvent = null;
-    if (event != null) {
-      currentEvent = event;
-      event = null;
-    } else if (nextEvent != null) {
+    if (nextEvent != null) {
       currentEvent = nextEvent;
       nextEvent = null;
     } else {
-      ProcessNextNode();
-      currentEvent = event;
-      event = null;
+      processNextNode();
+      currentEvent = nextEvent;
+      nextEvent = null;
     }
     return currentEvent;
   }
 
-
   private void checkEventType(EventType event) throws TypeException {
     if (currentEvent != event) {
-      throw new TypeException("Event type mismatch.");
+      throw new TypeException(String.format(
+          "Event type mismatch. The operation requires %s, but found %s",
+          event, currentEvent));
     }
   }
 
   @Override
+  public boolean inMap() {
+    return currentItr == null
+        || currentItr.getType() == Type.MAP;
+  }
+
+  @Override
+  public int getArrayIndex() {
+    if (inMap()) {
+      throw new IllegalStateException("Not traversing an array!");
+    }
+    return currentItr.previousIndex();
+  }
+
+  @Override
   public String getFieldName() {
-    checkEventType(EventType.FIELD_NAME);
+    if (!inMap()) {
+      throw new IllegalStateException("Not traversing a map!");
+    }
     return jsonValue.getKey();
   }
 
@@ -184,7 +152,6 @@ class JsonDOMDocumentReader implements DocumentReader {
   public int getInt() {
     checkEventType(EventType.INT);
     return jsonValue.getInt();
-
   }
 
   @Override
@@ -328,5 +295,85 @@ class JsonDOMDocumentReader implements DocumentReader {
     return jsonValue.getBinary();
   }
 
+  private class IteratorWithType implements ListIterator<Object> {
+    final Iterator<?> i;
+    final JsonValue value;
+
+    IteratorWithType(JsonValue value) {
+      this.value = value;
+      this.i = (value.getType() == Type.MAP)
+          ? ((JsonDocument) value).iterator()
+          : ((JsonList) value).listIterator();
+    }
+
+    public JsonValue getValue() {
+      return value;
+    }
+
+    @Override
+    public boolean hasNext() {
+      return i.hasNext();
+    }
+
+    @Override
+    public Object next() {
+      return i.next();
+    }
+
+    @Override
+    public void remove() {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public String toString() {
+      return (getType() == Type.ARRAY ? "ListIterator@" : "MapIterator@")
+          + hashCode();
+    }
+
+    Type getType() {
+      return value.getType();
+    }
+
+    @Override
+    public boolean hasPrevious() {
+      checkList();
+      return ((ListIterator<?>) i).hasPrevious();
+    }
+
+    @Override
+    public Object previous() {
+      checkList();
+      return ((ListIterator<?>) i).previous();
+    }
+
+    @Override
+    public int nextIndex() {
+      checkList();
+      return ((ListIterator<?>) i).nextIndex();
+    }
+
+    @Override
+    public int previousIndex() {
+      checkList();
+      return ((ListIterator<?>) i).previousIndex();
+    }
+
+    @Override
+    public void set(Object e) {
+      throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void add(Object e) {
+      throw new UnsupportedOperationException();
+    }
+
+    private void checkList() {
+      if (getType() != Type.ARRAY) {
+        throw new UnsupportedOperationException();
+      }
+    }
+  }
 
 }

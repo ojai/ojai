@@ -16,10 +16,13 @@
 package org.ojai.tests.json;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -47,7 +50,7 @@ public class TestJsonDOMDocumentReader extends BaseTest {
     values.add("Field1");
     values.add(new Short((short)500));
     values.add(new Double(5555.5555));
-    Map<String, Object> m = new HashMap<String, Object>();
+    Map<String, Object> m = new LinkedHashMap<String, Object>();
     m.put("key1", 100);
     m.put("key2", "xyz");
     values.add(m);
@@ -60,42 +63,168 @@ public class TestJsonDOMDocumentReader extends BaseTest {
 
   @Test
   public void testDOMDocumentReader() throws IOException {
-    boolean isArray = false;
-
     DocumentReader r = document.asReader();
-    EventType et;
-    String fieldName = null;
-    while ((et = r.next()) != null) {
-      if (et == EventType.FIELD_NAME) {
-        fieldName = r.getFieldName();
-      }
-      if (isArray && et == EventType.SHORT) {
-        assertEquals("list", fieldName);
-        assertEquals((short)500, r.getShort());
-      }
-      if (et == EventType.BYTE) {
-        assertEquals("num1", fieldName);
-        assertEquals((byte)127, r.getByte());
-      }
-      if ((et == EventType.INT) && (!isArray)) {
-        assertEquals("no", fieldName);
-        assertEquals(350, r.getInt());
-      }
+    EventType et = null;
 
-      if ((et == EventType.LONG) && (!isArray)) {
-        assertEquals("zip", fieldName);
-        assertEquals(95134, r.getLong());
-      }
+    assertNotNull((et = r.next()));
+    assertTrue(r.inMap());
+    assertEquals(EventType.START_MAP, et);
+    assertNull(r.getFieldName());
 
-      if (et == EventType.START_ARRAY) {
-        isArray = true;
-      }
+    assertNotNull((et = r.next()));
+    assertTrue(r.inMap());
+    assertEquals(EventType.START_MAP, et);
+    assertEquals("map", r.getFieldName());
 
-      if (et == EventType.END_ARRAY) {
-        isArray = false;
-      }
-    }
+    assertNotNull((et = r.next()));
+    assertTrue(r.inMap());
+    assertEquals(EventType.BYTE, et);
+    assertEquals("num1", r.getFieldName());
+    assertEquals(127, r.getByte());
 
+    assertNotNull((et = r.next()));
+    assertTrue(r.inMap());
+    assertEquals(EventType.START_MAP, et);
+    assertEquals("name", r.getFieldName());
+
+    assertNotNull((et = r.next()));
+    assertTrue(r.inMap());
+    assertEquals(EventType.STRING, et);
+    assertEquals("first", r.getFieldName());
+    assertEquals("John", r.getString());
+
+    assertNotNull((et = r.next()));
+    assertTrue(r.inMap());
+    assertEquals(EventType.STRING, et);
+    assertEquals("last", r.getFieldName());
+    assertEquals("Doe", r.getString());
+
+    assertNotNull((et = r.next()));
+    assertTrue(r.inMap());
+    assertEquals(EventType.END_MAP, et);
+    assertEquals("name", r.getFieldName());
+
+    assertNotNull((et = r.next()));
+    assertTrue(r.inMap());
+    assertEquals(EventType.START_MAP, et);
+    assertEquals("address", r.getFieldName());
+
+    assertNotNull((et = r.next()));
+    assertTrue(r.inMap());
+    assertEquals(EventType.START_MAP, et);
+    assertEquals("street", r.getFieldName());
+
+    assertNotNull((et = r.next()));
+    assertTrue(r.inMap());
+    assertEquals(EventType.INT, et);
+    assertEquals("no", r.getFieldName());
+    assertEquals(350, r.getInt());
+
+    assertNotNull((et = r.next()));
+    assertTrue(r.inMap());
+    assertEquals(EventType.STRING, et);
+    assertEquals("name", r.getFieldName());
+    assertEquals("Front St", r.getString());
+
+    assertNotNull((et = r.next()));
+    assertTrue(r.inMap());
+    assertEquals(EventType.END_MAP, et);
+    assertEquals("street", r.getFieldName());
+
+    assertNotNull((et = r.next()));
+    assertTrue(r.inMap());
+    assertEquals(EventType.LONG, et);
+    assertEquals("zip", r.getFieldName());
+    assertEquals(95134, r.getLong());
+
+    assertNotNull((et = r.next()));
+    assertTrue(r.inMap());
+    assertEquals(EventType.END_MAP, et);
+    assertEquals("address", r.getFieldName());
+
+    assertNotNull((et = r.next()));
+    assertTrue(r.inMap());
+    assertEquals(EventType.START_ARRAY, et);
+    assertEquals("list", r.getFieldName());
+
+    assertNotNull((et = r.next()));
+    assertTrue(!r.inMap());
+    assertEquals(EventType.STRING, et);
+    assertEquals("Field1", r.getString());
+    assertEquals(0, r.getArrayIndex());
+
+    assertNotNull((et = r.next()));
+    assertTrue(!r.inMap());
+    assertEquals(EventType.SHORT, et);
+    assertEquals(500, r.getShort());
+    assertEquals(1, r.getArrayIndex());
+
+    assertNotNull((et = r.next()));
+    assertTrue(!r.inMap());
+    assertEquals(EventType.DOUBLE, et);
+    assertEquals(5555.5555, r.getDouble(), 0);
+    assertEquals(2, r.getArrayIndex());
+
+    assertNotNull((et = r.next()));
+    assertTrue(!r.inMap());
+    assertEquals(EventType.START_MAP, et);
+    assertEquals(3, r.getArrayIndex());
+
+    assertNotNull((et = r.next()));
+    assertTrue(r.inMap());
+    assertEquals(EventType.INT, et);
+    assertEquals("key1", r.getFieldName());
+    assertEquals(100, r.getInt());
+
+    assertNotNull((et = r.next()));
+    assertTrue(r.inMap());
+    assertEquals(EventType.STRING, et);
+    assertEquals("key2", r.getFieldName());
+    assertEquals("xyz", r.getString());
+
+    assertNotNull((et = r.next()));
+    assertTrue(!r.inMap());
+    assertEquals(EventType.END_MAP, et);
+    assertEquals(3, r.getArrayIndex());
+
+    assertNotNull((et = r.next()));
+    assertTrue(!r.inMap());
+    assertEquals(EventType.START_ARRAY, et);
+    assertEquals(4, r.getArrayIndex());
+
+    assertNotNull((et = r.next()));
+    assertTrue(!r.inMap());
+    assertEquals(EventType.DOUBLE, et);
+    assertEquals(0, r.getArrayIndex());
+    assertEquals(123.4567, r.getDouble(), 0);
+
+    assertNotNull((et = r.next()));
+    assertTrue(!r.inMap());
+    assertEquals(EventType.BOOLEAN, et);
+    assertEquals(1, r.getArrayIndex());
+    assertEquals(true, r.getBoolean());
+
+    assertNotNull((et = r.next()));
+    assertTrue(!r.inMap());
+    assertEquals(EventType.END_ARRAY, et);
+    assertEquals(4, r.getArrayIndex());
+
+    assertNotNull((et = r.next()));
+    assertTrue(r.inMap());
+    assertEquals(EventType.END_ARRAY, et);
+    assertEquals("list", r.getFieldName());
+
+    assertNotNull((et = r.next()));
+    assertTrue(r.inMap());
+    assertEquals(EventType.END_MAP, et);
+    assertEquals("map", r.getFieldName());
+
+    assertNotNull((et = r.next()));
+    assertTrue(r.inMap());
+    assertEquals(EventType.END_MAP, et);
+    assertNull(r.getFieldName());
+
+    assertNull((et = r.next()));
   }
 
   @Test

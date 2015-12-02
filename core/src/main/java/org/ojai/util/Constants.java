@@ -17,6 +17,9 @@ package org.ojai.util;
 
 import java.util.TimeZone;
 
+import org.ojai.annotation.API;
+
+@API.Public
 public class Constants {
 
   /**

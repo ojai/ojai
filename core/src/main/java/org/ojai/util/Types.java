@@ -82,7 +82,9 @@ public class Types {
     TYPE_EVENTTYPE_MAP.put(Type.TIMESTAMP, EventType.TIMESTAMP);
     TYPE_EVENTTYPE_MAP.put(Type.INTERVAL, EventType.INTERVAL);
     TYPE_EVENTTYPE_MAP.put(Type.BINARY, EventType.BINARY);
-    assert TYPE_EVENTTYPE_MAP.size() == (Type.values().length - (2 /*Map and Array*/))
+    TYPE_EVENTTYPE_MAP.put(Type.MAP, EventType.START_MAP);
+    TYPE_EVENTTYPE_MAP.put(Type.ARRAY, EventType.START_ARRAY);
+    assert TYPE_EVENTTYPE_MAP.size() == Type.values().length
         : "Map is missing some of the Type enum elements";
   }
 

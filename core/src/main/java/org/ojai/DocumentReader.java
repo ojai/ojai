@@ -44,7 +44,6 @@ public interface DocumentReader {
     TIMESTAMP,
     INTERVAL,
     BINARY,
-    FIELD_NAME,
     START_MAP,
     END_MAP,
     START_ARRAY,
@@ -62,11 +61,22 @@ public interface DocumentReader {
   DocumentReader.EventType next();
 
   /**
-   * @return The name of the current field
-   * @throws TypeException if the current {@code EventType} is not
-   *         {@code FIELD_NAME}
+   * @return {@code true} while traversing a Map, {@code false} if traversing
+   * an Array.
+   */
+  boolean inMap();
+
+  /**
+   * @return The name of the current field, {@code null} for the top level Document.
+   * @throws IllegalStateException if the reader is not traversing a Map
    */
   String getFieldName();
+
+  /**
+   * @return The index of the current element in the Array
+   * @throws IllegalStateException if the reader is not traversing an Array
+   */
+  int getArrayIndex();
 
   /**
    * @return The {@code byte} value of the current node

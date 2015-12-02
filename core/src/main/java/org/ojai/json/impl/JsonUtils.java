@@ -54,67 +54,63 @@ public class JsonUtils {
 
   public static void addToMap(DocumentReader r, DocumentBuilder w) {
     EventType e;
-    String currentFieldName = null;
     while((e = r.next()) != null) {
       switch (e) {
-      case FIELD_NAME:
-        currentFieldName = r.getFieldName();
-        break;
       case NULL:
-        w.putNull(currentFieldName);
+        w.putNull(r.getFieldName());
         break;
       case BOOLEAN:
-        w.put(currentFieldName, r.getBoolean());
+        w.put(r.getFieldName(), r.getBoolean());
         break;
       case STRING:
-        w.put(currentFieldName, r.getString());
+        w.put(r.getFieldName(), r.getString());
         break;
       case BYTE:
-        w.put(currentFieldName, r.getByte());
+        w.put(r.getFieldName(), r.getByte());
         break;
       case SHORT:
-        w.put(currentFieldName, r.getShort());
+        w.put(r.getFieldName(), r.getShort());
         break;
       case INT:
-        w.put(currentFieldName, r.getInt());
+        w.put(r.getFieldName(), r.getInt());
         break;
       case LONG:
-        w.put(currentFieldName, r.getLong());
+        w.put(r.getFieldName(), r.getLong());
         break;
       case FLOAT:
-        w.put(currentFieldName, r.getFloat());
+        w.put(r.getFieldName(), r.getFloat());
         break;
       case DOUBLE:
-        w.put(currentFieldName, r.getDouble());
+        w.put(r.getFieldName(), r.getDouble());
         break;
       case DECIMAL:
-        w.put(currentFieldName, r.getDecimal());
+        w.put(r.getFieldName(), r.getDecimal());
         break;
       case DATE:
-        w.put(currentFieldName, r.getDate());
+        w.put(r.getFieldName(), r.getDate());
         break;
       case TIME:
-        w.put(currentFieldName, r.getTime());
+        w.put(r.getFieldName(), r.getTime());
         break;
       case TIMESTAMP:
-        w.put(currentFieldName, r.getTimestamp());
+        w.put(r.getFieldName(), r.getTimestamp());
         break;
       case INTERVAL:
-        w.put(currentFieldName, r.getInterval());
+        w.put(r.getFieldName(), r.getInterval());
         break;
       case BINARY:
-        w.put(currentFieldName, r.getBinary());
+        w.put(r.getFieldName(), r.getBinary());
         break;
       case START_ARRAY:
-        w.putNewArray(currentFieldName);
+        w.putNewArray(r.getFieldName());
         addToArray(r, w);
         break;
       case END_ARRAY:
         w.endArray();
         break;
       case START_MAP:
-        if (currentFieldName != null) {
-          w.putNewMap(currentFieldName);
+        if (r.getFieldName() != null) {
+          w.putNewMap(r.getFieldName());
         } else {
           //start of the document
           w.addNewMap();
@@ -133,13 +129,16 @@ public class JsonUtils {
   public static void addToArray(DocumentReader r, DocumentBuilder w) {
     EventType e;
     while((e = r.next()) != null) {
-      if (!addReaderEvent(e, r, w)) {
-        return;
+      if (e == EventType.END_ARRAY) {
+        w.endArray();
+        break;
+      } else {
+        addReaderEvent(e, r, w.setArrayIndex(r.getArrayIndex()));
       }
     }
   }
 
-  public static boolean addReaderEvent(EventType e, DocumentReader r, DocumentBuilder w) {
+  public static void addReaderEvent(EventType e, DocumentReader r, DocumentBuilder w) {
     switch (e) {
     case NULL:
       w.addNull();
@@ -197,14 +196,8 @@ public class JsonUtils {
       w.addNewArray();
       addToArray(r, w);
       break;
-    case END_ARRAY:
-      w.endArray();
-      return false;
-    case FIELD_NAME:
-      throw new DecodingException("FIELD_NAME event encountered while appending to an array");
     default:
-      throw new DecodingException("Unknown event type: " + e);
+      throw new DecodingException("Unexpected event type: " + e);
     }
-    return true;
   }
 }

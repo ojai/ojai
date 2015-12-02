@@ -54,21 +54,18 @@ public class TestJsonDocumentStream extends BaseTest {
     }
   }
 
-  private void testDocumentReaderFromIterator(DocumentReader reader) {
+  private void testDocumentReaderFromIterator(DocumentReader r) {
     EventType et;
     String name_field = null;
-    String fieldName = null;
-    while ((et = reader.next()) != null) {
-      if (et == EventType.FIELD_NAME) {
-        fieldName = reader.getFieldName();
-      } else if (et == EventType.STRING) {
-        if (fieldName.equals("name")) {
-          name_field = reader.getString();
+    while ((et = r.next()) != null) {
+      if (et == EventType.STRING && r.inMap()) {
+        if (r.getFieldName().equals("name")) {
+          name_field = r.getString();
         }
       } else {
-        if ((et == EventType.DOUBLE) && (fieldName.equals("stars"))
+        if ((et == EventType.DOUBLE) && (r.getFieldName().equals("stars"))
             && (name_field.equals("Culver's"))) {
-          assertEquals(4.5, reader.getDouble(), 0.0);
+          assertEquals(4.5, r.getDouble(), 0.0);
         }
       }
     }
@@ -136,37 +133,34 @@ public class TestJsonDocumentStream extends BaseTest {
   }
 
   private void testDocumentElements(Document rec) {
-    DocumentReader domReader = rec.asReader();
+    DocumentReader r = rec.asReader();
     EventType et;
     String id = null;
-    String fieldName = null;
     boolean isArray = false;
-    while ((et = domReader.next()) != null) {
-      if (et == EventType.FIELD_NAME) {
-        fieldName = domReader.getFieldName();
-      } else if (et == EventType.START_ARRAY) {
+    while ((et = r.next()) != null) {
+      if (et == EventType.START_ARRAY) {
         isArray = true;
       } else if (et == EventType.END_ARRAY) {
         isArray = false;
-      } else if (et == EventType.STRING) {
+      } else if (et == EventType.STRING && r.inMap()) {
 
-        if (fieldName.equals("business_id")) {
-          id = domReader.getString();
+        if (r.getFieldName().equals("business_id")) {
+          id = r.getString();
         }
-        if ((fieldName.equals("street")) && (id.equals("id3"))) {
-          assertEquals("Lint St", domReader.getString());
+        if ((r.getFieldName().equals("street")) && (id.equals("id3"))) {
+          assertEquals("Lint St", r.getString());
         }
 
-        if ((isArray) && (fieldName.equals("first"))) {
-          assertEquals("Jerry", domReader.getString());
+        if ((isArray) && (r.getFieldName().equals("first"))) {
+          assertEquals("Jerry", r.getString());
         }
 
       } else {
         if ((et == EventType.LONG) && (id.equals("id2"))) {
-          assertEquals(45, domReader.getLong());
+          assertEquals(45, r.getLong());
         }
         if ((et == EventType.BOOLEAN) && id.equals("id1")) {
-          assertEquals(true, domReader.getBoolean());
+          assertEquals(true, r.getBoolean());
         }
 
       }
