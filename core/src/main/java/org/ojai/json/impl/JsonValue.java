@@ -417,7 +417,7 @@ public class JsonValue implements Value {
     }
 
     if (obj instanceof List) {
-      return obj.equals(getList());
+      return objValue.equals(obj);
     }
 
 
