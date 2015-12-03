@@ -17,7 +17,6 @@ package org.ojai.tests.json;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,13 +31,12 @@ import java.util.Map;
 import org.junit.Test;
 import org.ojai.Document;
 import org.ojai.DocumentReader;
-import org.ojai.DocumentStream;
 import org.ojai.DocumentReader.EventType;
+import org.ojai.DocumentStream;
 import org.ojai.Value.Type;
 import org.ojai.exceptions.EncodingException;
 import org.ojai.json.Json;
 import org.ojai.json.JsonOptions;
-import org.ojai.json.impl.JsonDocument;
 import org.ojai.tests.BaseTest;
 import org.ojai.util.MapEncoder;
 import org.ojai.util.Values;
@@ -377,10 +375,8 @@ public class TestJsonDocument extends BaseTest {
     DocumentReader dr = Json.newDocumentReader(jsonStr);
     try {
       doc = (Document) MapEncoder.encode(dr);
-    } catch (Exception e) {
-      logger.info("Encoding document as map got exception: " + e.getMessage());
-      e.printStackTrace();
-      assertTrue(e instanceof EncodingException);
+    } catch (EncodingException e) {
+      logger.info("Encoding document '{}' as map got exception: {}", jsonStr, e.getMessage());
     }
 
     //2. Malformed document with Array not closed
@@ -388,10 +384,8 @@ public class TestJsonDocument extends BaseTest {
     dr = Json.newDocumentReader(jsonStr);
     try {
       doc = (Document) MapEncoder.encode(dr);
-    } catch (Exception e) {
-      logger.info("Encoding document " + jsonStr + " as map got exception: " + e.getMessage());
-      e.printStackTrace();
-      assertTrue(e instanceof EncodingException);
+    } catch (EncodingException e) {
+      logger.info("Encoding document '{}' as map got exception: {}", jsonStr, e.getMessage());
     }
 
     //3. Malformed document with Map not closed
@@ -399,10 +393,9 @@ public class TestJsonDocument extends BaseTest {
     dr = Json.newDocumentReader(jsonStr);
     try {
       doc = (Document) MapEncoder.encode(dr);
-    } catch (Exception e) {
-      logger.info("Encoding document " + jsonStr + " as map got exception: " + e.getMessage());
-      e.printStackTrace();
-      assertTrue(e instanceof EncodingException);
+    } catch (EncodingException e) {
+      logger.info("Encoding document '{}' as map got exception: {}", jsonStr, e.getMessage());
     }
   }
+
 }

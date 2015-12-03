@@ -33,7 +33,6 @@ import org.ojai.types.Interval;
 import org.ojai.util.Types;
 import org.ojai.util.Values;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 

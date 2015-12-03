@@ -50,8 +50,8 @@ import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.util.DefaultIndenter;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter.Lf2SpacesIndenter;
 import com.google.common.base.Preconditions;
 
 @API.Internal
@@ -84,7 +84,7 @@ public class JsonDocumentBuilder implements DocumentBuilder {
   static {
     PRETTY_PRINTER = new DefaultPrettyPrinter();
     PRETTY_PRINTER.indentObjectsWith(// standardize on Unix line terminator
-        DefaultIndenter.SYSTEM_LINEFEED_INSTANCE.withLinefeed("\n"));
+        Lf2SpacesIndenter.instance.withLinefeed("\n"));
   }
   public JsonDocumentBuilder setJsonOptions(JsonOptions options) {
     if (jsonOptions == null || jsonOptions.isPretty() != options.isPretty()) {

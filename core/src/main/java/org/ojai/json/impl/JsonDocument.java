@@ -17,7 +17,6 @@ package org.ojai.json.impl;
 
 import static org.ojai.DocumentConstants.ID_FIELD;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
 import java.sql.Date;
