@@ -413,7 +413,7 @@ public class JsonValue implements Value {
     }
 
     if (obj instanceof Map) {
-      return obj.equals(getMap());
+      return objValue.equals(obj);
     }
 
     if (obj instanceof List) {
