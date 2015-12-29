@@ -19,9 +19,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
 import java.nio.ByteBuffer;
-import java.sql.Date;
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -34,8 +31,13 @@ import org.ojai.Document;
 import org.ojai.Value;
 import org.ojai.json.Json;
 import org.ojai.json.impl.JsonValueBuilder;
+import org.ojai.tests.BaseTest;
+import org.ojai.types.ODate;
+import org.ojai.types.OTime;
+import org.ojai.types.OTimestamp;
 
-public class TestJsonDocumentEquals {
+public class TestJsonDocumentEquals extends BaseTest {
+
   @Test
   public void testEquals() {
     Document rec = Json.newDocument();
@@ -43,10 +45,10 @@ public class TestJsonDocumentEquals {
     rec.set("map.field2", (short) 10000);
     rec.set("map.string", "eureka");
     rec.set("map.boolean", false);
-    rec.set("map.date", Date.valueOf("2013-02-12"));
-    Time time = Time.valueOf("07:42:46");
+    rec.set("map.date", ODate.parse("2013-02-12"));
+    OTime time = OTime.parse("07:42:46");
     rec.set("map.time", time);
-    Timestamp timeStamp = Timestamp.valueOf("2012-10-20 07:42:46");
+    OTimestamp timeStamp = OTimestamp.parse("2012-10-20T07:42:46");
     rec.set("map.timestamp", timeStamp);
     rec.set("map.int", 12345678);
     byte[] byteArray = "abracadabra".getBytes();
@@ -92,7 +94,7 @@ public class TestJsonDocumentEquals {
 
     assertEquals(true, rec.getValue("map.boolean").equals(false));
 
-    assertEquals(true, rec.getValue("map.date").equals(Date.valueOf("2013-02-12")));
+    assertEquals(true, rec.getValue("map.date").equals(ODate.parse("2013-02-12")));
 
     assertEquals(true, rec.getValue("map2").equals(m));
 
@@ -155,22 +157,22 @@ public class TestJsonDocumentEquals {
 
 
     Document r = Json.newDocument()
-        .set("date1", new Date(ts1))
-        .set("date2", new Date(ts2))
-        .set("date3", new Date(ts3))
-        .set("time1", new Time(ts1))
-        .set("time2", new Time(ts2))
-        .set("time3", new Time(ts3));
+        .set("date1", new ODate(ts1))
+        .set("date2", new ODate(ts2))
+        .set("date3", new ODate(ts3))
+        .set("time1", new OTime(ts1))
+        .set("time2", new OTime(ts2))
+        .set("time3", new OTime(ts3));
 
-    assertEquals(r.getValue("date1"), new Date(ts1));
-    assertNotEquals(r.getValue("date1"), new Date(ts2));
-    assertEquals(r.getValue("date1"), new Date(ts3));
+    assertEquals(r.getValue("date1"), new ODate(ts1));
+    assertNotEquals(r.getValue("date1"), new ODate(ts2));
+    assertEquals(r.getValue("date1"), new ODate(ts3));
     assertEquals(r.getValue("date1"), r.getValue("date3"));
     assertNotEquals(r.getValue("date1"), r.getValue("date2"));
 
-    assertEquals(r.getValue("time1"), new Time(ts1));
-    assertEquals(r.getValue("time1"), new Time(ts2));
-    assertNotEquals(r.getValue("time1"), new Time(ts3));
+    assertEquals(r.getValue("time1"), new OTime(ts1));
+    assertEquals(r.getValue("time1"), new OTime(ts2));
+    assertNotEquals(r.getValue("time1"), new OTime(ts3));
     assertEquals(r.getValue("time1"), r.getValue("time2"));
     assertNotEquals(r.getValue("time1"), r.getValue("time3"));
   }

@@ -19,9 +19,6 @@ import static org.ojai.DocumentConstants.ID_FIELD;
 
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
-import java.sql.Date;
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -42,7 +39,10 @@ import org.ojai.beans.BeanCodec;
 import org.ojai.exceptions.DecodingException;
 import org.ojai.json.Json;
 import org.ojai.json.JsonOptions;
-import org.ojai.types.Interval;
+import org.ojai.types.ODate;
+import org.ojai.types.OInterval;
+import org.ojai.types.OTime;
+import org.ojai.types.OTimestamp;
 import org.ojai.util.MapEncoder;
 
 @API.Internal
@@ -181,32 +181,32 @@ public class JsonDocument extends JsonValue implements Document, Map<String, Obj
   }
 
   @Override
-  public Document set(String fieldPath, Timestamp value) {
+  public Document set(String fieldPath, OTimestamp value) {
     return set(FieldPath.parseFrom(fieldPath), value);
   }
 
   @Override
-  public Document set(FieldPath fieldPath, Timestamp value) {
+  public Document set(FieldPath fieldPath, OTimestamp value) {
     return setCommon(fieldPath, JsonValueBuilder.initFrom(value));
   }
 
   @Override
-  public Document set(String fieldPath, Interval value) {
+  public Document set(String fieldPath, OInterval value) {
     return set(FieldPath.parseFrom(fieldPath), value);
   }
 
   @Override
-  public Document set(FieldPath fieldPath, Interval value) {
+  public Document set(FieldPath fieldPath, OInterval value) {
     return setCommon(fieldPath, JsonValueBuilder.initFrom(value));
   }
 
   @Override
-  public Document set(FieldPath fieldPath, Time value) {
+  public Document set(FieldPath fieldPath, OTime value) {
     return setCommon(fieldPath, JsonValueBuilder.initFrom(value));
   }
 
   @Override
-  public Document set(FieldPath fieldPath, Date value) {
+  public Document set(FieldPath fieldPath, ODate value) {
     return setCommon(fieldPath, JsonValueBuilder.initFrom(value));
   }
 
@@ -635,12 +635,12 @@ public class JsonDocument extends JsonValue implements Document, Map<String, Obj
   }
 
   @Override
-  public Document set(String fieldPath, Time value) {
+  public Document set(String fieldPath, OTime value) {
     return setCommon(FieldPath.parseFrom(fieldPath), JsonValueBuilder.initFrom(value));
   }
 
   @Override
-  public Document set(String fieldPath, Date value) {
+  public Document set(String fieldPath, ODate value) {
     return setCommon(FieldPath.parseFrom(fieldPath), JsonValueBuilder.initFrom(value));
   }
 
@@ -861,12 +861,12 @@ public class JsonDocument extends JsonValue implements Document, Map<String, Obj
   }
 
   @Override
-  public Timestamp getTimestamp(String fieldPath) {
+  public OTimestamp getTimestamp(String fieldPath) {
     return getTimestamp(FieldPath.parseFrom(fieldPath));
   }
 
   @Override
-  public Timestamp getTimestamp(FieldPath fieldPath) {
+  public OTimestamp getTimestamp(FieldPath fieldPath) {
     JsonValue v = getKeyValueAt(fieldPath.iterator());
     if (v != null) {
       return v.getTimestamp();
@@ -875,12 +875,12 @@ public class JsonDocument extends JsonValue implements Document, Map<String, Obj
   }
 
   @Override
-  public Interval getInterval(String fieldPath) {
+  public OInterval getInterval(String fieldPath) {
     return getInterval(FieldPath.parseFrom(fieldPath));
   }
 
   @Override
-  public Interval getInterval(FieldPath fieldPath) {
+  public OInterval getInterval(FieldPath fieldPath) {
     JsonValue v = getKeyValueAt(fieldPath.iterator());
     if (v != null) {
       return v.getInterval();
@@ -894,12 +894,12 @@ public class JsonDocument extends JsonValue implements Document, Map<String, Obj
   }
 
   @Override
-  public Time getTime(String field) {
+  public OTime getTime(String field) {
     return getTime(FieldPath.parseFrom(field));
   }
 
   @Override
-  public Time getTime(FieldPath field) {
+  public OTime getTime(FieldPath field) {
     JsonValue v = getKeyValueAt(field.iterator());
     if (v != null) {
       return v.getTime();
@@ -908,12 +908,12 @@ public class JsonDocument extends JsonValue implements Document, Map<String, Obj
   }
 
   @Override
-  public Date getDate(String field) {
+  public ODate getDate(String field) {
     return getDate(FieldPath.parseFrom(field));
   }
 
   @Override
-  public Date getDate(FieldPath field) {
+  public ODate getDate(FieldPath field) {
     JsonValue v = getKeyValueAt(field.iterator());
     if (v != null) {
       return v.getDate();

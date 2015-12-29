@@ -132,9 +132,9 @@ public class MapEncoder {
     case FLOAT: return dr.getFloat();
     case DOUBLE: return dr.getDouble();
     case DECIMAL: return dr.getDecimal();
-    case DATE: return dr.getDate().clone();
-    case TIME: return dr.getTime().clone();
-    case TIMESTAMP: return dr.getTimestamp().clone();
+    case DATE: return dr.getDate();
+    case TIME: return dr.getTime();
+    case TIMESTAMP: return dr.getTimestamp();
     case INTERVAL: return dr.getInterval();
     case BINARY: return dr.getBinary().duplicate();
     default:

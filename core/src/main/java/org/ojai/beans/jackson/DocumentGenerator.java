@@ -20,15 +20,15 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
-import java.sql.Date;
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.util.Stack;
 
 import org.ojai.Document;
 import org.ojai.DocumentBuilder;
 import org.ojai.annotation.API;
-import org.ojai.types.Interval;
+import org.ojai.types.ODate;
+import org.ojai.types.OInterval;
+import org.ojai.types.OTime;
+import org.ojai.types.OTimestamp;
 
 import com.fasterxml.jackson.core.Base64Variant;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -232,29 +232,29 @@ public class DocumentGenerator extends JsonGenerator {
       } else {
         b.add(((Byte) value).byteValue());
       }
-    } else if (value instanceof Interval) {
+    } else if (value instanceof OInterval) {
       if (inMap()) {
-        b.put(currFieldName, ((Interval) value));
+        b.put(currFieldName, ((OInterval) value));
       } else {
-        b.add(((Interval) value));
+        b.add(((OInterval) value));
       }
-    } else if (value instanceof Date) {
+    } else if (value instanceof ODate) {
       if (inMap()) {
-        b.put(currFieldName, ((Date) value));
+        b.put(currFieldName, ((ODate) value));
       } else {
-        b.add(((Date) value));
+        b.add(((ODate) value));
       }
-    } else if (value instanceof Time) {
+    } else if (value instanceof OTime) {
       if (inMap()) {
-        b.put(currFieldName, ((Time) value));
+        b.put(currFieldName, ((OTime) value));
       } else {
-        b.add(((Time) value));
+        b.add(((OTime) value));
       }
-    } else if (value instanceof Timestamp) {
+    } else if (value instanceof OTimestamp) {
       if (inMap()) {
-        b.put(currFieldName, ((Timestamp) value));
+        b.put(currFieldName, ((OTimestamp) value));
       } else {
-        b.add(((Timestamp) value));
+        b.add(((OTimestamp) value));
       }
     } else {
       throw new IllegalStateException("writeObject() called for type " + value.getClass());

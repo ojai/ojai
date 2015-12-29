@@ -17,9 +17,6 @@ package org.ojai;
 
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
-import java.sql.Date;
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -29,7 +26,10 @@ import org.ojai.annotation.API;
 import org.ojai.exceptions.DecodingException;
 import org.ojai.exceptions.TypeException;
 import org.ojai.json.JsonOptions;
-import org.ojai.types.Interval;
+import org.ojai.types.ODate;
+import org.ojai.types.OInterval;
+import org.ojai.types.OTime;
+import org.ojai.types.OTimestamp;
 
 @API.Public
 public interface Document extends Iterable<Map.Entry<String, Value>> {
@@ -258,7 +258,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * @param value the Time value
    * @return {@code this} for chaining
    */
-  Document set(String fieldPath, Time value);
+  Document set(String fieldPath, OTime value);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -268,7 +268,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * @param value the Time value
    * @return {@code this} for chaining
    */
-  Document set(FieldPath fieldPath, Time value);
+  Document set(FieldPath fieldPath, OTime value);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -278,7 +278,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * @param value the Date value
    * @return {@code this} for chaining
    */
-  Document set(String fieldPath, Date value);
+  Document set(String fieldPath, ODate value);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -288,7 +288,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * @param value the Date value
    * @return {@code this} for chaining
    */
-  Document set(FieldPath fieldPath, Date value);
+  Document set(FieldPath fieldPath, ODate value);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -298,7 +298,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * @param value the Timestamp value
    * @return {@code this} for chaining
    */
-  Document set(String fieldPath, Timestamp value);
+  Document set(String fieldPath, OTimestamp value);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -308,7 +308,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * @param value the Timestamp value
    * @return {@code this} for chaining
    */
-  Document set(FieldPath fieldPath, Timestamp value);
+  Document set(FieldPath fieldPath, OTimestamp value);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -318,7 +318,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * @param value the Interval value
    * @return {@code this} for chaining
    */
-  Document set(String fieldPath, Interval value);
+  Document set(String fieldPath, OInterval value);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -328,7 +328,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * @param value the Interval value
    * @return {@code this} for chaining
    */
-  Document set(FieldPath fieldPath, Interval value);
+  Document set(FieldPath fieldPath, OInterval value);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -1015,7 +1015,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
   BigDecimal getDecimal(FieldPath fieldPath);
 
   /**
-   * Returns the value at the specified fieldPath as a {@link java.sql.Time}
+   * Returns the value at the specified fieldPath as a {@link OTime}
    * object or {@code null} if the specified {@code FieldPath} does not
    * exist in the document. Modifying the returned object does not alter the
    * content of the document.
@@ -1023,10 +1023,10 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * @throws TypeException if the value at the fieldPath is not of
    *         the <code>TIME</code> type
    */
-  Time getTime(String fieldPath);
+  OTime getTime(String fieldPath);
 
   /**
-   * Returns the value at the specified fieldPath as a {@link java.sql.Time}
+   * Returns the value at the specified fieldPath as a {@link OTime}
    * object or {@code null} if the specified {@code FieldPath} does not
    * exist in the document. Modifying the returned object does not alter the
    * content of the document.
@@ -1034,10 +1034,10 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * @throws TypeException if the value at the fieldPath is not of
    *         the <code>TIME</code> type
    */
-  Time getTime(FieldPath fieldPath);
+  OTime getTime(FieldPath fieldPath);
 
   /**
-   * Returns the value at the specified fieldPath as a {@link java.sql.Date}
+   * Returns the value at the specified fieldPath as a {@link ODate}
    * object or {@code null} if the specified {@code FieldPath} does not
    * exist in the document. Modifying the returned object does not alter the
    * content of the document.
@@ -1045,10 +1045,10 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * @throws TypeException if the value at the fieldPath is not of
    *         the <code>DATE</code> type
    */
-  Date getDate(String fieldPath);
+  ODate getDate(String fieldPath);
 
   /**
-   * Returns the value at the specified fieldPath as a {@link java.sql.Date}
+   * Returns the value at the specified fieldPath as a {@link ODate}
    * object or {@code null} if the specified {@code FieldPath} does not
    * exist in the document. Modifying the returned object does not alter the
    * content of the document.
@@ -1056,10 +1056,10 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * @throws TypeException if the value at the fieldPath is not of
    *         the <code>DATE</code> type
    */
-  Date getDate(FieldPath fieldPath);
+  ODate getDate(FieldPath fieldPath);
 
   /**
-   * Returns the value at the specified fieldPath as a {@link java.sql.Timestamp}
+   * Returns the value at the specified fieldPath as a {@link OTimestamp}
    * object or {@code null} if the specified {@code FieldPath} does not
    * exist in the document. Modifying the returned object does not alter the
    * content of the document.
@@ -1067,10 +1067,10 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * @throws TypeException if the value at the fieldPath is not of
    *         the <code>TIMESTAMP</code> type
    */
-  Timestamp getTimestamp(String fieldPath);
+  OTimestamp getTimestamp(String fieldPath);
 
   /**
-   * Returns the value at the specified fieldPath as a {@link java.sql.Timestamp}
+   * Returns the value at the specified fieldPath as a {@link OTimestamp}
    * object or {@code null} if the specified {@code FieldPath} does not
    * exist in the document. Modifying the returned object does not alter the
    * content of the document.
@@ -1078,7 +1078,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * @throws TypeException if the value at the fieldPath is not of
    *         the <code>TIMESTAMP</code> type
    */
-  Timestamp getTimestamp(FieldPath fieldPath);
+  OTimestamp getTimestamp(FieldPath fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@link ByteBuffer}
@@ -1103,7 +1103,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
   ByteBuffer getBinary(FieldPath fieldPath);
 
   /**
-   * Returns the value at the specified fieldPath as an {@link Interval}
+   * Returns the value at the specified fieldPath as an {@link OInterval}
    * object or {@code null} if the specified {@code FieldPath} does not
    * exist in the document. Modifying the returned object does not alter the
    * content of the document.
@@ -1111,10 +1111,10 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * @throws TypeException if the value at the fieldPath is not of
    *         the <code>INTERVAL</code> type
    */
-  Interval getInterval(String fieldPath);
+  OInterval getInterval(String fieldPath);
 
   /**
-   * Returns the value at the specified fieldPath as an {@link Interval}
+   * Returns the value at the specified fieldPath as an {@link OInterval}
    * object or {@code null} if the specified {@code FieldPath} does not
    * exist in the document. Modifying the returned object does not alter the
    * content of the document.
@@ -1122,7 +1122,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * @throws TypeException if the value at the fieldPath is not of
    *         the <code>INTERVAL</code> type
    */
-  Interval getInterval(FieldPath fieldPath);
+  OInterval getInterval(FieldPath fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@link Value}

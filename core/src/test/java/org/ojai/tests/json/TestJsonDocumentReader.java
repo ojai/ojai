@@ -36,7 +36,6 @@ public class TestJsonDocumentReader extends BaseTest {
 
   @Test
   public void testStreamReader() throws Exception {
-
     try (InputStream testJson = getJsonStream("test2.json");
         DocumentStream<Document> stream = Json.newDocumentStream(testJson);) {
       DocumentReader r = stream.documentReaders().iterator().next();
@@ -46,7 +45,6 @@ public class TestJsonDocumentReader extends BaseTest {
 
   @Test
   public void testDOMReader() throws Exception {
-
     try (InputStream testJson = getJsonStream("test2.json");
         DocumentStream<Document> stream = Json.newDocumentStream(testJson);) {
       DocumentReader r = stream.iterator().next().asReader();
@@ -134,13 +132,13 @@ public class TestJsonDocumentReader extends BaseTest {
     assertTrue(r.inMap());
     assertEquals(EventType.TIME, et);
     assertEquals("time", r.getFieldName());
-    assertEquals("07:42:46", r.getTime().toString());
+    assertEquals("07:42:46.123", r.getTime().toString());
 
     assertNotNull((et = r.next()));
     assertTrue(r.inMap());
     assertEquals(EventType.TIMESTAMP, et);
     assertEquals("timestamp", r.getFieldName());
-    assertEquals("2012-10-20 07:42:46.123", r.getTimestamp().toString());
+    assertEquals("2012-10-20T14:42:46.123Z", r.getTimestamp().toString());
 
     assertNotNull((et = r.next()));
     assertTrue(r.inMap());

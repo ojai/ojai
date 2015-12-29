@@ -20,7 +20,6 @@ import static org.junit.Assert.assertNotNull;
 
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -38,8 +37,10 @@ import org.ojai.json.Json;
 import org.ojai.json.impl.JsonDocumentBuilder;
 import org.ojai.json.impl.JsonValueBuilder;
 import org.ojai.tests.BaseTest;
-import org.ojai.types.Interval;
-import org.ojai.util.Values;
+import org.ojai.types.ODate;
+import org.ojai.types.OInterval;
+import org.ojai.types.OTime;
+import org.ojai.types.OTimestamp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -77,10 +78,10 @@ public class TestJsonDocumentBuilder extends BaseTest {
     jsonBuilder.put("binary2", getByteArray(20), 10, 5);
     // bytebuffer test
     jsonBuilder.put("binary3", ByteBuffer.wrap(getByteArray(10)));
-    jsonBuilder.put("date1", Values.parseDate("2013-10-22"));
-    jsonBuilder.put(("time1"), Values.parseTime("10:42:46"));
-    jsonBuilder.put("timestamp1", new Timestamp(System.currentTimeMillis()));
-    jsonBuilder.put("interval1", new Interval(10234567));
+    jsonBuilder.put("date1", ODate.parse("2013-10-22"));
+    jsonBuilder.put(("time1"), OTime.parse("10:42:46"));
+    jsonBuilder.put("timestamp1", new OTimestamp(System.currentTimeMillis()));
+    jsonBuilder.put("interval1", new OInterval(10234567));
 
     // test array
     jsonBuilder.putNewArray("array1");
@@ -95,10 +96,10 @@ public class TestJsonDocumentBuilder extends BaseTest {
     jsonBuilder.addNull();
     jsonBuilder.add(10.12345678d);
     jsonBuilder.add(new BigDecimal(1234.567891));
-    jsonBuilder.add(Values.parseDate("2014-11-14"));
-    jsonBuilder.add(Values.parseTime("11:22:33"));
-    jsonBuilder.add(new Timestamp(System.currentTimeMillis()));
-    jsonBuilder.add(new Interval(10234567));
+    jsonBuilder.add(ODate.parse("2014-11-14"));
+    jsonBuilder.add(OTime.parse("11:22:33"));
+    jsonBuilder.add(new OTimestamp(System.currentTimeMillis()));
+    jsonBuilder.add(new OInterval(10234567));
     jsonBuilder.add(ByteBuffer.wrap(getByteArray(15)));
     jsonBuilder.endArray();
     jsonBuilder.endMap(); //end of document
@@ -284,7 +285,7 @@ public class TestJsonDocumentBuilder extends BaseTest {
     m.put("k1", "abcd");
     m.put("k2", Arrays.asList(1, 2, 3));
     Map<String, Object> m2 = new HashMap<String, Object>();
-    m2.put("k3", Values.parseDate("2005-10-22"));
+    m2.put("k3", ODate.parse("2005-10-22"));
     m2.put("k4", Arrays.asList(1.111, 2.222, 3.333));
     m.put("k5", m2);
     w.put("map", m);

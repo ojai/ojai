@@ -17,9 +17,6 @@ package org.ojai.store;
 
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
-import java.sql.Date;
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.PatternSyntaxException;
@@ -28,7 +25,10 @@ import org.ojai.FieldPath;
 import org.ojai.Value;
 import org.ojai.Value.Type;
 import org.ojai.exceptions.TypeException;
-import org.ojai.types.Interval;
+import org.ojai.types.ODate;
+import org.ojai.types.OInterval;
+import org.ojai.types.OTime;
+import org.ojai.types.OTimestamp;
 
 public interface QueryCondition {
 
@@ -607,7 +607,7 @@ public interface QueryCondition {
    * @param value the reference Date {@code Value}
    * @return {@code this} for chained invocation
    */
-  public QueryCondition is(String path, Op op, Date value);
+  public QueryCondition is(String path, Op op, ODate value);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -619,7 +619,7 @@ public interface QueryCondition {
    * @param value the reference Date {@code Value}
    * @return {@code this} for chained invocation
    */
-  public QueryCondition is(FieldPath path, Op op, Date value);
+  public QueryCondition is(FieldPath path, Op op, ODate value);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -631,7 +631,7 @@ public interface QueryCondition {
    * @param value the reference Time {@code Value}
    * @return {@code this} for chained invocation
    */
-  public QueryCondition is(String path, Op op, Time value);
+  public QueryCondition is(String path, Op op, OTime value);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -643,7 +643,7 @@ public interface QueryCondition {
    * @param value the reference Time {@code Value}
    * @return {@code this} for chained invocation
    */
-  public QueryCondition is(FieldPath path, Op op, Time value);
+  public QueryCondition is(FieldPath path, Op op, OTime value);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -655,7 +655,7 @@ public interface QueryCondition {
    * @param value the reference Timestamp {@code Value}
    * @return {@code this} for chained invocation
    */
-  public QueryCondition is(String path, Op op, Timestamp value);
+  public QueryCondition is(String path, Op op, OTimestamp value);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -667,7 +667,7 @@ public interface QueryCondition {
    * @param value the reference Timestamp {@code Value}
    * @return {@code this} for chained invocation
    */
-  public QueryCondition is(FieldPath path, Op op, Timestamp value);
+  public QueryCondition is(FieldPath path, Op op, OTimestamp value);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -679,7 +679,7 @@ public interface QueryCondition {
    * @param value the reference Interval {@code Value}
    * @return {@code this} for chained invocation
    */
-  public QueryCondition is(String path, Op op, Interval value);
+  public QueryCondition is(String path, Op op, OInterval value);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -691,7 +691,7 @@ public interface QueryCondition {
    * @param value the reference Interval {@code Value}
    * @return {@code this} for chained invocation
    */
-  public QueryCondition is(FieldPath path, Op op, Interval value);
+  public QueryCondition is(FieldPath path, Op op, OInterval value);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified

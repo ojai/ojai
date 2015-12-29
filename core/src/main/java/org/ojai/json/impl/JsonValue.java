@@ -15,13 +15,8 @@
  */
 package org.ojai.json.impl;
 
-import static org.ojai.util.Constants.MILLISECONDSPERDAY;
-
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
-import java.sql.Date;
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +24,10 @@ import org.ojai.DocumentReader;
 import org.ojai.Value;
 import org.ojai.annotation.API;
 import org.ojai.exceptions.TypeException;
-import org.ojai.types.Interval;
+import org.ojai.types.ODate;
+import org.ojai.types.OInterval;
+import org.ojai.types.OTime;
+import org.ojai.types.OTimestamp;
 import org.ojai.util.Values;
 
 @API.Internal
@@ -215,13 +213,12 @@ public class JsonValue implements Value {
   }
 
   @Override
-  public Timestamp getTimestamp() {
+  public OTimestamp getTimestamp() {
     checkType(Type.TIMESTAMP);
     if (objValue == null) {
-      Timestamp timestamp = new Timestamp(jsonValue);
-      objValue = timestamp;
+      objValue = new OTimestamp(jsonValue);;
     }
-    return (Timestamp) objValue;
+    return (OTimestamp) objValue;
   }
 
   @Override
@@ -230,12 +227,12 @@ public class JsonValue implements Value {
   }
 
   @Override
-  public Date getDate() {
+  public ODate getDate() {
     checkType(Type.DATE);
     if (objValue == null) {
-      objValue = JsonUtils.numDaysToDate(jsonValue);
+      objValue = ODate.fromDaysSinceEpoch((int) jsonValue);
     }
-    return (Date) objValue;
+    return (ODate) objValue;
   }
 
   @Override
@@ -244,13 +241,12 @@ public class JsonValue implements Value {
   }
 
   @Override
-  public Time getTime() {
+  public OTime getTime() {
     checkType(Type.TIME);
     if (objValue == null) {
-      Time time = new Time(jsonValue);
-      objValue = time;
+      objValue = OTime.fromMillisOfDay((int) jsonValue);
     }
-    return (Time) objValue;
+    return (OTime) objValue;
   }
 
   @Override
@@ -259,15 +255,15 @@ public class JsonValue implements Value {
   }
 
   @Override
-  public Interval getInterval() {
+  public OInterval getInterval() {
     checkType(Type.INTERVAL);
     // on first access create the object and cache it
     // this is to avoid unnecessary object creation
     if (objValue == null) {
-      Interval t = new Interval(jsonValue);
+      OInterval t = new OInterval(jsonValue);
       objValue = t;
     }
-    return (Interval) objValue;
+    return (OInterval) objValue;
   }
 
   @Override
@@ -338,10 +334,8 @@ public class JsonValue implements Value {
       case TIME:
       case INTERVAL:
         return jsonValue == value.jsonValue;
-
       case NULL:
         return ((objValue == null) && (value.objValue == null));
-
       case BINARY:
       case DECIMAL:
       case STRING:
@@ -349,77 +343,52 @@ public class JsonValue implements Value {
       case ARRAY:
         return objValue.equals(value.objValue);
       }
-    }
-    if (obj instanceof String) {
+    } else if (obj instanceof Value) {
+      return equals(((Value) obj).getObject());
+    } else if (obj instanceof String) {
       return objValue.equals(obj);
-    }
-    if (obj instanceof Byte) {
+    } else if (obj instanceof Byte) {
       return obj.equals(getByte());
-    }
-
-    if (obj instanceof Short) {
+    } else if (obj instanceof Short) {
       return obj.equals(getShort());
-    }
-
-    if (obj instanceof Boolean) {
+    } else if (obj instanceof Boolean) {
       return obj.equals(getBoolean());
-    }
-
-    if (obj instanceof Float) {
+    } else if (obj instanceof Float) {
       return obj.equals(getFloat());
-    }
-
-    if (obj instanceof Integer) {
+    } else if (obj instanceof Integer) {
       return obj.equals(getInt());
-    }
-
-    if (obj instanceof BigDecimal) {
+    } else if (obj instanceof Long) {
+      return obj.equals(getLong());
+    } else if (obj instanceof BigDecimal) {
       return obj.equals(getDecimal());
-    }
-
-    if (obj instanceof Double) {
+    } else if (obj instanceof Double) {
       return obj.equals(getDouble());
-    }
-
-    /* Internally we store Date, Time and Timestamp objects as long
-     * values. Therefore, it is simpler to compare against that when
-     * obj is of time Date, Time or Timestamp.
-     * However, if the comparison is done with, for example, a date object
-     * date as date.equals(getDate()), the comparison will not be equivalent
-     * since the interval implementation in java is different. It may not
-     * return same result.
-     */
-    if (obj instanceof Date) {
-      long dateAsLong = JsonUtils.dateToNumDays((Date)obj);
+    } else if (obj instanceof ODate) {
+      /* Internally we store Date, Time and Timestamp objects as long
+       * values. Therefore, it is simpler to compare against that when
+       * obj is of time Date, Time or Timestamp.
+       * However, if the comparison is done with, for example, a date object
+       * date as date.equals(getDate()), the comparison will not be equivalent
+       * since the interval implementation in java is different. It may not
+       * return same result.
+       */
+      long dateAsLong = ((ODate)obj).toDaysSinceEpoch();
       return dateAsLong == jsonValue;
-    }
-
-    if (obj instanceof Time) {
-      long timeAsLong = ((Time)obj).getTime() % MILLISECONDSPERDAY;
+    } else if (obj instanceof OTime) {
+      long timeAsLong = ((OTime)obj).toTimeInMillis();
       return timeAsLong == jsonValue;
-    }
-
-    if (obj instanceof Timestamp) {
-      long timestampAsLong = ((Timestamp)obj).getTime();
+    } else if (obj instanceof OTimestamp) {
+      long timestampAsLong = ((OTimestamp)obj).getMillis();
       return getTimestampAsLong() == timestampAsLong;
-    }
-
-    if (obj instanceof Interval) {
+    } else if (obj instanceof OInterval) {
       return obj.equals(getInterval());
-    }
-
-    if (obj instanceof ByteBuffer) {
+    } else if (obj instanceof ByteBuffer) {
       return obj.equals(getBinary());
-    }
-
-    if (obj instanceof Map) {
+    } else if (obj instanceof Map) {
+      return objValue.equals(obj);
+    } else if (obj instanceof List) {
       return objValue.equals(obj);
     }
-
-    if (obj instanceof List) {
-      return objValue.equals(obj);
-    }
-
 
     return false;
   }

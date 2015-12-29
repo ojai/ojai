@@ -153,15 +153,15 @@ public class TestJson extends BaseTest {
           + "\"int\":{\"$numberLong\":2147483647},\"long\":{\"$numberLong\":9223372036854775807},"
           + "\"float\":3.4028235,\"double\":1.7976931348623157E308,"
           + "\"decimal\":{\"$decimal\":\"123456789012345678901234567890123456789012345678901.23456789\"},"
-          + "\"date\":{\"$dateDay\":\"2012-10-20\"},\"time\":{\"$time\":\"07:42:46\"},"
-          + "\"timestamp\":{\"$date\":\"2012-10-20T07:42:46.123-07:00\"},\"interval\":{\"$interval\":172800000},"
+          + "\"date\":{\"$dateDay\":\"2012-10-20\"},\"time\":{\"$time\":\"07:42:46.123\"},"
+          + "\"timestamp\":{\"$date\":\"2012-10-20T14:42:46.123Z\"},\"interval\":{\"$interval\":172800000},"
           + "\"binary\":{\"$binary\":\"YWJjZA==\"},\"array\":[42,\"open sesame\",3.14,{\"$dateDay\":\"2015-01-21\"}]}}", s);
 
       s = Json.toJsonString(doc, new JsonOptions().withoutTags());
       assertEquals("{\"map\":{\"null\":null,\"boolean\":true,\"string\":\"eureka\",\"byte\":127,\"short\":32767,"
           + "\"int\":2147483647,\"long\":9223372036854775807,\"float\":3.4028235,\"double\":1.7976931348623157E308,"
           + "\"decimal\":123456789012345678901234567890123456789012345678901.23456789,\"date\":\"2012-10-20\","
-          + "\"time\":\"07:42:46\",\"timestamp\":\"2012-10-20T07:42:46.123-07:00\",\"interval\":172800000,"
+          + "\"time\":\"07:42:46.123\",\"timestamp\":\"2012-10-20T14:42:46.123Z\",\"interval\":172800000,"
           + "\"binary\":\"YWJjZA==\",\"array\":[42,\"open sesame\",3.14,\"2015-01-21\"]}}", s);
 
       s = Json.toJsonString(doc, new JsonOptions().pretty().withoutTags());
@@ -178,8 +178,8 @@ public class TestJson extends BaseTest {
           "    \"double\" : 1.7976931348623157E308,\n" +
           "    \"decimal\" : 123456789012345678901234567890123456789012345678901.23456789,\n" +
           "    \"date\" : \"2012-10-20\",\n" +
-          "    \"time\" : \"07:42:46\",\n" +
-          "    \"timestamp\" : \"2012-10-20T07:42:46.123-07:00\",\n" +
+          "    \"time\" : \"07:42:46.123\",\n" +
+          "    \"timestamp\" : \"2012-10-20T14:42:46.123Z\",\n" +
           "    \"interval\" : 172800000,\n" +
           "    \"binary\" : \"YWJjZA==\",\n" +
           "    \"array\" : [ 42, \"open sesame\", 3.14, \"2015-01-21\" ]\n" +
@@ -213,10 +213,10 @@ public class TestJson extends BaseTest {
           "      \"$dateDay\" : \"2012-10-20\"\n" +
           "    },\n" +
           "    \"time\" : {\n" +
-          "      \"$time\" : \"07:42:46\"\n" +
+          "      \"$time\" : \"07:42:46.123\"\n" +
           "    },\n" +
           "    \"timestamp\" : {\n" +
-          "      \"$date\" : \"2012-10-20T07:42:46.123-07:00\"\n" +
+          "      \"$date\" : \"2012-10-20T14:42:46.123Z\"\n" +
           "    },\n" +
           "    \"interval\" : {\n" +
           "      \"$interval\" : 172800000\n" +
@@ -271,10 +271,10 @@ public class TestJson extends BaseTest {
       assertEquals("{\"$dateDay\":\"2012-10-20\"}",
           Json.toJsonString(doc.getValue("map.date").asReader(), JsonOptions.WITH_TAGS));
 
-      assertEquals("{\"$time\":\"07:42:46\"}",
+      assertEquals("{\"$time\":\"07:42:46.123\"}",
           Json.toJsonString(doc.getValue("map.time").asReader(), JsonOptions.WITH_TAGS));
 
-      assertEquals("{\"$date\":\"2012-10-20T07:42:46.123-07:00\"}",
+      assertEquals("{\"$date\":\"2012-10-20T14:42:46.123Z\"}",
           Json.toJsonString(doc.getValue("map.timestamp").asReader(), JsonOptions.WITH_TAGS));
 
       assertEquals("{\"$binary\":\"YWJjZA==\"}",

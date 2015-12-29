@@ -28,8 +28,23 @@ public class Constants {
   public static final long TIMEZONE_OFFSET = TimeZone.getDefault().getRawOffset();
 
   /**
+   * A long value equal to the number of milliseconds in a second.
+   */
+  public final static int MILLISECONDSPERSECOND = 1000;
+
+  /**
+   * A long value equal to the number of milliseconds in a minute.
+   */
+  public final static int MILLISECONDSPERMINUTE = 60 * MILLISECONDSPERSECOND;
+
+  /**
+   * A long value equal to the number of milliseconds in an hour.
+   */
+  public final static int MILLISECONDSPERHOUR = 60 * MILLISECONDSPERMINUTE;
+
+  /**
    * A long value equal to the number of milliseconds in a day.
    */
-  public final static long MILLISECONDSPERDAY = 24 * 60 * 60 * 1000L;
+  public final static long MILLISECONDSPERDAY = 24 * MILLISECONDSPERHOUR;
 
 }

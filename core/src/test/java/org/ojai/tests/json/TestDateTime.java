@@ -17,17 +17,17 @@ package org.ojai.tests.json;
 
 import static org.junit.Assert.assertEquals;
 
-import java.sql.Date;
-import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import org.junit.Test;
 import org.ojai.Document;
 import org.ojai.json.Json;
-import org.ojai.util.Values;
+import org.ojai.tests.BaseTest;
+import org.ojai.types.ODate;
+import org.ojai.types.OTime;
 
-public class TestDateTime {
+public class TestDateTime extends BaseTest {
   static final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
   static long MIDNIGHT_FEB29TH_2012;
   static long MILLIS_BEFORE_MIDNIGHT_FEB29TH_2012;
@@ -40,8 +40,8 @@ public class TestDateTime {
 
   @Test
   public void testDates() throws ParseException {
-    Date midnightFeb29th2012 = new Date(MIDNIGHT_FEB29TH_2012);
-    Date milliSecondBeforeMidnightFeb29th2012 = new Date(MILLIS_BEFORE_MIDNIGHT_FEB29TH_2012);
+    ODate midnightFeb29th2012 = new ODate(MIDNIGHT_FEB29TH_2012);
+    ODate milliSecondBeforeMidnightFeb29th2012 = new ODate(MILLIS_BEFORE_MIDNIGHT_FEB29TH_2012);
     Document doc = Json.newDocument();
     doc.set("midnightFeb29th2012", midnightFeb29th2012);
     doc.set("milliSecondBeforeMidnightFeb29th2012", milliSecondBeforeMidnightFeb29th2012);
@@ -51,34 +51,30 @@ public class TestDateTime {
     assertEquals("2012-02-29", midnightFeb29th2012.toString());
     assertEquals("2012-02-28", milliSecondBeforeMidnightFeb29th2012.toString());
 
-    assertEquals(doc.getDate("midnightFeb29th2012"), Values.parseDate("2012-02-29"));
-    assertEquals(doc.getDate("milliSecondBeforeMidnightFeb29th2012"), Values.parseDate("2012-02-28"));
+    assertEquals(doc.getDate("midnightFeb29th2012"), ODate.parse("2012-02-29"));
+    assertEquals(doc.getDate("milliSecondBeforeMidnightFeb29th2012"), ODate.parse("2012-02-28"));
   }
 
   @Test
   public void testTimes() throws ParseException {
-    Time midnight = new Time(MIDNIGHT_FEB29TH_2012);
-    Time milliSecondBeforeMidnight = new Time(MILLIS_BEFORE_MIDNIGHT_FEB29TH_2012);
+    OTime midnight = new OTime(MIDNIGHT_FEB29TH_2012);
+    OTime milliSecondBeforeMidnight = new OTime(MILLIS_BEFORE_MIDNIGHT_FEB29TH_2012);
     Document doc = Json.newDocument();
     doc.set("midnight", midnight);
     doc.set("milliSecondBeforeMidnight", milliSecondBeforeMidnight);
 
     midnight = doc.getTime("midnight");
     milliSecondBeforeMidnight = doc.getTime("milliSecondBeforeMidnight");
-    assertEquals("00:00:00", midnight.toString());
-    assertEquals("23:59:59", milliSecondBeforeMidnight.toString());
+    assertEquals("00:00:00.000", midnight.toString());
+    assertEquals("23:59:59.999", milliSecondBeforeMidnight.toString());
 
-    /*
-     * java.sql.Time does not override the equals() method and the call is actually handled by java.util.Date
-     * which, incorrectly, compares the milliseconds value thus taking the date fields into account
-     */
-    Time parsedTime = Values.parseTime("00:00:00");
-    Time storedTime = doc.getTime("midnight");
-    assertEquals(storedTime.toString(), parsedTime.toString());
+    OTime parsedTime = OTime.parse("00:00:00");
+    OTime storedTime = doc.getTime("midnight");
+    assertEquals(storedTime, parsedTime);
 
-    parsedTime = Values.parseTime("23:59:59");
+    parsedTime = OTime.parse("23:59:59.999");
     storedTime = doc.getTime("milliSecondBeforeMidnight");
-    assertEquals(storedTime.toString(), parsedTime.toString());
+    assertEquals(storedTime, parsedTime);
   }
 
 }

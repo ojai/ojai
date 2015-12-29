@@ -25,9 +25,6 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
-import java.sql.Date;
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -43,10 +40,12 @@ import org.ojai.annotation.API;
 import org.ojai.exceptions.EncodingException;
 import org.ojai.json.Json;
 import org.ojai.json.JsonOptions;
-import org.ojai.types.Interval;
+import org.ojai.types.ODate;
+import org.ojai.types.OInterval;
+import org.ojai.types.OTime;
+import org.ojai.types.OTimestamp;
 import org.ojai.util.Decimals;
 import org.ojai.util.Types;
-import org.ojai.util.Values;
 
 import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.JsonFactory;
@@ -309,18 +308,18 @@ public class JsonDocumentBuilder implements DocumentBuilder {
   }
 
   @Override
-  public JsonDocumentBuilder put(String field, Date value) {
-    return putStringWithTag(field, Types.TAG_DATE, Values.toDateStr(value));
+  public JsonDocumentBuilder put(String field, ODate value) {
+    return putStringWithTag(field, Types.TAG_DATE, value.toDateStr());
   }
 
   @Override
   public JsonDocumentBuilder putDate(String field, int days) {
-    return putStringWithTag(field, Types.TAG_DATE, Values.toDateStr(JsonUtils.numDaysToDate(days)));
+    return putStringWithTag(field, Types.TAG_DATE, ODate.fromDaysSinceEpoch(days).toDateStr());
   }
 
   @Override
-  public JsonDocumentBuilder put(String field, Time value) {
-    return putStringWithTag(field, Types.TAG_TIME, Values.toTimeStr(value));
+  public JsonDocumentBuilder put(String field, OTime value) {
+    return putStringWithTag(field, Types.TAG_TIME, value.toTimeStr());
   }
 
   @Override
@@ -329,21 +328,21 @@ public class JsonDocumentBuilder implements DocumentBuilder {
       throw new IllegalArgumentException("Long value exceeds "
           + Long.toString(MILLISECONDSPERDAY) + " " + Long.toString(millis));
     }
-    return putStringWithTag(field, Types.TAG_TIME, Values.toTimeStr(new Time(millis)));
+    return putStringWithTag(field, Types.TAG_TIME, OTime.fromMillisOfDay(millis).toTimeStr());
   }
 
   @Override
-  public JsonDocumentBuilder put(String field, Timestamp value) {
-    return putStringWithTag(field, Types.TAG_TIMESTAMP, Values.toTimestampString(value));
+  public JsonDocumentBuilder put(String field, OTimestamp value) {
+    return putStringWithTag(field, Types.TAG_TIMESTAMP, value.toUTCString());
   }
 
   @Override
   public JsonDocumentBuilder putTimestamp(String field, long timeMillis) {
-    return putStringWithTag(field, Types.TAG_TIMESTAMP, Values.toTimestampString(new Timestamp(timeMillis)));
+    return putStringWithTag(field, Types.TAG_TIMESTAMP, new OTimestamp(timeMillis).toUTCString());
   }
 
   @Override
-  public JsonDocumentBuilder put(String field, Interval value) {
+  public JsonDocumentBuilder put(String field, OInterval value) {
     return putLongWithTag(field, Types.TAG_INTERVAL, value.getTimeInMillis());
   }
 
@@ -818,37 +817,37 @@ public class JsonDocumentBuilder implements DocumentBuilder {
   }
 
   @Override
-  public JsonDocumentBuilder add(Time value) {
-    return addStringWithTag(Types.TAG_TIME, Values.toTimeStr(value));
+  public JsonDocumentBuilder add(OTime value) {
+    return addStringWithTag(Types.TAG_TIME, value.toTimeStr());
   }
 
   @Override
   public JsonDocumentBuilder addTime(int millis) {
-    return addStringWithTag(Types.TAG_TIME, Values.toTimeStr(new Time(millis)));
+    return addStringWithTag(Types.TAG_TIME, OTime.fromMillisOfDay(millis).toTimeStr());
   }
 
   @Override
-  public JsonDocumentBuilder add(Date value) {
-    return addStringWithTag(Types.TAG_DATE, Values.toDateStr(value));
+  public JsonDocumentBuilder add(ODate value) {
+    return addStringWithTag(Types.TAG_DATE, value.toDateStr());
   }
 
   @Override
   public JsonDocumentBuilder addDate(int days) {
-    return addStringWithTag(Types.TAG_DATE, Values.toDateStr(JsonUtils.numDaysToDate(days)));
+    return addStringWithTag(Types.TAG_DATE, ODate.fromDaysSinceEpoch(days).toDateStr());
   }
 
   @Override
-  public JsonDocumentBuilder add(Timestamp value) {
-    return addStringWithTag(Types.TAG_TIMESTAMP, Values.toTimestampString(value));
+  public JsonDocumentBuilder add(OTimestamp value) {
+    return addStringWithTag(Types.TAG_TIMESTAMP, value.toUTCString());
   }
 
   @Override
   public JsonDocumentBuilder addTimestamp(long timeMillis) {
-    return addStringWithTag(Types.TAG_TIMESTAMP, Values.toTimestampString(new Timestamp(timeMillis)));
+    return addStringWithTag(Types.TAG_TIMESTAMP, new OTimestamp(timeMillis).toUTCString());
   }
 
   @Override
-  public JsonDocumentBuilder add(Interval value) {
+  public JsonDocumentBuilder add(OInterval value) {
     return addLongWithTag(Types.TAG_INTERVAL, value.getTimeInMillis());
   }
 

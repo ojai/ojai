@@ -17,14 +17,14 @@ package org.ojai;
 
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
-import java.sql.Date;
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
 import org.ojai.annotation.API;
-import org.ojai.types.Interval;
+import org.ojai.types.ODate;
+import org.ojai.types.OInterval;
+import org.ojai.types.OTime;
+import org.ojai.types.OTimestamp;
 
 /**
  * A template abstract class that implements the Document interface.
@@ -73,17 +73,17 @@ public abstract class DocumentBase implements Document {
   }
 
   @Override
-  public Document set(String fieldPath, Time value) {
+  public Document set(String fieldPath, OTime value) {
     return set(FieldPath.parseFrom(fieldPath), value);
   }
 
   @Override
-  public Document set(String fieldPath, Date value) {
+  public Document set(String fieldPath, ODate value) {
     return set(FieldPath.parseFrom(fieldPath), value);
   }
 
   @Override
-  public Document set(String fieldPath, Timestamp value) {
+  public Document set(String fieldPath, OTimestamp value) {
     return set(FieldPath.parseFrom(fieldPath), value);
   }
 
@@ -108,7 +108,7 @@ public abstract class DocumentBase implements Document {
   }
 
   @Override
-  public Document set(String fieldPath, Interval value) {
+  public Document set(String fieldPath, OInterval value) {
     return set(FieldPath.parseFrom(fieldPath), value);
   }
 
@@ -218,17 +218,17 @@ public abstract class DocumentBase implements Document {
   }
 
   @Override
-  public Time getTime(String fieldPath) {
+  public OTime getTime(String fieldPath) {
     return getTime(FieldPath.parseFrom(fieldPath));
   }
 
   @Override
-  public Date getDate(String fieldPath) {
+  public ODate getDate(String fieldPath) {
     return getDate(FieldPath.parseFrom(fieldPath));
   }
 
   @Override
-  public Timestamp getTimestamp(String fieldPath) {
+  public OTimestamp getTimestamp(String fieldPath) {
     return getTimestamp(FieldPath.parseFrom(fieldPath));
   }
 
@@ -243,7 +243,7 @@ public abstract class DocumentBase implements Document {
   }
 
   @Override
-  public Interval getInterval(String fieldPath) {
+  public OInterval getInterval(String fieldPath) {
     return getInterval(FieldPath.parseFrom(fieldPath));
   }
 

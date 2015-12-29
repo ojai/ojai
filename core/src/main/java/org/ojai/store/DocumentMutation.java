@@ -17,9 +17,6 @@ package org.ojai.store;
 
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
-import java.sql.Date;
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +25,10 @@ import org.ojai.FieldPath;
 import org.ojai.Value;
 import org.ojai.Value.Type;
 import org.ojai.annotation.API;
-import org.ojai.types.Interval;
+import org.ojai.types.ODate;
+import org.ojai.types.OInterval;
+import org.ojai.types.OTime;
+import org.ojai.types.OTimestamp;
 
 /**
  * The DocumentMutation interface defines the APIs to perform mutation of a
@@ -316,7 +316,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * @param d The new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
-  public DocumentMutation set(String path, Date d);
+  public DocumentMutation set(String path, ODate d);
 
   /**
    * Sets the field at the given FieldPath to the specified {@code Date} value.
@@ -325,7 +325,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * @param d The new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
-  public DocumentMutation set(FieldPath path, Date d);
+  public DocumentMutation set(FieldPath path, ODate d);
 
   /**
    * Sets the field at the given FieldPath to the specified {@code Time} value.
@@ -334,7 +334,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * @param t The new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
-  public DocumentMutation set(String path, Time t);
+  public DocumentMutation set(String path, OTime t);
 
   /**
    * Sets the field at the given FieldPath to the specified {@code Time} value.
@@ -343,7 +343,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * @param t The new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
-  public DocumentMutation set(FieldPath path, Time t);
+  public DocumentMutation set(FieldPath path, OTime t);
 
   /**
    * Sets the field at the given FieldPath to the specified {@code Timestamp} value.
@@ -352,7 +352,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * @param ts The new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
-  public DocumentMutation set(String path, Timestamp ts);
+  public DocumentMutation set(String path, OTimestamp ts);
 
   /**
    * Sets the field at the given FieldPath to the specified {@code Timestamp} value.
@@ -361,7 +361,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * @param ts The new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
-  public DocumentMutation set(FieldPath path, Timestamp ts);
+  public DocumentMutation set(FieldPath path, OTimestamp ts);
 
   /**
    * Sets the field at the given FieldPath to the specified {@code Interval} value.
@@ -370,7 +370,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * @param intv The new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
-  public DocumentMutation set(String path, Interval intv);
+  public DocumentMutation set(String path, OInterval intv);
 
   /**
    * Sets the field at the given FieldPath to the specified {@code Interval} value.
@@ -379,7 +379,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * @param intv The new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
-  public DocumentMutation set(FieldPath path, Interval intv);
+  public DocumentMutation set(FieldPath path, OInterval intv);
 
   /**
    * Sets the field at the given FieldPath to the specified {@code ByteBuffer}.
@@ -675,7 +675,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * @param d The new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
-  public DocumentMutation setOrReplace(String path, Date d);
+  public DocumentMutation setOrReplace(String path, ODate d);
 
   /**
    * Sets or replaces the field at the given FieldPath to the specified
@@ -685,7 +685,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * @param d The new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
-  public DocumentMutation setOrReplace(FieldPath path, Date d);
+  public DocumentMutation setOrReplace(FieldPath path, ODate d);
 
   /**
    * Sets or replaces the field at the given FieldPath to the specified
@@ -695,7 +695,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * @param t The new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
-  public DocumentMutation setOrReplace(String path, Time t);
+  public DocumentMutation setOrReplace(String path, OTime t);
 
   /**
    * Sets or replaces the field at the given FieldPath to the specified
@@ -705,7 +705,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * @param t The new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
-  public DocumentMutation setOrReplace(FieldPath path, Time t);
+  public DocumentMutation setOrReplace(FieldPath path, OTime t);
 
   /**
    * Sets or replaces the field at the given FieldPath to the specified
@@ -715,7 +715,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * @param ts The new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
-  public DocumentMutation setOrReplace(String path, Timestamp ts);
+  public DocumentMutation setOrReplace(String path, OTimestamp ts);
 
   /**
    * Sets or replaces the field at the given FieldPath to the specified
@@ -725,7 +725,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * @param ts The new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
-  public DocumentMutation setOrReplace(FieldPath path, Timestamp ts);
+  public DocumentMutation setOrReplace(FieldPath path, OTimestamp ts);
 
   /**
    * Sets or replaces the field at the given FieldPath to the specified
@@ -735,7 +735,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * @param intv The new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
-  public DocumentMutation setOrReplace(String path, Interval intv);
+  public DocumentMutation setOrReplace(String path, OInterval intv);
 
   /**
    * Sets or replaces the field at the given FieldPath to the specified
@@ -745,7 +745,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * @param intv The new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
-  public DocumentMutation setOrReplace(FieldPath path, Interval intv);
+  public DocumentMutation setOrReplace(FieldPath path, OInterval intv);
 
   /**
    * Sets or replaces the field at the given FieldPath to the specified

@@ -17,13 +17,13 @@ package org.ojai;
 
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
-import java.sql.Date;
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.util.Map;
 
 import org.ojai.annotation.API;
-import org.ojai.types.Interval;
+import org.ojai.types.ODate;
+import org.ojai.types.OInterval;
+import org.ojai.types.OTime;
+import org.ojai.types.OTimestamp;
 
 @API.Public
 public interface DocumentBuilder {
@@ -74,7 +74,7 @@ public interface DocumentBuilder {
   DocumentBuilder put(String field, byte[] value, int offset, int length);
   DocumentBuilder put(String field, ByteBuffer value);
 
-  DocumentBuilder put(String field, Date value);
+  DocumentBuilder put(String field, ODate value);
 
   /**
    * Associates the specified {@code date} value represented as the number
@@ -88,7 +88,7 @@ public interface DocumentBuilder {
    */
   DocumentBuilder putDate(String field, int days);
 
-  DocumentBuilder put(String field, Time value);
+  DocumentBuilder put(String field, OTime value);
 
   /**
    * Associates the specified {@code time} value represented as number of
@@ -104,7 +104,7 @@ public interface DocumentBuilder {
    */
   DocumentBuilder putTime(String field, int millis);
 
-  DocumentBuilder put(String field, Timestamp value);
+  DocumentBuilder put(String field, OTimestamp value);
 
   /**
    * Associates the specified {@code timestamp} value represented as the number
@@ -118,7 +118,7 @@ public interface DocumentBuilder {
    */
   DocumentBuilder putTimestamp(String field, long timeMillis);
 
-  DocumentBuilder put(String field, Interval value);
+  DocumentBuilder put(String field, OInterval value);
   DocumentBuilder putInterval(String field, long durationInMs);
   DocumentBuilder putInterval(String field, int months, int days, int milliseconds);
 
@@ -354,7 +354,7 @@ public interface DocumentBuilder {
   DocumentBuilder addNewArray();
   DocumentBuilder addNewMap();
 
-  DocumentBuilder add(Time value);
+  DocumentBuilder add(OTime value);
 
   /**
    * Appends the specified {@code time} value represented as number of
@@ -368,7 +368,7 @@ public interface DocumentBuilder {
    */
   DocumentBuilder addTime(int millis);
 
-  DocumentBuilder add(Date value);
+  DocumentBuilder add(ODate value);
 
   /**
    * Appends the specified {@code date} value represented as the number of
@@ -380,10 +380,10 @@ public interface DocumentBuilder {
    */
   DocumentBuilder addDate(int days);
 
-  DocumentBuilder add(Timestamp value);
+  DocumentBuilder add(OTimestamp value);
   DocumentBuilder addTimestamp(long timeMillis);
 
-  DocumentBuilder add(Interval value);
+  DocumentBuilder add(OInterval value);
   DocumentBuilder addInterval(long durationInMs);
 
   /* Lifecycle methods */

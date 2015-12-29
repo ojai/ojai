@@ -16,12 +16,12 @@
 package org.ojai.beans.jackson;
 
 import java.io.IOException;
-import java.sql.Date;
-import java.sql.Time;
-import java.sql.Timestamp;
 
 import org.ojai.annotation.API;
-import org.ojai.types.Interval;
+import org.ojai.types.ODate;
+import org.ojai.types.OInterval;
+import org.ojai.types.OTime;
+import org.ojai.types.OTimestamp;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
@@ -50,17 +50,17 @@ public class JacksonHelper {
     module.addSerializer(byte.class, byteSerializer);
     module.addSerializer(Byte.class, byteSerializer);
 
-    module.addSerializer(Interval.class, new IntervalSerializer());
-    module.addDeserializer(Interval.class, new IntervalDeserializer());
+    module.addSerializer(OInterval.class, new IntervalSerializer());
+    module.addDeserializer(OInterval.class, new IntervalDeserializer());
 
-    module.addSerializer(Date.class, new DateSerializer());
-    module.addDeserializer(Date.class, new DateDeserializer());
+    module.addSerializer(ODate.class, new DateSerializer());
+    module.addDeserializer(ODate.class, new DateDeserializer());
 
-    module.addSerializer(Time.class, new TimeSerializer());
-    module.addDeserializer(Time.class, new TimeDeserializer());
+    module.addSerializer(OTime.class, new TimeSerializer());
+    module.addDeserializer(OTime.class, new TimeDeserializer());
 
-    module.addSerializer(Timestamp.class, new TimestampSerializer());
-    module.addDeserializer(Timestamp.class, new TimestampDeserializer());
+    module.addSerializer(OTimestamp.class, new TimestampSerializer());
+    module.addDeserializer(OTimestamp.class, new TimestampDeserializer());
 
     MAPPER.registerModule(module);
   }
@@ -73,67 +73,67 @@ public class JacksonHelper {
     }
   }
 
-  public static class IntervalSerializer extends JsonSerializer<Interval> {
+  public static class IntervalSerializer extends JsonSerializer<OInterval> {
     @Override
-    public void serialize(Interval value, JsonGenerator jgen, SerializerProvider provider)
+    public void serialize(OInterval value, JsonGenerator jgen, SerializerProvider provider)
         throws IOException, JsonProcessingException {
       jgen.writeObject(value);
     }
   }
 
-  public static class IntervalDeserializer extends JsonDeserializer<Interval> {
+  public static class IntervalDeserializer extends JsonDeserializer<OInterval> {
     @Override
-    public Interval deserialize(JsonParser p, DeserializationContext ctxt) throws IOException,
+    public OInterval deserialize(JsonParser p, DeserializationContext ctxt) throws IOException,
         JsonProcessingException {
-      return (Interval) p.getEmbeddedObject();
+      return (OInterval) p.getEmbeddedObject();
     }
   }
 
-  public static class DateSerializer extends JsonSerializer<Date> {
+  public static class DateSerializer extends JsonSerializer<ODate> {
     @Override
-    public void serialize(Date value, JsonGenerator jgen, SerializerProvider provider)
+    public void serialize(ODate value, JsonGenerator jgen, SerializerProvider provider)
         throws IOException, JsonProcessingException {
       jgen.writeObject(value);
     }
   }
 
-  public static class DateDeserializer extends JsonDeserializer<Date> {
+  public static class DateDeserializer extends JsonDeserializer<ODate> {
     @Override
-    public Date deserialize(JsonParser p, DeserializationContext ctxt) throws IOException,
+    public ODate deserialize(JsonParser p, DeserializationContext ctxt) throws IOException,
         JsonProcessingException {
-      return (Date) p.getEmbeddedObject();
+      return (ODate) p.getEmbeddedObject();
     }
   }
 
-  public static class TimeSerializer extends JsonSerializer<Time> {
+  public static class TimeSerializer extends JsonSerializer<OTime> {
     @Override
-    public void serialize(Time value, JsonGenerator jgen, SerializerProvider provider)
+    public void serialize(OTime value, JsonGenerator jgen, SerializerProvider provider)
         throws IOException, JsonProcessingException {
       jgen.writeObject(value);
     }
   }
 
-  public static class TimeDeserializer extends JsonDeserializer<Time> {
+  public static class TimeDeserializer extends JsonDeserializer<OTime> {
     @Override
-    public Time deserialize(JsonParser p, DeserializationContext ctxt) throws IOException,
+    public OTime deserialize(JsonParser p, DeserializationContext ctxt) throws IOException,
         JsonProcessingException {
-      return (Time) p.getEmbeddedObject();
+      return (OTime) p.getEmbeddedObject();
     }
   }
 
-  public static class TimestampSerializer extends JsonSerializer<Timestamp> {
+  public static class TimestampSerializer extends JsonSerializer<OTimestamp> {
     @Override
-    public void serialize(Timestamp value, JsonGenerator jgen, SerializerProvider provider)
+    public void serialize(OTimestamp value, JsonGenerator jgen, SerializerProvider provider)
         throws IOException, JsonProcessingException {
       jgen.writeObject(value);
     }
   }
 
-  public static class TimestampDeserializer extends JsonDeserializer<Timestamp> {
+  public static class TimestampDeserializer extends JsonDeserializer<OTimestamp> {
     @Override
-    public Timestamp deserialize(JsonParser p, DeserializationContext ctxt) throws IOException,
+    public OTimestamp deserialize(JsonParser p, DeserializationContext ctxt) throws IOException,
         JsonProcessingException {
-      return (Timestamp) p.getEmbeddedObject();
+      return (OTimestamp) p.getEmbeddedObject();
     }
   }
 

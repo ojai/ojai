@@ -23,7 +23,7 @@
 
   <groupId>org.ojai</groupId>
   <artifactId>ojai-root</artifactId>
-  <version>0.2.r5-SNAPSHOT</version>
+  <version>0.2.r6-SNAPSHOT</version>
 
   <name>Ojai Root Pom</name>
   <packaging>pom</packaging>

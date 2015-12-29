@@ -15,13 +15,8 @@
  */
 package org.ojai.json.impl;
 
-import static org.ojai.util.Constants.MILLISECONDSPERDAY;
-
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
-import java.sql.Date;
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
@@ -30,7 +25,10 @@ import org.ojai.Value;
 import org.ojai.Value.Type;
 import org.ojai.annotation.API;
 import org.ojai.exceptions.TypeException;
-import org.ojai.types.Interval;
+import org.ojai.types.ODate;
+import org.ojai.types.OInterval;
+import org.ojai.types.OTime;
+import org.ojai.types.OTimestamp;
 
 /**
  * Helper class providing set of static methods to create instance of
@@ -91,16 +89,15 @@ public class JsonValueBuilder {
     return v;
   }
 
-  public static JsonValue initFrom(Time value) {
+  public static JsonValue initFrom(OTime value) {
     JsonValue v = new JsonValue(Type.TIME);
-    /* just take the portion of time which is after midnight */
-    v.setPrimValue((int) (value.getTime() % MILLISECONDSPERDAY));
+    v.setPrimValue(value.toTimeInMillis());
     return v;
   }
 
-  public static JsonValue initFrom(Date value) {
+  public static JsonValue initFrom(ODate value) {
     JsonValue v = new JsonValue(Type.DATE);
-    v.setPrimValue(JsonUtils.dateToNumDays(value));
+    v.setPrimValue(value.toDaysSinceEpoch());
     return v;
   }
 
@@ -111,13 +108,13 @@ public class JsonValueBuilder {
   }
 
   // NOTE : We are ignoring the nano part of the timestamp here
-  public static JsonValue initFrom(Timestamp value) {
+  public static JsonValue initFrom(OTimestamp value) {
     JsonValue v = new JsonValue(Type.TIMESTAMP);
-    v.setPrimValue(value.getTime());
+    v.setPrimValue(value.getMillis());
     return v;
   }
 
-  public static JsonValue initFrom(Interval value) {
+  public static JsonValue initFrom(OInterval value) {
     JsonValue v = new JsonValue(Type.INTERVAL);
     v.setPrimValue(value.getTimeInMillis());
     return v;
@@ -223,16 +220,16 @@ public class JsonValueBuilder {
       return initFrom(((Double) value).doubleValue());
     }
 
-    if (value instanceof Time) {
-      return initFrom(((Time) value));
+    if (value instanceof OTime) {
+      return initFrom(((OTime) value));
     }
 
-    if (value instanceof Date) {
-      return initFrom(((Date) value));
+    if (value instanceof ODate) {
+      return initFrom(((ODate) value));
     }
 
-    if (value instanceof Timestamp) {
-      return initFrom(((Timestamp) value));
+    if (value instanceof OTimestamp) {
+      return initFrom(((OTimestamp) value));
     }
 
     if (value instanceof BigDecimal) {
@@ -243,8 +240,8 @@ public class JsonValueBuilder {
       return initFrom(((ByteBuffer) value));
     }
 
-    if (value instanceof Interval) {
-      return initFrom(((Interval) value));
+    if (value instanceof OInterval) {
+      return initFrom(((OInterval) value));
     }
 
     if (value instanceof Document) {

@@ -18,9 +18,6 @@ package org.ojai.json.impl;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
-import java.sql.Date;
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Map.Entry;
@@ -29,7 +26,10 @@ import java.util.Stack;
 import org.ojai.DocumentReader;
 import org.ojai.Value.Type;
 import org.ojai.exceptions.TypeException;
-import org.ojai.types.Interval;
+import org.ojai.types.ODate;
+import org.ojai.types.OInterval;
+import org.ojai.types.OTime;
+import org.ojai.types.OTimestamp;
 import org.ojai.util.Types;
 
 class JsonDOMDocumentReader implements DocumentReader {
@@ -244,7 +244,7 @@ class JsonDOMDocumentReader implements DocumentReader {
   }
 
   @Override
-  public Timestamp getTimestamp() {
+  public OTimestamp getTimestamp() {
     checkEventType(EventType.TIMESTAMP);
     return jsonValue.getTimestamp();
   }
@@ -256,7 +256,7 @@ class JsonDOMDocumentReader implements DocumentReader {
   }
 
   @Override
-  public Date getDate() {
+  public ODate getDate() {
     checkEventType(EventType.DATE);
     return jsonValue.getDate();
   }
@@ -268,13 +268,13 @@ class JsonDOMDocumentReader implements DocumentReader {
   }
 
   @Override
-  public Time getTime() {
+  public OTime getTime() {
     checkEventType(EventType.TIME);
     return jsonValue.getTime();
   }
 
   @Override
-  public Interval getInterval() {
+  public OInterval getInterval() {
     checkEventType(EventType.INTERVAL);
     return jsonValue.getInterval();
   }

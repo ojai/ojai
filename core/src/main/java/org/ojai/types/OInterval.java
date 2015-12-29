@@ -25,7 +25,7 @@ import org.ojai.annotation.API;
  * An immutable class which encapsulates a time interval.
  */
 @API.Public
-public class Interval implements Serializable {
+public final class OInterval implements Serializable {
 
   private static final long serialVersionUID = 0x228372f2047c1511L;
 
@@ -45,7 +45,7 @@ public class Interval implements Serializable {
 
   private final long timeDuration;
 
-  public Interval(final long milliseconds) {
+  public OInterval(final long milliseconds) {
     this.timeDuration = milliseconds;
     this.milliseconds = (int) (milliseconds % 1000);
     this.seconds      = (int) (milliseconds % MILLISECONDSPERDAY) / 1000;
@@ -54,12 +54,12 @@ public class Interval implements Serializable {
     this.years        = 0;
   }
 
-  public Interval(String iso8601DurationPattern) {
+  public OInterval(String iso8601DurationPattern) {
     // FIXME: parse the string as per ISO 8601 duration and time stamps format
     this(0, 0, 0, 0, 0);
   }
 
-  public Interval(final int years, final int months, final int days,
+  public OInterval(final int years, final int months, final int days,
       final int seconds, final int milliseconds) {
     this.years = years;
     this.months = months;

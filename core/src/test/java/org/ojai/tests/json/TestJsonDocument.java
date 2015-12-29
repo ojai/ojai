@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -41,8 +40,10 @@ import org.ojai.exceptions.EncodingException;
 import org.ojai.json.Json;
 import org.ojai.json.JsonOptions;
 import org.ojai.tests.BaseTest;
+import org.ojai.types.ODate;
+import org.ojai.types.OTime;
+import org.ojai.types.OTimestamp;
 import org.ojai.util.MapEncoder;
-import org.ojai.util.Values;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -63,8 +64,8 @@ public class TestJsonDocument extends BaseTest {
         + "\"double\":1.7976931348623157E308,"
         + "\"decimal\":123456789012345678901234567890123456789012345678901.23456789,"
         + "\"date\":\"2012-10-20\","
-        + "\"time\":\"07:42:46\","
-        + "\"timestamp\":\"2012-10-20T07:42:46.123-07:00\","
+        + "\"time\":\"07:42:46.123\","
+        + "\"timestamp\":\"2012-10-20T14:42:46.123Z\","
         + "\"interval\":172800000,"
         + "\"binary\":\"YWJjZA==\","
         + "\"array\":[42,\"open sesame\",3.14,\"2015-01-21\"]"
@@ -84,8 +85,8 @@ public class TestJsonDocument extends BaseTest {
         + "\"double\":1.7976931348623157E308,"
         + "\"decimal\":{\"$decimal\":\"123456789012345678901234567890123456789012345678901.23456789\"},"
         + "\"date\":{\"$dateDay\":\"2012-10-20\"},"
-        + "\"time\":{\"$time\":\"07:42:46\"},"
-        + "\"timestamp\":{\"$date\":\"2012-10-20T07:42:46.123-07:00\"},"
+        + "\"time\":{\"$time\":\"07:42:46.123\"},"
+        + "\"timestamp\":{\"$date\":\"2012-10-20T14:42:46.123Z\"},"
         + "\"interval\":{\"$interval\":172800000},"
         + "\"binary\":{\"$binary\":\"YWJjZA==\"},"
         + "\"array\":[42,\"open sesame\",3.14,{\"$dateDay\":\"2015-01-21\"}]"
@@ -356,16 +357,16 @@ public class TestJsonDocument extends BaseTest {
   }
 
   @Test
-  public void testDateWithLongMaxMin() {
+  public void testDateWithIntegerMaxMin() {
     Document doc = Json.newDocument();
-    Date d1 = new Date(Long.MAX_VALUE);
-    Date d2 = new Date(Long.MIN_VALUE);
+    ODate d1 = new ODate(Integer.MAX_VALUE);
+    ODate d2 = new ODate(Integer.MIN_VALUE);
     doc.set("maxdate", d1);
     doc.set("boolean", false);
     doc.set("mindate", d2);
 
-    logger.info("{}", d1.getTime());
-    logger.info("{}", doc.getDate("maxdate").getTime());
+    logger.info("{}", d1);
+    logger.info("{}", doc.getDate("maxdate"));
 
     assertEquals(true, doc.getValue("maxdate").equals(d1));
     assertEquals(true, doc.getValue("mindate").equals(d2));
@@ -374,8 +375,8 @@ public class TestJsonDocument extends BaseTest {
   @Test
   public void testDate() {
     Document doc = Json.newDocument();
-    doc.set("d1", Values.parseDate("2005-06-22"));
-    Date d = new Date(new java.util.Date().getTime());
+    doc.set("d1", ODate.parse("2005-06-22"));
+    ODate d = new ODate(new java.util.Date());
     doc.set("d2", d);
     logger.info("{}", doc.getDate("d1"));
     logger.info("{}", doc.getDate("d2"));
@@ -404,10 +405,10 @@ public class TestJsonDocument extends BaseTest {
     Document docInArr3 = Json.newDocument();
     Document dateTimeDoc = Json.newDocument();
 
-    dateTimeDoc.set("dateLong", new Date(System.currentTimeMillis() / 1000))
-               .set("dateParsed", Values.parseDate("2015-11-25"))
-               .set("dateTime", Values.parseTime("10:25:32"))
-               .set("dateTimestamp", Values.parseTimestamp("2015-11-25T13:26:59.223Z"));
+    dateTimeDoc.set("dateLong", new ODate(System.currentTimeMillis() / 1000))
+               .set("dateParsed", ODate.parse("2015-11-25"))
+               .set("dateTime", OTime.parse("10:25:32"))
+               .set("dateTimestamp", OTimestamp.parse("2015-11-25T13:26:59.223Z"));
 
     docInArr1.set("arr1string", "string")
              .set("arr1boolean", false)

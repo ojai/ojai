@@ -17,13 +17,6 @@ package org.ojai.util;
 
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
-import java.sql.Date;
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.TimeZone;
 
 import org.ojai.Value;
 import org.ojai.annotation.API;
@@ -31,7 +24,6 @@ import org.ojai.exceptions.TypeException;
 import org.ojai.json.Json;
 import org.ojai.json.JsonOptions;
 
-import com.google.common.annotations.VisibleForTesting;
 import com.google.common.io.BaseEncoding;
 
 /**
@@ -40,52 +32,6 @@ import com.google.common.io.BaseEncoding;
  */
 @API.Public
 public class Values {
-  private static TimeZone LOCAL = TimeZone.getDefault();
-
-  private static final String DATE_FORMATTER_STR = "yyyy-MM-dd";
-  private static final ThreadLocal<SimpleDateFormat> DATE_FORMATTER = new ThreadLocal<SimpleDateFormat>() {
-    @Override protected SimpleDateFormat initialValue() {
-        return new SimpleDateFormat(DATE_FORMATTER_STR);
-    }
-  };
-
-  private static final String SHORT_DATE_FORMATTER_STR = "yyyy-MM";
-  private static final int shortDateStringLen = SHORT_DATE_FORMATTER_STR.length();
-  private static final ThreadLocal<SimpleDateFormat> SHORT_DATE_FORMATTER = new ThreadLocal<SimpleDateFormat>() {
-    @Override protected SimpleDateFormat initialValue() {
-      return new SimpleDateFormat(SHORT_DATE_FORMATTER_STR);
-    }
-  };
-
-  private static final String SHORT_TIME_FORMATTER_STR = "HH:mm";
-  private static final int shortTimeStringLen = SHORT_TIME_FORMATTER_STR.length();
-  private static final ThreadLocal<SimpleDateFormat> SHORT_TIME_FORMATTER = new ThreadLocal<SimpleDateFormat>() {
-    @Override protected SimpleDateFormat initialValue() {
-      return new SimpleDateFormat(SHORT_TIME_FORMATTER_STR);
-    }
-  };
-
-  private static final String TIME_FORMATTER_STR = "HH:mm:ss";
-  private static final int timeStringLen = TIME_FORMATTER_STR.length();
-  private static final ThreadLocal<SimpleDateFormat> TIME_FORMATTER = new ThreadLocal<SimpleDateFormat>() {
-    @Override protected SimpleDateFormat initialValue() {
-        return new SimpleDateFormat(TIME_FORMATTER_STR);
-    }
-  };
-
-  private static final String FULL_TIME_FORMATTER_STR = "HH:mm:ss.SSS";
-  private static final ThreadLocal<SimpleDateFormat> FULL_TIME_FORMATTER = new ThreadLocal<SimpleDateFormat>() {
-    @Override protected SimpleDateFormat initialValue() {
-      return new SimpleDateFormat(FULL_TIME_FORMATTER_STR);
-    }
-  };
-
-  private static final String TIMESTAMP_FORMATTER_STR = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX";
-  private static final ThreadLocal<SimpleDateFormat> TIMESTAMP_FORMATTER = new ThreadLocal<SimpleDateFormat>() {
-    @Override protected SimpleDateFormat initialValue() {
-      return new SimpleDateFormat(TIMESTAMP_FORMATTER_STR);
-    }
-  };
 
   /**
    * @return The specified value as a <code>byte</code>.
@@ -204,116 +150,6 @@ public class Values {
   }
 
   /**
-   * Converts a string in ISO-8601 date format to a <code>Date</code> value.
-   * This method assumes that the specified date string is in GMT, unlike
-   * {@link Date#valueOf(String)}, which uses the current timezone.
-   *
-   * @param date a <code>String</code> object representing a date in
-   *        in the format "yyyy-mm-dd"
-   * @return A <code>java.sql.Date</code> object representing the
-   *         given date
-   * @throws IllegalArgumentException if the date given is not in the
-   *         ISO-8601 date format (yyyy-mm-dd)
-   */
-  public static Date parseDate(String date) {
-    try {
-      if (date.length() > shortDateStringLen) {
-        return new Date(getDateFormatter().parse(date).getTime());
-      } else {
-        return new Date(getShortDateFormatter().parse(date).getTime());
-      }
-    } catch (ParseException e) {
-      throw new IllegalArgumentException("Can not parse the provided date: " + date, e);
-    }
-  }
-
-  /**
-   * Returns the JDBC string representation ("yyyy-mm-dd") of the specified Date.
-   * @param date the {@code Date} value to stringify.
-   * @return The formatted date string.
-   */
-  public static String toDateStr(Date date) {
-    return getDateFormatter().format(date);
-  }
-
-  /**
-   * Converts a string in ISO-8601 time format to a <code>Time</code> value.
-   * This assumes that the specified time string is in GMT, unlike
-   * {@link Time#valueOf(String)}, which uses current timezone.
-   *
-   * @param time a <code>String</code> object representing a time in
-   *        in the format "HH:mm", "HH:mm:ss" or "HH:mm:ss.SSS"
-   * @return A <code>java.sql.Time</code> object representing the
-   *         given time
-   * @throws IllegalArgumentException if the time given is not in the
-   *         ISO-8601 date format "HH:mm:ss" or "HH:mm:ss.SSS"
-   */
-  public static Time parseTime(String time) {
-    try {
-      if (time.length() > timeStringLen) {
-        return new Time(getFullTimeFormatter().parse(time).getTime());
-      } else if (time.length() > shortTimeStringLen) {
-        return new Time(getTimeFormatter().parse(time).getTime());
-      } else {
-        return new Time(getShortTimeFormatter().parse(time).getTime());
-      }
-    } catch (ParseException e) {
-      throw new IllegalArgumentException("Can not parse the provided time: " + time, e);
-    }
-  }
-
-  /**
-   * Returns the JDBC string representation ("HH:mm:ss") of the specified Time.
-   * @param time the {@code Time} value to stringify
-   * @return The formatted time string
-   */
-  public static String toTimeStr(Time time) {
-    return getTimeFormatter().format(time);
-  }
-
-  /**
-   * Returns the JDBC string representation ("HH:mm") of the specified Time.
-   * @param time the {@code Time} value to stringify
-   * @return The formatted time string
-   */
-  public static String toShortTimeStr(Time time) {
-    return getShortTimeFormatter().format(time);
-  }
-
-  /**
-   * Returns the JDBC string representation ("HH:mm") of the specified Time.
-   * @param time the {@code Time} value to stringify
-   * @return The formatted time string
-   */
-  public static String toFullTimeStr(Time time) {
-    return getFullTimeFormatter().format(time);
-  }
-
-  /**
-   * Converts a string in ISO-8601 time format to a <code>Time</code> value.
-   * This assumes that the specified time string is in GMT, unlike
-   * {@link Timestamp#valueOf(String)}, which uses current timezone.
-   *
-   * @param timestampe a <code>String</code> object representing a timestamp in
-   *        in the format "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"
-   * @return A <code>java.sql.Timestampe</code> object representing the
-   *         given timestamp
-   * @throws IllegalArgumentException if the time given is not in the
-   *         ISO-8601 timestamp format "yyyy-MM-dd'T'HH:mm:ss.SSSXXX".
-   */
-  public static Timestamp parseTimestamp(String timestampe) {
-    try {
-      return new Timestamp(getTimestampFormatter().parse(timestampe).getTime());
-    } catch (ParseException e) {
-      throw new IllegalArgumentException("Can not parse the provided timestampe: " + timestampe, e);
-    }
-  }
-
-  public static String toTimestampString(Timestamp timeStamp) {
-    return getTimestampFormatter().format(timeStamp);
-  }
-
-  /**
    * Converts a {@code Value} to its extended JSON representation.<br/><br/>
    * The 7 intrinsic types, &nbsp;{@code null, boolean, string, long,
    * double, array, and map }, are represented in regular JSON. The
@@ -350,47 +186,6 @@ public class Values {
    */
   public static String asJsonString(Value value) {
     return Json.toJsonString(value.asReader(), JsonOptions.WITH_TAGS);
-  }
-
-  @VisibleForTesting
-  public static void setTimeZone (TimeZone tz) {
-    LOCAL = (TimeZone) tz.clone();
-  }
-
-  private static DateFormat getShortDateFormatter() {
-    final SimpleDateFormat df = SHORT_DATE_FORMATTER.get();
-    df.setTimeZone(LOCAL);
-    return df;
-  }
-
-  private static DateFormat getDateFormatter() {
-    final SimpleDateFormat f = DATE_FORMATTER.get();
-    f.setTimeZone(LOCAL);
-    return f;
-  }
-
-  private static DateFormat getShortTimeFormatter() {
-    final SimpleDateFormat f = SHORT_TIME_FORMATTER.get();
-    f.setTimeZone(LOCAL);
-    return f;
-  }
-
-  private static DateFormat getTimeFormatter() {
-    final SimpleDateFormat f = TIME_FORMATTER.get();
-    f.setTimeZone(LOCAL);
-    return f;
-  }
-
-  private static DateFormat getFullTimeFormatter() {
-    final SimpleDateFormat f = FULL_TIME_FORMATTER.get();
-    f.setTimeZone(LOCAL);
-    return f;
-  }
-
-  private static DateFormat getTimestampFormatter() {
-    final SimpleDateFormat f = TIMESTAMP_FORMATTER.get();
-    f.setTimeZone(LOCAL);
-    return f;
   }
 
 }

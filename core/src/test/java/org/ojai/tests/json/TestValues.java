@@ -22,8 +22,9 @@ import java.nio.ByteBuffer;
 import org.junit.Test;
 import org.ojai.Value;
 import org.ojai.json.impl.JsonValueBuilder;
+import org.ojai.tests.BaseTest;
 
-public class TestValues {
+public class TestValues extends BaseTest {
 
   @Test
   public void testEmptyByteBufferSerialization() throws Exception {

@@ -17,15 +17,15 @@ package org.ojai;
 
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
-import java.sql.Date;
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
 import org.ojai.annotation.API;
 import org.ojai.exceptions.TypeException;
-import org.ojai.types.Interval;
+import org.ojai.types.ODate;
+import org.ojai.types.OInterval;
+import org.ojai.types.OTime;
+import org.ojai.types.OTimestamp;
 
 @API.Public
 public interface Value {
@@ -82,9 +82,10 @@ public interface Value {
     DECIMAL(10),
 
     /**
-     * 32-bit integer representing the number of DAYS since epoch,
+     * 32-bit integer representing the number of DAYS since Unix epoch,
      * i.e. January 1, 1970 00:00:00 UTC. The value is absolute and
-     * is time-zone independent.
+     * is time-zone independent. Negative values represents dates before
+     * epoch.
      */
     DATE(11),
 
@@ -229,12 +230,11 @@ public interface Value {
   String getString();
 
   /**
-   * Returns the value as a {@link java.sql.Timestamp} object. Modifying the
-   * returned object does not alter the content of the Value.
+   * Returns the value as a {@link org.ojai.types.OTimestamp} object.
    *
    * @throws TypeException if this value is not of <code>TIMESTAMP</code> type.
    */
-  Timestamp getTimestamp();
+  OTimestamp getTimestamp();
 
   /**
    * Returns a long value representing the number of milliseconds since epoch.
@@ -244,12 +244,11 @@ public interface Value {
   long getTimestampAsLong();
 
   /**
-   * Returns the value as a {@link java.sql.Date} object. Modifying the
-   * returned object does not alter the content of the Value.
+   * Returns the value as a {@link org.ojai.types.ODate} object.
    *
    * @throws TypeException if this value is not of <code>DATE</code> type.
    */
-  Date getDate();
+  ODate getDate();
 
   /**
    * Returns a {@code int} representing the number of DAYS since Unix epoch.
@@ -259,12 +258,12 @@ public interface Value {
   int getDateAsInt();
 
   /**
-   * Returns the value as a {@link java.sql.Time} object. Modifying the
+   * Returns the value as a {@link org.ojai.types.OTime} object. Modifying the
    * returned object does not alter the content of the Value.
    *
    * @throws TypeException if this value is not of <code>TIME</code> type.
    */
-  Time getTime();
+  OTime getTime();
 
   /**
    * Returns a {@code int} representing the number of milliseconds since midnight.
@@ -274,12 +273,12 @@ public interface Value {
   int getTimeAsInt();
 
   /**
-   * Returns the value as a {@link org.ojai.types.Interval} object.
+   * Returns the value as a {@link org.ojai.types.OInterval} object.
    * Modifying the returned object does not alter the content of the Value.
    *
    * @throws TypeException if this value is not of <code>INTERVAL</code> type.
    */
-  Interval getInterval();
+  OInterval getInterval();
 
   /**
    * Returns a <code>long</code> representing interval duration in milliseconds.
@@ -327,10 +326,10 @@ public interface Value {
    * Type.FLOAT     => Float
    * Type.DOUBLE    => Double
    * Type.DECIMAL   => BigDecimal
-   * Type.DATE      => java.sql.Date
-   * Type.TIME      => java.sql.Time
-   * Type.TIMESTAMP => java.sql.Timestamp
-   * Type.INTERVAL  => org.ojai.types.Interval
+   * Type.DATE      => org.ojai.types.ODate
+   * Type.TIME      => org.ojai.types.OTime
+   * Type.TIMESTAMP => org.ojai.types.OTimestamp
+   * Type.INTERVAL  => org.ojai.types.OInterval
    * Type.BINARY    => java.nio.ByteBuffer
    * Type.MAP       => Map<String, Object>
    * Type.ARRAY     => List<Object>

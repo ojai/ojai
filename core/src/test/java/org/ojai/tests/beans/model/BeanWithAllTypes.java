@@ -17,14 +17,14 @@ package org.ojai.tests.beans.model;
 
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
-import java.sql.Date;
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 
 import org.ojai.json.impl.JsonUtils;
-import org.ojai.types.Interval;
+import org.ojai.types.ODate;
+import org.ojai.types.OInterval;
+import org.ojai.types.OTime;
+import org.ojai.types.OTimestamp;
 
 import com.google.common.collect.ImmutableList;
 
@@ -40,10 +40,10 @@ public class BeanWithAllTypes {
   private float floatT;
   private double doubleT;
   private BigDecimal bigDecimalT;
-  private Date dateT;
-  private Time timeT;
-  private Timestamp timestampT;
-  private Interval intervalT;
+  private ODate dateT;
+  private OTime timeT;
+  private OTimestamp timestampT;
+  private OInterval intervalT;
   private ByteBuffer byteBufferT;
   private int[] intArrayT;
   private List<? extends Object> objectListT;
@@ -63,10 +63,10 @@ public class BeanWithAllTypes {
     floatT = Float.MAX_VALUE;
     doubleT = Double.MAX_VALUE;
     bigDecimalT = new BigDecimal("12345678901234567890.123456789");
-    dateT = Date.valueOf("2015-12-31");
-    timeT = Time.valueOf("23:59:59");
-    timestampT = Timestamp.valueOf("2015-06-29 12:33:22.000");
-    intervalT = new Interval(1, 6, 25, 32569, 265);
+    dateT = ODate.parse("2015-12-31");
+    timeT = OTime.parse("23:59:59");
+    timestampT = OTimestamp.parse("2015-06-29T12:33:22.000Z");
+    intervalT = new OInterval(1, 6, 25, 32569, 265);
     byteBufferT = ByteBuffer.wrap(JsonUtils.getBytes("sample binary data"));
     intArrayT = new int[] {0, 1, 1, 2, 3, 5, 8, 13, 21, 34};
     objectListT = ImmutableList.of(1, 23.5, 12.0f, "hello", new ChildObject());
@@ -146,35 +146,35 @@ public class BeanWithAllTypes {
     this.bigDecimalT = bigDecimalT;
   }
 
-  public Date getDateT() {
+  public ODate getDateT() {
     return dateT;
   }
 
-  public void setDateT(Date dateT) {
+  public void setDateT(ODate dateT) {
     this.dateT = dateT;
   }
 
-  public Time getTimeT() {
+  public OTime getTimeT() {
     return timeT;
   }
 
-  public void setTimeT(Time timeT) {
+  public void setTimeT(OTime timeT) {
     this.timeT = timeT;
   }
 
-  public Timestamp getTimestampT() {
+  public OTimestamp getTimestampT() {
     return timestampT;
   }
 
-  public void setTimestampT(Timestamp timestampT) {
+  public void setTimestampT(OTimestamp timestampT) {
     this.timestampT = timestampT;
   }
 
-  public Interval getIntervalT() {
+  public OInterval getIntervalT() {
     return intervalT;
   }
 
-  public void setIntervalT(Interval intervalT) {
+  public void setIntervalT(OInterval intervalT) {
     this.intervalT = intervalT;
   }
 

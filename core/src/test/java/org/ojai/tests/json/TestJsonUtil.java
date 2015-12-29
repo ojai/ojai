@@ -26,6 +26,7 @@ import org.ojai.DocumentReader;
 import org.ojai.DocumentStream;
 import org.ojai.json.Json;
 import org.ojai.tests.BaseTest;
+import org.ojai.types.ODate;
 import org.ojai.util.Values;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,7 +51,7 @@ public class TestJsonUtil extends BaseTest {
   public void testValuesAsJsonString() {
     Document r = Json.newDocument();
     r.set("a", (long)1234);
-    r.set("b", Values.parseDate("2011-09-15"));
+    r.set("b", ODate.parse("2011-09-15"));
 
     assertEquals("{\"$numberLong\":1234}", Values.asJsonString(r.getValue("a")));
   }

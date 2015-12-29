@@ -17,13 +17,13 @@ package org.ojai;
 
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
-import java.sql.Date;
-import java.sql.Time;
-import java.sql.Timestamp;
 
 import org.ojai.annotation.API;
 import org.ojai.exceptions.TypeException;
-import org.ojai.types.Interval;
+import org.ojai.types.ODate;
+import org.ojai.types.OInterval;
+import org.ojai.types.OTime;
+import org.ojai.types.OTimestamp;
 
 @API.Public
 public interface DocumentReader {
@@ -214,7 +214,7 @@ public interface DocumentReader {
    * @throws TypeException if the current {@code EventType} is not
    *         {@code TIMESTAMP}
    */
-  Timestamp getTimestamp();
+  OTimestamp getTimestamp();
 
   /**
    * @return The {@code Date} value of the current node as an {@code int}
@@ -229,7 +229,7 @@ public interface DocumentReader {
    * @throws TypeException if the current {@code EventType} is not
    *         {@code DATE}
    */
-  Date getDate();
+  ODate getDate();
 
   /**
    * @return The {@code Time} value of the current node as an {@code int}
@@ -244,14 +244,14 @@ public interface DocumentReader {
    * @throws TypeException if the current {@code EventType} is not
    *         {@code TIME}
    */
-  Time getTime();
+  OTime getTime();
 
   /**
    * @return The {@code Interval} value of the current node
    * @throws TypeException if the current {@code EventType} is not
    *         {@code INTERVAL}
    */
-  Interval getInterval();
+  OInterval getInterval();
   int getIntervalDays();
   long getIntervalMillis();
 

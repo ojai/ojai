@@ -28,9 +28,6 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
-import java.sql.Date;
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.util.LinkedList;
 import java.util.Stack;
 
@@ -39,7 +36,10 @@ import org.ojai.Value.Type;
 import org.ojai.annotation.API;
 import org.ojai.exceptions.DecodingException;
 import org.ojai.exceptions.TypeException;
-import org.ojai.types.Interval;
+import org.ojai.types.ODate;
+import org.ojai.types.OInterval;
+import org.ojai.types.OTime;
+import org.ojai.types.OTimestamp;
 import org.ojai.util.Values;
 
 import com.fasterxml.jackson.core.JsonParser;
@@ -171,13 +171,13 @@ public class JsonStreamDocumentReader implements DocumentReader {
         currentObjValue = Values.parseBigDecimal(getParser().getText());
         break;
       case DATE:
-        currentObjValue = Values.parseDate(getParser().getText());
+        currentObjValue = ODate.parse(getParser().getText());
         break;
       case TIME:
-        currentObjValue = Values.parseTime(getParser().getText());
+        currentObjValue = OTime.parse(getParser().getText());
         break;
       case TIMESTAMP:
-        currentObjValue = Values.parseTimestamp(getParser().getText());
+        currentObjValue = OTimestamp.parse(getParser().getText());
         break;
       case INTERVAL:
         currentLongValue = getParser().getLongValue();
@@ -478,43 +478,43 @@ public class JsonStreamDocumentReader implements DocumentReader {
   @Override
   public long getTimestampLong() {
     checkEventType(EventType.TIMESTAMP);
-    return ((Timestamp) currentObjValue).getTime();
+    return ((OTimestamp) currentObjValue).getMillis();
   }
 
   @Override
-  public Timestamp getTimestamp() {
+  public OTimestamp getTimestamp() {
     checkEventType(EventType.TIMESTAMP);
-    return (Timestamp) currentObjValue;
+    return (OTimestamp) currentObjValue;
   }
 
   @Override
   public int getDateInt() {
     checkEventType(EventType.DATE);
-    return (int) JsonUtils.dateToNumDays((Date) currentObjValue);
+    return ((ODate) currentObjValue).toDaysSinceEpoch();
   }
 
   @Override
-  public Date getDate() {
+  public ODate getDate() {
     checkEventType(EventType.DATE);
-    return (Date) currentObjValue;
+    return (ODate) currentObjValue;
   }
 
   @Override
   public int getTimeInt() {
     checkEventType(EventType.TIME);
-    return (int) (((Time) currentObjValue).getTime() % MILLISECONDSPERDAY);
+    return ((OTime) currentObjValue).toTimeInMillis();
   }
 
   @Override
-  public Time getTime() {
+  public OTime getTime() {
     checkEventType(EventType.TIME);
-    return (Time) currentObjValue;
+    return (OTime) currentObjValue;
   }
 
   @Override
-  public Interval getInterval() {
+  public OInterval getInterval() {
     checkEventType(EventType.INTERVAL);
-    return new Interval(currentLongValue);
+    return new OInterval(currentLongValue);
   }
 
   @Override

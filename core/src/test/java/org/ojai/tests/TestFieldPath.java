@@ -30,7 +30,7 @@ import org.junit.Test;
 import org.ojai.FieldPath;
 import org.ojai.FieldSegment;
 
-public class TestFieldPath {
+public class TestFieldPath extends BaseTest {
 
   @Test
   public void testEmptyFieldPath() {
