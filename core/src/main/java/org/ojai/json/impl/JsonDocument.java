@@ -43,6 +43,7 @@ import org.ojai.types.ODate;
 import org.ojai.types.OInterval;
 import org.ojai.types.OTime;
 import org.ojai.types.OTimestamp;
+import org.ojai.util.Documents;
 import org.ojai.util.MapEncoder;
 
 @API.Internal
@@ -282,7 +283,7 @@ public class JsonDocument extends JsonValue implements Document, Map<String, Obj
   }
 
   /* iterator over the Document object */
-  class JsonDocumentIterator implements Iterator<java.util.Map.Entry<String, Value>> {
+  class JsonDocumentIterator implements Iterator<Entry<String, Value>> {
 
     Iterator<String> keyIter;
     JsonDocumentIterator() {
@@ -294,7 +295,7 @@ public class JsonDocument extends JsonValue implements Document, Map<String, Obj
     }
 
     @Override
-    public java.util.Map.Entry<String, Value> next() {
+    public Entry<String, Value> next() {
       String key = keyIter.next();
       JsonValue kv = getRootMap().get(key);
       return new AbstractMap.SimpleImmutableEntry<String, Value>(key, kv);
@@ -506,7 +507,7 @@ public class JsonDocument extends JsonValue implements Document, Map<String, Obj
   }
 
   @Override
-  public Iterator<java.util.Map.Entry<String, Value>> iterator() {
+  public Iterator<Entry<String, Value>> iterator() {
     return new JsonDocumentIterator();
   }
 
@@ -527,7 +528,7 @@ public class JsonDocument extends JsonValue implements Document, Map<String, Obj
   }
 
   @Override
-  public Set<java.util.Map.Entry<String, Object>> entrySet() {
+  public Set<Entry<String, Object>> entrySet() {
     /* make a copy of the string and the real object and return that */
     LinkedHashSet<Map.Entry<String, Object>> s = new LinkedHashSet<Map.Entry<String,Object>>();
     for (String k : getRootMap().keySet()) {
@@ -975,6 +976,20 @@ public class JsonDocument extends JsonValue implements Document, Map<String, Obj
   @Override
   public String toString() {
     return asJsonString();
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (obj == null ) {
+      return false;
+    } else if (obj == this) {
+      return true;
+    } else if (obj instanceof Document) {
+      return Documents.equals(this, (Document)obj);
+    } else if (obj instanceof Map) {
+      return obj.equals(this);
+    }
+    return false;
   }
 
   @Override

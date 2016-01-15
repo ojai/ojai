@@ -90,7 +90,7 @@ public class TestJson extends BaseTest {
 
   @Test
   public void testJson_AsJsonStringComplex() throws Exception {
-    try (InputStream in = getJsonStream("complex.json");
+    try (InputStream in = getJsonStream("org/ojai/test/data/complex.json");
          DocumentStream<Document> stream = Json.newDocumentStream(in)) {
       Document doc = stream.iterator().next();
       String s = Json.toJsonString(doc);
@@ -143,7 +143,7 @@ public class TestJson extends BaseTest {
 
   @Test
   public void testJson_AsJsonStringIncludingTags() throws Exception {
-    try (InputStream in = getJsonStream("test.json");
+    try (InputStream in = getJsonStream("org/ojai/test/data/test.json");
          DocumentStream<Document> stream = Json.newDocumentStream(in)) {
       Document doc = stream.iterator().next();
 
@@ -234,7 +234,7 @@ public class TestJson extends BaseTest {
 
   @Test
   public void testJson_AsJsonStringNonDocument() throws Exception {
-    try (InputStream in = getJsonStream("test.json");
+    try (InputStream in = getJsonStream("org/ojai/test/data/test.json");
          DocumentStream<Document> stream = Json.newDocumentStream(in)) {
       Document doc = stream.iterator().next();
 

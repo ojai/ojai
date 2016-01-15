@@ -25,6 +25,7 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -387,7 +388,7 @@ public class TestJsonDocument extends BaseTest {
 
   @Test
   public void testToString() throws IOException {
-    try (InputStream in = getJsonStream("test.json");
+    try (InputStream in = getJsonStream("org/ojai/test/data/test.json");
          DocumentStream<Document> stream = Json.newDocumentStream(in)) {
       Document doc = stream.iterator().next();
       assertEquals(docStrWithoutTags, doc.toString());
@@ -461,6 +462,29 @@ public class TestJsonDocument extends BaseTest {
     } catch (EncodingException e) {
       logger.info("Encoding document '{}' as map got exception: {}", jsonStr, e.getMessage());
     }
+  }
+
+  @Test
+  public void testJsonList() throws Exception {
+    Object[] objArr = new Object[11];
+    objArr[0] = null;
+    objArr[1] = true;
+    objArr[2] = (byte) 127;
+    objArr[3] = (short) 32767;
+    objArr[4] = 2147483647;
+    objArr[5] = (long) 123456789;
+    objArr[6] = (float) 3.4028235;
+    objArr[7] = 1.7976931348623157e308;
+    objArr[8] = ODate.parse("2015-12-31");
+    objArr[9] = OTime.parse("11:59:59");
+    objArr[10] = ByteBuffer.wrap("ola".getBytes());
+
+    List<Object> listOfObjs = Arrays.asList(objArr);
+    Document doc = Json.newDocument();
+    doc.set("objarray", listOfObjs);
+    List<Object> newList = doc.getList("objarray");
+    assertEquals(newList, listOfObjs);
+    assertEquals(listOfObjs, newList);
   }
 
 }

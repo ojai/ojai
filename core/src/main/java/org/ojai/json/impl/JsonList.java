@@ -48,6 +48,25 @@ class JsonList extends JsonValue implements List<Object> {
   }
 
   @Override
+  public String toString() {
+    Iterator<Object> it = iterator();
+    if (!it.hasNext()) {
+      return "[]";
+    }
+
+    StringBuilder sb = new StringBuilder();
+    sb.append('[');
+    for (;;) {
+      Object e = it.next();
+      sb.append(e == this ? "(this Collection)" : e);
+      if (!it.hasNext()) {
+        return sb.append(']').toString();
+      }
+      sb.append(',').append(' ');
+    }
+  }
+
+  @Override
   public Iterator<Object> iterator() {
     final Iterator<JsonValue> itr = list.iterator();
     return new Iterator<Object>() {

@@ -18,16 +18,21 @@ package org.ojai.tests.json;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
 import org.junit.Test;
 import org.ojai.Document;
+import org.ojai.DocumentStream;
+import org.ojai.FieldPath;
 import org.ojai.Value;
 import org.ojai.json.Json;
 import org.ojai.json.impl.JsonValueBuilder;
@@ -39,7 +44,46 @@ import org.ojai.types.OTimestamp;
 public class TestJsonDocumentEquals extends BaseTest {
 
   @Test
-  public void testEquals() {
+  public void testDocumentEquals() throws IOException {
+    String fieldPath = "`a|b`.`c,''-\\\"d`.` a!\\`#$%&'()*+,-/:;<=>?@`.`[]^_{|}~`";
+    FieldPath fp = FieldPath.parseFrom(fieldPath);
+    Document d1 = Json.newDocument();
+    d1.set(fp, 10);
+    Document d2 = Json.newDocument();
+    d2.set(fp, 10);
+    assertEquals(d1, d2);
+  }
+
+  @Test
+  public void testDocumentFromStream() throws IOException {
+    testResources("org/ojai/test/data/business.json");
+    testResources("org/ojai/test/data/complex.json");
+    testResources("org/ojai/test/data/multidocument.json");
+    testResources("org/ojai/test/data/test.json");
+    testResources("org/ojai/test/data/test2.json");
+  }
+
+  private void testResources(String resource) throws IOException {
+    try (InputStream testJson = getJsonStream(resource);
+         DocumentStream<Document> stream = Json.newDocumentStream(testJson);
+         InputStream testJson1 = getJsonStream(resource);
+         DocumentStream<Document> stream1 = Json.newDocumentStream(testJson1);
+         InputStream testJson2 = getJsonStream(resource);
+         DocumentStream<Document> stream2 = Json.newDocumentStream(testJson2);) {
+      for (Document document : stream) {
+        assertEquals(document, document); // self comparison
+      }
+      // same documents extracted from different streams
+      Iterator<Document> itr1 = stream1.iterator();
+      Iterator<Document> itr2 = stream2.iterator();
+      while (itr1.hasNext()) {
+        assertEquals(itr1.next(), itr2.next());
+      }
+    }
+  }
+
+  @Test
+  public void testFieldsEquals() {
     Document rec = Json.newDocument();
     rec.set("map.field1", (byte) 100);
     rec.set("map.field2", (short) 10000);

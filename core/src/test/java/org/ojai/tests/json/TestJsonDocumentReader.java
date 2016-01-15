@@ -36,7 +36,7 @@ public class TestJsonDocumentReader extends BaseTest {
 
   @Test
   public void testStreamReader() throws Exception {
-    try (InputStream testJson = getJsonStream("test2.json");
+    try (InputStream testJson = getJsonStream("org/ojai/test/data/test2.json");
         DocumentStream<Document> stream = Json.newDocumentStream(testJson);) {
       DocumentReader r = stream.documentReaders().iterator().next();
       testReader(r);
@@ -45,7 +45,7 @@ public class TestJsonDocumentReader extends BaseTest {
 
   @Test
   public void testDOMReader() throws Exception {
-    try (InputStream testJson = getJsonStream("test2.json");
+    try (InputStream testJson = getJsonStream("org/ojai/test/data/test2.json");
         DocumentStream<Document> stream = Json.newDocumentStream(testJson);) {
       DocumentReader r = stream.iterator().next().asReader();
       testReader(r);

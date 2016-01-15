@@ -314,13 +314,12 @@ public class JsonValue implements Value {
   @Override
   public boolean equals(Object obj) {
     if (obj == null) {
-      return false;
-    }
-    if (obj instanceof JsonValue) {
+      return valueType == Type.NULL;
+    } else if (obj instanceof JsonValue) {
       JsonValue value = (JsonValue) obj;
-      if (valueType != value.getType())
+      if (valueType != value.getType()) {
         return false;
-
+      }
       switch (valueType) {
       case BOOLEAN:
       case BYTE:
@@ -343,8 +342,6 @@ public class JsonValue implements Value {
       case ARRAY:
         return objValue.equals(value.objValue);
       }
-    } else if (obj instanceof Value) {
-      return equals(((Value) obj).getObject());
     } else if (obj instanceof String) {
       return objValue.equals(obj);
     } else if (obj instanceof Byte) {
@@ -388,6 +385,8 @@ public class JsonValue implements Value {
       return objValue.equals(obj);
     } else if (obj instanceof List) {
       return objValue.equals(obj);
+    } else if (obj instanceof Value) {
+      return equals(((Value) obj).getObject());
     }
 
     return false;
