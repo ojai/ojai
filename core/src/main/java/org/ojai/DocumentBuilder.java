@@ -320,7 +320,7 @@ public interface DocumentBuilder {
   DocumentBuilder add(Time value);
 
   /**
-   * Appends the specified {@code time} value represented as number of
+   * Add the specified {@code time} value represented as number of
    * milliseconds since midnight to the current array.
    *
    * @param  millis the {@code time} value to append
@@ -334,7 +334,7 @@ public interface DocumentBuilder {
   DocumentBuilder add(Date value);
 
   /**
-   * Appends the specified {@code date} value represented as the number of
+   * Add the specified {@code date} value represented as the number of
    * days since epoch to the current array.
    *
    * @param  days the {@code date} value to append

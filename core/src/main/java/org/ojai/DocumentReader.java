@@ -146,10 +146,6 @@ public interface DocumentReader {
    * {@code DECIMAL}.
    *
    * @return The unscaled value of current {@code DECIMAL} node
-   * @throws TypeException if the current {@code EventType} is not
-   *         {@code DECIMAL}
-   * @throws RangeException if the precision of the decimal number is greater
-   *         than 9
    */
   int getDecimalValueAsInt();
 
@@ -158,10 +154,6 @@ public interface DocumentReader {
    * {@code DECIMAL}.
    *
    * @return The unscaled value of current {@code DECIMAL} node
-   * @throws TypeException if the current {@code EventType} is not
-   *         {@code DECIMAL}
-   * @throws RangeException if the precision of the decimal number is greater
-   *         than 18
    */
   long getDecimalValueAsLong();
 

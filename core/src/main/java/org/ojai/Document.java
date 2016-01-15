@@ -36,7 +36,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
 
   /**
    * Sets the the "_id" field of this Document to the specified Value.
-   * @param _id Value to set as the value of "_id" field
+   * @param _idValue to set as the value of "_id" field
    * @return {@code this} for chaining
    */
   public Document setId(Value _id);

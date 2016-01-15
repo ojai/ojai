@@ -257,10 +257,7 @@ public interface DocumentStore extends AutoCloseable {
    * @param _id to be used as the key for the document
    * @param fieldAsKey document's field to be used as the key when the id is not
    *                     passed in and document doesn't have an "_id" field
-   * @throws TableNotFoundException when a DocumentStore does not exist to add this document
-   * @throws ReadOnlyException when a DocumentStore is not accepting writes
-   * @throws OpNotPermittedException when the server returned EPERM
-   * @throws DocumentExistsException when a document with id already exists in DocumentStore
+   * @throws StoreException when a DocumentStore does not exist to add this document
    */
   public void insert(Value _id, Document doc) throws StoreException;
 
@@ -323,10 +320,7 @@ public interface DocumentStore extends AutoCloseable {
    * @param _id to be used as the key for the document
    * @param fieldAsKey document's field to be used as the key when an id is not
    *                     passed in and document doesn't have an "_id" field
-   * @throws TableNotFoundException when a DocumentStore does not exist to which to add this document
-   * @throws ReadOnlyException when a DocumentStore is not accepting writes
-   * @throws OpNotPermittedException when the server returns EPERM
-   * @throws DocumentNotFoundException when a document with the id does not exist in DocumentStore
+   * @throws StoreException when a DocumentStore does not exist to which to add this document
    */
   public void replace(Value _id, Document doc) throws StoreException;
 
