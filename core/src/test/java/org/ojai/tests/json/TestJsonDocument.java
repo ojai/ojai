@@ -19,6 +19,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,11 +34,14 @@ import java.util.Map;
 
 import org.junit.Test;
 import org.ojai.Document;
+import org.ojai.DocumentConstants;
 import org.ojai.DocumentReader;
 import org.ojai.DocumentReader.EventType;
 import org.ojai.DocumentStream;
+import org.ojai.Value;
 import org.ojai.Value.Type;
 import org.ojai.exceptions.EncodingException;
+import org.ojai.exceptions.TypeException;
 import org.ojai.json.Json;
 import org.ojai.json.JsonOptions;
 import org.ojai.tests.BaseTest;
@@ -485,6 +489,43 @@ public class TestJsonDocument extends BaseTest {
     List<Object> newList = doc.getList("objarray");
     assertEquals(newList, listOfObjs);
     assertEquals(listOfObjs, newList);
+  }
+
+  @Test
+  public void testSetGetId() {
+    final String DOCUMENT_0001 = "document_0001";
+    Document doc = Json.newDocument();
+    doc.setId(DOCUMENT_0001);
+    Value idValue = doc.getValue(DocumentConstants.ID_FIELD);
+    assertEquals(Type.STRING, idValue.getType());
+    assertEquals(DOCUMENT_0001, idValue.getString());
+    assertEquals(DOCUMENT_0001, doc.getIdString());
+
+    doc = Json.newDocument();
+    assertNull(doc.getId());
+    doc.setId(idValue);
+    assertNotNull(doc.getId());
+    idValue = doc.getValue(DocumentConstants.ID_FIELD);
+    assertEquals(Type.STRING, idValue.getType());
+    assertEquals(DOCUMENT_0001, idValue.getString());
+    assertEquals(DOCUMENT_0001, doc.getIdString());
+    try {
+      doc.getIdBinary();
+      fail();
+    } catch (TypeException e) {}
+
+    final ByteBuffer DOCUMENT_0002 = ByteBuffer.wrap("document_0002".getBytes());
+    doc = Json.newDocument();
+    assertNull(doc.getId());
+    doc.setId(DOCUMENT_0002);
+    idValue = doc.getValue(DocumentConstants.ID_FIELD);
+    assertEquals(Type.BINARY, idValue.getType());
+    assertEquals(DOCUMENT_0002, idValue.getBinary());
+    assertEquals(DOCUMENT_0002, doc.getIdBinary());
+    try {
+      doc.getIdString();
+      fail();
+    } catch (TypeException e) {}
   }
 
 }

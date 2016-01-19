@@ -47,6 +47,32 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
   public Value getId();
 
   /**
+   * Sets the the "_id" field of this Document to the specified string.
+   * @param _id String to set as the value of the "_id" field
+   * @return {@code this} for chaining
+   */
+  public Document setId(String _id);
+
+  /**
+   * @return the String _id of this document
+   * @throws TypeException if the _id of this Document is not of the String type
+   */
+  public String getIdString();
+
+  /**
+   * Sets the the "_id" field of this Document to the specified string.
+   * @param _id ByteBuffer to set as the value of "_id" field
+   * @return {@code this} for chaining
+   */
+  public Document setId(ByteBuffer _id);
+
+  /**
+   * @return the binary _id of this document
+   * @throws TypeException if the _id of this Document is not of the BINARY type
+   */
+  public ByteBuffer getIdBinary();
+
+  /**
    * Returns {@code true} if this Document does not support any write
    * operations like set/delete etc.
    */

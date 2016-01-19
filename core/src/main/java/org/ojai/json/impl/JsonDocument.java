@@ -67,6 +67,26 @@ public class JsonDocument extends JsonValue implements Document, Map<String, Obj
   }
 
   @Override
+  public Document setId(String _id) {
+    return setId(JsonValueBuilder.initFrom(_id));
+  }
+
+  @Override
+  public String getIdString() {
+    return getId().getString();
+  }
+
+  @Override
+  public Document setId(ByteBuffer _id) {
+    return setId(JsonValueBuilder.initFrom(_id));
+  }
+
+  @Override
+  public ByteBuffer getIdBinary() {
+    return getId().getBinary();
+  }
+
+  @Override
   public boolean isReadOnly() {
     return false;
   }
@@ -1011,4 +1031,5 @@ public class JsonDocument extends JsonValue implements Document, Map<String, Obj
   public Map<String, Object> asMap() throws DecodingException {
     return MapEncoder.encode(asReader());
   }
+
 }
