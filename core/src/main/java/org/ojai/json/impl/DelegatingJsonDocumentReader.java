@@ -22,7 +22,7 @@ import org.ojai.Value;
 import org.ojai.annotation.API;
 import org.ojai.json.Events;
 import org.ojai.json.Events.Delegate;
-import org.ojai.json.Events.TypeValuePair;
+import org.ojai.json.Events.EventDescriptor;
 
 /**
  * This implementation of {@code DocumentReader} offers application a
@@ -31,9 +31,9 @@ import org.ojai.json.Events.TypeValuePair;
 @API.Internal
 public class DelegatingJsonDocumentReader extends JsonStreamDocumentReader {
 
-  private final Queue<TypeValuePair> eventQueue = new LinkedList<Events.TypeValuePair>();
+  private final Queue<EventDescriptor> eventQueue = new LinkedList<Events.EventDescriptor>();
   private final Events.Delegate eventDelegate;
-  private boolean startSeen = false;
+  private int depth = 0;
 
   DelegatingJsonDocumentReader(JsonDocumentStream stream, Delegate eventDelegate) {
     super(stream);
@@ -53,17 +53,19 @@ public class DelegatingJsonDocumentReader extends JsonStreamDocumentReader {
       et = updateCurrentValue(eventQueue.remove());
     } else {
       et = super.next();
-      if (!startSeen && et == EventType.START_MAP) {
-        startSeen = true;
+    }
+
+    if (et != null) {
+      if (et == EventType.START_MAP && depth++ == 0) {
         if (eventDelegate.bor(this, eventQueue)) {
           et = next();
         }
-      } else if (et != null) {
-        if (eventDelegate.process(this, et, eventQueue)) {
+      } else if (et == EventType.END_MAP && --depth == 0) {
+        if (eventDelegate.eor(this, eventQueue)) {
           et = next();
         }
       } else {
-        if (eventDelegate.eor(this, eventQueue)) {
+        if (eventDelegate.process(this, et, eventQueue)) {
           et = next();
         }
       }
@@ -72,9 +74,15 @@ public class DelegatingJsonDocumentReader extends JsonStreamDocumentReader {
     return et;
   }
 
-  private EventType updateCurrentValue(TypeValuePair head) {
-    setCurrentEventType(head.eventType);
-    Value value = head.value;
+  private EventType updateCurrentValue(EventDescriptor eventDesc) {
+    setCurrentEventType(eventDesc.getEventType());
+    Value value = eventDesc.getValue();
+    if (eventDesc.getFieldName() != null) {
+      setFieldName(eventDesc.getFieldName());
+    }
+    if (eventDesc.getIndex() != -1) {
+      setArrayIndex(eventDesc.getIndex());
+    }
 
     switch (getCurrentEventType()) {
     case BOOLEAN:

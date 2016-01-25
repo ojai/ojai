@@ -38,6 +38,14 @@ class ContainerContext {
     return type;
   }
 
+  ContainerContext setIndex(int newIndex) {
+    if (type != Type.ARRAY) {
+      throw new IllegalStateException("setIndex() called on a map");
+    }
+    index = newIndex;
+    return this;
+  }
+
   int getIndex() {
     if (type != Type.ARRAY) {
       throw new IllegalStateException("getIndex() called on a map");

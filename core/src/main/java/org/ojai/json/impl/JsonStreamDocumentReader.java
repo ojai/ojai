@@ -577,8 +577,25 @@ public class JsonStreamDocumentReader implements DocumentReader {
     return currentObjValue;
   }
 
-  protected void setCurrentObj(Object obj) {
+  protected JsonStreamDocumentReader setArrayIndex(int index) {
+    if (inMap()) {
+      throw new IllegalStateException("Not traversing an array!");
+    }
+    currentContainer.setIndex(index);
+    return this;
+  }
+
+  protected JsonStreamDocumentReader setFieldName(String fieldName) {
+    if (!inMap()) {
+      throw new IllegalStateException("Not traversing a map!");
+    }
+    this.fieldName = fieldName;
+    return this;
+  }
+
+  protected JsonStreamDocumentReader setCurrentObj(Object obj) {
     this.currentObjValue = obj;
+    return this;
   }
 
   protected EventType getCurrentEventType() {
@@ -594,16 +611,18 @@ public class JsonStreamDocumentReader implements DocumentReader {
     return currentLongValue;
   }
 
-  protected void setCurrentLongValue(long value) {
+  protected JsonStreamDocumentReader setCurrentLongValue(long value) {
     this.currentLongValue = value;
+    return this;
   }
 
   protected double getCurrentDoubleValue() {
     return currentDoubleValue;
   }
 
-  protected void setCurrentDoubleValue(double value) {
+  protected JsonStreamDocumentReader setCurrentDoubleValue(double value) {
     this.currentDoubleValue = value;
+    return this;
   }
 
 }
