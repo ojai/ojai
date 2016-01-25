@@ -16,9 +16,11 @@
 package org.ojai.json.impl;
 
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Stack;
 
 import org.ojai.FieldPath;
+import org.ojai.FieldSegment;
 import org.ojai.Value.Type;
 import org.ojai.annotation.API;
 import org.ojai.util.Types;
@@ -37,39 +39,51 @@ public class TypeMappedJsonDocumentReader extends JsonStreamDocumentReader {
     if (hashMap == null) {
       throw new IllegalArgumentException("A FieldPath => Type map must be provided.");
     }
+    for (Entry<FieldPath, Type> entry : hashMap.entrySet()) {
+      for (FieldSegment seg : entry.getKey()) {
+        if (seg.isArray()) {
+          throw new IllegalArgumentException("A FieldPath with indexed segment is not supported.");
+        }
+      }
+      if (!entry.getValue().isScalar()) {
+        throw new IllegalArgumentException("A mapping to a container type (ARRAY, MAP) is not supported.");
+      }
+    }
     this.typeMap = hashMap;
   }
 
   @Override
   public EventType next() {
     EventType et = super.next();
-    switch (et) {
-    case START_MAP:
-      if (currentFieldName != null) {
-        fieldSegmentStack.push(currentFieldName);
+    if (et != null) {
+      switch (et) {
+      case START_MAP:
+        if (currentFieldName != null) {
+          fieldSegmentStack.push(currentFieldName);
+        }
+        break;
+      case END_MAP:
+        if (!fieldSegmentStack.isEmpty()) {
+          fieldSegmentStack.pop();
+        }
+        break;
+      case START_ARRAY:
+      case END_ARRAY:
+        break;
+      default:
+        if (inMap()) {
+          currentFieldName = getFieldName();
+          calculateCurrentFieldPath();
+        }
+        Type mappedType = typeMap.get(currentFieldPath);
+        if (mappedType != null) {
+          Type currentFieldType = mappedType;
+          et = Types.getEventTypeForType(currentFieldType);
+          setCurrentEventType(et);
+          cacheCurrentValue();
+        }
+        break;
       }
-      break;
-    case END_MAP:
-      if (!fieldSegmentStack.isEmpty()) {
-        fieldSegmentStack.pop();
-      }
-      break;
-    case START_ARRAY:
-    case END_ARRAY:
-      break;
-    default:
-      if (inMap()) {
-        currentFieldName = getFieldName();
-        calculateCurrentFieldPath();
-      }
-      Type mappedType = typeMap.get(currentFieldPath);
-      if (mappedType != null) {
-        Type currentFieldType = mappedType;
-        et = Types.getEventTypeForType(currentFieldType);
-        setCurrentEventType(et);
-        cacheCurrentValue();
-      }
-      break;
     }
     return et;
   }

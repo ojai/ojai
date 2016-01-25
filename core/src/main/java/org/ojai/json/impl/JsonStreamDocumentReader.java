@@ -152,20 +152,20 @@ public class JsonStreamDocumentReader implements DocumentReader {
         currentObjValue = getParser().getText();
         break;
       case BYTE:
-        currentLongValue = (getParser().getLongValue() & 0xff);
+        currentLongValue = getValueAsLong() & 0xff;
         break;
       case SHORT:
-        currentLongValue = (getParser().getLongValue() & 0xffff);
+        currentLongValue = getValueAsLong() & 0xffff;
         break;
       case INT:
-        currentLongValue = (getParser().getLongValue() & 0xffffffff);
+        currentLongValue = getValueAsLong() & 0xffffffff;
         break;
       case LONG:
-        currentLongValue = getParser().getLongValue();
+        currentLongValue = getValueAsLong();
         break;
       case FLOAT:
       case DOUBLE:
-        currentDoubleValue = getParser().getDoubleValue();
+        currentDoubleValue = getValueAsDouble();
         break;
       case DECIMAL:
         currentObjValue = Values.parseBigDecimal(getParser().getText());
@@ -180,7 +180,7 @@ public class JsonStreamDocumentReader implements DocumentReader {
         currentObjValue = OTimestamp.parse(getParser().getText());
         break;
       case INTERVAL:
-        currentLongValue = getParser().getLongValue();
+        currentLongValue = getValueAsLong();
         break;
       case BINARY:
         currentObjValue = ByteBuffer.wrap(getParser().getBinaryValue());
@@ -221,16 +221,26 @@ public class JsonStreamDocumentReader implements DocumentReader {
     return documentStream.getParser();
   }
 
+  private boolean isEventNumeric() {
+    return getParser().getCurrentToken().isNumeric();
+  }
+
   private boolean isEventBoolean() {
     return getParser().getCurrentToken().isBoolean();
   }
 
-  private String getValueAsString() {
-    try {
-      return getParser().getText();
-    } catch (IOException ie) {
-      throw new DecodingException(ie);
-    }
+  private long getValueAsLong() throws NumberFormatException, IOException {
+    return isEventNumeric() ? getParser().getLongValue()
+        : Long.valueOf(getValueAsString());
+  }
+
+  private double getValueAsDouble() throws NumberFormatException, IOException {
+    return isEventNumeric() ? getParser().getDoubleValue()
+        : Double.valueOf(getValueAsString());
+  }
+
+  private String getValueAsString() throws IOException {
+    return getParser().getText();
   }
 
   /**
