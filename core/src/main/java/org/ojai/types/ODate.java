@@ -78,7 +78,8 @@ public final class ODate implements Comparable<ODate>, Serializable {
 
   /**
    * Constructs an {@code ODate} instance from the milliseconds value since the
-   * Unix epoch.
+   * Unix epoch. The DATE value is set to the calendar date in the default time
+   * zone.
    *
    * @param epoh  the milliseconds from 1970-01-01T00:00:00.000 UTC
    */
@@ -88,7 +89,8 @@ public final class ODate implements Comparable<ODate>, Serializable {
 
   /**
    * Constructs an {@code ODate} instance from a {@code java.util.Date) using
-   * exactly the same field values.
+   * exactly the same field values. The DATE value is set to the calendar date
+   * in the default time zone.
    *
    * @param date  the Date to extract fields from
    */
@@ -138,7 +140,7 @@ public final class ODate implements Comparable<ODate>, Serializable {
   /**
    * Get this DATE as a {@link java.util.Date} in the default timezone.
    * The time fields of the {@code Date} object is set to Unix 0.
-   * 
+   *
    * @return a Date initialized with this DATE
    */
   public Date toDate() {

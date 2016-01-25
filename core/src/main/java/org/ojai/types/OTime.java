@@ -65,7 +65,8 @@ public final class OTime implements Comparable<OTime>, Serializable {
 
   /**
    * Constructs an {@code OTime} instance from the milliseconds value since the
-   * Unix epoch.
+   * Unix epoch. The TIME value is set to the corresponding time in the default
+   * time zone.
    *
    * @param epoh  the milliseconds from 1970-01-01T00:00:00.000 UTC
    */
@@ -100,7 +101,8 @@ public final class OTime implements Comparable<OTime>, Serializable {
 
   /**
    * Constructs an {@code OTime} instance from a {@code java.util.Date) using
-   * exactly the same field values.
+   * exactly the same field values. The TIME value is set to the corresponding
+   * time in the default time zone.
    *
    * @param date  the Date to extract fields from
    */

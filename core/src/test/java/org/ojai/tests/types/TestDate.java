@@ -64,8 +64,16 @@ public class TestDate extends BaseTest {
   @Test
   // must set "-Duser.timezone=GMT-07" to pass
   public void testDateFromEpochMillis() throws ParseException {
-    long epoch = 1451498715641L;
+    long epoch = 1451538715641L; // "2015-12-31" in GMT, "2015-12-30" in GMT-07
     ODate date = new ODate(epoch);
+    assertEquals(2015, date.getYear());
+    assertEquals(12, date.getMonth());
+    assertEquals(30, date.getDayOfMonth());
+    assertEquals(16799, date.toDaysSinceEpoch());
+    assertEquals(ISO_DATE_FORMAT.parse("2015-12-30"), date.toDate());
+
+    Date jdate = new Date(epoch);
+    date = new ODate(jdate);
     assertEquals(2015, date.getYear());
     assertEquals(12, date.getMonth());
     assertEquals(30, date.getDayOfMonth());
