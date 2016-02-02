@@ -19,13 +19,13 @@ import org.ojai.Document;
 import org.ojai.annotation.API;
 
 @API.Public
-public interface OpListener<T extends Document> {
+public interface OpListener {
   /**
    * Called when a Document from the async operation is available.
    *
    * @param document the available <code>Document</code>
    */
-  public void onSuccess(T document);
+  public void onSuccess(Document document);
 
   /**
    * Called when an <code>Exception</code> occurred while retrieving a Document

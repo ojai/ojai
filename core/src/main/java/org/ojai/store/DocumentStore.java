@@ -46,7 +46,7 @@ public interface DocumentStore extends AutoCloseable {
    *         retrieving the documents.
    * @throws StoreException
    */
-  public DocumentStream<? extends Document> find() throws StoreException;
+  public DocumentStream find() throws StoreException;
 
   /**
    * Returns a DocumentStream for all the documents in the DocumentStore.
@@ -58,8 +58,8 @@ public interface DocumentStore extends AutoCloseable {
    *         DocumentStream must be closed after retrieving the documents
    * @throws StoreException
    */
-  public DocumentStream<? extends Document> find(String... paths) throws StoreException;
-  public DocumentStream<? extends Document> find(FieldPath... paths) throws StoreException;
+  public DocumentStream find(String... paths) throws StoreException;
+  public DocumentStream find(FieldPath... paths) throws StoreException;
 
   /**
    * Returns a DocumentStream with all the documents in the DocumentStore that
@@ -69,7 +69,7 @@ public interface DocumentStore extends AutoCloseable {
    * @return A DocumentStream that can be used to get documents.
    *         The DocumentStream must be closed after retrieving the documents.
    */
-   public DocumentStream<? extends Document> find(QueryCondition c) throws StoreException;
+   public DocumentStream find(QueryCondition c) throws StoreException;
 
   /**
    * Returns a DocumentStream with all the documents in the DocumentStore that
@@ -84,9 +84,9 @@ public interface DocumentStore extends AutoCloseable {
    *         paths. The DocumentStream must be closed after retrieving the documents
    * @throws StoreException
    */
-  public DocumentStream<? extends Document> find(QueryCondition c, String...paths)
+  public DocumentStream find(QueryCondition c, String...paths)
       throws StoreException;
-  public DocumentStream<? extends Document> find(QueryCondition c, FieldPath...paths)
+  public DocumentStream find(QueryCondition c, FieldPath...paths)
       throws StoreException;
 
   /**
@@ -174,10 +174,10 @@ public interface DocumentStore extends AutoCloseable {
    * @throws MultiOpException which has a list of write-failed documents and
    *                          their errors.
    */
-  public void insertOrReplace(DocumentStream<? extends Document> stream) throws MultiOpException;
-  public void insertOrReplace(DocumentStream<? extends Document> stream, FieldPath fieldAsKey)
+  public void insertOrReplace(DocumentStream stream) throws MultiOpException;
+  public void insertOrReplace(DocumentStream stream, FieldPath fieldAsKey)
       throws MultiOpException;
-  public void insertOrReplace(DocumentStream<? extends Document> stream, String fieldAsKey)
+  public void insertOrReplace(DocumentStream stream, String fieldAsKey)
       throws MultiOpException;
 
   /**
@@ -233,10 +233,10 @@ public interface DocumentStore extends AutoCloseable {
    * @throws MultiOpException which has a list of write-failed documents and
    *                          their errors
    */
-  public void delete(DocumentStream<? extends Document> stream) throws MultiOpException;
-  public void delete(DocumentStream<? extends Document> stream, FieldPath fieldAsKey)
+  public void delete(DocumentStream stream) throws MultiOpException;
+  public void delete(DocumentStream stream, FieldPath fieldAsKey)
       throws MultiOpException;
-  public void delete(DocumentStream<? extends Document> stream, String fieldAsKey)
+  public void delete(DocumentStream stream, String fieldAsKey)
       throws MultiOpException;
 
   /**
@@ -293,10 +293,10 @@ public interface DocumentStore extends AutoCloseable {
    * @throws MultiOpException which has a list of write-failed documents and
    *                          their errors
    */
-  public void insert(DocumentStream<? extends Document> stream) throws MultiOpException;
-  public void insert(DocumentStream<? extends Document> stream, FieldPath fieldAsKey)
+  public void insert(DocumentStream stream) throws MultiOpException;
+  public void insert(DocumentStream stream, FieldPath fieldAsKey)
       throws MultiOpException;
-  public void insert(DocumentStream<? extends Document> stream, String fieldAsKey)
+  public void insert(DocumentStream stream, String fieldAsKey)
       throws MultiOpException;
 
   /**
@@ -360,10 +360,10 @@ public interface DocumentStore extends AutoCloseable {
    * @throws MultiOpException which has list of write-failed documents and
    *                          their errors
    */
-  public void replace(DocumentStream<? extends Document> stream) throws MultiOpException;
-  public void replace(DocumentStream<? extends Document> stream, FieldPath fieldAsKey)
+  public void replace(DocumentStream stream) throws MultiOpException;
+  public void replace(DocumentStream stream, FieldPath fieldAsKey)
       throws MultiOpException;
-  public void replace(DocumentStream<? extends Document> stream, String fieldAsKey)
+  public void replace(DocumentStream stream, String fieldAsKey)
       throws MultiOpException;
 
   /**

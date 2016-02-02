@@ -38,7 +38,7 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 
 @API.Internal
-public class JsonDocumentStream implements DocumentStream<Document> {
+public class JsonDocumentStream implements DocumentStream {
 
   private final InputStream inputStream;
   private JsonParser jsonParser;
@@ -49,7 +49,7 @@ public class JsonDocumentStream implements DocumentStream<Document> {
   private final Map<FieldPath, Type> fieldPathTypeMap;
   private final Events.Delegate eventDelegate;
 
-  static DocumentStream<Document> newDocumentStream(FileSystem fs,
+  static DocumentStream newDocumentStream(FileSystem fs,
       Path path, Map<FieldPath, Type> map, Events.Delegate delegate)
           throws IllegalArgumentException, IOException {
     final InputStream in = fs.open(path);
@@ -69,7 +69,7 @@ public class JsonDocumentStream implements DocumentStream<Document> {
     };
   }
 
-  public static DocumentStream<Document> newDocumentStream(FileSystem fs,
+  public static DocumentStream newDocumentStream(FileSystem fs,
       String path, Map<FieldPath, Type> map, Events.Delegate delegate)
           throws IllegalArgumentException, IOException {
     return newDocumentStream(fs, new Path(path), map, delegate);

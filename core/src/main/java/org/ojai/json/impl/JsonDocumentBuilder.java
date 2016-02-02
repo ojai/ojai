@@ -971,7 +971,7 @@ public class JsonDocumentBuilder implements DocumentBuilder {
     if (b != null) {
       byte[] barray = b.getByteArray();
       ByteArrayInputStream inputStream = new ByteArrayInputStream(barray);
-      DocumentStream<Document> documentStream = Json.newDocumentStream(inputStream);
+      DocumentStream documentStream = Json.newDocumentStream(inputStream);
       Iterator<Document> iter = documentStream.iterator();
       if (iter.hasNext()) {
         Document r = iter.next();

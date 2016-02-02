@@ -72,7 +72,7 @@ public class TestDelegatingJsonDocumentReader extends BaseTest {
     };
 
     try (InputStream in = getJsonStream("org/ojai/test/data/complex.json");
-        DocumentStream<Document> stream = Json.newDocumentStream(in, EVENTDELEGATE)) {
+         DocumentStream stream = Json.newDocumentStream(in, EVENTDELEGATE)) {
       for (Document document : stream) {
         assertEquals(0, document.getInt("_version"));
         assertEquals(43, document.getInt("_fieldCount")); // 41 in JSON text, 2 injected
@@ -101,7 +101,7 @@ public class TestDelegatingJsonDocumentReader extends BaseTest {
     };
 
     try (InputStream in = getJsonStream("org/ojai/test/data/complex.json");
-        DocumentStream<Document> stream = Json.newDocumentStream(in, EVENTDELEGATE)) {
+         DocumentStream stream = Json.newDocumentStream(in, EVENTDELEGATE)) {
       for (Document document : stream) {
         Value ageValue = document.getValue("age");
         assertNull(ageValue);

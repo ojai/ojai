@@ -65,11 +65,11 @@ public class TestJsonDocumentEquals extends BaseTest {
 
   private void testResources(String resource) throws IOException {
     try (InputStream testJson = getJsonStream(resource);
-         DocumentStream<Document> stream = Json.newDocumentStream(testJson);
+         DocumentStream stream = Json.newDocumentStream(testJson);
          InputStream testJson1 = getJsonStream(resource);
-         DocumentStream<Document> stream1 = Json.newDocumentStream(testJson1);
+         DocumentStream stream1 = Json.newDocumentStream(testJson1);
          InputStream testJson2 = getJsonStream(resource);
-         DocumentStream<Document> stream2 = Json.newDocumentStream(testJson2);) {
+         DocumentStream stream2 = Json.newDocumentStream(testJson2);) {
       for (Document document : stream) {
         assertEquals(document, document); // self comparison
       }

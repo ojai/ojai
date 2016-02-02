@@ -51,7 +51,7 @@ Serialization<JsonDocument> {
   private static class JsonDocumentDeserializer implements
   Deserializer<JsonDocument> {
 
-    private DocumentStream<Document> stream;
+    private DocumentStream stream;
     private Iterator<Document> iter;
 
     @Override

@@ -44,7 +44,7 @@ public final class OTimestamp implements Comparable<OTimestamp>, Serializable {
 
   private static final ISOChronology UTC_CHRONOLOGY = ISOChronology.getInstanceUTC();
 
-  private volatile DateTime datetime; // for lazy initialization
+  private transient volatile DateTime datetime; // for lazy initialization
 
   /** milliseconds since epoch */
   private final long millisSinceEpoch;

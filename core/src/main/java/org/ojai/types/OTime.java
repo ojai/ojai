@@ -34,7 +34,7 @@ public final class OTime implements Comparable<OTime>, Serializable {
   private static final long serialVersionUID = 0xaffa9a5dfe3ff863L;
   private static final DateTime EPOCH_DATE = new LocalDate(1970, 1, 1).toDateTimeAtStartOfDay();
 
-  private volatile LocalTime time; // for lazy initialization
+  private transient volatile LocalTime time; // for lazy initialization
 
   /** milliseconds from midnight */
   private final int millisOfDay;

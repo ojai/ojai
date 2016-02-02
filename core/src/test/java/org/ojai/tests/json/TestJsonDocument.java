@@ -393,7 +393,7 @@ public class TestJsonDocument extends BaseTest {
   @Test
   public void testToString() throws IOException {
     try (InputStream in = getJsonStream("org/ojai/test/data/test.json");
-         DocumentStream<Document> stream = Json.newDocumentStream(in)) {
+         DocumentStream stream = Json.newDocumentStream(in)) {
       Document doc = stream.iterator().next();
       assertEquals(docStrWithoutTags, doc.toString());
       assertEquals(docStrWithoutTags, doc.asJsonString());

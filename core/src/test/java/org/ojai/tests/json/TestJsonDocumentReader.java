@@ -24,7 +24,6 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 
 import org.junit.Test;
-import org.ojai.Document;
 import org.ojai.DocumentReader;
 import org.ojai.DocumentReader.EventType;
 import org.ojai.DocumentStream;
@@ -37,7 +36,7 @@ public class TestJsonDocumentReader extends BaseTest {
   @Test
   public void testStreamReader() throws Exception {
     try (InputStream testJson = getJsonStream("org/ojai/test/data/test2.json");
-        DocumentStream<Document> stream = Json.newDocumentStream(testJson);) {
+         DocumentStream stream = Json.newDocumentStream(testJson);) {
       DocumentReader r = stream.documentReaders().iterator().next();
       testReader(r);
     }
@@ -46,7 +45,7 @@ public class TestJsonDocumentReader extends BaseTest {
   @Test
   public void testDOMReader() throws Exception {
     try (InputStream testJson = getJsonStream("org/ojai/test/data/test2.json");
-        DocumentStream<Document> stream = Json.newDocumentStream(testJson);) {
+         DocumentStream stream = Json.newDocumentStream(testJson);) {
       DocumentReader r = stream.iterator().next().asReader();
       testReader(r);
     }

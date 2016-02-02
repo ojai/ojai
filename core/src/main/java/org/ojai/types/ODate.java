@@ -36,7 +36,7 @@ public final class ODate implements Comparable<ODate>, Serializable {
   private static final LocalDate EPOCH_DATE = new LocalDate(1970, 1, 1);
   private static final LocalTime START_OF_DAY = new LocalTime(0, 0, 0);
 
-  private volatile LocalDate date; // for lazy initialization
+  private transient volatile LocalDate date; // for lazy initialization
 
   /** number of days since Unix epoch */
   private final int daysSinceEpoch;

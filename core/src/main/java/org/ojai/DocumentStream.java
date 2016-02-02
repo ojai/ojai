@@ -28,14 +28,14 @@ import org.ojai.exceptions.OjaiException;
  * from the stream.
  */
 @API.Public
-public interface DocumentStream<T extends Document> extends AutoCloseable, Iterable<T> {
+public interface DocumentStream extends AutoCloseable, Iterable<Document> {
 
   public void streamTo(DocumentListener l);
 
   /**
    * Returns an iterator over a set of {@code Document}.
    */
-  Iterator<T> iterator();
+  Iterator<Document> iterator();
 
   /**
    * Returns an {@code Iterable} over a set of {@code DocumentReader}.

@@ -43,7 +43,7 @@ public final class OInterval implements Serializable {
 
   private final int milliseconds;
 
-  private final long timeDuration;
+  private transient final long timeDuration;
 
   public OInterval(final long milliseconds) {
     this.timeDuration = milliseconds;

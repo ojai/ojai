@@ -115,7 +115,7 @@ public final class Json {
   /**
    * Returns a new instance of JSON DocumentStream from the specified InputStream.
    */
-  public static DocumentStream<Document> newDocumentStream(InputStream in) {
+  public static DocumentStream newDocumentStream(InputStream in) {
     return new JsonDocumentStream(in, null, null);
   }
 
@@ -123,29 +123,29 @@ public final class Json {
    * Returns a new instance of s JSON DocumentStream from the specified InputStream
    * using the FieldPath => Type mapping to decode the JSON tokens from the stream.
    */
-  public static DocumentStream<Document> newDocumentStream(
+  public static DocumentStream newDocumentStream(
       InputStream in, Map<FieldPath, Type> fieldPathTypeMap) {
     return new JsonDocumentStream(in, fieldPathTypeMap, null);
   }
 
-  public static DocumentStream<Document> newDocumentStream(
+  public static DocumentStream newDocumentStream(
       InputStream in, Events.Delegate eventDelegate) {
     return new JsonDocumentStream(in, null, eventDelegate);
   }
 
-  public static DocumentStream<Document> newDocumentStream(
+  public static DocumentStream newDocumentStream(
       FileSystem fs, String path)
           throws DecodingException, IOException {
     return JsonDocumentStream.newDocumentStream(fs, path, null, null);
   }
 
-  public static DocumentStream<Document> newDocumentStream(
+  public static DocumentStream newDocumentStream(
       FileSystem fs, String path, Map<FieldPath, Type> fieldPathTypeMap)
           throws DecodingException, IOException {
     return JsonDocumentStream.newDocumentStream(fs, path, fieldPathTypeMap, null);
   }
 
-  public static DocumentStream<Document> newDocumentStream(
+  public static DocumentStream newDocumentStream(
       FileSystem fs, String path, Events.Delegate eventDelegate)
           throws DecodingException, IOException {
     return JsonDocumentStream.newDocumentStream(fs, path, null, eventDelegate);

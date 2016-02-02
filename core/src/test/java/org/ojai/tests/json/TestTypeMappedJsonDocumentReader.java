@@ -62,7 +62,7 @@ public class TestTypeMappedJsonDocumentReader extends BaseTest {
     fieldPathTypeMap.put(FieldPath.parseFrom("binary"), Value.Type.BINARY);
 
     try (InputStream in = getJsonStream("org/ojai/test/data/test3.json");
-        DocumentStream<Document> stream = Json.newDocumentStream(in, fieldPathTypeMap)) {
+         DocumentStream stream = Json.newDocumentStream(in, fieldPathTypeMap)) {
       for (Document document : stream) {
         Value value = document.getValue("null");
         assertNotNull(value);
@@ -148,7 +148,7 @@ public class TestTypeMappedJsonDocumentReader extends BaseTest {
 
     fieldPathTypeMap.put(FieldPath.parseFrom("array"), Value.Type.ARRAY);
     try (InputStream in = getJsonStream("org/ojai/test/data/test3.json");
-        DocumentStream<Document> stream = Json.newDocumentStream(in, fieldPathTypeMap)) {
+         DocumentStream stream = Json.newDocumentStream(in, fieldPathTypeMap)) {
       for (Document document : stream) {
         fail(document.asJsonString());
       }
@@ -157,7 +157,7 @@ public class TestTypeMappedJsonDocumentReader extends BaseTest {
 
     fieldPathTypeMap.put(FieldPath.parseFrom("map"), Value.Type.MAP);
     try (InputStream in = getJsonStream("org/ojai/test/data/test3.json");
-        DocumentStream<Document> stream = Json.newDocumentStream(in, fieldPathTypeMap)) {
+         DocumentStream stream = Json.newDocumentStream(in, fieldPathTypeMap)) {
       for (Document document : stream) {
         fail(document.asJsonString());
       }
@@ -166,7 +166,7 @@ public class TestTypeMappedJsonDocumentReader extends BaseTest {
 
     fieldPathTypeMap.put(FieldPath.parseFrom("a.b[9].c"), Value.Type.DATE);
     try (InputStream in = getJsonStream("org/ojai/test/data/test3.json");
-        DocumentStream<Document> stream = Json.newDocumentStream(in, fieldPathTypeMap)) {
+         DocumentStream stream = Json.newDocumentStream(in, fieldPathTypeMap)) {
       for (Document document : stream) {
         fail(document.asJsonString());
       }

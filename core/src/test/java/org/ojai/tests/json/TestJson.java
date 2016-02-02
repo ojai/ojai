@@ -91,7 +91,7 @@ public class TestJson extends BaseTest {
   @Test
   public void testJson_AsJsonStringComplex() throws Exception {
     try (InputStream in = getJsonStream("org/ojai/test/data/complex.json");
-         DocumentStream<Document> stream = Json.newDocumentStream(in)) {
+         DocumentStream stream = Json.newDocumentStream(in)) {
       Document doc = stream.iterator().next();
       String s = Json.toJsonString(doc);
       assertEquals("{\"first\":\"Sam\",\"last\":\"LNU\",\"age\":23,\"sex\":\"F\",\"salary\":315000,"
@@ -144,7 +144,7 @@ public class TestJson extends BaseTest {
   @Test
   public void testJson_AsJsonStringIncludingTags() throws Exception {
     try (InputStream in = getJsonStream("org/ojai/test/data/test.json");
-         DocumentStream<Document> stream = Json.newDocumentStream(in)) {
+         DocumentStream stream = Json.newDocumentStream(in)) {
       Document doc = stream.iterator().next();
 
       String s = Json.toJsonString(doc, JsonOptions.WITH_TAGS);
@@ -235,7 +235,7 @@ public class TestJson extends BaseTest {
   @Test
   public void testJson_AsJsonStringNonDocument() throws Exception {
     try (InputStream in = getJsonStream("org/ojai/test/data/test.json");
-         DocumentStream<Document> stream = Json.newDocumentStream(in)) {
+         DocumentStream stream = Json.newDocumentStream(in)) {
       Document doc = stream.iterator().next();
 
       assertEquals("null",

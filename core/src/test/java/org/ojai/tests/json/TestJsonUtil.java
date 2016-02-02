@@ -38,7 +38,7 @@ public class TestJsonUtil extends BaseTest {
   @Test
   public void testJsonSerialization() throws Exception {
     try (InputStream in = getJsonStream("multidocument.json");
-        DocumentStream<Document> stream = Json.newDocumentStream(in)) {
+         DocumentStream stream = Json.newDocumentStream(in)) {
       for (DocumentReader reader : stream.documentReaders()) {
         DocumentBuilder builder = Json.newDocumentBuilder();
         Json.writeReaderToBuilder(reader, builder);

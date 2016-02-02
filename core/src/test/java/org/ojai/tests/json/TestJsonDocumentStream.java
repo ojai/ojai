@@ -43,7 +43,7 @@ public class TestJsonDocumentStream extends BaseTest {
   @Test
   public void testFetchAndParseJsonDocumentStream() throws Exception {
     try (InputStream in = getJsonStream("org/ojai/test/data/business.json");
-        DocumentStream<Document> stream = Json.newDocumentStream(in)) {
+         DocumentStream stream = Json.newDocumentStream(in)) {
 
       int documentCount = 0;
       for (DocumentReader reader : stream.documentReaders()) {
@@ -90,7 +90,7 @@ public class TestJsonDocumentStream extends BaseTest {
     fieldPathTypeMap.put(FieldPath.parseFrom("hours.Sunday.close"), Type.TIME);
 
     try (InputStream in = getJsonStream("org/ojai/test/data/business.json");
-        DocumentStream<Document> stream = Json.newDocumentStream(in, fieldPathTypeMap)) {
+         DocumentStream stream = Json.newDocumentStream(in, fieldPathTypeMap)) {
 
       int documentCount = 0;
       for (DocumentReader reader : stream.documentReaders()) {
@@ -104,7 +104,7 @@ public class TestJsonDocumentStream extends BaseTest {
   @Test
   public void testFetchAndParsePartiallyJsonDocumentStream() throws Exception {
     try (InputStream in = getJsonStream("org/ojai/test/data/business.json");
-        DocumentStream<Document> stream = Json.newDocumentStream(in)) {
+         DocumentStream stream = Json.newDocumentStream(in)) {
 
       int documentCount = 0;
       for (DocumentReader reader : stream.documentReaders()) {
@@ -118,7 +118,7 @@ public class TestJsonDocumentStream extends BaseTest {
   @Test
   public void testDocumentIterator() throws Exception {
     try (InputStream in = getJsonStream("org/ojai/test/data/multidocument.json");
-        DocumentStream<Document> stream = Json.newDocumentStream(in)) {
+         DocumentStream stream = Json.newDocumentStream(in)) {
 
       int documentCount = 0;
       Iterator<Document> it = stream.iterator();
@@ -170,7 +170,7 @@ public class TestJsonDocumentStream extends BaseTest {
   @Test
   public void testDocumentIteratorNextMethod() throws Exception {
     try (InputStream in = getJsonStream("org/ojai/test/data/multidocument.json");
-        DocumentStream<Document> stream = Json.newDocumentStream(in)) {
+         DocumentStream stream = Json.newDocumentStream(in)) {
 
       int documentCount = 0;
       Iterator<Document> it = stream.iterator();
