@@ -17,11 +17,13 @@ package org.ojai.tests.json;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.junit.Test;
@@ -172,6 +174,45 @@ public class TestTypeMappedJsonDocumentReader extends BaseTest {
       }
     } catch (IllegalArgumentException e) { }
     fieldPathTypeMap.clear();
+  }
+
+  @Test
+  public void testTypeMappingsMultiLevelWithTags() throws IOException {
+    Map<FieldPath, Value.Type> fieldPathTypeMap = Maps.newHashMap();
+    fieldPathTypeMap.put(FieldPath.parseFrom("map.boolean"), Value.Type.BOOLEAN);
+    fieldPathTypeMap.put(FieldPath.parseFrom("map.string"), Value.Type.STRING);
+    fieldPathTypeMap.put(FieldPath.parseFrom("map.byte"), Value.Type.BYTE);
+    fieldPathTypeMap.put(FieldPath.parseFrom("map.short"), Value.Type.SHORT);
+    fieldPathTypeMap.put(FieldPath.parseFrom("map.int"), Value.Type.INT);
+    fieldPathTypeMap.put(FieldPath.parseFrom("map.long"), Value.Type.LONG);
+    fieldPathTypeMap.put(FieldPath.parseFrom("map.float"), Value.Type.FLOAT);
+    fieldPathTypeMap.put(FieldPath.parseFrom("map.double"), Value.Type.DOUBLE);
+    fieldPathTypeMap.put(FieldPath.parseFrom("map.decimal"), Value.Type.DECIMAL);
+    fieldPathTypeMap.put(FieldPath.parseFrom("map.date"), Value.Type.DATE);
+    fieldPathTypeMap.put(FieldPath.parseFrom("map.time"), Value.Type.TIME);
+    fieldPathTypeMap.put(FieldPath.parseFrom("map.timestamp"), Value.Type.TIMESTAMP);
+    fieldPathTypeMap.put(FieldPath.parseFrom("map.interval"), Value.Type.INTERVAL);
+    fieldPathTypeMap.put(FieldPath.parseFrom("map.binary"), Value.Type.BINARY);
+
+    try (InputStream in = getJsonStream("org/ojai/test/data/test4.json");
+         DocumentStream jsonRecordStream = Json.newDocumentStream(in, fieldPathTypeMap)) {
+      Iterator<Document> docIterator = jsonRecordStream.iterator();
+      assertTrue(docIterator.hasNext());
+      Document doc = docIterator.next();
+      assertTrue(doc.getBoolean("map.boolean"));
+      assertEquals("eureka", doc.getString("map.string"));
+      assertEquals((byte) 127, doc.getByte("map.byte"));
+      assertEquals((short) 32767, doc.getShort("map.short"));
+      assertEquals(2147483647, doc.getInt("map.int"));
+      assertEquals(9223372036854775807L, doc.getLong("map.long"));
+      assertEquals((float) 3.4028235, doc.getFloat("map.float"), 0);
+      assertEquals(1.7976931348623157e308, doc.getDouble("map.double"), 0);
+      assertEquals(ODate.parse("2012-10-20"), doc.getDate("map.date"));
+      assertEquals(OTime.parse("07:42:46.123"), doc.getTime("map.time"));
+      assertEquals(OTimestamp.parse("2012-10-20T07:42:46.123-07:00"), doc.getTimestamp("map.timestamp"));
+      assertEquals(new OInterval(172800000), doc.getInterval("map.interval"));
+      assertEquals(Values.parseBinary("YWJjZA=="), doc.getBinary("map.binary"));
+    }
   }
 
 }

@@ -61,6 +61,7 @@ public class JsonStreamDocumentReader implements DocumentReader {
   private LinkedList<JsonToken> cachedTokens;
   private Stack<ContainerContext> containerStack;
   private ContainerContext currentContainer;
+  private boolean isExtended;
 
   JsonStreamDocumentReader(JsonDocumentStream stream) {
     containerStack = new Stack<ContainerContext>();
@@ -89,6 +90,7 @@ public class JsonStreamDocumentReader implements DocumentReader {
     String field_name = getCurrentName();
     if (field_name.startsWith("$")) {
       // determine extended type
+      isExtended = true;
       switch(field_name) {
       case TAG_LONG:
         setCurrentEventType(EventType.LONG);
@@ -113,6 +115,7 @@ public class JsonStreamDocumentReader implements DocumentReader {
         break;
       default:
         // regular map, return without consuming the field name.
+        isExtended = false;
         return EventType.START_MAP;
       }
 
@@ -239,8 +242,12 @@ public class JsonStreamDocumentReader implements DocumentReader {
         : Double.valueOf(getValueAsString());
   }
 
-  private String getValueAsString() throws IOException {
-    return getParser().getText();
+  protected String getValueAsString() {
+    try {
+      return getParser().getText();
+    } catch (IOException e) {
+      throw new DecodingException(e);
+    }
   }
 
   /**
@@ -254,6 +261,7 @@ public class JsonStreamDocumentReader implements DocumentReader {
 
   @Override
   public EventType next() {
+    isExtended = false;
     if (eor()) {
       return null;
     }
@@ -633,6 +641,10 @@ public class JsonStreamDocumentReader implements DocumentReader {
   protected JsonStreamDocumentReader setCurrentDoubleValue(double value) {
     this.currentDoubleValue = value;
     return this;
+  }
+
+  protected boolean isExtended() {
+    return isExtended;
   }
 
 }

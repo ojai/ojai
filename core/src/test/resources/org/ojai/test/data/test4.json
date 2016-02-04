@@ -1,0 +1,20 @@
+{
+  "map": {
+    "null": null,
+    "boolean" : true,
+    "string": "eureka",
+    "byte" : {"$numberLong": 127},
+    "short": {"$numberLong": 32767},
+    "int": {"$numberLong": 2147483647},
+    "long": {"$numberLong": 9223372036854775807},
+    "float" : "3.4028235",
+    "double" : 1.7976931348623157e308,
+    "decimal": {"$decimal": "123456789012345678901234567890123456789012345678901.23456789"},
+    "date": {"$dateDay": "2012-10-20"},
+    "time" : {"$time" : "07:42:46.123"},
+    "timestamp" : {"$date" : "2012-10-20T07:42:46.123-07:00"},
+    "interval" : {"$interval" : 172800000},
+    "binary" : {"$binary" : "YWJjZA=="},
+    "array" : [42, "open sesame", 3.14, {"$dateDay": "2015-01-21"}]
+  }
+}
