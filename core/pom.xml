@@ -29,7 +29,7 @@
   </parent>
 
   <artifactId>ojai</artifactId>
-  <name>Ojai Core APIs</name>
+  <name>OJAI Core Library for Java</name>
   <packaging>jar</packaging>
 
   <build>
@@ -47,7 +47,7 @@
             </goals>
             <configuration>
               <includes><include>**/FieldPath.g4</include></includes>
-              <outputDirectory>${project.build.directory}/generated-sources/antlr4/org/ojai</outputDirectory>
+              <outputDirectory>${project.build.directory}/generated-sources/antlr4/org/ojai/antlr4</outputDirectory>
             </configuration>
           </execution>
         </executions>
@@ -75,6 +75,38 @@
           <relocations>
             <relocation><pattern>org.joda.time.</pattern><shadedPattern>org.ojai.joda.</shadedPattern></relocation>
           </relocations>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <excludePackageNames>*.impl:*.antlr4:*.jackson</excludePackageNames>
+          <groups>
+            <group>
+              <title>OJAI Core APIs</title>
+              <packages>org.ojai:org.ojai.exceptions:org.ojai.types</packages>
+            </group>
+            <group>
+              <title>OJAI APIs for JSON</title>
+              <packages>org.ojai.json</packages>
+            </group>
+            <group>
+              <title>OJAI Store APIs</title>
+              <packages>org.ojai.store*</packages>
+            </group>
+            <group>
+              <title>Miscellaneous Helper Classes</title>
+              <packages>org.ojai.beans:org.ojai.util:org.ojai.annotation</packages>
+            </group>
+          </groups>
+
+          <doctitle>${project.name} v. ${project.version}</doctitle>
+          <windowtitle>${project.name} v. ${project.version}</windowtitle>
+          <header>${project.name} v. ${project.version}</header>
+          <footer>${project.name} v. ${project.version}</footer>
+          <bottom></bottom>
         </configuration>
       </plugin>
 

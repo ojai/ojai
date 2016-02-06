@@ -16,8 +16,8 @@
 package org.ojai.json;
 
 /**
- * This class encapsulates various options to configure a JSON serializer
- * for Documents.<br/><br/>
+ * <p>This class encapsulates various options to configure a JSON serializer
+ * for Documents.</p>
  * Currently, it supports the following options.
  * <ul>
  *  <li><b>Pretty Print</b>: off by default.</li>

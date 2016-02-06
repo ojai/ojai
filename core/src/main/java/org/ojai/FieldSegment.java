@@ -95,7 +95,10 @@ public abstract class FieldSegment implements Comparable<FieldSegment> {
       this(index, null);
     }
 
-    IndexSegment(String numberAsText, FieldSegment child) {
+    /**
+     * For Antlr parser's use only.
+     */
+    public IndexSegment(String numberAsText, FieldSegment child) {
       this(numberAsText == null ? -1 : Integer.parseInt(numberAsText), child);
     }
 
@@ -190,7 +193,10 @@ public abstract class FieldSegment implements Comparable<FieldSegment> {
       this.isQuoted = (this.name != n);
     }
 
-    NameSegment(String n, FieldSegment child, boolean quoted) {
+    /**
+     * For Antlr parser's use only.
+     */
+    public NameSegment(String n, FieldSegment child, boolean quoted) {
       super(child);
       this.name = n;
       this.isQuoted = quoted;

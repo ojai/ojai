@@ -100,7 +100,7 @@ public final class OTime implements Comparable<OTime>, Serializable {
   }
 
   /**
-   * Constructs an {@code OTime} instance from a {@code java.util.Date) using
+   * Constructs an {@code OTime} instance from a {@code java.util.Date} using
    * exactly the same field values. The TIME value is set to the corresponding
    * time in the default time zone.
    *

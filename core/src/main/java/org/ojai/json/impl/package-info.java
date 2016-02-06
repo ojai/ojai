@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
- * The classes in this package are not part of Ojai public APIs
+ * The classes in this package are not part of OJAI public APIs
  */
 @org.ojai.annotation.API.Internal
 package org.ojai.json.impl;

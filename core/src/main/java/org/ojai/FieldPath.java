@@ -23,11 +23,11 @@ import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
-import org.ojai.FieldPathLexer;
-import org.ojai.FieldPathParser;
 import org.ojai.FieldSegment.IndexSegment;
 import org.ojai.FieldSegment.NameSegment;
 import org.ojai.annotation.API;
+import org.ojai.antlr4.FieldPathLexer;
+import org.ojai.antlr4.FieldPathParser;
 import org.ojai.util.Fields;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -238,10 +238,10 @@ public final class FieldPath implements Comparable<FieldPath>, Iterable<FieldSeg
   final private NameSegment rootSegment;
 
   /**
-   * Package default for parser
-   * @param root
+   * For Antlr parser's use only.
    */
-  FieldPath(NameSegment root) {
+  @API.Internal
+  public FieldPath(NameSegment root) {
     this.rootSegment = root;
   }
 

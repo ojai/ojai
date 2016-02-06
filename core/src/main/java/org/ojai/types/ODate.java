@@ -58,7 +58,7 @@ public final class ODate implements Comparable<ODate>, Serializable {
   /**
    * Return an {@code ODate} instance from the specified number of days since epoch.
    *
-   * @param millisOfDay the number of days since epoch
+   * @param daysSinceEpoch the number of days since epoch
    */
   public static ODate fromDaysSinceEpoch(int daysSinceEpoch) {
     return new ODate(daysSinceEpoch);
@@ -88,7 +88,7 @@ public final class ODate implements Comparable<ODate>, Serializable {
   }
 
   /**
-   * Constructs an {@code ODate} instance from a {@code java.util.Date) using
+   * Constructs an {@code ODate} instance from a {@code java.util.Date} using
    * exactly the same field values. The DATE value is set to the calendar date
    * in the default time zone.
    *

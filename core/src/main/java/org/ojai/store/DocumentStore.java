@@ -162,10 +162,28 @@ public interface DocumentStore extends AutoCloseable {
    * first read error. If only write errors occur, the iterator will stop and the
    * rest of the documents will remain un-consumed in the DocumentStream.
    *
-   * If the parameter {@code fieldAsKey} is provided, will be stored as the "_id"
-   * of the stored document. If an "_id" field is present in the documents, an
-   * error will be thrown. When reading the document back from the store, the
-   * key will be returned back as usual as the "_id" field.
+   * @param stream The DocumentStream to read the documents from.
+   *
+   * @throws MultiOpException which has a list of write-failed documents and
+   *                          their errors.
+   */
+  public void insertOrReplace(DocumentStream stream) throws MultiOpException;
+
+  /**
+   * Inserts all documents from the specified DocumentStream into this DocumentStore
+   * using the field specified by parameter {@code fieldAsKey} as the "_id" field.
+   * If an "_id" field is present in the documents, an exception will be thrown.
+   * <br/><br/>
+   * This is a synchronous API and it won't return until all the documents
+   * in the DocumentStream are written to the DocumentStore or some error has
+   * occurred while storing the documents. Each document read from the DocumentStream
+   * must have a field "_id"; otherwise, the operation will fail.
+   *
+   * If there is an error in reading from the stream or in writing to the DocumentStore
+   * then a MultiOpException will be thrown containing the list of documents that
+   * failed to be stored in the DocumentStore. Reading from a stream stops on the
+   * first read error. If only write errors occur, the iterator will stop and the
+   * rest of the documents will remain un-consumed in the DocumentStream.
    *
    * @param stream The DocumentStream to read the documents from.
    * @param fieldAsKey field from each document whose value is to be used as
@@ -174,9 +192,32 @@ public interface DocumentStore extends AutoCloseable {
    * @throws MultiOpException which has a list of write-failed documents and
    *                          their errors.
    */
-  public void insertOrReplace(DocumentStream stream) throws MultiOpException;
   public void insertOrReplace(DocumentStream stream, FieldPath fieldAsKey)
       throws MultiOpException;
+
+  /**
+   * Inserts all documents from the specified DocumentStream into this DocumentStore
+   * using the field specified by parameter {@code fieldAsKey} as the "_id" field.
+   * If an "_id" field is present in the documents, an exception will be thrown.
+   * <br/><br/>
+   * This is a synchronous API and it won't return until all the documents
+   * in the DocumentStream are written to the DocumentStore or some error has
+   * occurred while storing the documents. Each document read from the DocumentStream
+   * must have a field "_id"; otherwise, the operation will fail.
+   *
+   * If there is an error in reading from the stream or in writing to the DocumentStore
+   * then a MultiOpException will be thrown containing the list of documents that
+   * failed to be stored in the DocumentStore. Reading from a stream stops on the
+   * first read error. If only write errors occur, the iterator will stop and the
+   * rest of the documents will remain un-consumed in the DocumentStream.
+   *
+   * @param stream The DocumentStream to read the documents from.
+   * @param fieldAsKey field from each document whose value is to be used as
+   *                   the document key for insertion
+   *
+   * @throws MultiOpException which has a list of write-failed documents and
+   *                          their errors.
+   */
   public void insertOrReplace(DocumentStream stream, String fieldAsKey)
       throws MultiOpException;
 

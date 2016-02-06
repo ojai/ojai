@@ -67,7 +67,7 @@ public final class OTimestamp implements Comparable<OTimestamp>, Serializable {
    * Constructs an {@code OTimestamp} instance from the milliseconds value since the
    * Unix epoch.
    *
-   * @param epoh  the milliseconds from 1970-01-01T00:00:00.000 UTC
+   * @param millisSinceEpoch  the milliseconds from 1970-01-01T00:00:00.000 UTC
    */
   public OTimestamp(long millisSinceEpoch) {
     this.millisSinceEpoch = millisSinceEpoch;
@@ -98,7 +98,7 @@ public final class OTimestamp implements Comparable<OTimestamp>, Serializable {
   }
 
   /**
-   * Constructs an {@code OTimestamp} instance from a {@code java.util.Date) using
+   * Constructs an {@code OTimestamp} instance from a {@code java.util.Date} using
    * exactly the same field values.
    *
    * @param date  the Date to extract fields from

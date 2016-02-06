@@ -30,13 +30,10 @@
   <description>Open JSON Application Interface</description>
   <url>https://github.com/ojai</url>
 
-  <properties>
-    <slf4j.version>1.7.12</slf4j.version>
-    <hadoop.version>2.5.1</hadoop.version>
-    <jackson.version>2.4.3</jackson.version>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-  </properties>
+  <organization>
+    <name>MapR Technologies, Inc.</name>
+    <url>http://www.mapr.com</url>
+  </organization>
 
   <licenses>
     <license>
@@ -44,6 +41,14 @@
       <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
     </license>
   </licenses>
+
+  <properties>
+    <slf4j.version>1.7.12</slf4j.version>
+    <hadoop.version>2.5.1</hadoop.version>
+    <jackson.version>2.4.3</jackson.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+  </properties>
 
   <modules>
     <module>core</module>
@@ -241,7 +246,6 @@
                 <phase>verify</phase>
                 <goals>
                   <goal>jar</goal>
-                  <goal>test-jar</goal>
                 </goals>
                 <configuration>
                 </configuration>
