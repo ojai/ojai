@@ -102,6 +102,7 @@
             </group>
           </groups>
 
+          <overview>${basedir}/src/main/javadoc/overview.html</overview>
           <doctitle>${project.name} v. ${project.version}</doctitle>
           <windowtitle>${project.name} v. ${project.version}</windowtitle>
           <header>${project.name} v. ${project.version}</header>
