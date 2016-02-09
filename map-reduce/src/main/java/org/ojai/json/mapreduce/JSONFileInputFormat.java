@@ -17,7 +17,6 @@ package org.ojai.json.mapreduce;
 
 import java.io.IOException;
 
-import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.mapreduce.InputSplit;
@@ -37,19 +36,12 @@ public class JSONFileInputFormat extends FileInputFormat<LongWritable, Document>
 
   }
 
+  /**
+   * Input JSON files can not be split while processing in M/R jobs.
+   */
   @Override
   public boolean isSplitable(JobContext context, Path path) {
-
-    /*
-     * define a config parameter to determine if we want to make it not
-     * splittable.
-     */
-    Configuration conf = context.getConfiguration();
-    if (conf.get("jsonfileinputformat.nosplit") != null) {
-      return false;
-    }
-
-    return true;
+    return false;
   }
 
 }

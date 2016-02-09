@@ -16,7 +16,6 @@
 package org.ojai.json.mapreduce;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Iterator;
 
 import org.apache.hadoop.conf.Configuration;
@@ -43,7 +42,6 @@ public class JSONFileRecordReader extends RecordReader<LongWritable, Document> {
   private long currentPos;
   private long start;
   private long end;
-  private long blockLength;
 
   @Override
   public void close() throws IOException {
@@ -76,33 +74,6 @@ public class JSONFileRecordReader extends RecordReader<LongWritable, Document> {
     return Math.min(1.0F, (float)(currentPos - start) / (float)(end - start));
   }
 
-  private long bytesToSkip(long start, long blockLength)
-      throws IOException {
-    long toSkip = 0;
-    inputStream.seek(start - 1);
-
-    //create InputStreamReader
-    InputStreamReader in = new InputStreamReader(inputStream, "UTF-8");
-    boolean gotStart = false;
-    char curChar;
-    while (toSkip <= blockLength) {
-      curChar = (char)in.read();
-      if (curChar == '}') {
-        gotStart = true;
-      }
-      if (curChar == '{') {
-        if (gotStart) {
-          break;
-        }
-      }
-      if (curChar == ',') {
-        gotStart = false;
-      }
-      toSkip += 1;
-    }
-
-    return toSkip;
-  }
 
   @Override
   public void initialize(InputSplit arg0, TaskAttemptContext taskContext)
@@ -126,23 +97,8 @@ public class JSONFileRecordReader extends RecordReader<LongWritable, Document> {
     FileSystem fs = path.getFileSystem(job);
     inputStream = fs.open(path);
 
-
-    /*
-     * if this block is not the first block check if it falls on document
-     * boundary. If not, skip bytes to start to the next document boundary.
-     */
     start = split.getStart();
-    blockLength = split.getLength();
-    long skipBytes = 0;
-
-    if (start != 0) {
-      /*
-       * not the first block check if it starts on a document boundary
-       */
-      skipBytes = bytesToSkip(start, blockLength);
-      currentPos = start - 1 + skipBytes;
-      inputStream.seek(currentPos);
-    }
+    end = start + split.getLength();
 
     /* Initialize a stream reader so that it can read multiple documents from */
     /* the file */
@@ -156,16 +112,12 @@ public class JSONFileRecordReader extends RecordReader<LongWritable, Document> {
   public boolean nextKeyValue() throws IOException, InterruptedException {
     boolean hasNextKeyVal = false;
 
-    long thisPos = documentStream.getInputStreamPosition();
-    if (thisPos >= (start + blockLength)) {
-      return false;
-    }
-
     if (it.hasNext()) {
       key.set(documentCount);
       document = it.next();
       documentCount++;
       hasNextKeyVal = true;
+      currentPos = documentStream.getInputStreamPosition();
     }
 
     return hasNextKeyVal;
