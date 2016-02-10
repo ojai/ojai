@@ -101,6 +101,15 @@
                 <manifest>
                   <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                 </manifest>
+                <manifestEntries>
+                  <git-commit-id>${git.commit.id}</git-commit-id>
+                  <git-tags>${git.tags}</git-tags>
+                  <git-commit-message-full>${git.commit.message.full}</git-commit-message-full>
+                  <git-commit-user-name>${git.commit.user.name}</git-commit-user-name>
+                  <git-commit-time>${git.commit.time}</git-commit-time>
+                  <git-branch>${git.branch}</git-branch>
+                  <git-dirty>${git.dirty}</git-dirty>
+                </manifestEntries>
               </archive>
             </configuration>
             <executions>
@@ -114,6 +123,40 @@
           </plugin>
       </plugins>
     </pluginManagement>
+
+    <plugins>
+      <!-- Generate build.info -->
+      <plugin>
+        <groupId>pl.project13.maven</groupId>
+        <artifactId>git-commit-id-plugin</artifactId>
+        <version>2.2.0</version>
+        <executions>
+          <execution>
+            <inherited>true</inherited>
+            <goals>
+              <goal>revision</goal>
+            </goals>
+            <configuration>
+              <generateGitPropertiesFilename>target/classes/git.properties</generateGitPropertiesFilename>
+            </configuration>
+          </execution>
+        </executions>
+
+        <configuration>
+          <dateFormat>${maven.build.timestamp.format}</dateFormat>
+          <verbose>false</verbose>
+          <skipPoms>true</skipPoms>
+          <generateGitPropertiesFile>false</generateGitPropertiesFile>
+          <failOnNoGitDirectory>false</failOnNoGitDirectory>
+          <gitDescribe>
+            <skip>false</skip>
+            <always>false</always>
+            <abbrev>7</abbrev>
+            <forceLongFormat>true</forceLongFormat>
+          </gitDescribe>
+        </configuration>
+      </plugin>
+    </plugins>
   </build>
 
   <dependencyManagement>
@@ -236,6 +279,22 @@
                 </goals>
               </execution>
             </executions>
+            <configuration>
+              <archive>
+                <manifest>
+                  <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                </manifest>
+                <manifestEntries>
+                  <git-commit-id>${git.commit.id}</git-commit-id>
+                  <git-tags>${git.tags}</git-tags>
+                  <git-commit-message-full>${git.commit.message.full}</git-commit-message-full>
+                  <git-commit-user-name>${git.commit.user.name}</git-commit-user-name>
+                  <git-commit-time>${git.commit.time}</git-commit-time>
+                  <git-branch>${git.branch}</git-branch>
+                  <git-dirty>${git.dirty}</git-dirty>
+                </manifestEntries>
+              </archive>
+            </configuration>
           </plugin>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
@@ -251,6 +310,22 @@
                 </configuration>
               </execution>
             </executions>
+            <configuration>
+              <archive>
+                <manifest>
+                  <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                </manifest>
+                <manifestEntries>
+                  <git-commit-id>${git.commit.id}</git-commit-id>
+                  <git-tags>${git.tags}</git-tags>
+                  <git-commit-message-full>${git.commit.message.full}</git-commit-message-full>
+                  <git-commit-user-name>${git.commit.user.name}</git-commit-user-name>
+                  <git-commit-time>${git.commit.time}</git-commit-time>
+                  <git-branch>${git.branch}</git-branch>
+                  <git-dirty>${git.dirty}</git-dirty>
+                </manifestEntries>
+              </archive>
+            </configuration>
           </plugin>
         </plugins>
       </build>
