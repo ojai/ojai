@@ -30,15 +30,28 @@ import org.ojai.exceptions.OjaiException;
 @API.Public
 public interface DocumentStream extends AutoCloseable, Iterable<Document> {
 
-  public void streamTo(DocumentListener l);
+  /**
+   * Stream all the documents in this {@code DocumentStream} to the specified
+   * listener.
+   *
+   * @param listener a {@code DocumentListener} which is notified of
+   *        {@code Document}s as they arrive
+   * @throws StreamInUseException if an iterator is already retrieved from this
+   *         {@code DocumentStream}.
+   */
+  public void streamTo(DocumentListener listener);
 
   /**
    * Returns an iterator over a set of {@code Document}.
+   * @throws StreamInUseException if an iterator is already retrieved from this
+   *         {@code DocumentStream}.
    */
   Iterator<Document> iterator();
 
   /**
    * Returns an {@code Iterable} over a set of {@code DocumentReader}.
+   * @throws StreamInUseException if an iterator is already retrieved from this
+   *         {@code DocumentStream}.
    */
   Iterable<DocumentReader> documentReaders();
 

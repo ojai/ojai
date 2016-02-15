@@ -117,14 +117,30 @@ public class JsonDocumentStream implements DocumentStream {
   }
 
   @Override
-  public void streamTo(DocumentListener l) {
+  public void streamTo(DocumentListener listener) {
+    Exception failure = null;
     try {
-      for (Document document : this) {
-        l.documentArrived(document);
+      for (Document doc : this) {
+        if (!listener.documentArrived(doc)) {
+          break;
+        }
       }
     } catch (Exception e) {
-      close();
-      l.failed(e);
+      failure = e;
+    } finally {
+      try {
+        close();
+      } catch (Exception e) {
+        if (failure == null) {
+          failure = e;
+        }
+      }
+    }
+
+    if (failure == null) {
+      listener.eos();
+    } else {
+      listener.failed(failure);
     }
   }
 

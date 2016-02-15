@@ -16,17 +16,20 @@
 package org.ojai.tests.json;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
 import java.util.Map;
 
 import org.junit.Test;
 import org.ojai.Document;
+import org.ojai.DocumentListener;
 import org.ojai.DocumentReader;
+import org.ojai.DocumentReader.EventType;
 import org.ojai.DocumentStream;
 import org.ojai.FieldPath;
-import org.ojai.DocumentReader.EventType;
 import org.ojai.Value.Type;
 import org.ojai.json.Json;
 import org.ojai.json.JsonOptions;
@@ -186,6 +189,76 @@ public class TestJsonDocumentStream extends BaseTest {
       } catch (Exception e) {
         assertEquals(4, documentCount);
       }
+    }
+  }
+
+  @Test
+  public void testDocumentListener() throws IOException {
+    final Document status = Json.newDocument();
+
+    try (InputStream in = getJsonStream("org/ojai/test/data/multidocument.json");
+        DocumentStream stream = Json.newDocumentStream(in)) {
+      stream.streamTo(new DocumentListener() {
+        int documentProcessed = 0;
+        @Override
+        public boolean documentArrived(Document document) {
+          documentProcessed++;
+          status.set("documentArrived", true);
+          logger.info("Document arrived: %s", document.asJsonString());
+          if ("id3".equals(document.getString("business_id"))) {
+            return false;
+          } else {
+            return true;
+          }
+        }
+
+        @Override
+        public void failed(Exception e) {
+          status.set("failed", true);
+        }
+
+        @Override
+        public void eos() {
+          status.set("eos", true);
+          assertEquals(3, documentProcessed);
+        }
+      });
+
+      assertEquals(true, status.getBoolean("documentArrived"));
+      assertNull(status.getBooleanObj("failed"));
+      assertEquals(true, status.getBoolean("eos"));
+    }
+  }
+
+  @Test
+  public void testDocumentListenerError() throws IOException {
+    final Document status = Json.newDocument();
+    try (InputStream in = getJsonStream("org/ojai/test/data/multidocument.json");
+        DocumentStream stream = Json.newDocumentStream(in)) {
+
+      stream.iterator(); // open an iterator and ignore it
+
+      stream.streamTo(new DocumentListener() {
+        @Override
+        public boolean documentArrived(Document document) {
+          status.set("documentArrived", true);
+          return false;
+        }
+
+        @Override
+        public void failed(Exception e) {
+          status.set("failed", true);
+        }
+
+        @Override
+        public void eos() {
+          status.set("eos", true);
+        }
+      });
+
+      assertNull(status.getBooleanObj("documentArrived"));
+      assertEquals(true, status.getBoolean("failed"));
+      assertNull(status.getBooleanObj("eos"));
     }
   }
 
