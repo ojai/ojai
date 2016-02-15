@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import org.junit.Test;
 import org.ojai.Document;
@@ -526,6 +527,53 @@ public class TestJsonDocument extends BaseTest {
       doc.getIdString();
       fail();
     } catch (TypeException e) {}
+  }
+
+  @Test
+  public void testNonExistingPrimitives() {
+    Document doc = Json.newDocument();
+
+    assertNull(doc.getBooleanObj("non-existent-field"));
+    try {
+      doc.getBoolean("non-existent-field");
+      fail();
+    } catch (NoSuchElementException e) {}
+
+    assertNull(doc.getByteObj("non-existent-field"));
+    try {
+      doc.getByte("non-existent-field");
+      fail();
+    } catch (NoSuchElementException e) {}
+
+    assertNull(doc.getShortObj("non-existent-field"));
+    try {
+      doc.getShort("non-existent-field");
+      fail();
+    } catch (NoSuchElementException e) {}
+
+    assertNull(doc.getIntObj("non-existent-field"));
+    try {
+      doc.getInt("non-existent-field");
+      fail();
+    } catch (NoSuchElementException e) {}
+
+    assertNull(doc.getLongObj("non-existent-field"));
+    try {
+      doc.getLong("non-existent-field");
+      fail();
+    } catch (NoSuchElementException e) {}
+
+    assertNull(doc.getFloatObj("non-existent-field"));
+    try {
+      doc.getFloat("non-existent-field");
+      fail();
+    } catch (NoSuchElementException e) {}
+
+    assertNull(doc.getDoubleObj("non-existent-field"));
+    try {
+      doc.getDouble("non-existent-field");
+      fail();
+    } catch (NoSuchElementException e) {}
   }
 
 }

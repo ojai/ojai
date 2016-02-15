@@ -27,6 +27,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 import org.ojai.Document;
@@ -146,6 +147,12 @@ public class JsonDocument extends JsonValue implements Document, Map<String, Obj
 
   }
 
+  private void testNoSuchElement(FieldPath fieldPath, JsonValue value) {
+    if (value == null) {
+      throw new NoSuchElementException("Field '"
+          + fieldPath.asPathString() + "' not found in the document.");
+    }
+  }
 
   private JsonDocument setCommon(FieldPath fieldPath, JsonValue value) {
     Iterator<FieldSegment> iter = fieldPath.iterator();
@@ -367,101 +374,185 @@ public class JsonDocument extends JsonValue implements Document, Map<String, Obj
   }
 
   @Override
+  public boolean getBoolean(String fieldPath) {
+    return getBoolean(FieldPath.parseFrom(fieldPath));
+  }
+
+  @Override
   public boolean getBoolean(FieldPath fieldPath) {
     JsonValue value = getKeyValueAt(fieldPath.iterator());
-    if (value != null) {
-      return value.getBoolean();
-    }
-    return false;
+    testNoSuchElement(fieldPath, value);
+    return value.getBoolean();
+  }
+
+  @Override
+  public Boolean getBooleanObj(String fieldPath) {
+    return getBooleanObj(FieldPath.parseFrom(fieldPath));
   }
 
   @Override
   public Boolean getBooleanObj(FieldPath fieldPath) {
-    return new Boolean(getBoolean(fieldPath));
+    JsonValue value = getKeyValueAt(fieldPath.iterator());
+    if (value != null) {
+      return value.getBoolean();
+    }
+    return null;
+  }
+
+  @Override
+  public byte getByte(String fieldPath) {
+    return getByte(FieldPath.parseFrom(fieldPath));
   }
 
   @Override
   public byte getByte(FieldPath fieldPath) {
     JsonValue value = getKeyValueAt(fieldPath.iterator());
-    if (value != null) {
-      return value.getByte();
-    }
-    return 0;
+    testNoSuchElement(fieldPath, value);
+    return value.getByte();
+  }
+
+  @Override
+  public Byte getByteObj(String fieldPath) {
+    return getByteObj(FieldPath.parseFrom(fieldPath));
   }
 
   @Override
   public Byte getByteObj(FieldPath fieldPath) {
-    return new Byte(getByte(fieldPath));
+    JsonValue value = getKeyValueAt(fieldPath.iterator());
+    if (value != null) {
+      return value.getByte();
+    }
+    return null;
+  }
+
+  @Override
+  public short getShort(String fieldPath) {
+    return getShort(FieldPath.parseFrom(fieldPath));
   }
 
   @Override
   public short getShort(FieldPath fieldPath) {
     JsonValue value = getKeyValueAt(fieldPath.iterator());
-    if (value != null) {
-      return value.getShort();
-    }
-    return 0;
+    testNoSuchElement(fieldPath, value);
+    return value.getShort();
+  }
+
+  @Override
+  public Short getShortObj(String fieldPath) {
+    return getShortObj(FieldPath.parseFrom(fieldPath));
   }
 
   @Override
   public Short getShortObj(FieldPath fieldPath) {
-    return new Short(getShort(fieldPath));
+    JsonValue value = getKeyValueAt(fieldPath.iterator());
+    if (value != null) {
+      return value.getShort();
+    }
+    return null;
+  }
+
+  @Override
+  public int getInt(String fieldPath) {
+    return getInt(FieldPath.parseFrom(fieldPath));
   }
 
   @Override
   public int getInt(FieldPath fieldPath) {
     JsonValue value = getKeyValueAt(fieldPath.iterator());
-    if (value != null) {
-      return value.getInt();
-    }
-    return 0;
+    testNoSuchElement(fieldPath, value);
+    return value.getInt();
+  }
+
+  @Override
+  public Integer getIntObj(String fieldPath) {
+    return getIntObj(FieldPath.parseFrom(fieldPath));
   }
 
   @Override
   public Integer getIntObj(FieldPath fieldPath) {
-    return new Integer(getInt(fieldPath));
+    JsonValue value = getKeyValueAt(fieldPath.iterator());
+    if (value != null) {
+      return value.getInt();
+    }
+    return null;
+  }
+
+  @Override
+  public long getLong(String fieldPath) {
+    return getLong(FieldPath.parseFrom(fieldPath));
   }
 
   @Override
   public long getLong(FieldPath fieldPath) {
     JsonValue value = getKeyValueAt(fieldPath.iterator());
-    if (value != null) {
-      return value.getLong();
-    }
-    return 0;
+    testNoSuchElement(fieldPath, value);
+    return value.getLong();
+  }
+
+  @Override
+  public Long getLongObj(String fieldPath) {
+    return getLongObj(FieldPath.parseFrom(fieldPath));
   }
 
   @Override
   public Long getLongObj(FieldPath fieldPath) {
-    return new Long(getLong(fieldPath));
+    JsonValue value = getKeyValueAt(fieldPath.iterator());
+    if (value != null) {
+      return value.getLong();
+    }
+    return null;
+  }
+
+  @Override
+  public float getFloat(String fieldPath) {
+    return getFloat(FieldPath.parseFrom(fieldPath));
   }
 
   @Override
   public float getFloat(FieldPath fieldPath) {
     JsonValue value = getKeyValueAt(fieldPath.iterator());
-    if (value != null) {
-      return value.getFloat();
-    }
-    return 0;
+    testNoSuchElement(fieldPath, value);
+    return value.getFloat();
+  }
+
+  @Override
+  public Float getFloatObj(String fieldPath) {
+    return getFloatObj(FieldPath.parseFrom(fieldPath));
   }
 
   @Override
   public Float getFloatObj(FieldPath fieldPath) {
-    return new Float(getFloat(fieldPath));
+    JsonValue value = getKeyValueAt(fieldPath.iterator());
+    if (value != null) {
+      return value.getFloat();
+    }
+    return null;
+  }
+
+  @Override
+  public double getDouble(String fieldPath) {
+    return getDouble(FieldPath.parseFrom(fieldPath));
   }
 
   @Override
   public double getDouble(FieldPath fieldPath) {
     JsonValue value = getKeyValueAt(fieldPath.iterator());
-    if (value != null) {
-      return value.getDouble();
-    }
-    return 0;
+    testNoSuchElement(fieldPath, value);
+    return value.getDouble();
+  }
+
+  @Override
+  public Double getDoubleObj(String fieldPath) {
+    return getDoubleObj(FieldPath.parseFrom(fieldPath));
   }
 
   @Override
   public Double getDoubleObj(FieldPath fieldPath) {
-    return new Double(getDouble(fieldPath));
+    JsonValue value = getKeyValueAt(fieldPath.iterator());
+    if (value != null) {
+      return value.getDouble();
+    }
+    return null;
   }
 
   @Override
@@ -790,76 +881,6 @@ public class JsonDocument extends JsonValue implements Document, Map<String, Obj
   @Override
   public String getString(String fieldPath) {
     return getString(FieldPath.parseFrom(fieldPath));
-  }
-
-  @Override
-  public boolean getBoolean(String fieldPath) {
-    return getBoolean(FieldPath.parseFrom(fieldPath));
-  }
-
-  @Override
-  public Boolean getBooleanObj(String fieldPath) {
-    return new Boolean(getBoolean(fieldPath));
-  }
-
-  @Override
-  public byte getByte(String fieldPath) {
-    return getByte(FieldPath.parseFrom(fieldPath));
-  }
-
-  @Override
-  public Byte getByteObj(String fieldPath) {
-    return new Byte(getByte(fieldPath));
-  }
-
-  @Override
-  public short getShort(String fieldPath) {
-    return getShort(FieldPath.parseFrom(fieldPath));
-  }
-
-  @Override
-  public Short getShortObj(String fieldPath) {
-    return new Short(getShort(fieldPath));
-  }
-
-  @Override
-  public int getInt(String fieldPath) {
-    return getInt(FieldPath.parseFrom(fieldPath));
-  }
-
-  @Override
-  public Integer getIntObj(String fieldPath) {
-    return new Integer(getInt(fieldPath));
-  }
-
-  @Override
-  public long getLong(String fieldPath) {
-    return getLong(FieldPath.parseFrom(fieldPath));
-  }
-
-  @Override
-  public Long getLongObj(String fieldPath) {
-    return new Long(getLong(fieldPath));
-  }
-
-  @Override
-  public float getFloat(String fieldPath) {
-    return getFloat(FieldPath.parseFrom(fieldPath));
-  }
-
-  @Override
-  public Float getFloatObj(String fieldPath) {
-    return new Float(getFloat(fieldPath));
-  }
-
-  @Override
-  public double getDouble(String fieldPath) {
-    return getDouble(FieldPath.parseFrom(fieldPath));
-  }
-
-  @Override
-  public Double getDoubleObj(String fieldPath) {
-    return new Double(getDouble(fieldPath));
   }
 
   @Override
