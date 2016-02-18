@@ -104,7 +104,7 @@
                 <manifestEntries>
                   <git-commit-id>${git.commit.id}</git-commit-id>
                   <git-tags>${git.tags}</git-tags>
-                  <git-commit-message-full>${git.commit.message.full}</git-commit-message-full>
+                  <git-commit-message>${git.commit.message.short}</git-commit-message>
                   <git-commit-user-name>${git.commit.user.name}</git-commit-user-name>
                   <git-commit-time>${git.commit.time}</git-commit-time>
                   <git-branch>${git.branch}</git-branch>
@@ -287,7 +287,7 @@
                 <manifestEntries>
                   <git-commit-id>${git.commit.id}</git-commit-id>
                   <git-tags>${git.tags}</git-tags>
-                  <git-commit-message-full>${git.commit.message.full}</git-commit-message-full>
+                  <git-commit-message>${git.commit.message.short}</git-commit-message>
                   <git-commit-user-name>${git.commit.user.name}</git-commit-user-name>
                   <git-commit-time>${git.commit.time}</git-commit-time>
                   <git-branch>${git.branch}</git-branch>
@@ -318,7 +318,7 @@
                 <manifestEntries>
                   <git-commit-id>${git.commit.id}</git-commit-id>
                   <git-tags>${git.tags}</git-tags>
-                  <git-commit-message-full>${git.commit.message.full}</git-commit-message-full>
+                  <git-commit-message>${git.commit.message.short}</git-commit-message>
                   <git-commit-user-name>${git.commit.user.name}</git-commit-user-name>
                   <git-commit-time>${git.commit.time}</git-commit-time>
                   <git-branch>${git.branch}</git-branch>
