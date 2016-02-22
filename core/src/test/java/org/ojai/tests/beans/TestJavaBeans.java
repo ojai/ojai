@@ -64,9 +64,8 @@ public class TestJavaBeans {
     assertEquals(bean.getBigDecimalT(), doc.getDecimal("bigDecimalT"));
     assertEquals(bean.getBigDecimalT(), newBean.getBigDecimalT());
 
-    // disabled until MAPR-18949 is fixed
-    // assertEquals(bean.getDateT(), doc.getDate("dateT"));
-    // assertEquals(bean.getDateT(), newBean.getDateT());
+    assertEquals(bean.getDateT(), doc.getDate("dateT"));
+    assertEquals(bean.getDateT(), newBean.getDateT());
 
     assertEquals(bean.getTimeT().toString(), doc.getTime("timeT").toString());
     assertEquals(bean.getTimeT().toString(), newBean.getTimeT().toString());
@@ -74,9 +73,8 @@ public class TestJavaBeans {
     assertEquals(bean.getTimestampT(), doc.getTimestamp("timestampT"));
     assertEquals(bean.getTimestampT(), newBean.getTimestampT());
 
-    // disabled until Interval.equals() is implemented
-    // assertEquals(bean.getIntervalT(), doc.getInterval("intervalT"));
-    // assertEquals(bean.getIntervalT(), newBean.getIntervalT());
+    assertEquals(bean.getIntervalT(), doc.getInterval("intervalT"));
+    assertEquals(bean.getIntervalT(), newBean.getIntervalT());
 
     assertEquals(bean.getByteBufferT(), doc.getBinary("byteBufferT"));
     assertEquals(bean.getByteBufferT(), newBean.getByteBufferT());
