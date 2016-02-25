@@ -15,6 +15,7 @@
  */
 package org.ojai.store;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
 import java.util.List;
@@ -45,7 +46,7 @@ import org.ojai.types.OTimestamp;
  *
  * <h3>{@code setOrReplace()}</h3>
  * These are performant APIs that do not require or perform a read-modify-write
- * operation on the server.<br/><br/>
+ * operation on the document store.<br/><br/>
  * If a segment in the specified FieldPath doesn't exist, it is created. For example:
  * <blockquote>{@code setOrReplace("a.b.c", (int) 10)}</blockquote>
  * In this example, if the Document stored in the DocumentStore has an empty MAP
@@ -54,7 +55,7 @@ import org.ojai.types.OTimestamp;
  * {@code "c"} of type INTEGER under {@code "b"} and set its value to 10.<br/><br/>
  *
  * If any segment specified in the FieldPath is of a different type than the
- * existing field segment on the server, it will be deleted and replaced by
+ * existing field segment on the document store, it will be deleted and replaced by
  * a new segment. For example:
  * <blockquote>{@code setOrReplace("a.b.c", (int) 10)}<br/></blockquote>
  * If the Document stored in the DocumentStore has a field "a" of type array.
@@ -65,22 +66,22 @@ import org.ojai.types.OTimestamp;
  * not validate existence or type of any field segment in the specified FieldPath.
  *
  * <h3>{@code append()}</h3>
- * These operations perform read-modify-write on the server and will fail if
+ * These operations perform read-modify-write on the document store and will fail if
  * type of any of the intermediate fields segment in the specified FieldPath
  * does not match the type of the corresponding field in the document stored
- * on server. For example, an append operation on field {@code "a.b.c"} will
- * fail if, on the server, the field {@code "a"} itself is an ARRAY or INTEGER.
+ * on document store. For example, an append operation on field {@code "a.b.c"} will
+ * fail if, on the document store, the field {@code "a"} itself is an ARRAY or INTEGER.
  *
  * <h3>{@code merge()}</h3>
  * If the specified field is of a type other than MAP, then the operation will fail.
- * If the field doesn't exist in the Document on the server, then this operation will
+ * If the field doesn't exist in the Document on the document store, then this operation will
  * create a new field at the given path. This new field will be of the MAP type and
  * its value will be as specified in the parameter.
  *
  * This operation will fail if any type of intermediate field segment specified
  * in the FieldPath doesn't match the type of the corresponding field in the
- * record stored on the server. For example, a merge operation on field {@code "a.b.c"}
- * will fail if, on the server, the field {@code "a"} itself is an ARRAY or INTEGER.
+ * document stored on the document store. For example, a merge operation on field {@code "a.b.c"}
+ * will fail if, on the document store, the field {@code "a"} itself is an ARRAY or INTEGER.
  *
  * <h3>{@code increment()}</h3>
  * If the FieldPath specified for the incremental change doesn't exist in the
@@ -90,8 +91,8 @@ import org.ojai.types.OTimestamp;
  * <br/><br/>
  * This operation will fail if the type of any intermediate fields specified
  * in the FieldPath doesn't match the type of the corresponding field in the
- * record stored on the server. For example, an operation on field "a.b.c" will fail
- * if, on the server, record a itself is an array or integer.
+ * document stored on the document store. For example, an operation on field "a.b.c" will fail
+ * if, on the document store, document a itself is an array or integer.
  * <br/><br/>
  * An increment operation can be applied on any of the numeric types such as byte,
  * short, int, long, float, double, or decimal. The operation will fail if the
@@ -109,7 +110,7 @@ import org.ojai.types.OTimestamp;
 public interface DocumentMutation extends Iterable<MutationOp> {
 
   /**
-   * Empties this Mutation object.
+   * Empties thisDocumentMutation object.
    */
   public DocumentMutation empty();
 
@@ -830,7 +831,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
   /**
    * Appends elements of the given list to an existing ARRAY at the given FieldPath.
    * <br/><br/>
-   * If the field doesn't exist on server, it will be created and will be set to
+   * If the field doesn't exist on document store, it will be created and will be set to
    * the specified List. If the field already exists, but is not of ARRAY type,
    * then this operation will fail.
    *
@@ -843,7 +844,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
   /**
    * Appends elements of the given list to an existing ARRAY at the given FieldPath.
    * <br/><br/>
-   * If the field doesn't exist on server, it will be created and will be set to
+   * If the field doesn't exist on document store, it will be created and will be set to
    * the specified List. If the field already exists, but is not of ARRAY type,
    * then this operation will fail.
    *
@@ -856,7 +857,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
   /**
    * Appends the given string to an existing STRING at the given FieldPath.
    * <br/><br/>
-   * If the field doesn't exist on server, it will be created and will be set to
+   * If the field doesn't exist on document store, it will be created and will be set to
    * the specified String. If the field already exists, but is not of STRING type,
    * then this operation will fail.
    *
@@ -869,7 +870,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
   /**
    * Appends the given string to an existing STRING at the given FieldPath.
    * <br/><br/>
-   * If the field doesn't exist on server, it will be created and will be set to
+   * If the field doesn't exist on document store, it will be created and will be set to
    * the specified String. If the field already exists, but is not of STRING type,
    * then this operation will fail.
    *
@@ -882,7 +883,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
   /**
    * Appends the given byte array to an existing BINARY value at the given FieldPath.
    * <br/><br/>
-   * If the field doesn't exist on server, it will be created and will be set to
+   * If the field doesn't exist on document store, it will be created and will be set to
    * the BINARY value specified by the given byte array. If the field already exists,
    * but is not of BINARY type, then this operation will fail.
    *
@@ -897,7 +898,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
   /**
    * Appends the given byte array to an existing BINARY value at the given FieldPath.
    * <br/><br/>
-   * If the field doesn't exist on server, it will be created and will be set to
+   * If the field doesn't exist on document store, it will be created and will be set to
    * the BINARY value specified by the given byte array. If the field already exists,
    * but is not of BINARY type, then this operation will fail.
    *
@@ -912,7 +913,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
   /**
    * Appends the given byte array to an existing BINARY value at the given FieldPath.
    * <br/><br/>
-   * If the field doesn't exist on server, it will be created and will be set to
+   * If the field doesn't exist on document store, it will be created and will be set to
    * the BINARY value specified by the given byte array. If the field already exists,
    * but is not of BINARY type, then this operation will fail.
    *
@@ -925,7 +926,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
   /**
    * Appends the given byte array to an existing BINARY value at the given FieldPath.
    * <br/><br/>
-   * If the field doesn't exist on server, it will be created and will be set to
+   * If the field doesn't exist on document store, it will be created and will be set to
    * the BINARY value specified by the given byte array. If the field already exists,
    * but is not of BINARY type, then this operation will fail.
    *
@@ -938,7 +939,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
   /**
    * Appends the given ByteBuffer to an existing BINARY value at the given FieldPath.
    * <br/><br/>
-   * If the field doesn't exist on server, it will be created and will be set to
+   * If the field doesn't exist on document store, it will be created and will be set to
    * the BINARY value specified by the given ByteBuffer. If the field already exists,
    * but is not of BINARY type, then this operation will fail.
    *
@@ -951,7 +952,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
   /**
    * Appends the given ByteBuffer to an existing BINARY value at the given FieldPath.
    * <br/><br/>
-   * If the field doesn't exist on server, it will be created and will be set to
+   * If the field doesn't exist on document store, it will be created and will be set to
    * the BINARY value specified by the given ByteBuffer. If the field already exists,
    * but is not of BINARY type, then this operation will fail.
    *
@@ -1102,6 +1103,68 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * @param inc increment to apply to a field - can be positive or negative
    */
   public DocumentMutation increment(FieldPath path, BigDecimal inc);
+
+  /**
+   * Atomically applies a decrement to a given field (in dot separated notation)
+   * of the given row id.
+   *
+   * If the field path specified for the decrement operation doesn't
+   * exist in the document in document store, then this operation will create a new element at the
+   * given path. This new element will be of same type as the value specified
+   * in the parameter.
+   *
+   * This operation will fail if the type of any intermediate path elements specified
+   * in the append field path doesn't match the type of the corresponding field in the
+   * document stored on the document store. For example, an operation on field "a.b.c" will fail
+   * if, on the document store, document a itself is an array or integer.
+   *
+   * If the field doesn't exist in
+   * the document store then it will be created with the type of given decremental value.
+   * A decrement operation can be applied on any of the numeric types
+   * of a field, such as byte, short, int, long, float, double, or decimal.
+   * The operation will fail if the decrement is applied to a field
+   * that is of a non-numeric type.
+   *
+   * The decrement operation won't change the type of the existing value stored in
+   * the given field for the row. The resultant value of the field will be
+   * truncated based on the original type of the field.
+   *
+   * For example, field 'score' is of type int and contains 60. The decrement
+   * '5.675', a double, is applied. The resultant value of the field
+   * will be 54 (54.325 will be truncated to 54).
+   *
+   * @param path field name in dot separated notation
+   * @param dec decrement to apply to a field - can be positive or negative
+   * @throws IOException
+   */
+
+  public DocumentMutation decrement(FieldPath path, byte dec);
+
+  public DocumentMutation decrement(String path, byte dec);
+
+  public DocumentMutation decrement(FieldPath path, short dec);
+
+  public DocumentMutation decrement(String path, short dec);
+
+  public DocumentMutation decrement(String path, int dec);
+
+  public DocumentMutation decrement(FieldPath path, int dec);
+
+  public DocumentMutation decrement(FieldPath path, long dec);
+
+  public DocumentMutation decrement(String path, long dec);
+
+  public DocumentMutation decrement(String path, float dec);
+
+  public DocumentMutation decrement(FieldPath path, float dec);
+
+  public DocumentMutation decrement(String path, double dec);
+
+  public DocumentMutation decrement(FieldPath path, double dec);
+
+  public DocumentMutation decrement(String path, BigDecimal dec);
+
+  public DocumentMutation decrement(FieldPath path, BigDecimal dec);
 
   /**
    * Deletes the field at the given path.
