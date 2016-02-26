@@ -42,12 +42,55 @@
     </license>
   </licenses>
 
+  <scm>
+    <connection>scm:git:git@github.com:ojai/ojai.git</connection>
+    <url>https://github.com/ojai/ojai</url>
+  </scm>
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/ojai/ojai/issues</url>
+  </issueManagement>
+  <developers>
+    <developer>
+      <id>adityakishore</id>
+      <name>Aditya Kishore</name>
+      <email>adityakishore@gmail.com</email>
+      <roles>
+        <role>developer</role>
+      </roles>
+      <timezone>-8</timezone>
+    </developer>
+  </developers>
+  <inceptionYear>2015</inceptionYear>
+
+  <distributionManagement>
+    <repository>
+      <id>${distMgmtStagingId}</id>
+      <name>${distMgmtStagingName}</name>
+      <url>${distMgmtStagingUrl}</url>
+    </repository>
+    <snapshotRepository>
+      <id>${distMgmtSnapshotsId}</id>
+      <name>${distMgmtSnapshotsName}</name>
+      <url>${distMgmtSnapshotsUrl}</url>
+    </snapshotRepository>
+  </distributionManagement>
+
   <properties>
+    <distMgmtSnapshotsId>ossrh</distMgmtSnapshotsId>
+    <distMgmtSnapshotsName>Sonatype Snapshot Repository</distMgmtSnapshotsName>
+    <distMgmtSnapshotsUrl>https://oss.sonatype.org/content/repositories/snapshots</distMgmtSnapshotsUrl>
+    <distMgmtStagingId>ossrh</distMgmtStagingId>
+    <distMgmtStagingName>Sonatype Release Distribution Repository</distMgmtStagingName>
+    <distMgmtStagingUrl>https://oss.sonatype.org/service/local/staging/deploy/maven2</distMgmtStagingUrl>
+
     <slf4j.version>1.7.12</slf4j.version>
     <hadoop.version>2.7.1</hadoop.version>
     <jackson.version>2.7.1</jackson.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <gpg.useagent>true</gpg.useagent>
+    <gpg.keyname>adityakishore@gmail.com</gpg.keyname>
   </properties>
 
   <modules>
@@ -325,6 +368,24 @@
                   <git-dirty>${git.dirty}</git-dirty>
                 </manifestEntries>
               </archive>
+            </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>1.6</version>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <keyname>${gpg.keyname}</keyname>
+              <useAgent>${gpg.useagent}</useAgent>
             </configuration>
           </plugin>
         </plugins>
