@@ -110,7 +110,7 @@ import org.ojai.types.OTimestamp;
 public interface DocumentMutation extends Iterable<MutationOp> {
 
   /**
-   * Empties thisDocumentMutation object.
+   * Empties this DocumentMutation object.
    */
   public DocumentMutation empty();
 
@@ -1105,7 +1105,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
   public DocumentMutation increment(FieldPath path, BigDecimal inc);
 
   /**
-   * Atomically applies a decrement to a given field (in dot separated notation)
+   * Atomically decrements the given field (in dot separated notation)
    * of the given row id.
    *
    * If the field path specified for the decrement operation doesn't
