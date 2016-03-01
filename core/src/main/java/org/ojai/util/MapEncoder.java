@@ -99,7 +99,7 @@ public class MapEncoder {
       switch (event) {
       case END_MAP:
       case END_ARRAY:
-        throw new EncodingException("Unexpected event: " + event);
+        return objList; // in case of empty array [] return the value immediately
       case START_MAP:
         objList.add(dr.getArrayIndex(), encodeMap(dr));
         break;

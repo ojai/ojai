@@ -409,6 +409,7 @@ public class TestJsonDocument extends BaseTest {
     Document docInArr1 = Json.newDocument();
     Document docInArr2 = Json.newDocument();
     Document docInArr3 = Json.newDocument();
+    Document docInArr4 = Json.newDocument();
     Document dateTimeDoc = Json.newDocument();
 
     dateTimeDoc.set("dateLong", new ODate(System.currentTimeMillis() / 1000))
@@ -430,9 +431,17 @@ public class TestJsonDocument extends BaseTest {
 
     docInArr3.setArray("arr3", new Object[] {"arr3", true, (long)123456, (float)12345.6789, (double)123.4567890, dateTimeDoc});
 
+    docInArr4.set("arr4string", "string")
+            .setArray("arr4", new String[]{} )
+            .set("arr4int", 5);
+
+    Map<String, Object> emptyArrayTestMap = docInArr4.asMap();
+    assertNotNull(emptyArrayTestMap);
+    assertEquals(new ArrayList(),(ArrayList)emptyArrayTestMap.get("arr4"));
+
     doc.set("a.b", "value1")
        .set("a.c", true)
-       .setArray("a.docInception", new Object[] {docInArr1, docInArr2, docInArr3});
+       .setArray("a.docInception", new Object[] {docInArr1, docInArr2, docInArr3, docInArr4});
 
     Map<String, Object> mapDoc = doc.asMap();
     assertNotNull(mapDoc);
