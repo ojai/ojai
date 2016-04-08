@@ -366,7 +366,7 @@ public abstract class FieldSegment implements Comparable<FieldSegment> {
     return asPathString(true);
   }
 
-  final String asPathString(boolean quote) {
+  public final String asPathString(boolean quote) {
     StringBuilder sb = new StringBuilder();
     FieldSegment seg = this;
     seg.writeSegment(sb, quote);
@@ -484,7 +484,11 @@ public abstract class FieldSegment implements Comparable<FieldSegment> {
   }
 
   boolean isAtOrBelow(FieldSegment otherSeg) {
-    if (this == otherSeg || otherSeg == null) {
+    // EMPTY is treated as root of the FieldPath so implicitly every
+    // FieldPath is a child of EMPTY
+    if (this == otherSeg 
+        || otherSeg == null
+        || otherSeg.segmentEquals(FieldPath.EMPTY.getRootSegment())) {
       return true;
     } else if (!segmentEquals(otherSeg)) {
       return false;

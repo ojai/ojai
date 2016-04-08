@@ -184,6 +184,14 @@ public final class FieldPath implements Comparable<FieldPath>, Iterable<FieldSeg
   }
 
   /**
+   * @return A {@code FieldPath} with specified {@codeFieldSegment} added as
+   * the child of the leaf of this {@code FieldPath}.
+   */
+  public FieldPath cloneWithNewChild(FieldSegment childSegment) {
+    return new FieldPath(rootSegment.cloneWithNewChild(childSegment));
+  }
+
+  /**
    * @return A sub-segment of this FieldPath starting after the specified
    *         ancestor. For example if the current FieldPath is "a.b.c.d"
    *         and the specified ancestor is "a.b", will return "c.d".<br/>
@@ -226,6 +234,36 @@ public final class FieldPath implements Comparable<FieldPath>, Iterable<FieldSeg
    */
   public boolean isAtOrAbove(FieldPath other) {
     return rootSegment.isAtOrAbove(other.rootSegment);
+  }
+
+  /**
+   * @return Returns the root segment of the child if {@code FieldPath} contains ancestor
+   *  entirely,returns {@value FieldPath.EMPTY} if field and ancestor are identical field
+   *  paths or returns {@value null} if field and ancestor have a difference of at lease
+   *  one field or its type.
+   */
+  public FieldSegment segmentAfterAncestor(FieldPath ancestor) {
+    if (this.equals(ancestor)) {
+      return EMPTY.getRootSegment();
+    }
+
+    FieldSegment fseg = rootSegment;
+    FieldSegment aseg = ancestor.getRootSegment();
+
+    while(fseg != null && aseg != null) {
+      if (!fseg.segmentEquals(aseg)) {
+        if (fseg.isNamed() && aseg.isNamed()
+            && ((NameSegment)fseg).getName().equals(((NameSegment)aseg).getName())
+            && fseg.isArray()
+            && aseg.isLeaf()) {
+          return fseg;
+        }
+        return null;
+      }
+      fseg = fseg.getChild();
+      aseg = aseg.getChild();
+    }
+    return fseg;
   }
 
   /**
