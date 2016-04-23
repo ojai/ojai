@@ -1,0 +1,11 @@
+[{"rid": "1",
+  "info":[{"name": {"first": "John","last": "Doe"}}, {"age": 35}, {"num":123.4}]
+ },
+ {"rid": "2",
+  "name":{"first" : "Jack", "last": "Jones"},
+  "age": 40
+ },
+ {"rid": "3",
+  "name": ["Bob", "Greg","Mike", "Romano",{"age": 31}]
+ }
+]

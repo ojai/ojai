@@ -566,7 +566,7 @@ public class JsonStreamDocumentReader implements DocumentReader {
 
   protected JsonToken nextToken() {
     if (hasMoreTokens()) {
-        return cachedTokens.remove();
+      return cachedTokens.remove();
     }
     throw new DecodingException("No more Json tokens.");
   }
@@ -576,6 +576,18 @@ public class JsonStreamDocumentReader implements DocumentReader {
       if (!cachedTokens.isEmpty()) return true;
       JsonToken token = getParser().nextToken();
       if (token == null) return false;
+      /*
+       * if the data is in array of documents format, the first token encountered will be
+       * START_ARRAY and the last token will be a STOP_ARRAY.
+       */
+      if (mapLevel == 0) {
+        if (token == JsonToken.START_ARRAY) {
+          token = getParser().nextToken();
+        }
+        if (token == JsonToken.END_ARRAY) {
+          return false;
+        }
+      }
       cachedTokens.add(token);
       return true;
     } catch (IOException e) {
