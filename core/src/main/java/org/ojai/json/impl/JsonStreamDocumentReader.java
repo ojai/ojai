@@ -578,15 +578,27 @@ public class JsonStreamDocumentReader implements DocumentReader {
       if (token == null) return false;
       /*
        * if the data is in array of documents format, the first token encountered will be
-       * START_ARRAY and the last token will be a STOP_ARRAY.
+       * START_ARRAY and the last token will be a STOP_ARRAY. If we are not using array format,
+       * we will encounter START_MAP.
        */
       if (mapLevel == 0) {
         if (token == JsonToken.START_ARRAY) {
           token = getParser().nextToken();
         }
         if (token == JsonToken.END_ARRAY) {
-          return false;
+          token = getParser().nextToken();
+          /*
+           * If we encounter a new token after end of an array of document, we will expect
+           * this to be either a START_MAP (start of a new document) or START_ARRAY (new array
+           * of documents). If it's a START_MAP, continue by caching the token. If it's
+           * START_ARRAY, we need to get the next token from stream.
+           */
+          if (token == JsonToken.START_ARRAY) {
+            token = getParser().nextToken();
+          }
         }
+        /* stream is exhausted */
+        if (token == null) return false;
       }
       cachedTokens.add(token);
       return true;
