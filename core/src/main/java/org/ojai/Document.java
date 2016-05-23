@@ -438,7 +438,8 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
-   * specified Document.
+   * specified Document. Recursive set such as set("a", doc) followed
+   * by set("a.b", doc) is undefined.
    *
    * @param fieldPath the FieldPath to set
    * @param value the Document
@@ -448,7 +449,8 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
-   * specified Document.
+   * specified Document. Recursive set such as set("a", doc) followed
+   * by set("a.b", doc) is undefined.
    *
    * @param fieldPath the FieldPath to set
    * @param value the Document
