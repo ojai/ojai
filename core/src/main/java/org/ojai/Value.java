@@ -30,56 +30,74 @@ import org.ojai.types.OTimestamp;
 @API.Public
 public interface Value {
 
+  public static final byte TYPE_CODE_NULL       = 1;
+  public static final byte TYPE_CODE_BOOLEAN    = 2;
+  public static final byte TYPE_CODE_STRING     = 3;
+  public static final byte TYPE_CODE_BYTE       = 4;
+  public static final byte TYPE_CODE_SHORT      = 5;
+  public static final byte TYPE_CODE_INT        = 6;
+  public static final byte TYPE_CODE_LONG       = 7;
+  public static final byte TYPE_CODE_FLOAT      = 8;
+  public static final byte TYPE_CODE_DOUBLE     = 9;
+  public static final byte TYPE_CODE_DECIMAL    = 10;
+  public static final byte TYPE_CODE_DATE       = 11;
+  public static final byte TYPE_CODE_TIME       = 12;
+  public static final byte TYPE_CODE_TIMESTAMP  = 13;
+  public static final byte TYPE_CODE_INTERVAL   = 14;
+  public static final byte TYPE_CODE_BINARY     = 15;
+  public static final byte TYPE_CODE_MAP        = 16;
+  public static final byte TYPE_CODE_ARRAY      = 17;
+
   public enum Type {
     /**
      * A non-existing value of unknown type and quantity.
      */
-    NULL(1),
+    NULL(TYPE_CODE_NULL),
 
     /**
      * A boolean value.
      */
-    BOOLEAN(2),
+    BOOLEAN(TYPE_CODE_BOOLEAN),
 
     /**
      * Character sequence.
      */
-    STRING(3),
+    STRING(TYPE_CODE_STRING),
 
     /**
      * 8-bit signed integer.
      */
-    BYTE(4),
+    BYTE(TYPE_CODE_BYTE),
 
     /**
      * 16-bit signed integer.
      */
-    SHORT(5),
+    SHORT(TYPE_CODE_SHORT),
 
     /**.
      * 32-bit signed integer.
      */
-    INT(6),
+    INT(TYPE_CODE_INT),
 
     /**
      * 64-bit signed integer.
      */
-    LONG(7),
+    LONG(TYPE_CODE_LONG),
 
     /**
      * Single-precision 32-bit floating point number.
      */
-    FLOAT(8),
+    FLOAT(TYPE_CODE_FLOAT),
 
     /**
      * Double-precision 64-bit floating point number.
      */
-    DOUBLE(9),
+    DOUBLE(TYPE_CODE_DOUBLE),
 
     /**
      * Arbitrary precision, fixed point decimal value.
      */
-    DECIMAL(10),
+    DECIMAL(TYPE_CODE_DECIMAL),
 
     /**
      * 32-bit integer representing the number of DAYS since Unix epoch,
@@ -87,40 +105,40 @@ public interface Value {
      * is time-zone independent. Negative values represents dates before
      * epoch.
      */
-    DATE(11),
+    DATE(TYPE_CODE_DATE),
 
     /**
      * 32-bit integer representing time of the day in milliseconds.
      * The value is absolute and is time-zone independent.
      */
-    TIME(12),
+    TIME(TYPE_CODE_TIME),
 
     /**
      * 64-bit integer representing the number of milliseconds since epoch,
      * i.e. January 1, 1970 00:00:00 UTC. Negative values represent dates
      * before epoch.
      */
-    TIMESTAMP(13),
+    TIMESTAMP(TYPE_CODE_TIMESTAMP),
 
     /**
      * A value representing a period of time between two instants.
      */
-    INTERVAL(14),
+    INTERVAL(TYPE_CODE_INTERVAL),
 
     /**
      * Uninterpreted sequence of bytes.
      */
-    BINARY(15),
+    BINARY(TYPE_CODE_BINARY),
 
     /**
      * Mapping of String and <code>Value</code>.
      */
-    MAP(16),
+    MAP(TYPE_CODE_MAP),
 
     /**
      * A list of <code>Value</code>.
      */
-    ARRAY(17);
+    ARRAY(TYPE_CODE_ARRAY);
 
     private byte code;
 
@@ -138,23 +156,23 @@ public interface Value {
 
     public static Type valueOf(int typeCode) {
       switch (typeCode) {
-        case 1: return NULL;
-        case 2: return BOOLEAN;
-        case 3: return STRING;
-        case 4: return BYTE;
-        case 5: return SHORT;
-        case 6: return INT;
-        case 7: return LONG;
-        case 8: return FLOAT;
-        case 9: return DOUBLE;
-        case 10: return DECIMAL;
-        case 11: return DATE;
-        case 12: return TIME;
-        case 13: return TIMESTAMP;
-        case 14: return INTERVAL;
-        case 15: return BINARY;
-        case 16: return MAP;
-        case 17: return ARRAY;
+        case TYPE_CODE_NULL: return NULL;
+        case TYPE_CODE_BOOLEAN: return BOOLEAN;
+        case TYPE_CODE_STRING: return STRING;
+        case TYPE_CODE_BYTE: return BYTE;
+        case TYPE_CODE_SHORT: return SHORT;
+        case TYPE_CODE_INT: return INT;
+        case TYPE_CODE_LONG: return LONG;
+        case TYPE_CODE_FLOAT: return FLOAT;
+        case TYPE_CODE_DOUBLE: return DOUBLE;
+        case TYPE_CODE_DECIMAL: return DECIMAL;
+        case TYPE_CODE_DATE: return DATE;
+        case TYPE_CODE_TIME: return TIME;
+        case TYPE_CODE_TIMESTAMP: return TIMESTAMP;
+        case TYPE_CODE_INTERVAL: return INTERVAL;
+        case TYPE_CODE_BINARY: return BINARY;
+        case TYPE_CODE_MAP: return MAP;
+        case TYPE_CODE_ARRAY: return ARRAY;
         default: return null;
       }
     }
@@ -169,49 +187,49 @@ public interface Value {
   /**
    * Returns the value as a <code>byte</code>.
    *
-   * @throws TypeException if this value is not of <code>BYTE</code> type.
+   * @throws TypeException if this value is not one of the numeric types.
    */
   byte getByte();
 
   /**
    * Returns the value as a <code>short</code>.
    *
-   * @throws TypeException if this value is not of <code>SHORT</code> type.
+   * @throws TypeException if this value is not one of the numeric types.
    */
   short getShort();
 
   /**
    * Returns the value as an {@code int}.
    *
-   * @throws TypeException if this value is not of <code>INT</code> type.
+   * @throws TypeException if this value is not one of the numeric types.
    */
   int getInt();
 
   /**
    * Returns the value as a <code>long</code>.
    *
-   * @throws TypeException if this value is not of <code>LONG</code> type.
+   * @throws TypeException if this value is not one of the numeric types.
    */
   long getLong();
 
   /**
    * Returns the value as a <code>float</code>.
    *
-   * @throws TypeException if this value is not of <code>FLOAT</code> type.
+   * @throws TypeException if this value is not one of the numeric types.
    */
   float getFloat();
 
   /**
    * Returns the value as a <code>double</code>.
    *
-   * @throws TypeException if this value is not of <code>DOUBLE</code> type.
+   * @throws TypeException if this value is not one of the numeric types.
    */
   double getDouble();
 
   /**
    * Returns the value as a <code>BigDecimal</code>.
    *
-   * @throws TypeException if this value is not of Type.DECIMAL type.
+   * @throws TypeException if this value is not one of the numeric types.
    */
   BigDecimal getDecimal();
 

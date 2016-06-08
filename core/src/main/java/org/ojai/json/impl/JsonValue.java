@@ -82,19 +82,6 @@ public class JsonValue implements Value {
     return;
   }
 
-  private void checkNumericType() throws TypeException {
-
-    switch(valueType) {
-    case BYTE:
-    case SHORT:
-    case INT:
-    case LONG:
-      return;
-    default:
-      throw new TypeException("Expected a integer type, found: " + valueType);
-    }
-  }
-
   void setPrimValue(long value) {
     this.jsonValue = value;
   }
@@ -104,18 +91,6 @@ public class JsonValue implements Value {
   }
 
   public static final JsonValue NULLKEYVALUE = new JsonValue(Type.NULL);
-
-  @Override
-  public int getInt() {
-    checkNumericType();
-    return (int) (jsonValue & 0xffffffff);
-  }
-
-  @Override
-  public long getLong() {
-    checkNumericType();
-    return jsonValue;
-  }
 
   @Override
   public Object getObject() {
@@ -172,32 +147,156 @@ public class JsonValue implements Value {
 
   @Override
   public byte getByte() {
-    checkNumericType();
-    return (byte) (jsonValue & 0xff);
+    switch(valueType) {
+    case BYTE:
+      return (byte) (jsonValue & 0xff);
+    case SHORT:
+      return (byte) getShort();
+    case INT:
+      return (byte) getInt();
+    case LONG:
+      return (byte) getLong();
+    case FLOAT:
+      return (byte) getFloat();
+    case DOUBLE:
+      return (byte) getDouble();
+    case DECIMAL:
+      return ((BigDecimal) objValue).byteValue();
+    default:
+      throw new TypeException("Expected a numeric type, found: " + valueType);
+    }
   }
 
   @Override
   public short getShort() {
-    checkNumericType();
-    return (short) (jsonValue & 0xffff);
+    switch(valueType) {
+    case SHORT:
+      return (short) (jsonValue & 0xffff);
+    case BYTE:
+      return getByte();
+    case INT:
+      return (short) getInt();
+    case LONG:
+      return (short) getLong();
+    case FLOAT:
+      return (short) getFloat();
+    case DOUBLE:
+      return (short) getDouble();
+    case DECIMAL:
+      return ((BigDecimal) objValue).shortValue();
+    default:
+      throw new TypeException("Expected a numeric type, found: " + valueType);
+    }
+  }
+
+  @Override
+  public int getInt() {
+    switch(valueType) {
+    case INT:
+      return (int) (jsonValue & 0xffffffffL);
+    case BYTE:
+      return getByte();
+    case SHORT:
+      return getShort();
+    case LONG:
+      return (int) getLong();
+    case FLOAT:
+      return (int) getFloat();
+    case DOUBLE:
+      return (int) getDouble();
+    case DECIMAL:
+      return ((BigDecimal) objValue).intValue();
+    default:
+      throw new TypeException("Expected a numeric type, found: " + valueType);
+    }
+  }
+
+  @Override
+  public long getLong() {
+    switch(valueType) {
+    case LONG:
+      return jsonValue;
+    case BYTE:
+      return getByte();
+    case SHORT:
+      return getShort();
+    case INT:
+      return getInt();
+    case FLOAT:
+      return (long) getFloat();
+    case DOUBLE:
+      return (long) getDouble();
+    case DECIMAL:
+      return ((BigDecimal) objValue).longValue();
+    default:
+      throw new TypeException("Expected a numeric type, found: " + valueType);
+    }
   }
 
   @Override
   public float getFloat() {
-    checkType(Type.FLOAT);
-    return Float.intBitsToFloat((int) (jsonValue & 0xffffffffL));
+    switch(valueType) {
+    case FLOAT:
+      return Float.intBitsToFloat((int) (jsonValue & 0xffffffffL));
+    case BYTE:
+      return getByte();
+    case SHORT:
+      return getShort();
+    case INT:
+      return (float) getInt();
+    case LONG:
+      return (float) getLong();
+    case DOUBLE:
+      return (float) getDouble();
+    case DECIMAL:
+      return ((BigDecimal) objValue).floatValue();
+    default:
+      throw new TypeException("Expected a numeric type, found: " + valueType);
+    }
   }
 
   @Override
   public double getDouble() {
-    checkType(Type.DOUBLE);
-    return Double.longBitsToDouble(jsonValue);
+    switch(valueType) {
+    case DOUBLE:
+      return Double.longBitsToDouble(jsonValue);
+    case FLOAT:
+      return getFloat();
+    case BYTE:
+      return getByte();
+    case SHORT:
+      return getShort();
+    case INT:
+      return getInt();
+    case LONG:
+      return getLong();
+    case DECIMAL:
+      return ((BigDecimal) objValue).doubleValue();
+    default:
+      throw new TypeException("Expected a numeric type, found: " + valueType);
+    }
   }
 
   @Override
   public BigDecimal getDecimal() {
-    checkType(Type.DECIMAL);
-    return (BigDecimal) objValue;
+    switch(valueType) {
+    case DECIMAL:
+      return (BigDecimal) objValue;
+    case DOUBLE:
+      return new BigDecimal(getDouble());
+    case FLOAT:
+      return new BigDecimal(getFloat());
+    case BYTE:
+      return new BigDecimal(getByte());
+    case SHORT:
+      return new BigDecimal(getShort());
+    case INT:
+      return new BigDecimal(getInt());
+    case LONG:
+      return new BigDecimal(getLong());
+    default:
+      throw new TypeException("Expected a numeric type, found: " + valueType);
+    }
   }
 
   @Override

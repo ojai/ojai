@@ -770,23 +770,21 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    */
   Boolean getBooleanObj(FieldPath fieldPath);
 
-
   /**
    * Returns the value at the specified fieldPath as a {@code byte}.
    *
-   * @throws TypeException if the value at the fieldPath is not of
-   *         the <code>BYTE</code> type
+   * @throws TypeException if the value at the fieldPath is not one of
+   *         the numeric types
    * @throws NoSuchElementException if the specified field does not
    *         exist in the {@code Document}
    */
   byte getByte(String fieldPath);
 
-
   /**
    * Returns the value at the specified fieldPath as a {@code byte}.
    *
-   * @throws TypeException if the value at the fieldPath is not of
-   *         the <code>BYTE</code> type
+   * @throws TypeException if the value at the fieldPath is not one of
+   *         the numeric types
    * @throws NoSuchElementException if the specified field does not
    *         exist in the {@code Document}
    */
@@ -797,8 +795,8 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * object or {@code null} if the specified {@code FieldPath} does
    * not exist in the document.
    *
-   * @throws TypeException if the value at the fieldPath is not of
-   *         the <code>BYTE</code> type
+   * @throws TypeException if the value at the fieldPath is not one of
+   *         the numeric types
    */
   Byte getByteObj(String fieldPath);
 
@@ -807,16 +805,16 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * object or {@code null} if the specified {@code FieldPath} does
    * not exist in the document.
    *
-   * @throws TypeException if the value at the fieldPath is not of
-   *         the <code>BYTE</code> type
+   * @throws TypeException if the value at the fieldPath is not one of
+   *         the numeric types
    */
   Byte getByteObj(FieldPath fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@code short}.
    *
-   * @throws TypeException if the value at the fieldPath is not of
-   *         the <code>SHORT</code> type
+   * @throws TypeException if the value at the fieldPath is not one of
+   *         the numeric types
    * @throws NoSuchElementException if the specified field does not
    *         exist in the {@code Document}
    */
@@ -825,8 +823,8 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
   /**
    * Returns the value at the specified fieldPath as a {@code short}.
    *
-   * @throws TypeException if the value at the fieldPath is not of
-   *         the <code>SHORT</code> type
+   * @throws TypeException if the value at the fieldPath is not one of
+   *         the numeric types
    * @throws NoSuchElementException if the specified field does not
    *         exist in the {@code Document}
    */
@@ -837,8 +835,8 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * object or {@code null} if the specified {@code FieldPath} does
    * not exist in the document.
    *
-   * @throws TypeException if the value at the fieldPath is not of
-   *         the <code>SHORT</code> type
+   * @throws TypeException if the value at the fieldPath is not one of
+   *         the numeric types
    */
   Short getShortObj(String fieldPath);
 
@@ -847,28 +845,26 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * object or {@code null} if the specified {@code FieldPath} does
    * not exist in the document.
    *
-   * @throws TypeException if the value at the fieldPath is not of
-   *         the <code>SHORT</code> type
+   * @throws TypeException if the value at the fieldPath is not one of
+   *         the numeric types
    */
   Short getShortObj(FieldPath fieldPath);
-
 
   /**
    * Returns the value at the specified fieldPath as an {@code int}.
    *
-   * @throws TypeException if the value at the fieldPath is not of
-   *         the <code>INT</code> type
+   * @throws TypeException if the value at the fieldPath is not one of
+   *         the numeric types
    * @throws NoSuchElementException if the specified field does not
    *         exist in the {@code Document}
    */
   int getInt(String fieldPath);
 
-
   /**
    * Returns the value at the specified fieldPath as an {@code int}.
    *
-   * @throws TypeException if the value at the fieldPath is not of
-   *         the <code>INT</code> type
+   * @throws TypeException if the value at the fieldPath is not one of
+   *         the numeric types
    * @throws NoSuchElementException if the specified field does not
    *         exist in the {@code Document}
    */
@@ -879,8 +875,8 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * object or {@code null} if the specified {@code FieldPath} does
    * not exist in the document.
    *
-   * @throws TypeException if the value at the fieldPath is not of
-   *         the <code>INT</code> type
+   * @throws TypeException if the value at the fieldPath is not one of
+   *         the numeric types
    */
   Integer getIntObj(String fieldPath);
 
@@ -889,28 +885,26 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * object or {@code null} if the specified {@code FieldPath} does
    * not exist in the document.
    *
-   * @throws TypeException if the value at the fieldPath is not of
-   *         the <code>INT</code> type
+   * @throws TypeException if the value at the fieldPath is not one of
+   *         the numeric types
    */
   Integer getIntObj(FieldPath fieldPath);
-
 
   /**
    * Returns the value at the specified fieldPath as a {@code long}.
    *
-   * @throws TypeException if the value at the fieldPath is not of
-   *         the <code>LONG</code> type
+   * @throws TypeException if the value at the fieldPath is not one of
+   *         the numeric types
    * @throws NoSuchElementException if the specified field does not
    *         exist in the {@code Document}
    */
   long getLong(String fieldPath);
 
-
   /**
    * Returns the value at the specified fieldPath as a {@code long}.
    *
-   * @throws TypeException if the value at the fieldPath is not of
-   *         the <code>LONG</code> type
+   * @throws TypeException if the value at the fieldPath is not one of
+   *         the numeric types
    * @throws NoSuchElementException if the specified field does not
    *         exist in the {@code Document}
    */
@@ -921,8 +915,8 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * object or {@code null} if the specified {@code FieldPath} does
    * not exist in the document.
    *
-   * @throws TypeException if the value at the fieldPath is not of
-   *         the <code>LONG</code> type
+   * @throws TypeException if the value at the fieldPath is not one of
+   *         the numeric types
    */
   Long getLongObj(String fieldPath);
 
@@ -931,28 +925,26 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * object or {@code null} if the specified {@code FieldPath} does
    * not exist in the document.
    *
-   * @throws TypeException if the value at the fieldPath is not of
-   *         the <code>LONG</code> type
+   * @throws TypeException if the value at the fieldPath is not one of
+   *         the numeric types
    */
   Long getLongObj(FieldPath fieldPath);
-
 
   /**
    * Returns the value at the specified fieldPath as a {@code float}.
    *
-   * @throws TypeException if the value at the fieldPath is not of
-   *         the <code>FLOAT</code> type
+   * @throws TypeException if the value at the fieldPath is not one of
+   *         the numeric types
    * @throws NoSuchElementException if the specified field does not
    *         exist in the {@code Document}
    */
   float getFloat(String fieldPath);
 
-
   /**
    * Returns the value at the specified fieldPath as a {@code float}.
    *
-   * @throws TypeException if the value at the fieldPath is not of
-   *         the <code>FLOAT</code> type
+   * @throws TypeException if the value at the fieldPath is not one of
+   *         the numeric types
    * @throws NoSuchElementException if the specified field does not
    *         exist in the {@code Document}
    */
@@ -963,8 +955,8 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * object or {@code null} if the specified {@code FieldPath} does
    * not exist in the document.
    *
-   * @throws TypeException if the value at the fieldPath is not of
-   *         the <code>FLOAT</code> type
+   * @throws TypeException if the value at the fieldPath is not one of
+   *         the numeric types
    */
   Float getFloatObj(String fieldPath);
 
@@ -973,28 +965,26 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * object or {@code null} if the specified {@code FieldPath} does
    * not exist in the document.
    *
-   * @throws TypeException if the value at the fieldPath is not of
-   *         the <code>FLOAT</code> type
+   * @throws TypeException if the value at the fieldPath is not one of
+   *         the numeric types
    */
   Float getFloatObj(FieldPath fieldPath);
-
 
   /**
    * Returns the value at the specified fieldPath as a {@code double}.
    *
-   * @throws TypeException if the value at the fieldPath is not of
-   *         the <code>DOUBLE</code> type
+   * @throws TypeException if the value at the fieldPath is not one of
+   *         the numeric types
    * @throws NoSuchElementException if the specified field does not
    *         exist in the {@code Document}
    */
   double getDouble(String fieldPath);
 
-
   /**
    * Returns the value at the specified fieldPath as a {@code double}.
    *
-   * @throws TypeException if the value at the fieldPath is not of
-   *         the <code>DOUBLE</code> type
+   * @throws TypeException if the value at the fieldPath is not one of
+   *         the numeric types
    * @throws NoSuchElementException if the specified field does not
    *         exist in the {@code Document}
    */
@@ -1005,8 +995,8 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * object or {@code null} if the specified {@code FieldPath} does
    * not exist in the document.
    *
-   * @throws TypeException if the value at the fieldPath is not of
-   *         the <code>DOUBLE</code> type
+   * @throws TypeException if the value at the fieldPath is not one of
+   *         the numeric types
    */
   Double getDoubleObj(String fieldPath);
 
@@ -1015,8 +1005,8 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * object or {@code null} if the specified {@code FieldPath} does
    * not exist in the document.
    *
-   * @throws TypeException if the value at the fieldPath is not of
-   *         the <code>DOUBLE</code> type
+   * @throws TypeException if the value at the fieldPath is not one of
+   *         the numeric types
    */
   Double getDoubleObj(FieldPath fieldPath);
 
@@ -1026,8 +1016,8 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * exist in the document. Modifying the returned object does not alter the
    * content of the document.
    *
-   * @throws TypeException if the value at the fieldPath is not of
-   *         the <code>DECIMAL</code> type
+   * @throws TypeException if the value at the fieldPath is not one of
+   *         the numeric types
    */
   BigDecimal getDecimal(String fieldPath);
 
@@ -1037,8 +1027,8 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    * exist in the document. Modifying the returned object does not alter the
    * content of the document.
    *
-   * @throws TypeException if the value at the fieldPath is not of
-   *         the <code>DECIMAL</code> type
+   * @throws TypeException if the value at the fieldPath is not one of
+   *         the numeric types
    */
   BigDecimal getDecimal(FieldPath fieldPath);
 

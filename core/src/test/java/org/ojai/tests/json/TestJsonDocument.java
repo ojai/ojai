@@ -39,6 +39,7 @@ import org.ojai.DocumentConstants;
 import org.ojai.DocumentReader;
 import org.ojai.DocumentReader.EventType;
 import org.ojai.DocumentStream;
+import org.ojai.FieldPath;
 import org.ojai.Value;
 import org.ojai.Value.Type;
 import org.ojai.exceptions.EncodingException;
@@ -47,6 +48,7 @@ import org.ojai.json.Json;
 import org.ojai.json.JsonOptions;
 import org.ojai.tests.BaseTest;
 import org.ojai.types.ODate;
+import org.ojai.types.OInterval;
 import org.ojai.types.OTime;
 import org.ojai.types.OTimestamp;
 import org.ojai.util.MapEncoder;
@@ -54,8 +56,23 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class TestJsonDocument extends BaseTest {
-  private static Logger logger = LoggerFactory
-      .getLogger(TestJsonDocument.class);
+  private static Logger logger = LoggerFactory .getLogger(TestJsonDocument.class);
+
+  private static final FieldPath FIELD_MAP_ARRAY = FieldPath.parseFrom("map.array");
+  private static final FieldPath FIELD_MAP_BINARY = FieldPath.parseFrom("map.binary");
+  private static final FieldPath FIELD_MAP_INTERVAL = FieldPath.parseFrom("map.interval");
+  private static final FieldPath FIELD_MAP_TIMESTAMP = FieldPath.parseFrom("map.timestamp");
+  private static final FieldPath FIELD_MAP_TIME = FieldPath.parseFrom("map.time");
+  private static final FieldPath FIELD_MAP_DATE = FieldPath.parseFrom("map.date");
+  private static final FieldPath FIELD_MAP_DECIMAL = FieldPath.parseFrom("map.decimal");
+  private static final FieldPath FIELD_MAP_DOUBLE = FieldPath.parseFrom("map.double");
+  private static final FieldPath FIELD_MAP_FLOAT = FieldPath.parseFrom("map.float");
+  private static final FieldPath FIELD_MAP_LONG = FieldPath.parseFrom("map.long");
+  private static final FieldPath FIELD_MAP_INT = FieldPath.parseFrom("map.int");
+  private static final FieldPath FIELD_MAP_SHORT = FieldPath.parseFrom("map.short");
+  private static final FieldPath FIELD_MAP_BYTE = FieldPath.parseFrom("map.byte");
+  private static final FieldPath FIELD_MAP_STRING = FieldPath.parseFrom("map.string");
+  private static final FieldPath FIELD_MAP_BOOLEAN = FieldPath.parseFrom("map.boolean");
 
   public static final String docStrWithoutTags =
       "{\"map\":{"
@@ -99,6 +116,44 @@ public class TestJsonDocument extends BaseTest {
         + "}"
       + "}";
 
+  public static final Document docWithAllTypes1 = Json.newDocument()
+      .setNull("map.null")
+      .set(FIELD_MAP_BOOLEAN, false)
+      .set(FIELD_MAP_STRING, "eureka")
+      .set(FIELD_MAP_BYTE, Byte.MAX_VALUE)
+      .set(FIELD_MAP_SHORT, Short.MAX_VALUE)
+      .set(FIELD_MAP_INT, Integer.MAX_VALUE)
+      .set(FIELD_MAP_LONG, Long.MAX_VALUE)
+      .set(FIELD_MAP_FLOAT, Float.MAX_VALUE)
+      .set(FIELD_MAP_DOUBLE, Double.MAX_VALUE)
+      .set(FIELD_MAP_DECIMAL, new BigDecimal("9223372036854775807.23456789"))
+      .set(FIELD_MAP_DATE, ODate.parse("2012-10-20"))
+      .set(FIELD_MAP_TIME, OTime.parse("07:42:46.123"))
+      .set(FIELD_MAP_TIMESTAMP, OTimestamp.parse("2012-10-20T14:42:46.123Z"))
+      .set(FIELD_MAP_INTERVAL, new OInterval(172800000))
+      .set(FIELD_MAP_BINARY, ByteBuffer.wrap(new byte[] {'h', 'e', 'l', 'l', 'o'}))
+      .setArray(FIELD_MAP_ARRAY, new Object[] {42, "open sesame", 3.14, (short)'l', ODate.parse("2012-10-20")});
+
+  public static final Document docWithAllTypes2 = Json.newDocument()
+      .setNull("map.null")
+      .set(FIELD_MAP_BOOLEAN, false)
+      .set(FIELD_MAP_STRING, "eureka")
+      .set(FIELD_MAP_BYTE, (byte)121.625)
+      .set(FIELD_MAP_SHORT, (short)121.625)
+      .set(FIELD_MAP_INT, (int)121.625)
+      .set(FIELD_MAP_LONG, (long)121.625)
+      .set(FIELD_MAP_FLOAT, (float)121.625)
+      .set(FIELD_MAP_DOUBLE, 121.625)
+      .set(FIELD_MAP_DECIMAL, new BigDecimal("121.625"))
+      .set(FIELD_MAP_DATE, ODate.parse("2012-10-20"))
+      .set(FIELD_MAP_TIME, OTime.parse("07:42:46.123"))
+      .set(FIELD_MAP_TIMESTAMP, OTimestamp.parse("2012-10-20T14:42:46.123Z"))
+      .set(FIELD_MAP_INTERVAL, new OInterval(172800000))
+      .set(FIELD_MAP_BINARY, ByteBuffer.wrap(new byte[] {'h', 'e', 'l', 'l', 'o'}))
+      .setArray(FIELD_MAP_ARRAY, new Object[] {42, "open sesame", 3.14, (short)'l', ODate.parse("2012-10-20")});
+
+  private static final float DELTA = 0;
+
   @Test
   public void testAllTypes() {
     Document rec = Json.newDocument();
@@ -116,16 +171,16 @@ public class TestJsonDocument extends BaseTest {
     map.put("Age", 20);
     rec.set("newmap.map", map);
 
-    rec.set("map.boolean", false);
-    rec.set("map.string", "string");
-    rec.set("map.byte", (byte) 100);
-    rec.set("map.short", (short) 10000);
-    rec.set("map.int", 50000);
-    rec.set("map.long", 12345678999L);
-    rec.set("map.float", 10.1234f);
-    rec.set("map.double", 10.12345678910d);
+    rec.set(FIELD_MAP_BOOLEAN, false);
+    rec.set(FIELD_MAP_STRING, "string");
+    rec.set(FIELD_MAP_BYTE, (byte) 100);
+    rec.set(FIELD_MAP_SHORT, (short) 10000);
+    rec.set(FIELD_MAP_INT, 50000);
+    rec.set(FIELD_MAP_LONG, 12345678999L);
+    rec.set(FIELD_MAP_FLOAT, 10.1234f);
+    rec.set(FIELD_MAP_DOUBLE, 10.12345678910d);
     // rec.set("map.interval", new Interval(1000, 2000));
-    rec.set("map.decimal", new BigDecimal("1000000000.11111111111111111111"));
+    rec.set(FIELD_MAP_DECIMAL, new BigDecimal("1000000000.11111111111111111111"));
     byte[] bytes = new byte[5];
     for (int i = 0; i < bytes.length; ++i) {
       bytes[i] = (byte) i;
@@ -156,16 +211,16 @@ public class TestJsonDocument extends BaseTest {
     rec.set("map.list", values);
 
     assertEquals(rec.getValue("map").getType(), Type.MAP);
-    assertEquals(rec.getBoolean("map.boolean"), false);
-    assertEquals(rec.getString("map.string"), "string");
-    assertEquals(rec.getByte("map.byte"), (byte) 100);
-    assertEquals(rec.getShort("map.short"), (short) 10000);
-    assertEquals(rec.getInt("map.int"), 50000);
-    assertEquals(rec.getLong("map.long"), 12345678999L);
-    assertEquals(rec.getFloat("map.float"), (float) 10.1234, 0.0);
-    assertEquals(rec.getDouble("map.double"), 10.12345678910d, 0.0);
+    assertEquals(rec.getBoolean(FIELD_MAP_BOOLEAN), false);
+    assertEquals(rec.getString(FIELD_MAP_STRING), "string");
+    assertEquals(rec.getByte(FIELD_MAP_BYTE), (byte) 100);
+    assertEquals(rec.getShort(FIELD_MAP_SHORT), (short) 10000);
+    assertEquals(rec.getInt(FIELD_MAP_INT), 50000);
+    assertEquals(rec.getLong(FIELD_MAP_LONG), 12345678999L);
+    assertEquals(rec.getFloat(FIELD_MAP_FLOAT), (float) 10.1234, 0.0);
+    assertEquals(rec.getDouble(FIELD_MAP_DOUBLE), 10.12345678910d, 0.0);
     // assertEquals(rec.getInterval("map.interval"), new Interval(1000, 2000));
-    assertEquals(rec.getDecimal("map.decimal"), new BigDecimal(
+    assertEquals(rec.getDecimal(FIELD_MAP_DECIMAL), new BigDecimal(
         "1000000000.11111111111111111111"));
 
     java.nio.ByteBuffer readBuf;
@@ -192,8 +247,8 @@ public class TestJsonDocument extends BaseTest {
   @Test
   public void testAsReaderFull() {
     Document document = Json.newDocument();
-    document.set("map.byte", (byte)127);
-    document.set("map.long", 123456789L);
+    document.set(FIELD_MAP_BYTE, (byte)127);
+    document.set(FIELD_MAP_LONG, 123456789L);
     Map<String, Object> map = new LinkedHashMap<String, Object>();
     map.put("first","John");
     map.put("last", "Doe");
@@ -202,7 +257,7 @@ public class TestJsonDocument extends BaseTest {
     mylist.add(true);
     mylist.add("string");
     mylist.add(123.456);
-    document.set("map.array", mylist);
+    document.set(FIELD_MAP_ARRAY, mylist);
 
     DocumentReader r = document.asReader();
     EventType et = null;
@@ -291,7 +346,7 @@ public class TestJsonDocument extends BaseTest {
   @Test
   public void testAsReaderPartial() {
     Document document = Json.newDocument();
-    document.set("map.byte", (byte)127);
+    document.set(FIELD_MAP_BYTE, (byte)127);
     document.set("map.num", 12345);
     Map<String, Object> map = new HashMap<String, Object>();
     map.put("first","John");
@@ -302,7 +357,7 @@ public class TestJsonDocument extends BaseTest {
     mylist.add(true);
     mylist.add("string");
     mylist.add(123.456);
-    document.set("map.array", mylist);
+    document.set(FIELD_MAP_ARRAY, mylist);
     DocumentReader r = document.asReader("map.name");
     EventType event;
     while ((event = r.next()) != null) {
@@ -319,7 +374,7 @@ public class TestJsonDocument extends BaseTest {
   @Test
   public void testAsReaderLeaf() {
     Document document = Json.newDocument();
-    document.set("map.byte", (byte)127);
+    document.set(FIELD_MAP_BYTE, (byte)127);
     document.set("map.num", 12345);
     Map<String, Object> m = new HashMap<String, Object>();
     m.put("first", "John");
@@ -351,7 +406,7 @@ public class TestJsonDocument extends BaseTest {
   @Test
   public void testSetBooleanArray() {
     Document document = Json.newDocument();
-    document.set("map.int", 111);
+    document.set(FIELD_MAP_INT, 111);
     boolean[] boolArray = new boolean[3];
     boolArray[0] = true;
     boolArray[1] = false;
@@ -574,6 +629,128 @@ public class TestJsonDocument extends BaseTest {
       doc.getDouble("non-existent-field");
       fail();
     } catch (NoSuchElementException e) {}
+  }
+
+  @Test
+  public void testNumericInterchange() {
+    /* byte */
+    assertEquals(Byte.MAX_VALUE, docWithAllTypes1.getByte(FIELD_MAP_BYTE));
+    assertEquals(-1, docWithAllTypes1.getByte(FIELD_MAP_SHORT));
+    assertEquals(-1, docWithAllTypes1.getByte(FIELD_MAP_INT));
+    assertEquals(-1, docWithAllTypes1.getByte(FIELD_MAP_LONG));
+    assertEquals(-1, docWithAllTypes1.getByte(FIELD_MAP_FLOAT));
+    assertEquals(-1, docWithAllTypes1.getByte(FIELD_MAP_DOUBLE));
+    assertEquals(-1, docWithAllTypes1.getByte(FIELD_MAP_DECIMAL));
+
+    assertEquals(121, docWithAllTypes2.getByte(FIELD_MAP_BYTE));
+    assertEquals(121, docWithAllTypes2.getByte(FIELD_MAP_SHORT));
+    assertEquals(121, docWithAllTypes2.getByte(FIELD_MAP_INT));
+    assertEquals(121, docWithAllTypes2.getByte(FIELD_MAP_LONG));
+    assertEquals(121, docWithAllTypes2.getByte(FIELD_MAP_FLOAT));
+    assertEquals(121, docWithAllTypes2.getByte(FIELD_MAP_DOUBLE));
+    assertEquals(121, docWithAllTypes2.getByte(FIELD_MAP_DECIMAL));
+
+    /* short */
+    assertEquals(Byte.MAX_VALUE, docWithAllTypes1.getShort(FIELD_MAP_BYTE));
+    assertEquals(Short.MAX_VALUE, docWithAllTypes1.getShort(FIELD_MAP_SHORT));
+    assertEquals(-1, docWithAllTypes1.getShort(FIELD_MAP_INT));
+    assertEquals(-1, docWithAllTypes1.getShort(FIELD_MAP_LONG));
+    assertEquals(-1, docWithAllTypes1.getShort(FIELD_MAP_FLOAT));
+    assertEquals(-1, docWithAllTypes1.getShort(FIELD_MAP_DOUBLE));
+    assertEquals(-1, docWithAllTypes1.getShort(FIELD_MAP_DECIMAL));
+
+    assertEquals(121, docWithAllTypes2.getShort(FIELD_MAP_BYTE));
+    assertEquals(121, docWithAllTypes2.getShort(FIELD_MAP_SHORT));
+    assertEquals(121, docWithAllTypes2.getShort(FIELD_MAP_INT));
+    assertEquals(121, docWithAllTypes2.getShort(FIELD_MAP_LONG));
+    assertEquals(121, docWithAllTypes2.getShort(FIELD_MAP_FLOAT));
+    assertEquals(121, docWithAllTypes2.getShort(FIELD_MAP_DOUBLE));
+    assertEquals(121, docWithAllTypes2.getShort(FIELD_MAP_DECIMAL));
+
+    /* int */
+    assertEquals(Byte.MAX_VALUE, docWithAllTypes1.getInt(FIELD_MAP_BYTE));
+    assertEquals(Short.MAX_VALUE, docWithAllTypes1.getInt(FIELD_MAP_SHORT));
+    assertEquals(Integer.MAX_VALUE, docWithAllTypes1.getInt(FIELD_MAP_INT));
+    assertEquals(-1, docWithAllTypes1.getInt(FIELD_MAP_LONG));
+    assertEquals(Integer.MAX_VALUE, docWithAllTypes1.getInt(FIELD_MAP_FLOAT));
+    assertEquals(Integer.MAX_VALUE, docWithAllTypes1.getInt(FIELD_MAP_DOUBLE));
+    assertEquals(-1, docWithAllTypes1.getInt(FIELD_MAP_DECIMAL));
+
+    assertEquals(121, docWithAllTypes2.getInt(FIELD_MAP_BYTE));
+    assertEquals(121, docWithAllTypes2.getInt(FIELD_MAP_SHORT));
+    assertEquals(121, docWithAllTypes2.getInt(FIELD_MAP_INT));
+    assertEquals(121, docWithAllTypes2.getInt(FIELD_MAP_LONG));
+    assertEquals(121, docWithAllTypes2.getInt(FIELD_MAP_FLOAT));
+    assertEquals(121, docWithAllTypes2.getInt(FIELD_MAP_DOUBLE));
+    assertEquals(121, docWithAllTypes2.getInt(FIELD_MAP_DECIMAL));
+
+    /* long */
+    assertEquals(Byte.MAX_VALUE, docWithAllTypes1.getLong(FIELD_MAP_BYTE));
+    assertEquals(Short.MAX_VALUE, docWithAllTypes1.getLong(FIELD_MAP_SHORT));
+    assertEquals(Integer.MAX_VALUE, docWithAllTypes1.getLong(FIELD_MAP_INT));
+    assertEquals(Long.MAX_VALUE, docWithAllTypes1.getLong(FIELD_MAP_LONG));
+    assertEquals(Long.MAX_VALUE, docWithAllTypes1.getLong(FIELD_MAP_FLOAT));
+    assertEquals(Long.MAX_VALUE, docWithAllTypes1.getLong(FIELD_MAP_DOUBLE));
+    assertEquals(Long.MAX_VALUE, docWithAllTypes1.getLong(FIELD_MAP_DECIMAL));
+
+    assertEquals(121, docWithAllTypes2.getLong(FIELD_MAP_BYTE));
+    assertEquals(121, docWithAllTypes2.getLong(FIELD_MAP_SHORT));
+    assertEquals(121, docWithAllTypes2.getLong(FIELD_MAP_INT));
+    assertEquals(121, docWithAllTypes2.getLong(FIELD_MAP_LONG));
+    assertEquals(121, docWithAllTypes2.getLong(FIELD_MAP_FLOAT));
+    assertEquals(121, docWithAllTypes2.getLong(FIELD_MAP_DOUBLE));
+    assertEquals(121, docWithAllTypes2.getLong(FIELD_MAP_DECIMAL));
+
+    /* float */
+    assertEquals(Byte.MAX_VALUE, docWithAllTypes1.getFloat(FIELD_MAP_BYTE), DELTA);
+    assertEquals(Short.MAX_VALUE, docWithAllTypes1.getFloat(FIELD_MAP_SHORT), DELTA);
+    assertEquals(Integer.MAX_VALUE, docWithAllTypes1.getFloat(FIELD_MAP_INT), DELTA);
+    assertEquals(Long.MAX_VALUE, docWithAllTypes1.getFloat(FIELD_MAP_LONG), DELTA);
+    assertEquals(Float.MAX_VALUE, docWithAllTypes1.getFloat(FIELD_MAP_FLOAT), DELTA);
+    assertEquals(Float.POSITIVE_INFINITY, docWithAllTypes1.getFloat(FIELD_MAP_DOUBLE), DELTA);
+    assertEquals(Long.MAX_VALUE, docWithAllTypes1.getFloat(FIELD_MAP_DECIMAL), DELTA);
+
+    assertEquals(121, docWithAllTypes2.getFloat(FIELD_MAP_BYTE), DELTA);
+    assertEquals(121, docWithAllTypes2.getFloat(FIELD_MAP_SHORT), DELTA);
+    assertEquals(121, docWithAllTypes2.getFloat(FIELD_MAP_INT), DELTA);
+    assertEquals(121, docWithAllTypes2.getFloat(FIELD_MAP_LONG), DELTA);
+    assertEquals(121.625, docWithAllTypes2.getFloat(FIELD_MAP_FLOAT), DELTA);
+    assertEquals(121.625, docWithAllTypes2.getFloat(FIELD_MAP_DOUBLE), DELTA);
+    assertEquals(121.625, docWithAllTypes2.getFloat(FIELD_MAP_DECIMAL), DELTA);
+
+    /* double */
+    assertEquals(Byte.MAX_VALUE, docWithAllTypes1.getDouble(FIELD_MAP_BYTE), DELTA);
+    assertEquals(Short.MAX_VALUE, docWithAllTypes1.getDouble(FIELD_MAP_SHORT), DELTA);
+    assertEquals(Integer.MAX_VALUE, docWithAllTypes1.getDouble(FIELD_MAP_INT), DELTA);
+    assertEquals(Long.MAX_VALUE, docWithAllTypes1.getDouble(FIELD_MAP_LONG), DELTA);
+    assertEquals(Float.MAX_VALUE, docWithAllTypes1.getDouble(FIELD_MAP_FLOAT), DELTA);
+    assertEquals(Double.MAX_VALUE, docWithAllTypes1.getDouble(FIELD_MAP_DOUBLE), DELTA);
+    assertEquals(Long.MAX_VALUE, docWithAllTypes1.getDouble(FIELD_MAP_DECIMAL), DELTA);
+
+    assertEquals(121, docWithAllTypes2.getDouble(FIELD_MAP_BYTE), DELTA);
+    assertEquals(121, docWithAllTypes2.getDouble(FIELD_MAP_SHORT), DELTA);
+    assertEquals(121, docWithAllTypes2.getDouble(FIELD_MAP_INT), DELTA);
+    assertEquals(121, docWithAllTypes2.getDouble(FIELD_MAP_LONG), DELTA);
+    assertEquals(121.625, docWithAllTypes2.getDouble(FIELD_MAP_FLOAT), DELTA);
+    assertEquals(121.625, docWithAllTypes2.getDouble(FIELD_MAP_DOUBLE), DELTA);
+    assertEquals(121.625, docWithAllTypes2.getDouble(FIELD_MAP_DECIMAL), DELTA);
+
+    /* decimal */
+    assertEquals(new BigDecimal(Byte.MAX_VALUE), docWithAllTypes1.getDecimal(FIELD_MAP_BYTE));
+    assertEquals(new BigDecimal(Short.MAX_VALUE), docWithAllTypes1.getDecimal(FIELD_MAP_SHORT));
+    assertEquals(new BigDecimal(Integer.MAX_VALUE), docWithAllTypes1.getDecimal(FIELD_MAP_INT));
+    assertEquals(new BigDecimal(Long.MAX_VALUE), docWithAllTypes1.getDecimal(FIELD_MAP_LONG));
+    assertEquals(new BigDecimal(Float.MAX_VALUE), docWithAllTypes1.getDecimal(FIELD_MAP_FLOAT));
+    assertEquals(new BigDecimal(Double.MAX_VALUE), docWithAllTypes1.getDecimal(FIELD_MAP_DOUBLE));
+    assertEquals(new BigDecimal("9223372036854775807.23456789"), docWithAllTypes1.getDecimal(FIELD_MAP_DECIMAL));
+
+    assertEquals(new BigDecimal(121), docWithAllTypes2.getDecimal(FIELD_MAP_BYTE));
+    assertEquals(new BigDecimal(121), docWithAllTypes2.getDecimal(FIELD_MAP_SHORT));
+    assertEquals(new BigDecimal(121), docWithAllTypes2.getDecimal(FIELD_MAP_INT));
+    assertEquals(new BigDecimal(121), docWithAllTypes2.getDecimal(FIELD_MAP_LONG));
+    assertEquals(new BigDecimal(121.625), docWithAllTypes2.getDecimal(FIELD_MAP_FLOAT));
+    assertEquals(new BigDecimal(121.625), docWithAllTypes2.getDecimal(FIELD_MAP_DOUBLE));
+    assertEquals(new BigDecimal(121.625), docWithAllTypes2.getDecimal(FIELD_MAP_DECIMAL));
   }
 
 }
