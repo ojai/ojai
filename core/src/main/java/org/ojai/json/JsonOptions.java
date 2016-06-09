@@ -15,6 +15,8 @@
  */
 package org.ojai.json;
 
+import org.ojai.exceptions.OjaiException;
+
 /**
  * <p>This class encapsulates various options to configure a JSON serializer
  * for Documents.</p>
@@ -24,7 +26,7 @@ package org.ojai.json;
  *  <li><b>With Tags</b>: on by default.</li>
  * </ul>
  */
-public class JsonOptions {
+public class JsonOptions implements Cloneable {
 
   public static final JsonOptions DEFAULT = new JsonOptions();
 
@@ -89,6 +91,15 @@ public class JsonOptions {
   @Override
   public String toString() {
     return "{\"pretty\":" + pretty + ", \"withTags\":" + withTags + "}";
+  }
+
+  @Override
+  public JsonOptions clone()  {
+    try {
+      return (JsonOptions) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new OjaiException(e); // Unlikely to ever get here
+    }
   }
 
 }
