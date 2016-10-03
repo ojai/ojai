@@ -40,53 +40,98 @@ public interface DocumentStore extends AutoCloseable {
   public void flush() throws StoreException;
 
   /**
-   * Returns a DocumentStream for all the documents in the DocumentStore.
-   * @return A DocumentStream that can be used to retrieve all documents in the
-   *         this DocumentStore. The DocumentStream must be closed after
-   *         retrieving the documents.
+   * <p>Executes a query to return all Documents in the DocumentStore.
+   * <p>The returned DocumentStream must be closed after retrieving the documents.
+   *
+   * @return A DocumentStream of all documents in the this DocumentStore.
+   *
    * @throws StoreException
    */
   public DocumentStream find() throws StoreException;
 
   /**
-   * Returns a DocumentStream for all the documents in the DocumentStore.
-   * Each Document will contain only those field paths that are specified in the
-   * argument. If no path parameter is specified then it returns a full document.
+   * <p>Executes the specified query on the DocumentStore and return a DocumentStream of the result.
+   * <p>The returned DocumentStream must be closed after retrieving the documents.
    *
-   * @param paths list of fields that should be returned in the read document
-   * @return A DocumentStream that can be used to requested paths. The
-   *         DocumentStream must be closed after retrieving the documents
+   * @return A DocumentStream that can be used to retrieve the documents in the result.
+   *
    * @throws StoreException
    */
-  public DocumentStream find(String... paths) throws StoreException;
-  public DocumentStream find(FieldPath... paths) throws StoreException;
+  public DocumentStream find(Query query) throws StoreException;
+
+  /**
+   * <p>Executes the specified query on the DocumentStore and return a DocumentStream of the result.
+   * <p>The returned DocumentStream must be closed after retrieving the documents.
+   *
+   * @param queryJSON a Json string representation of OJAI Query.
+   * @return A DocumentStream that can be used to retrieve the documents in the result.
+   *
+   * @throws StoreException
+   */
+  public DocumentStream find(String queryJSON) throws StoreException;
+
+  /**
+   * <p>Executes a query to return all Documents in the DocumentStore.
+   * <p>Each Document will contain only those field paths that are specified in the
+   * argument. If no fields are specified then it returns a full document.
+   *
+   * @param fieldPaths list of fields that should be returned in the read document
+   * @return A DocumentStream that can be used to retrieve the documents in the result.
+   *
+   * @throws StoreException
+   */
+  public DocumentStream find(String... fieldPaths) throws StoreException;
+
+  /**
+   * <p>Executes a query to return all Documents in the DocumentStore.
+   * <p>Each Document will contain only those field paths that are specified in the
+   * argument. If no fields are specified then it returns a full document.
+   *
+   * @param fieldPaths list of fields that should be returned in the read document
+   * @return A DocumentStream that can be used to retrieve the documents in the result.
+   *
+   * @throws StoreException
+   */
+  public DocumentStream find(FieldPath... fieldPaths) throws StoreException;
 
   /**
    * Returns a DocumentStream with all the documents in the DocumentStore that
    * satisfies the QueryCondition.
    *
    * @param c The QueryCondition to match the documents
-   * @return A DocumentStream that can be used to get documents.
-   *         The DocumentStream must be closed after retrieving the documents.
+   * @return A DocumentStream that can be used to retrieve the documents in the result.
+   *
    */
-   public DocumentStream find(QueryCondition c) throws StoreException;
+  public DocumentStream find(QueryCondition c) throws StoreException;
 
   /**
-   * Returns a DocumentStream with all the documents in the DocumentStore that
-   * satisfies the QueryCondition. Each Document will contain only the paths
-   * that are specified in the argument.
-   *
-   * If no field path is specified then it returns full document for a given document.
+   * <p>Execute a query on the DocumentStore and return a DocumentStream of the Document
+   * matching the specified QueryCondition.
+   * <p>Each Document will contain only those field paths that are specified in the
+   * argument. If no fields are specified then it returns a full document.
    *
    * @param c The QueryCondition to match the documents
-   * @param paths list of fields that should be returned in the read document
-   * @return A DocumentStream that can be used to read documents with requested
-   *         paths. The DocumentStream must be closed after retrieving the documents
+   * @param fieldPaths list of fields that should be returned in the read document
+   *
+   * @return A DocumentStream that can be used to retrieve the documents in the result.
    * @throws StoreException
    */
-  public DocumentStream find(QueryCondition c, String...paths)
+  public DocumentStream find(QueryCondition c, String...fieldPaths)
       throws StoreException;
-  public DocumentStream find(QueryCondition c, FieldPath...paths)
+
+  /**
+   * <p>Execute a query on the DocumentStore and return a DocumentStream of the Document
+   * matching the specified QueryCondition.
+   * <p>Each Document will contain only those field paths that are specified in the
+   * argument. If no fields are specified then it returns a full document.
+   *
+   * @param c The QueryCondition to match the documents
+   * @param fieldPaths list of fields that should be returned in the read document
+   *
+   * @return A DocumentStream that can be used to retrieve the documents in the result.
+   * @throws StoreException
+   */
+  public DocumentStream find(QueryCondition c, FieldPath... fieldPaths)
       throws StoreException;
 
   /**
