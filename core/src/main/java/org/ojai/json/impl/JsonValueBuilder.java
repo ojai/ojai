@@ -38,7 +38,7 @@ import org.ojai.types.OTimestamp;
 public class JsonValueBuilder {
 
   public static JsonValue initFromNull() {
-    return JsonValue.NULLKEYVALUE;
+    return new JsonValue(Type.NULL);
   }
 
   public static JsonValue initFrom(boolean value) {
@@ -184,7 +184,7 @@ public class JsonValueBuilder {
 
     // If the passed value is null the convert it to NULL type
     if (value == null) {
-      return JsonValue.NULLKEYVALUE;
+      return JsonValueBuilder.initFromNull();
     }
 
     /* based on the type of object initialize the value */

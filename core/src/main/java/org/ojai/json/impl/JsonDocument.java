@@ -259,7 +259,7 @@ public class JsonDocument extends JsonValue implements Document, Map<String, Obj
 
   @Override
   public Document setNull(FieldPath fieldPath) {
-    return setCommon(fieldPath, JsonValue.NULLKEYVALUE);
+    return setCommon(fieldPath, JsonValueBuilder.initFromNull());
   }
 
   /*

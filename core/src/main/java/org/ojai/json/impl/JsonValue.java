@@ -90,8 +90,6 @@ public class JsonValue implements Value {
     this.objValue = value;
   }
 
-  public static final JsonValue NULLKEYVALUE = new JsonValue(Type.NULL);
-
   @Override
   public Object getObject() {
     switch (valueType) {

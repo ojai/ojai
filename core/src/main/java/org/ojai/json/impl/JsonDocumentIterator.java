@@ -106,7 +106,7 @@ public class JsonDocumentIterator implements Iterator<Document> {
         }
         break;
       case NULL:
-        appendTo(currentContainer, JsonValue.NULLKEYVALUE);
+        appendTo(currentContainer, JsonValueBuilder.initFromNull());
         break;
       case BOOLEAN:
         appendTo(currentContainer, JsonValueBuilder.initFrom(reader.getBoolean()));
