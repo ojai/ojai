@@ -29,7 +29,7 @@
   </parent>
 
   <artifactId>ojai-mapreduce</artifactId>
-  <name>Ojai Map-Reduce Library</name>
+  <name>OJAI Map-Reduce Library</name>
   <packaging>jar</packaging>
 
   <dependencies>

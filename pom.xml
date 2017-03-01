@@ -25,7 +25,7 @@
   <artifactId>ojai-root</artifactId>
   <version>1.2-SNAPSHOT</version>
 
-  <name>Ojai Root Pom</name>
+  <name>OJAI Root Pom</name>
   <packaging>pom</packaging>
   <description>Open JSON Application Interface</description>
   <url>https://github.com/ojai</url>

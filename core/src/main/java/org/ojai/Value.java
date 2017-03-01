@@ -140,9 +140,9 @@ public interface Value {
      */
     ARRAY(TYPE_CODE_ARRAY);
 
-    private byte code;
+    private final byte code;
 
-    Type(int code) {
+    private Type(int code) {
       this.code = (byte) code;
     }
 
