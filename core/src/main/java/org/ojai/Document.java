@@ -25,14 +25,13 @@ import org.ojai.Value.Type;
 import org.ojai.annotation.API;
 import org.ojai.exceptions.DecodingException;
 import org.ojai.exceptions.TypeException;
-import org.ojai.json.JsonOptions;
 import org.ojai.types.ODate;
 import org.ojai.types.OInterval;
 import org.ojai.types.OTime;
 import org.ojai.types.OTimestamp;
 
 @API.Public
-public interface Document extends Iterable<Map.Entry<String, Value>> {
+public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString {
 
   /**
    * Sets the the "_id" field of this Document to the specified Value.
@@ -1207,16 +1206,6 @@ public interface Document extends Iterable<Map.Entry<String, Value>> {
    */
   @Override
   String toString();
-
-  /**
-   * @return This Document serialized as Json string using the default options.
-   */
-  String asJsonString();
-
-  /**
-   * @return This Document serialized as Json string using the specified options
-   */
-  String asJsonString(JsonOptions options);
 
   /**
    * @return A new {@link DocumentReader} over the current <code>document</code>

@@ -18,10 +18,11 @@ package org.ojai;
 import static org.ojai.util.Fields.SEGMENT_QUOTE_CHAR;
 
 import org.ojai.annotation.API;
+import org.ojai.json.JsonOptions;
 import org.ojai.util.Fields;
 
 @API.Public
-public abstract class FieldSegment implements Comparable<FieldSegment> {
+public abstract class FieldSegment implements Comparable<FieldSegment>, JsonString {
 
   protected enum Type {
     MAP,
@@ -180,6 +181,16 @@ public abstract class FieldSegment implements Comparable<FieldSegment> {
       return sb;
     }
 
+    @Override
+    public String asJsonString() {
+      return String.valueOf(index);
+    }
+
+    @Override
+    public String asJsonString(JsonOptions options) {
+      return asJsonString();
+    }
+
   }
 
   @API.Internal
@@ -196,6 +207,7 @@ public abstract class FieldSegment implements Comparable<FieldSegment> {
     /**
      * For Antlr parser's use only.
      */
+    @API.Internal
     public NameSegment(String n, FieldSegment child, boolean quoted) {
       super(child);
       this.name = n;
@@ -349,6 +361,18 @@ public abstract class FieldSegment implements Comparable<FieldSegment> {
       return unEscape(rawString.substring(1, rawString.length()-1));
     }
 
+    @Override
+    public String asJsonString() {
+      StringBuilder sb = new StringBuilder("\"");
+      writeSegment(sb, false).append('"');
+      return sb.toString();
+    }
+
+    @Override
+    public String asJsonString(JsonOptions options) {
+      return asJsonString();
+    }
+
   }
 
   public NameSegment getNameSegment() {
@@ -486,7 +510,7 @@ public abstract class FieldSegment implements Comparable<FieldSegment> {
   boolean isAtOrBelow(FieldSegment otherSeg) {
     // EMPTY is treated as root of the FieldPath so implicitly every
     // FieldPath is a child of EMPTY
-    if (this == otherSeg 
+    if (this == otherSeg
         || otherSeg == null
         || otherSeg.segmentEquals(FieldPath.EMPTY.getRootSegment())) {
       return true;
