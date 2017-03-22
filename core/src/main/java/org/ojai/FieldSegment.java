@@ -17,12 +17,35 @@ package org.ojai;
 
 import static org.ojai.util.Fields.SEGMENT_QUOTE_CHAR;
 
+import java.util.Comparator;
+
 import org.ojai.annotation.API;
 import org.ojai.json.JsonOptions;
 import org.ojai.util.Fields;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @API.Public
 public abstract class FieldSegment implements Comparable<FieldSegment>, JsonString {
+
+  /**
+   * A {@link Comparator} that compares two FieldSegments solely on the segment
+   * value itself, excluding their child, if any.
+   */
+  @API.Public
+  public static final Comparator<FieldSegment> FIELD_SEGMENT_COMPARATOR = new Comparator<FieldSegment>() {
+    @Override
+    public int compare(FieldSegment s1, FieldSegment s2) {
+      if (s1 == s2) {
+        return 0;
+      } else if (s1 == null) {
+        return -1;
+      } else if (s2 == null) {
+        return 1;
+      }
+      return s1.segmentCompareTo(s2);
+    }
+  };
 
   protected enum Type {
     MAP,
@@ -107,7 +130,8 @@ public abstract class FieldSegment implements Comparable<FieldSegment>, JsonStri
       this(-1, child);
     }
 
-    IndexSegment(int index, FieldSegment child) {
+    @API.Internal
+    public IndexSegment(int index, FieldSegment child) {
       super(child);
       if (index < -1) {
         throw new IllegalArgumentException();
@@ -129,6 +153,7 @@ public abstract class FieldSegment implements Comparable<FieldSegment>, JsonStri
     }
 
     @Override
+    @JsonIgnore
     public IndexSegment getIndexSegment() {
       return this;
     }
@@ -144,7 +169,7 @@ public abstract class FieldSegment implements Comparable<FieldSegment>, JsonStri
         IndexSegment that = (IndexSegment)other;
         return this.index - that.index;
       }
-      return other == null? 1 : -1;
+      return other == null? 1 : -1;  // NameSegment sort before IndexSegment
     }
 
     @Override
@@ -229,10 +254,11 @@ public abstract class FieldSegment implements Comparable<FieldSegment>, JsonStri
         NameSegment that = (NameSegment)o;
         return this.name.compareTo(that.name);
       }
-      return +1;
+      return +1; // NameSegment sort before IndexSegment
     }
 
     @Override
+    @JsonIgnore
     public NameSegment getNameSegment() {
       return this;
     }
@@ -375,10 +401,12 @@ public abstract class FieldSegment implements Comparable<FieldSegment>, JsonStri
 
   }
 
+  @JsonIgnore
   public NameSegment getNameSegment() {
     throw new UnsupportedOperationException();
   }
 
+  @JsonIgnore
   public IndexSegment getIndexSegment() {
     throw new UnsupportedOperationException();
   }

@@ -18,6 +18,16 @@ package org.ojai;
 public class DocumentConstants {
 
   /**
+   * Name of the key used to refer the entire Document
+   */
+  public static final String DOCUMENT_KEY = "$$document";
+
+  /**
+   * FieldPath of the key used to refer the entire Document
+   */
+  public static final FieldPath DOCUMENT_FIELD = FieldPath.parseFrom(DOCUMENT_KEY);
+
+  /**
    * Name of the key used to refer the id of a Document
    */
   public static final String ID_KEY = "_id";

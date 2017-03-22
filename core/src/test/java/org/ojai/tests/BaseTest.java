@@ -15,12 +15,20 @@
  */
 package org.ojai.tests;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.io.InputStream;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.TestName;
+import org.ojai.DocumentReader;
+import org.ojai.DocumentReader.EventType;
+import org.ojai.annotation.API;
 
+@API.Public
 public class BaseTest {
 
   @Rule public TestName TEST_NAME = new TestName();
@@ -31,6 +39,22 @@ public class BaseTest {
 
   public InputStream getJsonStream(String resourceName) {
     return getClass().getClassLoader().getResourceAsStream(resourceName);
+  }
+
+  public static void assertArrayEvent(DocumentReader r, EventType expectedEt, int expectedArrayIndex) {
+    EventType et = null;
+    assertNotNull((et = r.next()));
+    assertTrue(!r.inMap());
+    assertEquals(expectedEt, et);
+    assertEquals(expectedArrayIndex, r.getArrayIndex());
+  }
+
+  public static void assertMapEvent(DocumentReader r, EventType expectedEt, String expectedFieldName) {
+    EventType et = null;
+    assertNotNull((et = r.next()));
+    assertTrue(r.inMap());
+    assertEquals(expectedEt, et);
+    assertEquals(expectedFieldName, r.getFieldName());
   }
 
 }
