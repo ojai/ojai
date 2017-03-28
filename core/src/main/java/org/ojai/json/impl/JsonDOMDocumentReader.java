@@ -25,6 +25,7 @@ import java.util.Stack;
 
 import org.ojai.DocumentReader;
 import org.ojai.Value.Type;
+import org.ojai.base.DocumentReaderBase;
 import org.ojai.exceptions.TypeException;
 import org.ojai.types.ODate;
 import org.ojai.types.OInterval;
@@ -32,7 +33,7 @@ import org.ojai.types.OTime;
 import org.ojai.types.OTimestamp;
 import org.ojai.util.Types;
 
-class JsonDOMDocumentReader implements DocumentReader {
+class JsonDOMDocumentReader extends DocumentReaderBase {
 
   //define data structures
   private Stack<IteratorWithType> stateStack = null;
@@ -374,6 +375,11 @@ class JsonDOMDocumentReader implements DocumentReader {
         throw new UnsupportedOperationException();
       }
     }
+  }
+
+  @Override
+  protected EventType getCurrentEvent() {
+    return currentEvent;
   }
 
 }

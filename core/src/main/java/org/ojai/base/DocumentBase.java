@@ -13,13 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ojai;
+package org.ojai.base;
 
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.Map;
 
+import org.ojai.Document;
+import org.ojai.DocumentReader;
+import org.ojai.FieldPath;
+import org.ojai.Value;
 import org.ojai.annotation.API;
 import org.ojai.types.ODate;
 import org.ojai.types.OInterval;
@@ -27,7 +31,7 @@ import org.ojai.types.OTime;
 import org.ojai.types.OTimestamp;
 
 /**
- * A template abstract class that implements the Document interface.
+ * A template abstract class that implements the {@link Document} interface.
  */
 @API.Public
 public abstract class DocumentBase implements Document {

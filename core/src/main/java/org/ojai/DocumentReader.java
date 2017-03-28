@@ -61,6 +61,17 @@ public interface DocumentReader {
   DocumentReader.EventType next();
 
   /**
+   * When called after {@link EventType#START_MAP} or {@link EventType#START_ARRAY} event,
+   * moves this {@code DocumentReader} to the corresponding {@link EventType#END_MAP} or
+   * {@link EventType#END_ARRAY}, skipping the entire sub-tree.
+   * <p/>
+   * For all other events, this is a NO-OP.
+   *
+   * @return {@code this} for chaining.
+   */
+  DocumentReader skipChildren();
+
+  /**
    * @return {@code true} while traversing a Map, {@code false} if traversing
    * an Array.
    */

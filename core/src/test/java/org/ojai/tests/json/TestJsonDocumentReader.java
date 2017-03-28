@@ -51,6 +51,56 @@ public class TestJsonDocumentReader extends BaseTest {
     }
   }
 
+  @Test
+  public void testSkipChildren() throws Exception {
+    try (InputStream testJson = getJsonStream("org/ojai/test/data/complex.json");
+         DocumentStream stream = Json.newDocumentStream(testJson);) {
+      DocumentReader r = stream.iterator().next().asReader();
+      EventType et = null;
+      assertNotNull((et = r.next()));
+      assertTrue(r.inMap());
+      assertEquals(EventType.START_MAP, et);
+
+      assertNotNull((et = r.next())); // first
+      assertTrue(r.inMap());
+      assertEquals(EventType.STRING, et);
+      r.skipChildren();
+
+      assertNotNull((et = r.next())); // last
+      r.skipChildren();
+
+      assertNotNull((et = r.next())); // age
+      r.skipChildren();
+
+      assertNotNull((et = r.next())); // sex
+      r.skipChildren();
+
+      assertNotNull((et = r.next())); // salary
+      r.skipChildren();
+
+      assertNotNull((et = r.next())); // active
+      r.skipChildren();
+
+      assertNotNull((et = r.next())); // START_ARRAY interests
+      assertEquals(EventType.START_ARRAY, et);
+      r.skipChildren();
+
+      assertNotNull((et = r.next())); // START_MAP favorites
+      assertEquals(EventType.START_MAP, et);
+      r.skipChildren();
+
+      assertNotNull((et = r.next())); // START_ARRAY skills
+      assertEquals(EventType.START_ARRAY, et);
+      r.skipChildren();
+
+      assertNotNull((et = r.next())); // END_MAP $$document
+      assertEquals(EventType.END_MAP, et);
+      r.skipChildren();
+
+      assertNull((et = r.next()));
+    }
+  }
+
   private void testReader(DocumentReader r) {
     EventType et = null;
     assertNotNull((et = r.next()));
