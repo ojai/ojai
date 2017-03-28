@@ -62,10 +62,9 @@ public interface ChangeDataReader extends Iterator<ChangeEvent> {
   ByteBuffer getFieldNameBytes();
 
   /**
-   * @return The index of the current node in an Array or order of the field
-   * in a Map.
+   * @return The index of the current node in an Array.
    */
-  int getFieldIndex();
+  int getArrayIndex();
 
   /**
    * @returns Whether this node is in a Map. {@code `true`} for all top level fields.

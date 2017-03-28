@@ -26,29 +26,34 @@ import org.ojai.annotation.API;
 public enum ChangeEvent {
 
   /**
+   * The reader arrived at a field which does not have an event or event infomation is not available.
+   */
+  NULL(1),
+
+  /**
    * The reader arrived at a scalar field or a field that was deleted.
    */
-  NODE(1),
+  NODE(2),
 
   /**
    * The reader arrived at beginning of a {@link Type#MAP MAP}.
    */
-  START_MAP(2),
+  START_MAP(3),
 
   /**
    * The reader reached the end of a map.
    */
-  END_MAP(3),
+  END_MAP(4),
 
   /**
    * The reader arrived at beginning of a {@link Type#ARRAY ARRAY}.
    */
-  START_ARRAY(4),
+  START_ARRAY(5),
 
   /**
    * The reader reached the end of an array.
    */
-  END_ARRAY(5);
+  END_ARRAY(6);
 
   private final byte code;
 

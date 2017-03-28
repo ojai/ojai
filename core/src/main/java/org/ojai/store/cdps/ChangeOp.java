@@ -24,25 +24,31 @@ import org.ojai.annotation.API;
 public enum ChangeOp {
 
   /**
+   * The current change node does not have an operation, for example, the event of the node is an END_ARRAY
+   * or END_MAP operation.
+   */
+  NULL(1),
+
+  /**
    * The current field was set to the specified value.
    */
-  SET(1),
+  SET(2),
 
   /**
    * The current (Map) field was merged with the specified value.
    */
-  MERGE(2),
+  MERGE(3),
 
   /**
    * The current field was deleted.
    */
-  DELETE(3),
+  DELETE(4),
 
   /**
    * The operation deleted the current field, or a version thereof, whose
    * timestamp was same as that of the current change node.
    */
-  DELETE_EXACT(4);
+  DELETE_EXACT(5);
 
   private final byte code;
 
