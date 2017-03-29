@@ -26,9 +26,12 @@ import org.ojai.exceptions.OjaiException;
 public interface Query {
 
   /**
-   * <p>Set a named query option. A query option can be used to provide hints to query execution engine.
-   * However, under stable conditions, a query option can not alter the result of the query</p>
-   * <p>Refer to OJAI Driver's documentation for the list of supported options.</p>
+   * Set a named query option. A query option can be used to provide hints to query execution engine.
+   * However, under stable conditions, a query option can not alter the result of the query.
+   * <p/>
+   * Refer to OJAI Driver's documentation for the list of supported options.
+   *
+   * @return {@code this} for chained invocation.
    */
   public Query setOption(String optionName, Object value) throws IllegalArgumentException;
 
@@ -40,103 +43,124 @@ public interface Query {
   public Object getOption(String optionName);
 
   /**
-   * <p>Set multiple query options.
-   * If not specified, the entire Document will be returned.</p>
+   * Set multiple query options for this Query.
    *
-   * Multiple invocation will append new fields to the list.
+   * @return {@code this} for chained invocation.
    */
   public Query setOptions(Document options) throws IllegalArgumentException;
 
   /**
-   * <p>Add the list of field paths to the list of projected fields.
-   * If not specified, the entire Document will be returned.</p>
-   *
+   * Add the list of field paths to the list of projected fields.
+   * If not specified, the entire Document will be returned.
+   * <p/>
    * Multiple invocation will append new fields to the list.
+   *
+   * @return {@code this} for chained invocation.
    */
   public Query select(String... fieldPaths) throws IllegalArgumentException;
 
   /**
-   * <p>Add the list of field paths to the list of projected fields.
-   * If not specified, the entire Document will be returned.</p>
-   *
+   * Add the list of field paths to the list of projected fields.
+   * If not specified, the entire Document will be returned.
+   * <p/>
    * Multiple invocation will append new fields to the list.
+   *
+   * @return {@code this} for chained invocation.
    */
   public Query select(FieldPath... fieldPaths) throws IllegalArgumentException;
 
   /**
-   * <p>Sets the filtering condition for the query.</p>
-   *
+   * Sets the filtering condition for the query.
+   * <p/>
    * Multiple invocation will 'AND' the individual conditions.
+   *
+   * @return {@code this} for chained invocation.
    */
   public Query where(String conditionJson) throws OjaiException, IllegalArgumentException;
 
   /**
-   * <p>Sets the filtering condition for the query.</p>
-   *
+   * Sets the filtering condition for the query.
+   * <p/>
    * Multiple invocation will 'AND' the individual conditions.
+   *
+   * @return {@code this} for chained invocation.
    */
   public Query where(QueryCondition condition) throws OjaiException, IllegalArgumentException;
 
   /**
-   * <p>Sets the sort ordering of the returned Documents to the ascending order of specified field paths.</p>
-   *
+   * Sets the sort ordering of the returned Documents to the ascending order of specified field paths.
+   * <p/>
    * Multiple invocation will append the field to the sort list.
    *
    * @throws IllegalArgumentException if the same field is specified more than once.
+   *
+   * @return {@code this} for chained invocation.
    */
   public Query orderBy(String... fieldPaths) throws IllegalArgumentException;
 
   /**
-   * <p>Sets the sort ordering of the returned Documents to the ascending order of specified field paths.</p>
-   *
+   * Sets the sort ordering of the returned Documents to the ascending order of specified field paths.
+   * <p/>
    * Multiple invocation will append the field to the sort list.
    *
    * @throws IllegalArgumentException if the same field is specified more than once.
+   *
+   * @return {@code this} for chained invocation.
    */
   public Query orderBy(FieldPath... fieldPaths) throws IllegalArgumentException;
 
   /**
-   * <p>Sets the sort ordering of the returned Documents to the specified field and order.</p>
-   *
+   * Sets the sort ordering of the returned Documents to the specified field and order.
+   * <p/>
    * Multiple invocation will append the field to the sort list.
    *
    * @throws IllegalArgumentException if the same field is specified more than once.
    * @throws IllegalArgumentException if the supplied field path can not be parsed or
    *         order is neither "ASC" or "DESC", ignoring case.
+   *
+   * @return {@code this} for chained invocation.
    */
   public Query orderBy(String field, String order) throws IllegalArgumentException;
 
   /**
-   * <p>Sets the sort ordering of the returned Documents to the specified field and order.</p>
-   *
+   * Sets the sort ordering of the returned Documents to the specified field and order.
+   * <p/>
    * Multiple invocation will append the field to the sort list.
    *
    * @throws IllegalArgumentException if the same field is specified more than once.
+   *
+   * @return {@code this} for chained invocation.
    */
   public Query orderBy(String field, SortOrder order) throws IllegalArgumentException;
 
   /**
-   * <p>Sets the sort ordering of the returned Documents to the specified field and order.</p>
-   *
+   * Sets the sort ordering of the returned Documents to the specified field and order.
+   * <p/>
    * Multiple invocation will append the field to the sort list.
    *
    * @throws IllegalArgumentException if the same field is specified more than once.
+   *
+   * @return {@code this} for chained invocation.
    */
   public Query orderBy(FieldPath field, SortOrder order) throws IllegalArgumentException;
 
   /**
-   * <p>{@code Zero} (0) based index which specifies number of Documents to skip before
-   * returning any result. Negative values are not permitted.</p>
-   *
+   * {@code Zero} (0) based index which specifies number of Documents to skip before
+   * returning any result. Negative values are not permitted.
+   * <p/>
    * Multiple invocation will overwrite the previous value.
+   *
+   * @return {@code this} for chained invocation.
    */
   public Query offset(long offset) throws IllegalArgumentException;
 
   /**
-   * <p>Restricts the maximum number of documents returned from this query
-   * to the specified value. Negative values are not permitted.</p>
-   *
+   * Restricts the maximum number of documents returned from this query
+   * to the specified value. Negative values are not permitted.
+   * <p/>
    * Multiple invocation will overwrite the previous value.
+   *
+   * @return {@code this} for chained invocation.
    */
   public Query limit(long limit) throws IllegalArgumentException;
 
