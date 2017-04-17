@@ -76,45 +76,45 @@ public class TestJsonDocument extends BaseTest {
 
   public static final String docStrWithoutTags =
       "{\"map\":{"
-        + "\"null\":null,"
-        + "\"boolean\":true,"
-        + "\"string\":\"eureka\","
-        + "\"byte\":127,"
-        + "\"short\":32767,"
-        + "\"int\":2147483647,"
-        + "\"long\":9223372036854775807,"
-        + "\"float\":3.4028235,"
-        + "\"double\":1.7976931348623157E308,"
-        + "\"decimal\":123456789012345678901234567890123456789012345678901.23456789,"
-        + "\"date\":\"2012-10-20\","
-        + "\"time\":\"07:42:46.123\","
-        + "\"timestamp\":\"2012-10-20T14:42:46.123Z\","
-        + "\"interval\":172800000,"
-        + "\"binary\":\"YWJjZA==\","
-        + "\"array\":[42,\"open sesame\",3.14,\"2015-01-21\"]"
-        + "}"
-      + "}";
+          + "\"null\":null,"
+          + "\"boolean\":true,"
+          + "\"string\":\"eureka\","
+          + "\"byte\":127,"
+          + "\"short\":32767,"
+          + "\"int\":2147483647,"
+          + "\"long\":9223372036854775807,"
+          + "\"float\":3.4028235,"
+          + "\"double\":1.7976931348623157E308,"
+          + "\"decimal\":123456789012345678901234567890123456789012345678901.23456789,"
+          + "\"date\":\"2012-10-20\","
+          + "\"time\":\"07:42:46.123\","
+          + "\"timestamp\":\"2012-10-20T14:42:46.123Z\","
+          + "\"interval\":172800000,"
+          + "\"binary\":\"YWJjZA==\","
+          + "\"array\":[42,\"open sesame\",3.14,\"2015-01-21\"]"
+          + "}"
+          + "}";
 
   public static final String docStrWithTags =
       "{\"map\":{"
-        + "\"null\":null,"
-        + "\"boolean\":true,"
-        + "\"string\":\"eureka\","
-        + "\"byte\":{\"$numberLong\":127},"
-        + "\"short\":{\"$numberLong\":32767},"
-        + "\"int\":{\"$numberLong\":2147483647},"
-        + "\"long\":{\"$numberLong\":9223372036854775807},"
-        + "\"float\":3.4028235,"
-        + "\"double\":1.7976931348623157E308,"
-        + "\"decimal\":{\"$decimal\":\"123456789012345678901234567890123456789012345678901.23456789\"},"
-        + "\"date\":{\"$dateDay\":\"2012-10-20\"},"
-        + "\"time\":{\"$time\":\"07:42:46.123\"},"
-        + "\"timestamp\":{\"$date\":\"2012-10-20T14:42:46.123Z\"},"
-        + "\"interval\":{\"$interval\":172800000},"
-        + "\"binary\":{\"$binary\":\"YWJjZA==\"},"
-        + "\"array\":[42,\"open sesame\",3.14,{\"$dateDay\":\"2015-01-21\"}]"
-        + "}"
-      + "}";
+          + "\"null\":null,"
+          + "\"boolean\":true,"
+          + "\"string\":\"eureka\","
+          + "\"byte\":{\"$numberLong\":127},"
+          + "\"short\":{\"$numberLong\":32767},"
+          + "\"int\":{\"$numberLong\":2147483647},"
+          + "\"long\":{\"$numberLong\":9223372036854775807},"
+          + "\"float\":3.4028235,"
+          + "\"double\":1.7976931348623157E308,"
+          + "\"decimal\":{\"$decimal\":\"123456789012345678901234567890123456789012345678901.23456789\"},"
+          + "\"date\":{\"$dateDay\":\"2012-10-20\"},"
+          + "\"time\":{\"$time\":\"07:42:46.123\"},"
+          + "\"timestamp\":{\"$date\":\"2012-10-20T14:42:46.123Z\"},"
+          + "\"interval\":{\"$interval\":172800000},"
+          + "\"binary\":{\"$binary\":\"YWJjZA==\"},"
+          + "\"array\":[42,\"open sesame\",3.14,{\"$dateDay\":\"2015-01-21\"}]"
+          + "}"
+          + "}";
 
   public static final Document docWithAllTypes1 = Json.newDocument()
       .setNull("map.null")
@@ -449,7 +449,7 @@ public class TestJsonDocument extends BaseTest {
   @Test
   public void testToString() throws IOException {
     try (InputStream in = getJsonStream("org/ojai/test/data/test.json");
-         DocumentStream stream = Json.newDocumentStream(in)) {
+        DocumentStream stream = Json.newDocumentStream(in)) {
       Document doc = stream.iterator().next();
       assertEquals(docStrWithoutTags, doc.toString());
       assertEquals(docStrWithoutTags, doc.asJsonString());
@@ -467,27 +467,27 @@ public class TestJsonDocument extends BaseTest {
     Document dateTimeDoc = Json.newDocument();
 
     dateTimeDoc.set("dateLong", new ODate(System.currentTimeMillis() / 1000))
-               .set("dateParsed", ODate.parse("2015-11-25"))
-               .set("dateTime", OTime.parse("10:25:32"))
-               .set("dateTimestamp", OTimestamp.parse("2015-11-25T13:26:59.223Z"));
+    .set("dateParsed", ODate.parse("2015-11-25"))
+    .set("dateTime", OTime.parse("10:25:32"))
+    .set("dateTimestamp", OTimestamp.parse("2015-11-25T13:26:59.223Z"));
 
     docInArr1.set("arr1string", "string")
-             .set("arr1boolean", false)
-             .set("arr1long", (long)Integer.MIN_VALUE);
+    .set("arr1boolean", false)
+    .set("arr1long", (long)Integer.MIN_VALUE);
 
     String byteStr = "bytebuffer";
-    docInArr2.set("arr2int", (int)123456)
-             .set("arr2long", (long)234567)
-             .set("arr2short", (short)123)
-             .set("arr2null", "")
-             .set("arr2bytes", ByteBuffer.wrap(byteStr.getBytes()))
-             .set("arr2bigdecimal", new BigDecimal("1000000000.11111111111111111111"));
+    docInArr2.set("arr2int", 123456)
+    .set("arr2long", (long)234567)
+    .set("arr2short", (short)123)
+    .set("arr2null", "")
+    .set("arr2bytes", ByteBuffer.wrap(byteStr.getBytes()))
+    .set("arr2bigdecimal", new BigDecimal("1000000000.11111111111111111111"));
 
     docInArr3.setArray("arr3", new Object[] {"arr3", true, (long)123456, (float)12345.6789, (double)123.4567890, dateTimeDoc});
 
     doc.set("a.b", "value1")
-       .set("a.c", true)
-       .setArray("a.docInception", new Object[] {docInArr1, docInArr2, docInArr3});
+    .set("a.c", true)
+    .setArray("a.docInception", new Object[] {docInArr1, docInArr2, docInArr3});
 
     Map<String, Object> mapDoc = doc.asMap();
     assertNotNull(mapDoc);
@@ -751,6 +751,16 @@ public class TestJsonDocument extends BaseTest {
     assertEquals(new BigDecimal(121.625), docWithAllTypes2.getDecimal(FIELD_MAP_FLOAT));
     assertEquals(new BigDecimal(121.625), docWithAllTypes2.getDecimal(FIELD_MAP_DOUBLE));
     assertEquals(new BigDecimal(121.625), docWithAllTypes2.getDecimal(FIELD_MAP_DECIMAL));
+  }
+
+  @Test
+  public void testJSONDocumentWithArrayAbsIndex() {
+    Document doc = Json.newDocument().set("c[0]",true).set("c[3]", "mapr").set("a.b", 10);
+
+    assertTrue(doc.getBoolean("c[0]"));
+    assertEquals(Type.NULL, doc.getValue("c[1]").getType());
+    assertEquals(Type.NULL, doc.getValue("c[2]").getType());
+    assertEquals("mapr", doc.getString("c[3]"));
   }
 
 }

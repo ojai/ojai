@@ -224,7 +224,12 @@ class JsonList extends JsonValue implements List<Object> {
      * new value
      */
     if (field.isLastPath()) {
-      if (index >= list.size()) {
+      int size = list.size();
+      if (index >= size) {
+        while (index > size++ ) {
+          JsonValue nullValue = JsonValueBuilder.initFromNull();
+          list.add(nullValue);
+        }
         list.add(inJsonValue);
       }else {
         list.set(index, inJsonValue);
