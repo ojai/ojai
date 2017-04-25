@@ -21,8 +21,11 @@ import org.ojai.Document;
 import org.ojai.DocumentStream;
 import org.ojai.FieldPath;
 import org.ojai.Value;
-import org.ojai.store.exceptions.StoreException;
+import org.ojai.annotation.API.NonNullable;
+import org.ojai.store.exceptions.DocumentExistsException;
+import org.ojai.store.exceptions.DocumentNotFoundException;
 import org.ojai.store.exceptions.MultiOpException;
+import org.ojai.store.exceptions.StoreException;
 
 public interface DocumentStore extends AutoCloseable {
 
@@ -34,10 +37,76 @@ public interface DocumentStore extends AutoCloseable {
 
   /**
    * Flushes any buffered writes operations for this DocumentStore.
+   *
    * @throws StoreException if the flush failed or if the flush of any
    *         buffered operation resulted in an error.
    */
   public void flush() throws StoreException;
+
+  /**
+   * Begin tracking a commit-context over the ensuing write operations performed through
+   * this instance of {@link DocumentStore}.
+   *
+   * @see #commitAndGetContext()
+   * @see #clearCommitContext()
+   * @see Query#setCommitContext(String)
+   *
+   * @throws IllegalStateException if a beginCommitContext() was already called
+   *         and a corresponding commitAndGetContext()/clearCommitContext() wasn't.
+   */
+  public void beginCommitContext() throws StoreException;
+
+  /**
+   * Begin tracking a commit-context over the ensuing write operations performed through
+   * this instance of {@link DocumentStore}.
+   *
+   * @param previousContext a previous commit-context that was retrieved from this document-store,
+   *        including through other DocumentStore instances. The tracking begins by using this
+   *        context as the base state.
+   *
+   * @see #commitAndGetContext()
+   * @see #clearCommitContext()
+   * @see Query#setCommitContext(String)
+   *
+   * @throws NullPointerException if the previous commit context is {@code null}
+   * @throws IllegalStateException if a beginCommitContext() was already called
+   *         and a corresponding commitAndGetContext()/clearCommitContext() wasn't.
+   * @throws IllegalArgumentException if the specified commit-context can not be parsed
+   *         or was not obtained from this document-store.
+   */
+  public void beginCommitContext(@NonNullable String previousContext) throws StoreException;
+
+  /**
+   * Flushes any buffered writes operations for this DocumentStore and returns a commit-context
+   * which can be used to ensure that such writes are visible to ensuing queries.
+   * <p/>
+   * The commit-context is cleared and tracking is stopped.
+   * <p/>
+   * This call does not isolates the writes originating from this instance of DocumentStore
+   * from other instances and as a side-effect other writes issued to the same document-store
+   * through other DocumentStore instances could get flushed.
+   *
+   * @see #beginCommitContext()
+   * @see #clearCommitContext()
+   * @see Query#setCommitContext(String)
+   *
+   * @return An encoded string representing the commit-context of all writes issued,
+   *         until now, through this instance of {@link DocumentStore}.
+   *
+   * @throws StoreException if the flush failed or if the flush of any
+   *         buffered operation resulted in an error.
+   * @throws IllegalStateException if a corresponding {@link #beginCommitContext()} was not
+   *         called before calling this method.
+   */
+  public String commitAndGetContext() throws StoreException;
+
+  /**
+   * Stop the commit tracking and clear any state on this {@link DocumentStore} instance.
+   *
+   * @throws IllegalStateException if a corresponding {@link #beginCommitContext()} was not
+   *         called before calling this method.
+   */
+  public void clearCommitContext() throws StoreException;
 
   /**
    * <p>Executes a query to return all Documents in the DocumentStore.

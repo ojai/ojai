@@ -17,6 +17,7 @@ package org.ojai.store;
 
 import org.ojai.Document;
 import org.ojai.FieldPath;
+import org.ojai.annotation.API.NonNullable;
 import org.ojai.exceptions.OjaiException;
 
 /**
@@ -48,6 +49,23 @@ public interface Query {
    * @return {@code this} for chained invocation.
    */
   public Query setOptions(Document options) throws IllegalArgumentException;
+
+  /**
+   * Set the commit-context for this query.
+   * <p/>
+   * A commit-context allows this query to "see" all the writes that happened before
+   * the commit-context was retrieved from a {@link DocumentStore}.
+   *
+   * @see DocumentStore#beginCommitContext()
+   * @see DocumentStore#beginCommitContext(String)
+   * @see DocumentStore#commitAndGetContext(String)
+   *
+   * @throws NullPointerException if the commit context is {@code null}.
+   * @throws IllegalArgumentException if the specified commit-context can not be parsed.
+   *
+   * @return {@code this} for chained invocation.
+   */
+  public Query setCommitContext(@NonNullable String commitContext) throws IllegalArgumentException;
 
   /**
    * Add the list of field paths to the list of projected fields.
