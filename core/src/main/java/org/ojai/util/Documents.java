@@ -20,13 +20,18 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.ojai.Document;
+import org.ojai.DocumentBuilder;
+import org.ojai.DocumentReader;
 import org.ojai.Value;
+import org.ojai.annotation.API;
+import org.ojai.json.impl.JsonUtils;
 
 import com.google.common.collect.Maps;
 
 /**
  * This class contains utility methods for {@link Document} interface.
  */
+@API.Public
 public class Documents {
 
   /**
@@ -60,6 +65,17 @@ public class Documents {
       }
     }
     return true;
+  }
+
+  /**
+   * This method can be used to build a {@link Document} (via {@link DocumentBuilder}) from
+   * a {@link DocumentReader} instance.
+   *
+   * @param reader instance of DocumentReader to read the fields from
+   * @param builder instance of DocumentBuilder to write the field to
+   */
+  public static void writeReaderToBuilder(DocumentReader reader, DocumentBuilder builder) {
+    JsonUtils.addToMap(reader, builder);
   }
 
 }

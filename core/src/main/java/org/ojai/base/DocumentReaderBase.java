@@ -25,11 +25,6 @@ import org.ojai.annotation.API;
 public abstract class DocumentReaderBase implements DocumentReader {
 
   /**
-   * @return The event emitted by the last call to {@link #next()}.
-   */
-  protected abstract EventType getCurrentEvent();
-
-  /**
    * This is a trivial implementation of {@link #skipChildren()} API.
    * <p/>
    * An optimized implementation could simply skip over the sub-tree by advancing the

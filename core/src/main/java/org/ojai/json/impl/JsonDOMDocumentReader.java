@@ -23,7 +23,6 @@ import java.util.ListIterator;
 import java.util.Map.Entry;
 import java.util.Stack;
 
-import org.ojai.DocumentReader;
 import org.ojai.Value.Type;
 import org.ojai.base.DocumentReaderBase;
 import org.ojai.exceptions.TypeException;
@@ -378,7 +377,7 @@ class JsonDOMDocumentReader extends DocumentReaderBase {
   }
 
   @Override
-  protected EventType getCurrentEvent() {
+  public EventType getCurrentEvent() {
     return currentEvent;
   }
 

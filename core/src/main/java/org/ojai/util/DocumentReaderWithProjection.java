@@ -209,4 +209,9 @@ public class DocumentReaderWithProjection implements DocumentReader {
     return reader.getBinary();
   }
 
+  @Override
+  public EventType getCurrentEvent() {
+    return reader.getCurrentEvent();
+  }
+
 }

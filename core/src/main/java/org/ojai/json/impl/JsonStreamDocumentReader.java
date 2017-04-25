@@ -31,7 +31,6 @@ import java.nio.ByteBuffer;
 import java.util.LinkedList;
 import java.util.Stack;
 
-import org.ojai.DocumentReader;
 import org.ojai.Value.Type;
 import org.ojai.annotation.API;
 import org.ojai.base.DocumentReaderBase;
@@ -673,7 +672,7 @@ public class JsonStreamDocumentReader extends DocumentReaderBase {
   }
 
   @Override
-  protected EventType getCurrentEvent() {
+  public EventType getCurrentEvent() {
     return currentEvent;
   }
 
