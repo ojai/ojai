@@ -40,7 +40,7 @@ import com.google.common.cache.CacheBuilder;
  * Immutable class for representing a field path.
  */
 @API.Public
-public final class FieldPath implements Comparable<FieldPath>, Iterable<FieldSegment>, JsonString {
+public final class FieldPath implements Comparable<FieldPath>, Iterable<FieldSegment>, Expression {
   private static Logger logger = LoggerFactory.getLogger(FieldPath.class);
 
   public static final FieldPath EMPTY = new FieldPath(new NameSegment("", null, false));
@@ -340,6 +340,11 @@ public final class FieldPath implements Comparable<FieldPath>, Iterable<FieldSeg
   @Override
   public String asJsonString(JsonOptions options) {
     return asJsonString();
+  }
+
+  @Override
+  public String getName() {
+    return "fieldPath";
   }
 
 }
