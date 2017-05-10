@@ -19,6 +19,7 @@ import java.util.Map;
 
 import org.ojai.Document;
 import org.ojai.DocumentBuilder;
+import org.ojai.annotation.API;
 import org.ojai.exceptions.DecodingException;
 import org.ojai.exceptions.OjaiException;
 
@@ -29,7 +30,19 @@ import org.ojai.exceptions.OjaiException;
  * DriverManager uses the implementation to establish connection to the OJAI data
  * source.
  */
+@API.Public
 public interface Driver {
+
+  /**
+   * Returns a printable name for the OJAI Driver implementation
+   */
+  public String getName();
+
+  /**
+   * Returns {@code true} if the other object is "equal to" this Driver.
+   */
+  @Override
+  boolean equals(Object obj);
 
   /**
    * Creates and returns a new, empty instance of an OJAI Document.
@@ -93,6 +106,7 @@ public interface Driver {
   /**
    * Returns true if this Driver supports the protocol specified in the URL.
    */
+  @API.Internal
   public boolean accepts(String url);
 
   /**
@@ -100,6 +114,7 @@ public interface Driver {
    * Used by DriverManager to connect to the OJAI data source. Application should
    * not use this API directly.
    */
-  public Connection connect(String url, java.util.Properties info) throws OjaiException;
+  @API.Internal
+  public Connection connect(String url, Document info) throws OjaiException;
 
 }

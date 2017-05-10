@@ -37,6 +37,15 @@ public interface Connection extends Closeable {
   public DocumentStore getStore(String storeName) throws OjaiException;
 
   /**
+   * Returns a handle to an OJAI DocumentStore specified by the given name
+   * or path.
+   *
+   * @param storeName name or path of an OJAI data source table/store.
+   * @param options an OJAI Document containing arbitrary, implementation specific settings
+   */
+  public DocumentStore getStore(@NonNullable String storeName, Document options) throws OjaiException;
+
+  /**
    * <p>Creates and returns a new, empty instance of an OJAI Document.</p>
    * This is an alias to getDriver().newDocument().
    */

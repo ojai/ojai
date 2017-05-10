@@ -17,6 +17,7 @@ package org.ojai.store;
 
 import org.ojai.Document;
 import org.ojai.FieldPath;
+import org.ojai.annotation.API;
 import org.ojai.annotation.API.NonNullable;
 import org.ojai.exceptions.OjaiException;
 
@@ -24,6 +25,7 @@ import org.ojai.exceptions.OjaiException;
  * OJAI interface which lets user build an OJAI Query that can be executed
  * on an OJAI DocumentStore.
  */
+@API.Public
 public interface Query {
 
   /**
