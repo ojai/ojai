@@ -15,6 +15,7 @@
  */
 package org.ojai.util;
 
+import org.ojai.FieldPath;
 import org.ojai.annotation.API;
 import org.ojai.json.impl.ConstantImpl;
 
@@ -50,6 +51,21 @@ public class Fields {
       return fieldName.substring(1, fieldName.length()-1); // quoted
     }
     return fieldName; // not quoted
+  }
+
+  private static final FieldPath[] EMPTRY_FIELDPATH_ARRAY = new FieldPath[0];
+  public static FieldPath[] toFieldPathArray(String... fieldPaths) {
+    if (fieldPaths == null) {
+      return null;
+    } else if (fieldPaths.length == 0) {
+      return EMPTRY_FIELDPATH_ARRAY;
+    } else {
+      final FieldPath[] fpArray = new FieldPath[fieldPaths.length];
+      for (int i = 0; i < fieldPaths.length; i++) {
+        fpArray[i] = FieldPath.parseFrom(fieldPaths[i]);
+      }
+      return fpArray;
+    }
   }
 
 }

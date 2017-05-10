@@ -27,6 +27,7 @@ import org.ojai.DocumentStream;
 import org.ojai.json.Json;
 import org.ojai.tests.BaseTest;
 import org.ojai.types.ODate;
+import org.ojai.util.Documents;
 import org.ojai.util.Values;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +42,7 @@ public class TestJsonUtil extends BaseTest {
          DocumentStream stream = Json.newDocumentStream(in)) {
       for (DocumentReader reader : stream.documentReaders()) {
         DocumentBuilder builder = Json.newDocumentBuilder();
-        Json.writeReaderToBuilder(reader, builder);
+        Documents.writeReaderToBuilder(reader, builder);
         logger.info(builder.toString());
       }
     }

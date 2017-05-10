@@ -31,9 +31,9 @@ import java.nio.ByteBuffer;
 import java.util.LinkedList;
 import java.util.Stack;
 
-import org.ojai.DocumentReader;
 import org.ojai.Value.Type;
 import org.ojai.annotation.API;
+import org.ojai.base.DocumentReaderBase;
 import org.ojai.exceptions.DecodingException;
 import org.ojai.exceptions.TypeException;
 import org.ojai.types.ODate;
@@ -46,7 +46,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 
 @API.Internal
-public class JsonStreamDocumentReader implements DocumentReader {
+public class JsonStreamDocumentReader extends DocumentReaderBase {
 
   private final JsonDocumentStream documentStream;
   private int mapLevel;
@@ -669,6 +669,11 @@ public class JsonStreamDocumentReader implements DocumentReader {
 
   protected boolean isExtended() {
     return isExtended;
+  }
+
+  @Override
+  public EventType getCurrentEvent() {
+    return currentEvent;
   }
 
 }

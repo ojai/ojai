@@ -36,6 +36,7 @@ import org.ojai.json.impl.JsonDocumentBuilder;
 import org.ojai.json.impl.JsonDocumentStream;
 import org.ojai.json.impl.JsonUtils;
 import org.ojai.json.impl.JsonValueBuilder;
+import org.ojai.util.Documents;
 
 /**
  * This class serves as a factory for a JSON implementation
@@ -182,8 +183,11 @@ public final class Json {
     return builder.asUTF8String();
   }
 
+  /**
+   * @deprecated Use {@link Documents#writeReaderToBuilder(DocumentReader, DocumentBuilder)} 
+   */
   public static void writeReaderToBuilder(DocumentReader r, DocumentBuilder w) {
-    JsonUtils.addToMap(r, w);
+    Documents.writeReaderToBuilder(r, w);
   }
 
 }

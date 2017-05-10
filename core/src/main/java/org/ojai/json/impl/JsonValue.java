@@ -24,11 +24,12 @@ import org.ojai.DocumentReader;
 import org.ojai.Value;
 import org.ojai.annotation.API;
 import org.ojai.exceptions.TypeException;
+import org.ojai.json.Json;
+import org.ojai.json.JsonOptions;
 import org.ojai.types.ODate;
 import org.ojai.types.OInterval;
 import org.ojai.types.OTime;
 import org.ojai.types.OTimestamp;
-import org.ojai.util.Values;
 
 @API.Internal
 public class JsonValue implements Value {
@@ -404,8 +405,18 @@ public class JsonValue implements Value {
   }
 
   @Override
+  public String asJsonString() {
+    return Json.toJsonString(asReader(), JsonOptions.WITH_TAGS);
+  }
+
+  @Override
+  public String asJsonString(JsonOptions options) {
+    return Json.toJsonString(asReader(), options);
+  }
+
+  @Override
   public String toString() {
-    return Values.asJsonString(this);
+    return asJsonString();
   }
 
   @Override

@@ -2,7 +2,7 @@
 
 OJAI is a general-purpose JSON access layer that sits on databases, file systems, and message streams which enables access to structured, semi-structured and unstructured data using a common API.
 
-##Documents
+## Documents
 
 The OJAI API specification is centered around documents that follow a JSON-like data model. Documents can describe entities such as products, people, and places, much more easily and in greater detail than can tables in relational databases. The greater flexibility and richness are due to the lack of schemas in documents, the ability to nest data within other data, the ability to create arrays, and in general the ability to range from simple to very complex data within a single document.
 
@@ -33,7 +33,7 @@ The structure of each document, called the document's schema, is easy to change.
 
 For more about documents, see [Documents](https://github.com/ojai/ojai/wiki/1.-Documents) in the OJAI wiki.
 
-##Interfaces for Working with Documents
+## Interfaces for Working with Documents
 The OJAI specification provides two types of APIs for creating, reading, and updating documents within the context of a client application: Document Object Model (DOM)-based APIs and event-driven APIs. 
 
 ### Document Object Model-based APIs

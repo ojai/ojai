@@ -28,7 +28,7 @@ import org.ojai.types.OTime;
 import org.ojai.types.OTimestamp;
 
 @API.Public
-public interface Value {
+public interface Value extends JsonString {
 
   public static final byte TYPE_CODE_NULL       = 1;
   public static final byte TYPE_CODE_BOOLEAN    = 2;

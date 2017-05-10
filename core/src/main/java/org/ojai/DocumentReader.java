@@ -19,6 +19,8 @@ import java.math.BigDecimal;
 import java.nio.ByteBuffer;
 
 import org.ojai.annotation.API;
+import org.ojai.exceptions.DecodingException;
+import org.ojai.exceptions.RangeException;
 import org.ojai.exceptions.TypeException;
 import org.ojai.types.ODate;
 import org.ojai.types.OInterval;
@@ -58,7 +60,23 @@ public interface DocumentReader {
    *         reader is past the end of the document
    * @throws DecodingException if the document is malformed or incomplete.
    */
-  DocumentReader.EventType next();
+  EventType next();
+
+  /**
+   * @return The event emitted by the last call to {@link #next()}.
+   */
+  EventType getCurrentEvent();
+
+  /**
+   * When called after {@link EventType#START_MAP} or {@link EventType#START_ARRAY} event,
+   * moves this {@code DocumentReader} to the corresponding {@link EventType#END_MAP} or
+   * {@link EventType#END_ARRAY}, skipping the entire sub-tree.
+   * <p/>
+   * For all other events, this is a NO-OP.
+   *
+   * @return {@code this} for chaining.
+   */
+  DocumentReader skipChildren();
 
   /**
    * @return {@code true} while traversing a Map, {@code false} if traversing

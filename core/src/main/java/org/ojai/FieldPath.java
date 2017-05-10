@@ -28,6 +28,7 @@ import org.ojai.FieldSegment.NameSegment;
 import org.ojai.annotation.API;
 import org.ojai.antlr4.FieldPathLexer;
 import org.ojai.antlr4.FieldPathParser;
+import org.ojai.json.JsonOptions;
 import org.ojai.util.Fields;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +40,7 @@ import com.google.common.cache.CacheBuilder;
  * Immutable class for representing a field path.
  */
 @API.Public
-public final class FieldPath implements Comparable<FieldPath>, Iterable<FieldSegment> {
+public final class FieldPath implements Comparable<FieldPath>, Iterable<FieldSegment>, Expression {
   private static Logger logger = LoggerFactory.getLogger(FieldPath.class);
 
   public static final FieldPath EMPTY = new FieldPath(new NameSegment("", null, false));
@@ -329,6 +330,21 @@ public final class FieldPath implements Comparable<FieldPath>, Iterable<FieldSeg
     public RecognitionException getException() {
       return exception;
     }
+  }
+
+  @Override
+  public String asJsonString() {
+    return String.format("\"%s\"", asPathString().replace("\"", "\\\""));
+  }
+
+  @Override
+  public String asJsonString(JsonOptions options) {
+    return asJsonString();
+  }
+
+  @Override
+  public String getName() {
+    return "fieldPath";
   }
 
 }

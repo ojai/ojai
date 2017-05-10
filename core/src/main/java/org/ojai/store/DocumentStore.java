@@ -21,8 +21,11 @@ import org.ojai.Document;
 import org.ojai.DocumentStream;
 import org.ojai.FieldPath;
 import org.ojai.Value;
-import org.ojai.store.exceptions.StoreException;
+import org.ojai.annotation.API.NonNullable;
+import org.ojai.store.exceptions.DocumentExistsException;
+import org.ojai.store.exceptions.DocumentNotFoundException;
 import org.ojai.store.exceptions.MultiOpException;
+import org.ojai.store.exceptions.StoreException;
 
 public interface DocumentStore extends AutoCloseable {
 
@@ -34,59 +37,170 @@ public interface DocumentStore extends AutoCloseable {
 
   /**
    * Flushes any buffered writes operations for this DocumentStore.
+   *
    * @throws StoreException if the flush failed or if the flush of any
    *         buffered operation resulted in an error.
    */
   public void flush() throws StoreException;
 
   /**
-   * Returns a DocumentStream for all the documents in the DocumentStore.
-   * @return A DocumentStream that can be used to retrieve all documents in the
-   *         this DocumentStore. The DocumentStream must be closed after
-   *         retrieving the documents.
+   * Begin tracking a commit-context over the ensuing write operations performed through
+   * this instance of {@link DocumentStore}.
+   *
+   * @see #commitAndGetContext()
+   * @see #clearCommitContext()
+   * @see Query#setCommitContext(String)
+   *
+   * @throws IllegalStateException if a beginCommitContext() was already called
+   *         and a corresponding commitAndGetContext()/clearCommitContext() wasn't.
+   */
+  public void beginCommitContext() throws StoreException;
+
+  /**
+   * Begin tracking a commit-context over the ensuing write operations performed through
+   * this instance of {@link DocumentStore}.
+   *
+   * @param previousContext a previous commit-context that was retrieved from this document-store,
+   *        including through other DocumentStore instances. The tracking begins by using this
+   *        context as the base state.
+   *
+   * @see #commitAndGetContext()
+   * @see #clearCommitContext()
+   * @see Query#setCommitContext(String)
+   *
+   * @throws NullPointerException if the previous commit context is {@code null}
+   * @throws IllegalStateException if a beginCommitContext() was already called
+   *         and a corresponding commitAndGetContext()/clearCommitContext() wasn't.
+   * @throws IllegalArgumentException if the specified commit-context can not be parsed
+   *         or was not obtained from this document-store.
+   */
+  public void beginCommitContext(@NonNullable String previousContext) throws StoreException;
+
+  /**
+   * Flushes any buffered writes operations for this DocumentStore and returns a commit-context
+   * which can be used to ensure that such writes are visible to ensuing queries.
+   * <p/>
+   * The commit-context is cleared and tracking is stopped.
+   * <p/>
+   * This call does not isolates the writes originating from this instance of DocumentStore
+   * from other instances and as a side-effect other writes issued to the same document-store
+   * through other DocumentStore instances could get flushed.
+   *
+   * @see #beginCommitContext()
+   * @see #clearCommitContext()
+   * @see Query#setCommitContext(String)
+   *
+   * @return An encoded string representing the commit-context of all writes issued,
+   *         until now, through this instance of {@link DocumentStore}.
+   *
+   * @throws StoreException if the flush failed or if the flush of any
+   *         buffered operation resulted in an error.
+   * @throws IllegalStateException if a corresponding {@link #beginCommitContext()} was not
+   *         called before calling this method.
+   */
+  public String commitAndGetContext() throws StoreException;
+
+  /**
+   * Stop the commit tracking and clear any state on this {@link DocumentStore} instance.
+   *
+   * @throws IllegalStateException if a corresponding {@link #beginCommitContext()} was not
+   *         called before calling this method.
+   */
+  public void clearCommitContext() throws StoreException;
+
+  /**
+   * <p>Executes a query to return all Documents in the DocumentStore.
+   * <p>The returned DocumentStream must be closed after retrieving the documents.
+   *
+   * @return A DocumentStream of all documents in the this DocumentStore.
+   *
    * @throws StoreException
    */
   public DocumentStream find() throws StoreException;
 
   /**
-   * Returns a DocumentStream for all the documents in the DocumentStore.
-   * Each Document will contain only those field paths that are specified in the
-   * argument. If no path parameter is specified then it returns a full document.
+   * <p>Executes the specified query on the DocumentStore and return a DocumentStream of the result.
+   * <p>The returned DocumentStream must be closed after retrieving the documents.
    *
-   * @param paths list of fields that should be returned in the read document
-   * @return A DocumentStream that can be used to requested paths. The
-   *         DocumentStream must be closed after retrieving the documents
+   * @return A DocumentStream that can be used to retrieve the documents in the result.
+   *
    * @throws StoreException
    */
-  public DocumentStream find(String... paths) throws StoreException;
-  public DocumentStream find(FieldPath... paths) throws StoreException;
+  public DocumentStream find(Query query) throws StoreException;
+
+  /**
+   * <p>Executes the specified query on the DocumentStore and return a DocumentStream of the result.
+   * <p>The returned DocumentStream must be closed after retrieving the documents.
+   *
+   * @param queryJSON a Json string representation of OJAI Query.
+   * @return A DocumentStream that can be used to retrieve the documents in the result.
+   *
+   * @throws StoreException
+   */
+  public DocumentStream find(String queryJSON) throws StoreException;
+
+  /**
+   * <p>Executes a query to return all Documents in the DocumentStore.
+   * <p>Each Document will contain only those field paths that are specified in the
+   * argument. If no fields are specified then it returns a full document.
+   *
+   * @param fieldPaths list of fields that should be returned in the read document
+   * @return A DocumentStream that can be used to retrieve the documents in the result.
+   *
+   * @throws StoreException
+   */
+  public DocumentStream find(String... fieldPaths) throws StoreException;
+
+  /**
+   * <p>Executes a query to return all Documents in the DocumentStore.
+   * <p>Each Document will contain only those field paths that are specified in the
+   * argument. If no fields are specified then it returns a full document.
+   *
+   * @param fieldPaths list of fields that should be returned in the read document
+   * @return A DocumentStream that can be used to retrieve the documents in the result.
+   *
+   * @throws StoreException
+   */
+  public DocumentStream find(FieldPath... fieldPaths) throws StoreException;
 
   /**
    * Returns a DocumentStream with all the documents in the DocumentStore that
    * satisfies the QueryCondition.
    *
    * @param c The QueryCondition to match the documents
-   * @return A DocumentStream that can be used to get documents.
-   *         The DocumentStream must be closed after retrieving the documents.
+   * @return A DocumentStream that can be used to retrieve the documents in the result.
+   *
    */
-   public DocumentStream find(QueryCondition c) throws StoreException;
+  public DocumentStream find(QueryCondition c) throws StoreException;
 
   /**
-   * Returns a DocumentStream with all the documents in the DocumentStore that
-   * satisfies the QueryCondition. Each Document will contain only the paths
-   * that are specified in the argument.
-   *
-   * If no field path is specified then it returns full document for a given document.
+   * <p>Execute a query on the DocumentStore and return a DocumentStream of the Document
+   * matching the specified QueryCondition.
+   * <p>Each Document will contain only those field paths that are specified in the
+   * argument. If no fields are specified then it returns a full document.
    *
    * @param c The QueryCondition to match the documents
-   * @param paths list of fields that should be returned in the read document
-   * @return A DocumentStream that can be used to read documents with requested
-   *         paths. The DocumentStream must be closed after retrieving the documents
+   * @param fieldPaths list of fields that should be returned in the read document
+   *
+   * @return A DocumentStream that can be used to retrieve the documents in the result.
    * @throws StoreException
    */
-  public DocumentStream find(QueryCondition c, String...paths)
+  public DocumentStream find(QueryCondition c, String...fieldPaths)
       throws StoreException;
-  public DocumentStream find(QueryCondition c, FieldPath...paths)
+
+  /**
+   * <p>Execute a query on the DocumentStore and return a DocumentStream of the Document
+   * matching the specified QueryCondition.
+   * <p>Each Document will contain only those field paths that are specified in the
+   * argument. If no fields are specified then it returns a full document.
+   *
+   * @param c The QueryCondition to match the documents
+   * @param fieldPaths list of fields that should be returned in the read document
+   *
+   * @return A DocumentStream that can be used to retrieve the documents in the result.
+   * @throws StoreException
+   */
+  public DocumentStream find(QueryCondition c, FieldPath... fieldPaths)
       throws StoreException;
 
   /**

@@ -56,6 +56,7 @@ public class TestFieldPath extends BaseTest {
     assertTrue(fp.getRootSegment().isLeaf());
     assertEquals("\"work_phone\"", fp.asPathString(true));
     assertEquals("work_phone", fp.asPathString());
+    assertEquals("\"work_phone\"", fp.asJsonString());
   }
 
   @Test
@@ -64,6 +65,7 @@ public class TestFieldPath extends BaseTest {
     assertTrue(fp.getRootSegment().isLeaf());
     assertEquals("\"work-phone\"", fp.asPathString(true));
     assertEquals("work-phone", fp.asPathString());
+    assertEquals("\"work-phone\"", fp.asJsonString());
   }
 
   @Test
@@ -73,10 +75,12 @@ public class TestFieldPath extends BaseTest {
     assertTrue(fp.getRootSegment().getChild().isLeaf());
     assertEquals("\"work phone\".\"cell phone\"", fp.asPathString(true));
     assertEquals("work phone.cell phone", fp.asPathString());
+    assertEquals("\"work phone.cell phone\"", fp.asJsonString());
 
     fp = FieldPath.parseFrom("a[ ]");
     assertEquals("\"a\"[]", fp.asPathString(true));
     assertEquals("a[]", fp.asPathString());
+    assertEquals("\"a[]\"", fp.asJsonString());
   }
 
   @Test
@@ -85,6 +89,7 @@ public class TestFieldPath extends BaseTest {
     assertTrue(fp.getRootSegment().isLeaf());
     assertEquals("\"a\"", fp.asPathString(true));
     assertEquals("a", fp.asPathString());
+    assertEquals("\"a\"", fp.asJsonString());
   }
 
   @Test
@@ -102,6 +107,7 @@ public class TestFieldPath extends BaseTest {
     assertEquals("\"the\\\"quick.brown\\\\fox\"", fp.asPathString(true));
     assertEquals("\"the\\\"quick.brown\\\\fox\"", fp.asPathString(false));
     assertEquals("\"the\\\"quick.brown\\\\fox\"", fp.asPathString());
+    assertEquals("\"\\\"the\\\\\"quick.brown\\\\fox\\\"\"", fp.asJsonString());
   }
 
   @Test
@@ -111,6 +117,7 @@ public class TestFieldPath extends BaseTest {
     assertTrue(fp.getRootSegment().getChild().isLeaf());
     assertEquals("\"a\".\"b\"", fp.asPathString(true));
     assertEquals("a.\"b\"", fp.asPathString());
+    assertEquals("\"a.\\\"b\\\"\"", fp.asJsonString());
   }
 
   @Test
@@ -134,6 +141,7 @@ public class TestFieldPath extends BaseTest {
     assertTrue(fp.getRootSegment().getChild().getChild().isLeaf());
     assertEquals("\"1\".\"23\".\"4a\"", fp.asPathString(true));
     assertEquals("1.23.4a", fp.asPathString());
+    assertEquals("\"1.23.4a\"", fp.asJsonString());
   }
 
   @Test
@@ -146,6 +154,7 @@ public class TestFieldPath extends BaseTest {
     assertTrue(fp.getRootSegment().getChild().getChild().getChild().isLeaf());
     assertEquals("\"a\".\"b\"[].\"c\"", fp.asPathString(true));
     assertEquals("a.b[].c", fp.asPathString());
+    assertEquals("\"a.b[].c\"", fp.asJsonString());
   }
 
   @Test
@@ -154,6 +163,7 @@ public class TestFieldPath extends BaseTest {
     assertTrue(fp.getRootSegment().isLeaf());
     assertEquals("\"a\"", fp.asPathString());
     assertEquals("\"a\"", fp.asPathString(false));
+    assertEquals("\"\\\"a\\\"\"", fp.asJsonString());
   }
 
   @Test
@@ -162,6 +172,7 @@ public class TestFieldPath extends BaseTest {
     assertTrue(fp.getRootSegment().isLeaf());
     assertEquals("\"a.b\"", fp.asPathString());
     assertEquals("\"a.b\"", fp.asPathString(false));
+    assertEquals("\"\\\"a.b\\\"\"", fp.asJsonString());
   }
 
   @Test
@@ -171,6 +182,7 @@ public class TestFieldPath extends BaseTest {
     assertTrue(fp.getRootSegment().getChild().isLeaf());
     assertEquals("\"a\".\"b[3].c\"", fp.asPathString(true));
     assertEquals("a.\"b[3].c\"", fp.asPathString());
+    assertEquals("\"a.\\\"b[3].c\\\"\"", fp.asJsonString());
   }
 
   @Test
@@ -182,6 +194,7 @@ public class TestFieldPath extends BaseTest {
     assertTrue(fp.getRootSegment().getChild().getChild().isLeaf());
     assertEquals("\"a.b\"[].\"c\"", fp.asPathString(true));
     assertEquals("\"a.b\"[].c", fp.asPathString());
+    assertEquals("\"\\\"a.b\\\"[].c\"", fp.asJsonString());
   }
 
   @Test
@@ -264,6 +277,7 @@ public class TestFieldPath extends BaseTest {
     child = FieldPath.parseFrom("a.b[2].c");
     progeny = child.cloneAfterAncestor(parent);
     assertEquals("c", progeny.asPathString());
+    assertEquals("\"c\"", progeny.asJsonString());
   }
 
   @Test
@@ -389,6 +403,7 @@ public class TestFieldPath extends BaseTest {
     assertEquals("a\\.b\\[4\\]", fp.toString());
     assertEquals("a\\.b\\[4\\]", fp.asPathString(false));
     assertEquals("\"a.b[4]\"", fp.asPathString(true));
+    assertEquals("\"a\\.b\\[4\\]\"", fp.asJsonString());
   }
 
   @Test
