@@ -26,6 +26,7 @@ import org.antlr.v4.runtime.Recognizer;
 import org.ojai.FieldSegment.IndexSegment;
 import org.ojai.FieldSegment.NameSegment;
 import org.ojai.annotation.API;
+import org.ojai.annotation.API.NonNullable;
 import org.ojai.antlr4.FieldPathLexer;
 import org.ojai.antlr4.FieldPathParser;
 import org.ojai.json.JsonOptions;
@@ -55,7 +56,7 @@ public final class FieldPath implements Comparable<FieldPath>, Iterable<FieldSeg
    * @throws NullPointerException If the input string is null.
    * @throws IllegalArgumentException If the input string has syntax error.
    */
-  public static FieldPath parseFrom(String fieldPath) {
+  public static FieldPath parseFrom(@NonNullable String fieldPath) {
     if (fieldPath == null) {
       throw new NullPointerException("Can not parse null string as FieldPath.");
     } else if (fieldPath.isEmpty()) {

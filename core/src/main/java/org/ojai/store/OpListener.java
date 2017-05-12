@@ -17,6 +17,7 @@ package org.ojai.store;
 
 import org.ojai.Document;
 import org.ojai.annotation.API;
+import org.ojai.annotation.API.NonNullable;
 
 @API.Public
 public interface OpListener {
@@ -25,13 +26,13 @@ public interface OpListener {
    *
    * @param document the available <code>Document</code>
    */
-  public void onSuccess(Document document);
+  public void onSuccess(@NonNullable Document document);
 
   /**
    * Called when an <code>Exception</code> occurred while retrieving a Document
    *
    * @param e an exception
    */
-  public void onFailure(Exception e);
+  public void onFailure(@NonNullable Exception e);
 
 }

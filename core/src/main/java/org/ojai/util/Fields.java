@@ -17,6 +17,8 @@ package org.ojai.util;
 
 import org.ojai.FieldPath;
 import org.ojai.annotation.API;
+import org.ojai.annotation.API.NonNullable;
+import org.ojai.annotation.API.Nullable;
 import org.ojai.json.impl.ConstantImpl;
 
 @API.Public
@@ -24,7 +26,7 @@ public class Fields {
 
   public static final char SEGMENT_QUOTE_CHAR = '"';
 
-  public static String quoteFieldName(String fieldName) {
+  public static String quoteFieldName(@NonNullable String fieldName) {
     if (fieldName.length() == 0) {
       return ConstantImpl.EMPTYSTRING;
     }
@@ -42,7 +44,7 @@ public class Fields {
     return fieldName; // no need to quote
   }
 
-  public static String unquoteFieldName(String fieldName) {
+  public static String unquoteFieldName(@NonNullable String fieldName) {
     if (fieldName.length() == 0) {
       return ConstantImpl.EMPTYSTRING;
     }
@@ -54,7 +56,7 @@ public class Fields {
   }
 
   private static final FieldPath[] EMPTRY_FIELDPATH_ARRAY = new FieldPath[0];
-  public static FieldPath[] toFieldPathArray(String... fieldPaths) {
+  public static FieldPath[] toFieldPathArray(@Nullable String... fieldPaths) {
     if (fieldPaths == null) {
       return null;
     } else if (fieldPaths.length == 0) {

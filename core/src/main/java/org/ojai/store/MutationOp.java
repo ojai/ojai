@@ -17,6 +17,7 @@ package org.ojai.store;
 
 import org.ojai.FieldPath;
 import org.ojai.Value;
+import org.ojai.annotation.API.NonNullable;
 
 public class MutationOp {
 
@@ -45,7 +46,7 @@ public class MutationOp {
     return fieldPath;
   }
 
-  public void setFieldPath(FieldPath fieldPath) {
+  public void setFieldPath(@NonNullable FieldPath fieldPath) {
     this.fieldPath = fieldPath;
   }
 
@@ -53,7 +54,7 @@ public class MutationOp {
     return opValue;
   }
 
-  public void setOpValue(Value opValue) {
+  public void setOpValue(@NonNullable Value opValue) {
     this.opValue = opValue;
   }
 

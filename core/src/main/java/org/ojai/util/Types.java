@@ -21,6 +21,7 @@ import org.ojai.Value;
 import org.ojai.DocumentReader.EventType;
 import org.ojai.Value.Type;
 import org.ojai.annotation.API;
+import org.ojai.annotation.API.NonNullable;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.EnumBiMap;
@@ -94,7 +95,7 @@ public class Types {
    * @return {@code true} if the given value is not of an intrinsic
    *         JSON type.
    */
-  public static boolean isExtendedType(Value value) {
+  public static boolean isExtendedType(@NonNullable Value value) {
     return isExtendedType(value.getType());
   }
 
@@ -103,7 +104,7 @@ public class Types {
    * @return {@code true} if the given type is not an intrinsic
    *         JSON type
    */
-  public static boolean isExtendedType(Type type) {
+  public static boolean isExtendedType(@NonNullable Type type) {
     return TYPE_TAG_MAP.containsKey(type);
   }
 
@@ -113,7 +114,7 @@ public class Types {
    *         {@code Type} of the given value, if the type is not of an
    *         intrinsic JSON type, otherwise {@code null}
    */
-  public static String getTypeTag(Value value) {
+  public static String getTypeTag(@NonNullable Value value) {
     return getTypeTag(value.getType());
   }
 
@@ -123,7 +124,7 @@ public class Types {
    *         given {@code Type} if the type is not of an intrinsic JSON
    *         type, otherwise {@code null}
    */
-  public static String getTypeTag(Type type) {
+  public static String getTypeTag(@NonNullable Type type) {
     return TYPE_TAG_MAP.get(type);
   }
 
@@ -132,7 +133,7 @@ public class Types {
    * @param type the {@code Type} to lookup
    * @return The corresponding {@code EventType}
    */
-  public static EventType getEventTypeForType(Type type) {
+  public static EventType getEventTypeForType(@NonNullable Type type) {
     return TYPE_EVENTTYPE_MAP.get(type);
   }
 
@@ -141,7 +142,7 @@ public class Types {
    * @param event the {@code EventType} to lookup
    * @return The corresponding {@code Type}
    */
-  public static Type getTypeForEventType(EventType event) {
+  public static Type getTypeForEventType(@NonNullable EventType event) {
     return TYPE_EVENTTYPE_MAP.inverse().get(event);
   }
 

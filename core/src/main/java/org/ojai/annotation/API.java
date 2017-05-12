@@ -57,6 +57,8 @@ public class API {
   /**
    * Annotate a class field, method parameter or return value as non-nullable, i.e. {@code null}
    * is NOT an acceptable value for that parameter.
+   * <p/>
+   * A {@link NullPointerException} will be thrown if {@code null} is passed for such a parameter.
    *
    * @see Nullable
    */

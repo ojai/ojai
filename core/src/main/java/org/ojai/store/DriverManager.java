@@ -20,6 +20,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.ojai.Document;
 import org.ojai.annotation.API;
+import org.ojai.annotation.API.NonNullable;
 import org.ojai.exceptions.OjaiException;
 import org.ojai.store.exceptions.StoreException;
 import org.slf4j.Logger;
@@ -46,7 +47,7 @@ public final class DriverManager {
    * @throws IllegalArgumentException if the specified URL does does not begin with "ojai:"
    * @throws OjaiException if no registered driver for found for the specified URL.
    */
-  public static Driver getDriver(String url) throws OjaiException {
+  public static Driver getDriver(@NonNullable String url) throws OjaiException {
     Preconditions.checkNotNull(url);
     Preconditions.checkArgument(url.startsWith(OJAI_PROTOCOL_NAME));
     for (Driver driver : ojaiDrivers) {
@@ -68,7 +69,7 @@ public final class DriverManager {
    * @throws OjaiException if no registered driver for found for the specified URL.
    * @throws StoreException if connection to the data-source failed.
    */
-  public static Connection getConnection(String url) throws OjaiException {
+  public static Connection getConnection(@NonNullable String url) throws OjaiException {
     return getConnection(url, null);
   }
 
@@ -84,7 +85,7 @@ public final class DriverManager {
    * @throws OjaiException if no registered driver for found for the specified URL.
    * @throws StoreException if connection to the data-source failed.
    */
-  public static Connection getConnection(String url, Document options) throws OjaiException {
+  public static Connection getConnection(@NonNullable String url, @NonNullable Document options) throws OjaiException {
     Preconditions.checkNotNull(url);
     Preconditions.checkArgument(url.startsWith(OJAI_PROTOCOL_NAME));
     for (Driver driver : ojaiDrivers) {
@@ -103,7 +104,7 @@ public final class DriverManager {
    * class initialization using this method.
    */
   @API.Internal
-  public static synchronized void registerDriver(Driver driver) {
+  public static synchronized void registerDriver(@NonNullable Driver driver) {
     Preconditions.checkNotNull(driver);
     ojaiDrivers.addIfAbsent(driver);
   }

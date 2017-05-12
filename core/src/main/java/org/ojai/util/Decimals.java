@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import org.ojai.annotation.API;
+import org.ojai.annotation.API.NonNullable;
 
 /**
  * Utility class with functions for data type conversions.
@@ -34,7 +35,7 @@ public class Decimals {
     return new BigDecimal(BigInteger.valueOf(value), scale);
   }
 
-  public static BigDecimal convertByteToBigDecimal(byte[] value, int scale) {
+  public static BigDecimal convertByteToBigDecimal(@NonNullable byte[] value, int scale) {
     return new BigDecimal(new BigInteger(value), scale);
   }
 

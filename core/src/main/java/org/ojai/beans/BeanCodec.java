@@ -23,6 +23,8 @@ import org.ojai.Document;
 import org.ojai.DocumentBuilder;
 import org.ojai.DocumentReader;
 import org.ojai.annotation.API;
+import org.ojai.annotation.API.NonNullable;
+import org.ojai.annotation.API.Nullable;
 import org.ojai.beans.jackson.DocumentGenerator;
 import org.ojai.beans.jackson.DocumentParser;
 import org.ojai.exceptions.DecodingException;
@@ -31,7 +33,7 @@ import org.ojai.exceptions.EncodingException;
 @API.Public
 public class BeanCodec {
 
-  public static Document decode(DocumentBuilder db, Object bean)
+  public static Document decode(@NonNullable DocumentBuilder db, @Nullable Object bean)
       throws DecodingException {
     if (bean == null) return null;
 
@@ -44,7 +46,7 @@ public class BeanCodec {
     }
   }
 
-  public static <T> T encode(DocumentReader dr, Class<T> beanClass)
+  public static <T> T encode(@Nullable DocumentReader dr, @NonNullable Class<T> beanClass)
       throws EncodingException {
     if (dr == null) return null;
 

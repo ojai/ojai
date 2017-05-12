@@ -36,21 +36,21 @@ public interface Query {
    *
    * @return {@code this} for chained invocation.
    */
-  public Query setOption(String optionName, Object value) throws IllegalArgumentException;
+  public Query setOption(@NonNullable String optionName, @NonNullable Object value) throws IllegalArgumentException;
 
   /**
    * Returns the value of the named query option.
    *
    * @return value of the named query option, {@code null} if no such option exist.
    */
-  public Object getOption(String optionName);
+  public Object getOption(@NonNullable String optionName);
 
   /**
    * Set multiple query options for this Query.
    *
    * @return {@code this} for chained invocation.
    */
-  public Query setOptions(Document options) throws IllegalArgumentException;
+  public Query setOptions(@NonNullable Document options) throws IllegalArgumentException;
 
   /**
    * Set the commit-context for this query.
@@ -77,7 +77,7 @@ public interface Query {
    *
    * @return {@code this} for chained invocation.
    */
-  public Query select(String... fieldPaths) throws IllegalArgumentException;
+  public Query select(@NonNullable String... fieldPaths) throws IllegalArgumentException;
 
   /**
    * Add the list of field paths to the list of projected fields.
@@ -87,7 +87,7 @@ public interface Query {
    *
    * @return {@code this} for chained invocation.
    */
-  public Query select(FieldPath... fieldPaths) throws IllegalArgumentException;
+  public Query select(@NonNullable FieldPath... fieldPaths) throws IllegalArgumentException;
 
   /**
    * Sets the filtering condition for the query.
@@ -96,7 +96,7 @@ public interface Query {
    *
    * @return {@code this} for chained invocation.
    */
-  public Query where(String conditionJson) throws OjaiException, IllegalArgumentException;
+  public Query where(@NonNullable String conditionJson) throws OjaiException, IllegalArgumentException;
 
   /**
    * Sets the filtering condition for the query.
@@ -105,7 +105,7 @@ public interface Query {
    *
    * @return {@code this} for chained invocation.
    */
-  public Query where(QueryCondition condition) throws OjaiException, IllegalArgumentException;
+  public Query where(@NonNullable QueryCondition condition) throws OjaiException, IllegalArgumentException;
 
   /**
    * Sets the sort ordering of the returned Documents to the ascending order of specified field paths.
@@ -116,7 +116,7 @@ public interface Query {
    *
    * @return {@code this} for chained invocation.
    */
-  public Query orderBy(String... fieldPaths) throws IllegalArgumentException;
+  public Query orderBy(@NonNullable String... fieldPaths) throws IllegalArgumentException;
 
   /**
    * Sets the sort ordering of the returned Documents to the ascending order of specified field paths.
@@ -127,7 +127,7 @@ public interface Query {
    *
    * @return {@code this} for chained invocation.
    */
-  public Query orderBy(FieldPath... fieldPaths) throws IllegalArgumentException;
+  public Query orderBy(@NonNullable FieldPath... fieldPaths) throws IllegalArgumentException;
 
   /**
    * Sets the sort ordering of the returned Documents to the specified field and order.
@@ -140,7 +140,7 @@ public interface Query {
    *
    * @return {@code this} for chained invocation.
    */
-  public Query orderBy(String field, String order) throws IllegalArgumentException;
+  public Query orderBy(@NonNullable String field, @NonNullable String order) throws IllegalArgumentException;
 
   /**
    * Sets the sort ordering of the returned Documents to the specified field and order.
@@ -151,7 +151,7 @@ public interface Query {
    *
    * @return {@code this} for chained invocation.
    */
-  public Query orderBy(String field, SortOrder order) throws IllegalArgumentException;
+  public Query orderBy(@NonNullable String field, @NonNullable SortOrder order) throws IllegalArgumentException;
 
   /**
    * Sets the sort ordering of the returned Documents to the specified field and order.
@@ -162,7 +162,7 @@ public interface Query {
    *
    * @return {@code this} for chained invocation.
    */
-  public Query orderBy(FieldPath field, SortOrder order) throws IllegalArgumentException;
+  public Query orderBy(@NonNullable FieldPath field, @NonNullable SortOrder order) throws IllegalArgumentException;
 
   /**
    * {@code Zero} (0) based index which specifies number of Documents to skip before

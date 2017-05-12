@@ -15,6 +15,7 @@
  */
 package org.ojai;
 
+import org.ojai.annotation.API.NonNullable;
 import org.ojai.json.JsonOptions;
 
 public interface JsonString {
@@ -27,6 +28,6 @@ public interface JsonString {
   /**
    * @return This OJAI object serialized as JSON string using the specified options.
    */
-  String asJsonString(JsonOptions options);
+  String asJsonString(@NonNullable JsonOptions options);
 
 }

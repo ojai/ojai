@@ -24,6 +24,8 @@ import org.ojai.DocumentBuilder;
 import org.ojai.DocumentReader;
 import org.ojai.Value;
 import org.ojai.annotation.API;
+import org.ojai.annotation.API.NonNullable;
+import org.ojai.annotation.API.Nullable;
 import org.ojai.json.impl.JsonUtils;
 
 import com.google.common.collect.Maps;
@@ -41,7 +43,7 @@ public class Documents {
    * @return {@code true} if both the documents are equal,
    *         {@code false} otherwise.
    */
-  public static boolean equals(Document d1, Document d2) {
+  public static boolean equals(@Nullable Document d1, @Nullable Document d2) {
     if (d1 == d2) {
       return true; // both are null or same reference
     } else if (d1 == null || d2 == null
@@ -74,7 +76,7 @@ public class Documents {
    * @param reader instance of DocumentReader to read the fields from
    * @param builder instance of DocumentBuilder to write the field to
    */
-  public static void writeReaderToBuilder(DocumentReader reader, DocumentBuilder builder) {
+  public static void writeReaderToBuilder(@NonNullable DocumentReader reader, @NonNullable DocumentBuilder builder) {
     JsonUtils.addToMap(reader, builder);
   }
 

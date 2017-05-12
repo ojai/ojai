@@ -21,6 +21,7 @@ import org.ojai.DocumentReader;
 import org.ojai.Value;
 import org.ojai.DocumentReader.EventType;
 import org.ojai.annotation.API;
+import org.ojai.annotation.API.NonNullable;
 
 @API.Public
 public class Events {
@@ -31,7 +32,7 @@ public class Events {
     private String fieldName;
     private int index;
 
-    public EventDescriptor(EventType eventType) {
+    public EventDescriptor(@NonNullable EventType eventType) {
       this.index = -1;
       this.fieldName = null;
       this.eventType = eventType;
@@ -45,7 +46,7 @@ public class Events {
       return value;
     }
 
-    public EventDescriptor setValue(Value value) {
+    public EventDescriptor setValue(@NonNullable Value value) {
       this.value = value;
       return this;
     }
@@ -54,7 +55,7 @@ public class Events {
       return fieldName;
     }
 
-    public EventDescriptor setFieldName(String fieldName) {
+    public EventDescriptor setFieldName(@NonNullable String fieldName) {
       this.fieldName = fieldName;
       return this;
     }
@@ -70,10 +71,10 @@ public class Events {
   }
 
   public static interface Delegate {
-    public boolean process(DocumentReader reader,
-        EventType event, Queue<EventDescriptor> eventQueue);
-    public boolean bor(DocumentReader reader, Queue<EventDescriptor> eventQueue);
-    public boolean eor(DocumentReader reader, Queue<EventDescriptor> eventQueue);
+    public boolean process(@NonNullable DocumentReader reader,
+        @NonNullable EventType event, @NonNullable Queue<EventDescriptor> eventQueue);
+    public boolean bor(@NonNullable DocumentReader reader, @NonNullable Queue<EventDescriptor> eventQueue);
+    public boolean eor(@NonNullable DocumentReader reader, Queue<EventDescriptor> eventQueue);
   }
 
   public static abstract class BaseDelegate implements Delegate {

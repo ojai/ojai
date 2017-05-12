@@ -24,6 +24,7 @@ import java.util.regex.PatternSyntaxException;
 import org.ojai.FieldPath;
 import org.ojai.Value;
 import org.ojai.Value.Type;
+import org.ojai.annotation.API.NonNullable;
 import org.ojai.exceptions.TypeException;
 import org.ojai.types.ODate;
 import org.ojai.types.OInterval;
@@ -123,7 +124,7 @@ public interface QueryCondition {
    * block.
    * @return {@code this} for chaining
    */
-  public QueryCondition condition(QueryCondition conditionToAdd);
+  public QueryCondition condition(@NonNullable QueryCondition conditionToAdd);
 
   /**
    * Adds a condition that tests for existence of the specified
@@ -132,7 +133,7 @@ public interface QueryCondition {
    * @param path the {@code FieldPath} to test
    * @return {@code this} for chained invocation
    */
-  public QueryCondition exists(String path);
+  public QueryCondition exists(@NonNullable String path);
 
   /**
    * Adds a condition that tests for existence of the specified
@@ -141,7 +142,7 @@ public interface QueryCondition {
    * @param path the {@code FieldPath} to test
    * @return {@code this} for chained invocation
    */
-  public QueryCondition exists(FieldPath path);
+  public QueryCondition exists(@NonNullable FieldPath path);
 
   /**
    * Adds a condition that tests for non-existence of the specified
@@ -150,7 +151,7 @@ public interface QueryCondition {
    * @param path the {@code FieldPath} to test
    * @return {@code this} for chained invocation
    */
-  public QueryCondition notExists(String path);
+  public QueryCondition notExists(@NonNullable String path);
 
   /**
    * Adds a condition that tests for non-existence of the specified
@@ -159,7 +160,7 @@ public interface QueryCondition {
    * @param path the {@code FieldPath} to test
    * @return {@code this} for chained invocation
    */
-  public QueryCondition notExists(FieldPath path);
+  public QueryCondition notExists(@NonNullable FieldPath path);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -170,7 +171,7 @@ public interface QueryCondition {
    * @param listOfValue the {@code List} of values to test against
    * @return {@code this} for chained invocation
    */
-  public QueryCondition in(String path, List<? extends Object> listOfValue);
+  public QueryCondition in(@NonNullable String path, @NonNullable List<? extends Object> listOfValue);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -181,7 +182,7 @@ public interface QueryCondition {
    * @param listOfValue the {@code List} of values to test against
    * @return {@code this} for chained invocation
    */
-  public QueryCondition in(FieldPath path, List<? extends Object> listOfValue);
+  public QueryCondition in(@NonNullable FieldPath path, @NonNullable List<? extends Object> listOfValue);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -192,7 +193,7 @@ public interface QueryCondition {
    * @param listOfValue the {@code List} of values to test against
    * @return {@code this} for chained invocation
    */
-  public QueryCondition notIn(String path, List<? extends Object> listOfValue);
+  public QueryCondition notIn(@NonNullable String path, @NonNullable List<? extends Object> listOfValue);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -203,7 +204,7 @@ public interface QueryCondition {
    * @param listOfValue the {@code List} of values to test against
    * @return {@code this} for chained invocation
    */
-  public QueryCondition notIn(FieldPath path, List<? extends Object> listOfValue);
+  public QueryCondition notIn(@NonNullable FieldPath path, @NonNullable List<? extends Object> listOfValue);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -212,7 +213,7 @@ public interface QueryCondition {
    * @param path the {@code FieldPath} to test
    * @return {@code this} for chained invocation
    */
-  public QueryCondition typeOf(String path, Value.Type type);
+  public QueryCondition typeOf(@NonNullable String path, @NonNullable Value.Type type);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -221,7 +222,7 @@ public interface QueryCondition {
    * @param path the {@code FieldPath} to test
    * @return {@code this} for chained invocation
    */
-  public QueryCondition typeOf(FieldPath path, Value.Type type);
+  public QueryCondition typeOf(@NonNullable FieldPath path, @NonNullable Value.Type type);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -230,7 +231,7 @@ public interface QueryCondition {
    * @param path the {@code FieldPath} to test
    * @return {@code this} for chained invocation
    */
-  public QueryCondition notTypeOf(String path, Value.Type type);
+  public QueryCondition notTypeOf(@NonNullable String path, @NonNullable Value.Type type);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -239,7 +240,7 @@ public interface QueryCondition {
    * @param path the {@code FieldPath} to test
    * @return {@code this} for chained invocation
    */
-  public QueryCondition notTypeOf(FieldPath path, Value.Type type);
+  public QueryCondition notTypeOf(@NonNullable FieldPath path, @NonNullable Value.Type type);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -251,7 +252,7 @@ public interface QueryCondition {
    * @return {@code this} for chained invocation
    * @throws PatternSyntaxException if the expression's syntax is invalid
    */
-  public QueryCondition matches(String path, String regex);
+  public QueryCondition matches(@NonNullable String path, @NonNullable String regex);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -263,7 +264,7 @@ public interface QueryCondition {
    * @return {@code this} for chained invocation
    * @throws PatternSyntaxException if the expression's syntax is invalid
    */
-  public QueryCondition matches(FieldPath path, String regex);
+  public QueryCondition matches(@NonNullable FieldPath path, @NonNullable String regex);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -275,7 +276,7 @@ public interface QueryCondition {
    * @return {@code this} for chained invocation
    * @throws PatternSyntaxException if the expression's syntax is invalid
    */
-  public QueryCondition notMatches(String path, String regex);
+  public QueryCondition notMatches(@NonNullable String path, @NonNullable String regex);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -287,7 +288,7 @@ public interface QueryCondition {
    * @return {@code this} for chained invocation
    * @throws PatternSyntaxException if the expression's syntax is invalid
    */
-  public QueryCondition notMatches(FieldPath path, String regex);
+  public QueryCondition notMatches(@NonNullable FieldPath path, @NonNullable String regex);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -298,7 +299,7 @@ public interface QueryCondition {
    * @param likeExpression the reference LIKE pattern
    * @return {@code this} for chained invocation
    */
-  public QueryCondition like(String path, String likeExpression);
+  public QueryCondition like(@NonNullable String path, @NonNullable String likeExpression);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -309,7 +310,7 @@ public interface QueryCondition {
    * @param likeExpression the reference LIKE pattern
    * @return {@code this} for chained invocation
    */
-  public QueryCondition like(FieldPath path, String likeExpression);
+  public QueryCondition like(@NonNullable FieldPath path, @NonNullable String likeExpression);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -321,7 +322,8 @@ public interface QueryCondition {
    * @param escapeChar the escape character in the LIKE pattern
    * @return {@code this} for chained invocation
    */
-  public QueryCondition like(String path, String likeExpression, Character escapeChar);
+  public QueryCondition like(@NonNullable String path,
+      @NonNullable String likeExpression, @NonNullable Character escapeChar);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -333,7 +335,8 @@ public interface QueryCondition {
    * @param escapeChar the escape character in the LIKE pattern
    * @return {@code this} for chained invocation
    */
-  public QueryCondition like(FieldPath path, String likeExpression, Character escapeChar);
+  public QueryCondition like(@NonNullable FieldPath path,
+      @NonNullable String likeExpression, @NonNullable Character escapeChar);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -344,7 +347,7 @@ public interface QueryCondition {
    * @param likeExpression the reference LIKE pattern
    * @return {@code this} for chained invocation
    */
-  public QueryCondition notLike(String path, String likeExpression);
+  public QueryCondition notLike(@NonNullable String path, @NonNullable String likeExpression);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -355,7 +358,7 @@ public interface QueryCondition {
    * @param likeExpression the reference LIKE pattern
    * @return {@code this} for chained invocation
    */
-  public QueryCondition notLike(FieldPath path, String likeExpression);
+  public QueryCondition notLike(@NonNullable FieldPath path, @NonNullable String likeExpression);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -367,7 +370,8 @@ public interface QueryCondition {
    * @param escapeChar the escape character in the LIKE pattern
    * @return {@code this} for chained invocation
    */
-  public QueryCondition notLike(String path, String likeExpression, Character escapeChar);
+  public QueryCondition notLike(@NonNullable String path,
+      @NonNullable String likeExpression, @NonNullable Character escapeChar);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -379,7 +383,8 @@ public interface QueryCondition {
    * @param escapeChar the escape character in the LIKE pattern
    * @return {@code this} for chained invocation
    */
-  public QueryCondition notLike(FieldPath path, String likeExpression, Character escapeChar);
+  public QueryCondition notLike(@NonNullable FieldPath path,
+      @NonNullable String likeExpression, @NonNullable Character escapeChar);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -391,7 +396,7 @@ public interface QueryCondition {
    * @param value the reference boolean {@code Value}
    * @return {@code this} for chained invocation
    */
-  public QueryCondition is(String path, Op op, boolean value);
+  public QueryCondition is(@NonNullable String path, @NonNullable Op op, boolean value);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -403,7 +408,7 @@ public interface QueryCondition {
    * @param value the reference boolean {@code Value}
    * @return {@code this} for chained invocation
    */
-  public QueryCondition is(FieldPath path, Op op, boolean value);
+  public QueryCondition is(@NonNullable FieldPath path, @NonNullable Op op, boolean value);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -415,7 +420,7 @@ public interface QueryCondition {
    * @param value the reference String {@code Value}
    * @return {@code this} for chained invocation
    */
-  public QueryCondition is(String path, Op op, String value);
+  public QueryCondition is(@NonNullable String path, @NonNullable Op op, @NonNullable String value);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -427,7 +432,7 @@ public interface QueryCondition {
    * @param value the reference String {@code Value}
    * @return {@code this} for chained invocation
    */
-  public QueryCondition is(FieldPath path, Op op, String value);
+  public QueryCondition is(@NonNullable FieldPath path, @NonNullable Op op, String value);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -439,7 +444,7 @@ public interface QueryCondition {
    * @param value the reference byte {@code Value}
    * @return {@code this} for chained invocation
    */
-  public QueryCondition is(String path, Op op, byte value);
+  public QueryCondition is(@NonNullable String path, @NonNullable Op op, byte value);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -451,7 +456,7 @@ public interface QueryCondition {
    * @param value the reference byte {@code Value}
    * @return {@code this} for chained invocation
    */
-  public QueryCondition is(FieldPath path, Op op, byte value);
+  public QueryCondition is(@NonNullable FieldPath path, @NonNullable Op op, byte value);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -463,7 +468,7 @@ public interface QueryCondition {
    * @param value the reference short {@code Value}
    * @return {@code this} for chained invocation
    */
-  public QueryCondition is(String path, Op op, short value);
+  public QueryCondition is(@NonNullable String path, @NonNullable Op op, short value);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -475,7 +480,7 @@ public interface QueryCondition {
    * @param value the reference short {@code Value}
    * @return {@code this} for chained invocation
    */
-  public QueryCondition is(FieldPath path, Op op, short value);
+  public QueryCondition is(@NonNullable FieldPath path, @NonNullable Op op, short value);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -487,7 +492,7 @@ public interface QueryCondition {
    * @param value the reference int {@code Value}
    * @return {@code this} for chained invocation
    */
-  public QueryCondition is(String path, Op op, int value);
+  public QueryCondition is(@NonNullable String path, @NonNullable Op op, int value);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -499,7 +504,7 @@ public interface QueryCondition {
    * @param value the reference int {@code Value}
    * @return {@code this} for chained invocation
    */
-  public QueryCondition is(FieldPath path, Op op, int value);
+  public QueryCondition is(@NonNullable FieldPath path, @NonNullable Op op, int value);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -511,7 +516,7 @@ public interface QueryCondition {
    * @param value the reference long {@code Value}
    * @return {@code this} for chained invocation
    */
-  public QueryCondition is(String path, Op op, long value);
+  public QueryCondition is(@NonNullable String path, @NonNullable Op op, long value);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -523,7 +528,7 @@ public interface QueryCondition {
    * @param value the reference long {@code Value}
    * @return {@code this} for chained invocation
    */
-  public QueryCondition is(FieldPath path, Op op, long value);
+  public QueryCondition is(@NonNullable FieldPath path, @NonNullable Op op, long value);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -535,7 +540,7 @@ public interface QueryCondition {
    * @param value the reference float {@code Value}
    * @return {@code this} for chained invocation
    */
-  public QueryCondition is(String path, Op op, float value);
+  public QueryCondition is(@NonNullable String path, @NonNullable Op op, float value);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -547,7 +552,7 @@ public interface QueryCondition {
    * @param value the reference float {@code Value}
    * @return {@code this} for chained invocation
    */
-  public QueryCondition is(FieldPath path, Op op, float value);
+  public QueryCondition is(@NonNullable FieldPath path, @NonNullable Op op, float value);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -559,7 +564,7 @@ public interface QueryCondition {
    * @param value the reference double {@code Value}
    * @return {@code this} for chained invocation
    */
-  public QueryCondition is(String path, Op op, double value);
+  public QueryCondition is(@NonNullable String path, @NonNullable Op op, double value);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -571,7 +576,7 @@ public interface QueryCondition {
    * @param value the reference double {@code Value}
    * @return {@code this} for chained invocation
    */
-  public QueryCondition is(FieldPath path, Op op, double value);
+  public QueryCondition is(@NonNullable FieldPath path, @NonNullable Op op, double value);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -583,7 +588,7 @@ public interface QueryCondition {
    * @param value the reference BigDecimal {@code Value}
    * @return {@code this} for chained invocation
    */
-  public QueryCondition is(String path, Op op, BigDecimal value);
+  public QueryCondition is(@NonNullable String path, @NonNullable Op op, @NonNullable BigDecimal value);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -595,7 +600,7 @@ public interface QueryCondition {
    * @param value the reference BigDecimal {@code Value}
    * @return {@code this} for chained invocation
    */
-  public QueryCondition is(FieldPath path, Op op, BigDecimal value);
+  public QueryCondition is(@NonNullable FieldPath path, @NonNullable Op op, @NonNullable BigDecimal value);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -607,7 +612,7 @@ public interface QueryCondition {
    * @param value the reference Date {@code Value}
    * @return {@code this} for chained invocation
    */
-  public QueryCondition is(String path, Op op, ODate value);
+  public QueryCondition is(@NonNullable String path, @NonNullable Op op, @NonNullable ODate value);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -619,7 +624,7 @@ public interface QueryCondition {
    * @param value the reference Date {@code Value}
    * @return {@code this} for chained invocation
    */
-  public QueryCondition is(FieldPath path, Op op, ODate value);
+  public QueryCondition is(@NonNullable FieldPath path, @NonNullable Op op, @NonNullable ODate value);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -631,7 +636,7 @@ public interface QueryCondition {
    * @param value the reference Time {@code Value}
    * @return {@code this} for chained invocation
    */
-  public QueryCondition is(String path, Op op, OTime value);
+  public QueryCondition is(@NonNullable String path, @NonNullable Op op, @NonNullable OTime value);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -643,7 +648,7 @@ public interface QueryCondition {
    * @param value the reference Time {@code Value}
    * @return {@code this} for chained invocation
    */
-  public QueryCondition is(FieldPath path, Op op, OTime value);
+  public QueryCondition is(@NonNullable FieldPath path, @NonNullable Op op, @NonNullable OTime value);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -655,7 +660,7 @@ public interface QueryCondition {
    * @param value the reference Timestamp {@code Value}
    * @return {@code this} for chained invocation
    */
-  public QueryCondition is(String path, Op op, OTimestamp value);
+  public QueryCondition is(@NonNullable String path, @NonNullable Op op, @NonNullable OTimestamp value);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -667,7 +672,7 @@ public interface QueryCondition {
    * @param value the reference Timestamp {@code Value}
    * @return {@code this} for chained invocation
    */
-  public QueryCondition is(FieldPath path, Op op, OTimestamp value);
+  public QueryCondition is(@NonNullable FieldPath path, @NonNullable Op op, @NonNullable OTimestamp value);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -679,7 +684,7 @@ public interface QueryCondition {
    * @param value the reference Interval {@code Value}
    * @return {@code this} for chained invocation
    */
-  public QueryCondition is(String path, Op op, OInterval value);
+  public QueryCondition is(@NonNullable String path, @NonNullable Op op, @NonNullable OInterval value);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -691,7 +696,7 @@ public interface QueryCondition {
    * @param value the reference Interval {@code Value}
    * @return {@code this} for chained invocation
    */
-  public QueryCondition is(FieldPath path, Op op, OInterval value);
+  public QueryCondition is(@NonNullable FieldPath path, @NonNullable Op op, @NonNullable OInterval value);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -706,7 +711,7 @@ public interface QueryCondition {
    * @param value the reference ByteBuffer {@code Value}
    * @return {@code this} for chained invocation
    */
-  public QueryCondition is(String path, Op op, ByteBuffer value);
+  public QueryCondition is(@NonNullable String path, @NonNullable Op op, @NonNullable ByteBuffer value);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -721,7 +726,7 @@ public interface QueryCondition {
    * @param value the reference ByteBuffer {@code Value}
    * @return {@code this} for chained invocation
    */
-  public QueryCondition is(FieldPath path, Op op, ByteBuffer value);
+  public QueryCondition is(@NonNullable FieldPath path, @NonNullable Op op, @NonNullable ByteBuffer value);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -735,7 +740,7 @@ public interface QueryCondition {
    * @throws TypeException if a value at any level in the specified
    *         Map is not one of the {@code Value} types
    */
-  public QueryCondition equals(String path, Map<String, ? extends Object> value);
+  public QueryCondition equals(@NonNullable String path, @NonNullable Map<String, ? extends Object> value);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -749,7 +754,7 @@ public interface QueryCondition {
    * @throws TypeException if a value at any level in the specified
    *         Map is not one of the {@code Value} types
    */
-  public QueryCondition equals(FieldPath path, Map<String, ? extends Object> value);
+  public QueryCondition equals(@NonNullable FieldPath path, @NonNullable Map<String, ? extends Object> value);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -761,7 +766,7 @@ public interface QueryCondition {
    * @throws TypeException if a value in the specified List is not one of
    *         the {@code Value} types
    */
-  public QueryCondition equals(String path, List<? extends Object> value);
+  public QueryCondition equals(@NonNullable String path, @NonNullable List<? extends Object> value);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -773,7 +778,7 @@ public interface QueryCondition {
    * @throws TypeException if a value in the specified List is not one of
    *         the {@code Value} types
    */
-  public QueryCondition equals(FieldPath path, List<? extends Object> value);
+  public QueryCondition equals(@NonNullable FieldPath path, @NonNullable List<? extends Object> value);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -787,7 +792,7 @@ public interface QueryCondition {
    * @throws TypeException if a value at any level in the specified
    *         Map is not one of the {@code Value} types
    */
-  public QueryCondition notEquals(String path, Map<String, ? extends Object> value);
+  public QueryCondition notEquals(@NonNullable String path, @NonNullable Map<String, ? extends Object> value);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -801,7 +806,7 @@ public interface QueryCondition {
    * @throws TypeException if a value at any level in the specified
    *         Map is not one of the {@code Value} types
    */
-  public QueryCondition notEquals(FieldPath path, Map<String, ? extends Object> value);
+  public QueryCondition notEquals(@NonNullable FieldPath path, @NonNullable Map<String, ? extends Object> value);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -813,7 +818,7 @@ public interface QueryCondition {
    * @throws TypeException if a value in the specified List is not one of
    *         the {@code Value} types
    */
-  public QueryCondition notEquals(String path, List<? extends Object> value);
+  public QueryCondition notEquals(@NonNullable String path, @NonNullable List<? extends Object> value);
 
   /**
    * Adds a condition that tests if the {@code Value} at the specified
@@ -825,7 +830,7 @@ public interface QueryCondition {
    * @throws TypeException if a value in the specified List is not one of
    *         the {@code Value} types
    */
-  public QueryCondition notEquals(FieldPath path, List<? extends Object> value);
+  public QueryCondition notEquals(@NonNullable FieldPath path, @NonNullable List<? extends Object> value);
 
   /**
    * Adds a condition that tests if the size of the {@code Value} at the
@@ -838,7 +843,7 @@ public interface QueryCondition {
    * @param size the reference size of {@code Value}
    * @return {@code this} for chained invocation
    */
-  public QueryCondition sizeOf(String path, Op op, long size);
+  public QueryCondition sizeOf(@NonNullable String path, @NonNullable Op op, long size);
 
   /**
    * Adds a condition that tests if the size of the {@code Value} at the
@@ -851,6 +856,6 @@ public interface QueryCondition {
    * @param size the reference size of {@code Value}
    * @return {@code this} for chained invocation
    */
-  public QueryCondition sizeOf(FieldPath path, Op op, long size);
+  public QueryCondition sizeOf(@NonNullable FieldPath path, @NonNullable Op op, long size);
 
 }

@@ -20,6 +20,7 @@ import java.nio.ByteBuffer;
 import java.util.Map;
 
 import org.ojai.annotation.API;
+import org.ojai.annotation.API.NonNullable;
 import org.ojai.types.ODate;
 import org.ojai.types.OInterval;
 import org.ojai.types.OTime;
@@ -43,7 +44,7 @@ public interface DocumentBuilder {
    * @return {@code this} for chained invocation
    * @throws IllegalStateException if the builder is not in a MAP segment
    */
-  DocumentBuilder put(String field, boolean value);
+  DocumentBuilder put(@NonNullable String field, boolean value);
 
   /**
    * Associates the specified {@code String} value with the specified
@@ -55,26 +56,26 @@ public interface DocumentBuilder {
    * @return {@code this} for chained invocation
    * @throws IllegalStateException if the builder is not in a MAP segment
    */
-  DocumentBuilder put(String field, String value);
+  DocumentBuilder put(@NonNullable String field, @NonNullable String value);
 
-  DocumentBuilder put(String field, byte value);
-  DocumentBuilder put(String field, short value);
-  DocumentBuilder put(String field, int value);
-  DocumentBuilder put(String field, long value);
-  DocumentBuilder put(String field, float value);
-  DocumentBuilder put(String field, double value);
-  DocumentBuilder put(String field, BigDecimal value);
-  DocumentBuilder putDecimal(String field, long decimalValue);
-  DocumentBuilder putDecimal(String field, double decimalValue);
-  DocumentBuilder putDecimal(String field, int unscaledValue, int scale);
-  DocumentBuilder putDecimal(String field, long unscaledValue, int scale);
-  DocumentBuilder putDecimal(String field, byte[] unscaledValue, int scale);
+  DocumentBuilder put(@NonNullable String field, byte value);
+  DocumentBuilder put(@NonNullable String field, short value);
+  DocumentBuilder put(@NonNullable String field, int value);
+  DocumentBuilder put(@NonNullable String field, long value);
+  DocumentBuilder put(@NonNullable String field, float value);
+  DocumentBuilder put(@NonNullable String field, double value);
+  DocumentBuilder put(@NonNullable String field, @NonNullable BigDecimal value);
+  DocumentBuilder putDecimal(@NonNullable String field, long decimalValue);
+  DocumentBuilder putDecimal(@NonNullable String field, double decimalValue);
+  DocumentBuilder putDecimal(@NonNullable String field, int unscaledValue, int scale);
+  DocumentBuilder putDecimal(@NonNullable String field, long unscaledValue, int scale);
+  DocumentBuilder putDecimal(@NonNullable String field, @NonNullable byte[] unscaledValue, int scale);
 
-  DocumentBuilder put(String field, byte[] value);
-  DocumentBuilder put(String field, byte[] value, int offset, int length);
-  DocumentBuilder put(String field, ByteBuffer value);
+  DocumentBuilder put(@NonNullable String field, @NonNullable byte[] value);
+  DocumentBuilder put(@NonNullable String field, @NonNullable byte[] value, int offset, int length);
+  DocumentBuilder put(@NonNullable String field, @NonNullable ByteBuffer value);
 
-  DocumentBuilder put(String field, ODate value);
+  DocumentBuilder put(@NonNullable String field, @NonNullable ODate value);
 
   /**
    * Associates the specified {@code date} value represented as the number
@@ -86,9 +87,9 @@ public interface DocumentBuilder {
    * @return {@code this} for chained invocation
    * @throws IllegalStateException if the builder is not in a MAP segment
    */
-  DocumentBuilder putDate(String field, int days);
+  DocumentBuilder putDate(@NonNullable String field, int days);
 
-  DocumentBuilder put(String field, OTime value);
+  DocumentBuilder put(@NonNullable String field, @NonNullable OTime value);
 
   /**
    * Associates the specified {@code time} value represented as number of
@@ -102,9 +103,9 @@ public interface DocumentBuilder {
    * @throws IllegalArgumentException if the value of {@code millis} is greater
    *         than 86400000
    */
-  DocumentBuilder putTime(String field, int millis);
+  DocumentBuilder putTime(@NonNullable String field, int millis);
 
-  DocumentBuilder put(String field, OTimestamp value);
+  DocumentBuilder put(@NonNullable String field, @NonNullable OTimestamp value);
 
   /**
    * Associates the specified {@code timestamp} value represented as the number
@@ -116,20 +117,20 @@ public interface DocumentBuilder {
    * @return {@code this} for chained invocation
    * @throws IllegalStateException if the builder is not in a MAP segment
    */
-  DocumentBuilder putTimestamp(String field, long timeMillis);
+  DocumentBuilder putTimestamp(@NonNullable String field, long timeMillis);
 
-  DocumentBuilder put(String field, OInterval value);
-  DocumentBuilder putInterval(String field, long durationInMs);
-  DocumentBuilder putInterval(String field, int months, int days, int milliseconds);
+  DocumentBuilder put(@NonNullable String field, @NonNullable OInterval value);
+  DocumentBuilder putInterval(@NonNullable String field, long durationInMs);
+  DocumentBuilder putInterval(@NonNullable String field, int months, int days, int milliseconds);
 
-  DocumentBuilder putNewMap(String field);
-  DocumentBuilder putNewArray(String field);
+  DocumentBuilder putNewMap(@NonNullable String field);
+  DocumentBuilder putNewArray(@NonNullable String field);
 
-  DocumentBuilder putNull(String field);
+  DocumentBuilder putNull(@NonNullable String field);
 
-  DocumentBuilder put(String field, Value value);
-  DocumentBuilder put(String field, Document value);
-  DocumentBuilder put(String field, Map<String, Object> value);
+  DocumentBuilder put(@NonNullable String field, @NonNullable Value value);
+  DocumentBuilder put(@NonNullable String field, @NonNullable Document value);
+  DocumentBuilder put(@NonNullable String field, @NonNullable Map<String, Object> value);
 
   /* =============
    * Array Methods
@@ -166,7 +167,7 @@ public interface DocumentBuilder {
    * @return {@code this} for chained invocation
    * @throws IllegalStateException if the builder is not in an ARRAY segment
    */
-  DocumentBuilder add(String value);
+  DocumentBuilder add(@NonNullable String value);
 
   /**
    * Adds a {@code byte} value at the current index in the current array and
@@ -236,7 +237,7 @@ public interface DocumentBuilder {
    * @return {@code this} for chained invocation
    * @throws IllegalStateException if the builder is not in an ARRAY segment
    */
-  DocumentBuilder add(BigDecimal value);
+  DocumentBuilder add(@NonNullable BigDecimal value);
 
   /**
    * Adds a long number as a {@code DECIMAL} value at the current index in the
@@ -296,7 +297,7 @@ public interface DocumentBuilder {
    * @return {@code this} for chained invocation
    * @throws IllegalStateException if the builder is not in an ARRAY segment
    */
-  DocumentBuilder addDecimal(byte[] unscaledValue, int scale);
+  DocumentBuilder addDecimal(@NonNullable byte[] unscaledValue, int scale);
 
   /**
    * Appends the byte array as a {@code BINARY} value to the current array.
@@ -304,7 +305,7 @@ public interface DocumentBuilder {
    * @return {@code this} for chained invocation
    * @throws IllegalStateException if the builder is not in an ARRAY segment
    */
-  DocumentBuilder add(byte[] value);
+  DocumentBuilder add(@NonNullable byte[] value);
 
   /**
    * Appends the byte array bounded by offset and length as a {@code BINARY}
@@ -317,7 +318,7 @@ public interface DocumentBuilder {
    * @throws IndexOutOfBoundsException if the offset or offset+length are outside
    *         of byte array range
    */
-  DocumentBuilder add(byte[] value, int offset, int length);
+  DocumentBuilder add(@NonNullable byte[] value, int offset, int length);
 
   /**
    * Appends the {@code ByteBuffer} as a {@code BINARY} value to the current array.
@@ -325,7 +326,7 @@ public interface DocumentBuilder {
    * @return {@code this} for chained invocation
    * @throws IllegalStateException if the builder is not in an ARRAY segment
    */
-  DocumentBuilder add(ByteBuffer value);
+  DocumentBuilder add(@NonNullable ByteBuffer value);
 
   /**
    * Appends a {@code NULL} value to the current array.
@@ -340,7 +341,7 @@ public interface DocumentBuilder {
    * @return {@code this} for chained invocation
    * @throws IllegalStateException if the builder is not in an ARRAY segment
    */
-  DocumentBuilder add(Value value);
+  DocumentBuilder add(@NonNullable Value value);
 
   /**
    * Appends the {@code Document} to the current array.
@@ -348,13 +349,13 @@ public interface DocumentBuilder {
    * @return {@code this} for chained invocation
    * @throws IllegalStateException if the builder is not in an ARRAY segment
    */
-  DocumentBuilder add(Document value);
+  DocumentBuilder add(@NonNullable Document value);
 
   /* Advanced Array Methods */
   DocumentBuilder addNewArray();
   DocumentBuilder addNewMap();
 
-  DocumentBuilder add(OTime value);
+  DocumentBuilder add(@NonNullable OTime value);
 
   /**
    * Appends the specified {@code time} value represented as number of
@@ -368,7 +369,7 @@ public interface DocumentBuilder {
    */
   DocumentBuilder addTime(int millis);
 
-  DocumentBuilder add(ODate value);
+  DocumentBuilder add(@NonNullable ODate value);
 
   /**
    * Appends the specified {@code date} value represented as the number of
@@ -380,10 +381,10 @@ public interface DocumentBuilder {
    */
   DocumentBuilder addDate(int days);
 
-  DocumentBuilder add(OTimestamp value);
+  DocumentBuilder add(@NonNullable OTimestamp value);
   DocumentBuilder addTimestamp(long timeMillis);
 
-  DocumentBuilder add(OInterval value);
+  DocumentBuilder add(@NonNullable OInterval value);
   DocumentBuilder addInterval(long durationInMs);
 
   /* Lifecycle methods */

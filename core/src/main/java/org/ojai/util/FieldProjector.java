@@ -27,6 +27,7 @@ import org.ojai.FieldSegment;
 import org.ojai.FieldSegment.NameSegment;
 import org.ojai.JsonString;
 import org.ojai.annotation.API;
+import org.ojai.annotation.API.NonNullable;
 import org.ojai.json.JsonOptions;
 import org.ojai.util.impl.ProjectionTree;
 import org.ojai.util.impl.MutableFieldSegment;
@@ -72,17 +73,17 @@ public final class FieldProjector implements JsonString {
    */
   private boolean includeAllChildren;
 
-  public FieldProjector(String... includedPaths) {
+  public FieldProjector(@NonNullable String... includedPaths) {
     this(Fields.toFieldPathArray(
         Preconditions.checkNotNull(includedPaths)));
   }
 
-  public FieldProjector(FieldPath... includedPaths) {
+  public FieldProjector(@NonNullable FieldPath... includedPaths) {
     this(Arrays.asList(
         Preconditions.checkNotNull(includedPaths)));
   }
 
-  public FieldProjector(Collection<FieldPath> includedPaths) {
+  public FieldProjector(@NonNullable Collection<FieldPath> includedPaths) {
     includeField = false;
     includeAllChildren = false;
     for (FieldPath includedPath : Preconditions.checkNotNull(includedPaths)) {

@@ -16,6 +16,7 @@
 package org.ojai;
 
 import org.ojai.annotation.API;
+import org.ojai.annotation.API.NonNullable;
 
 @API.Public
 public interface DocumentListener {
@@ -29,7 +30,7 @@ public interface DocumentListener {
    * @return The implementation should return <code>false</code> to stop
    *         listening for more documents at which point the stream is closed.
    */
-  boolean documentArrived(Document document);
+  boolean documentArrived(@NonNullable Document document);
 
   /**
    * Called when an <code>Exception</code> occurs while retrieving a Document.
@@ -38,7 +39,7 @@ public interface DocumentListener {
    *
    * @param e the exception that describes the failure
    */
-  void failed(Exception e);
+  void failed(@NonNullable Exception e);
 
   /**
    * Called when the end of the document stream is reached. The stream is

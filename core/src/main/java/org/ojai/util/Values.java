@@ -20,10 +20,12 @@ import java.nio.ByteBuffer;
 
 import org.ojai.Value;
 import org.ojai.annotation.API;
+import org.ojai.annotation.API.NonNullable;
 import org.ojai.exceptions.TypeException;
 import org.ojai.json.Json;
 import org.ojai.json.JsonOptions;
 
+import com.google.common.base.Preconditions;
 import com.google.common.io.BaseEncoding;
 
 /**
@@ -39,7 +41,7 @@ public class Values {
    * @throws IllegalArgumentException if the specified value is
    * not one of the number types
    */
-  public static byte asByte(Value value) {
+  public static byte asByte(@NonNullable Value value) {
     return asNumber(value).byteValue();
   }
 
@@ -49,7 +51,7 @@ public class Values {
    * @throws IllegalArgumentException if the specified value is
    * not one of the number types
    */
-  public static short asShort(Value value) {
+  public static short asShort(@NonNullable Value value) {
     return asNumber(value).shortValue();
   }
 
@@ -59,7 +61,7 @@ public class Values {
    * @throws IllegalArgumentException if the specified value is
    * not one of the number types
    */
-  public static int asInt(Value value) {
+  public static int asInt(@NonNullable Value value) {
     return asNumber(value).intValue();
   }
 
@@ -114,7 +116,8 @@ public class Values {
    * @throws IllegalArgumentException if the specified value is
    * not one of the number types
    */
-  public static Number asNumber(Value value) {
+  public static Number asNumber(@NonNullable Value value) {
+    Preconditions.checkNotNull(value);
     switch (value.getType()) {
     case BYTE:
       return value.getByte();
@@ -138,14 +141,14 @@ public class Values {
   /**
    * Converts a string to BigDecimal object.
    */
-  public static BigDecimal parseBigDecimal(String s) {
+  public static BigDecimal parseBigDecimal(@NonNullable String s) {
     return new BigDecimal(s);
   }
 
   /**
    * Converts a base-64 encoded string to ByteBuffer.
    */
-  public static ByteBuffer parseBinary(String s) {
+  public static ByteBuffer parseBinary(@NonNullable String s) {
     return ByteBuffer.wrap(BaseEncoding.base64().decode(s));
   }
 
@@ -184,7 +187,7 @@ public class Values {
    * @param value a <code>Value</code> that should be converted to JSON string
    * @return The extended JSON representation of the given value
    */
-  public static String asJsonString(Value value) {
+  public static String asJsonString(@NonNullable Value value) {
     return Json.toJsonString(value.asReader(), JsonOptions.WITH_TAGS);
   }
 

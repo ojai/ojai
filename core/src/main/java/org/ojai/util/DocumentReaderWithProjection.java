@@ -20,6 +20,7 @@ import java.nio.ByteBuffer;
 
 import org.ojai.DocumentReader;
 import org.ojai.annotation.API;
+import org.ojai.annotation.API.NonNullable;
 import org.ojai.types.ODate;
 import org.ojai.types.OInterval;
 import org.ojai.types.OTime;
@@ -38,7 +39,8 @@ public class DocumentReaderWithProjection implements DocumentReader {
 
   private final FieldProjector projector;
 
-  public DocumentReaderWithProjection(final DocumentReader reader, final FieldProjector projection) {
+  public DocumentReaderWithProjection(
+      @NonNullable final DocumentReader reader, @NonNullable final FieldProjector projection) {
     this.reader = Preconditions.checkNotNull(reader);
     this.projector = Preconditions.checkNotNull(projection).reset(reader);
   }

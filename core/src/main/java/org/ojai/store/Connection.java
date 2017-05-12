@@ -20,6 +20,7 @@ import java.util.Map;
 
 import org.ojai.Document;
 import org.ojai.DocumentBuilder;
+import org.ojai.annotation.API.NonNullable;
 import org.ojai.exceptions.DecodingException;
 import org.ojai.exceptions.OjaiException;
 
@@ -34,7 +35,7 @@ public interface Connection extends Closeable {
    *
    * @param storeName name or path of an OJAI data source table/store.
    */
-  public DocumentStore getStore(String storeName) throws OjaiException;
+  public DocumentStore getStore(@NonNullable String storeName) throws OjaiException;
 
   /**
    * Returns a handle to an OJAI DocumentStore specified by the given name
@@ -43,7 +44,7 @@ public interface Connection extends Closeable {
    * @param storeName name or path of an OJAI data source table/store.
    * @param options an OJAI Document containing arbitrary, implementation specific settings
    */
-  public DocumentStore getStore(@NonNullable String storeName, Document options) throws OjaiException;
+  public DocumentStore getStore(@NonNullable String storeName, @NonNullable Document options) throws OjaiException;
 
   /**
    * <p>Creates and returns a new, empty instance of an OJAI Document.</p>
@@ -55,19 +56,19 @@ public interface Connection extends Closeable {
    * <p>Returns a new instance of OJAI Document parsed from the specified JSON string.</p>
    * This is an alias to getDriver().newDocument().
    */
-  public Document newDocument(String jsonString) throws DecodingException;
+  public Document newDocument(@NonNullable String jsonString) throws DecodingException;
 
   /**
    * <p>Returns a new instance of Document constructed from the specified Map.</p>
    * This is an alias to getDriver().newDocument().
    */
-  public Document newDocument(Map<String, Object> map) throws DecodingException;
+  public Document newDocument(@NonNullable Map<String, Object> map) throws DecodingException;
 
   /**
    * <p>Returns a new instance of Document built from the specified Java bean.</p>
    * This is an alias to getDriver().newDocument().
    */
-  public Document newDocument(Object bean) throws DecodingException;
+  public Document newDocument(@NonNullable Object bean) throws DecodingException;
 
   /**
    * <p>Returns a new DocumentBuilder object.</p>
@@ -85,7 +86,7 @@ public interface Connection extends Closeable {
    * <p>Creates and returns a new DocumentMutation object decoded from the supplied JSON String.</p>
    * This is an alias to getDriver().newMutation().
    */
-  public DocumentMutation newMutation(String mutationJson);
+  public DocumentMutation newMutation(@NonNullable String mutationJson);
 
   /**
    * <p>Creates and returns a new QueryCondition object.</p>
@@ -97,7 +98,7 @@ public interface Connection extends Closeable {
    * <p>Creates and returns a new QueryCondition object decoded from the supplied JSON String.</p>
    * This is an alias to getDriver().newCondition().
    */
-  public QueryCondition newCondition(String conditionJson);
+  public QueryCondition newCondition(@NonNullable String conditionJson);
 
   /**
    * <p>Creates and returns a new Query object.</p>
@@ -109,7 +110,7 @@ public interface Connection extends Closeable {
    * <p>Creates and returns a new Query object decoded from the supplied JSON String.</p>
    * This is an alias to getDriver().newQuery().
    */
-  public Query newQuery(String queryJson);
+  public Query newQuery(@NonNullable String queryJson);
 
   /**
    * Returns the OJAI Driver instance associated with this connection.

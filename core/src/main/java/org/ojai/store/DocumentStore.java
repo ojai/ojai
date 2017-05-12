@@ -126,7 +126,7 @@ public interface DocumentStore extends AutoCloseable {
    *
    * @throws StoreException
    */
-  public DocumentStream find(Query query) throws StoreException;
+  public DocumentStream find(@NonNullable Query query) throws StoreException;
 
   /**
    * <p>Executes the specified query on the DocumentStore and return a DocumentStream of the result.
@@ -137,7 +137,7 @@ public interface DocumentStore extends AutoCloseable {
    *
    * @throws StoreException
    */
-  public DocumentStream find(String queryJSON) throws StoreException;
+  public DocumentStream find(@NonNullable String queryJSON) throws StoreException;
 
   /**
    * <p>Executes a query to return all Documents in the DocumentStore.
@@ -149,7 +149,7 @@ public interface DocumentStore extends AutoCloseable {
    *
    * @throws StoreException
    */
-  public DocumentStream find(String... fieldPaths) throws StoreException;
+  public DocumentStream find(@NonNullable String... fieldPaths) throws StoreException;
 
   /**
    * <p>Executes a query to return all Documents in the DocumentStore.
@@ -161,7 +161,7 @@ public interface DocumentStore extends AutoCloseable {
    *
    * @throws StoreException
    */
-  public DocumentStream find(FieldPath... fieldPaths) throws StoreException;
+  public DocumentStream find(@NonNullable FieldPath... fieldPaths) throws StoreException;
 
   /**
    * Returns a DocumentStream with all the documents in the DocumentStore that
@@ -171,7 +171,7 @@ public interface DocumentStore extends AutoCloseable {
    * @return A DocumentStream that can be used to retrieve the documents in the result.
    *
    */
-  public DocumentStream find(QueryCondition c) throws StoreException;
+  public DocumentStream find(@NonNullable QueryCondition c) throws StoreException;
 
   /**
    * <p>Execute a query on the DocumentStore and return a DocumentStream of the Document
@@ -185,7 +185,7 @@ public interface DocumentStore extends AutoCloseable {
    * @return A DocumentStream that can be used to retrieve the documents in the result.
    * @throws StoreException
    */
-  public DocumentStream find(QueryCondition c, String...fieldPaths)
+  public DocumentStream find(@NonNullable QueryCondition c, @NonNullable String...fieldPaths)
       throws StoreException;
 
   /**
@@ -200,7 +200,7 @@ public interface DocumentStore extends AutoCloseable {
    * @return A DocumentStream that can be used to retrieve the documents in the result.
    * @throws StoreException
    */
-  public DocumentStream find(QueryCondition c, FieldPath... fieldPaths)
+  public DocumentStream find(@NonNullable QueryCondition c, @NonNullable FieldPath... fieldPaths)
       throws StoreException;
 
   /**
@@ -215,7 +215,7 @@ public interface DocumentStore extends AutoCloseable {
    * @param doc The Document to be inserted or replaced in the DocumentStore.
    * @throws StoreException
    */
-  public void insertOrReplace(Document doc) throws StoreException;
+  public void insertOrReplace(@NonNullable Document doc) throws StoreException;
 
   /**
    * Inserts or replace a new document in this DocumentStore with the given _id.
@@ -230,7 +230,7 @@ public interface DocumentStore extends AutoCloseable {
    * @param _id value to be used as the _id for this document
    * @throws StoreException
    */
-  public void insertOrReplace(Value _id, Document doc) throws StoreException;
+  public void insertOrReplace(@NonNullable Value _id, @NonNullable Document doc) throws StoreException;
 
   /**
    * Inserts or replace a new document in this DocumentStore with the value of
@@ -245,7 +245,7 @@ public interface DocumentStore extends AutoCloseable {
    *                   a different field is desired to be used as _id.
    * @throws StoreException
    */
-  public void insertOrReplace(Document doc, FieldPath fieldAsKey) throws StoreException;
+  public void insertOrReplace(@NonNullable Document doc, @NonNullable FieldPath fieldAsKey) throws StoreException;
 
   /**
    * Inserts or replace a new document in this DocumentStore with the value of
@@ -260,7 +260,7 @@ public interface DocumentStore extends AutoCloseable {
    *                   a different field is desired to be used as _id.
    * @throws StoreException
    */
-  public void insertOrReplace(Document doc, String fieldAsKey) throws StoreException;
+  public void insertOrReplace(@NonNullable Document doc, @NonNullable String fieldAsKey) throws StoreException;
 
   /**
    * Inserts all documents from the specified DocumentStream into this DocumentStore.
@@ -281,7 +281,7 @@ public interface DocumentStore extends AutoCloseable {
    * @throws MultiOpException which has a list of write-failed documents and
    *                          their errors.
    */
-  public void insertOrReplace(DocumentStream stream) throws MultiOpException;
+  public void insertOrReplace(@NonNullable DocumentStream stream) throws MultiOpException;
 
   /**
    * Inserts all documents from the specified DocumentStream into this DocumentStore
@@ -306,7 +306,7 @@ public interface DocumentStore extends AutoCloseable {
    * @throws MultiOpException which has a list of write-failed documents and
    *                          their errors.
    */
-  public void insertOrReplace(DocumentStream stream, FieldPath fieldAsKey)
+  public void insertOrReplace(@NonNullable DocumentStream stream, @NonNullable FieldPath fieldAsKey)
       throws MultiOpException;
 
   /**
@@ -332,7 +332,7 @@ public interface DocumentStore extends AutoCloseable {
    * @throws MultiOpException which has a list of write-failed documents and
    *                          their errors.
    */
-  public void insertOrReplace(DocumentStream stream, String fieldAsKey)
+  public void insertOrReplace(@NonNullable DocumentStream stream, @NonNullable String fieldAsKey)
       throws MultiOpException;
 
   /**
@@ -346,7 +346,7 @@ public interface DocumentStore extends AutoCloseable {
    * @param m a mutation object specifying the mutation operations on the document
    * @throws StoreException
    */
-  public void update(Value _id, DocumentMutation m) throws StoreException;
+  public void update(@NonNullable Value _id, @NonNullable DocumentMutation m) throws StoreException;
 
   /**
    * Deletes a document with the given id. This operation is successful even
@@ -361,11 +361,11 @@ public interface DocumentStore extends AutoCloseable {
    *                   passed in and a document doesn't have an "_id" field
    * @throws StoreException
    */
-  public void delete(Value _id) throws StoreException;
-  public void delete(Document doc) throws StoreException;
+  public void delete(@NonNullable Value _id) throws StoreException;
+  public void delete(@NonNullable Document doc) throws StoreException;
 
-  public void delete(Document doc, FieldPath fieldAsKey) throws StoreException;
-  public void delete(Document doc, String fieldAsKey) throws StoreException;
+  public void delete(@NonNullable Document doc, @NonNullable FieldPath fieldAsKey) throws StoreException;
+  public void delete(@NonNullable Document doc, @NonNullable String fieldAsKey) throws StoreException;
 
   /**
    * Deletes a set of documents from the DocumentStore represented by the DocumentStream.
@@ -388,10 +388,10 @@ public interface DocumentStore extends AutoCloseable {
    * @throws MultiOpException which has a list of write-failed documents and
    *                          their errors
    */
-  public void delete(DocumentStream stream) throws MultiOpException;
-  public void delete(DocumentStream stream, FieldPath fieldAsKey)
+  public void delete(@NonNullable DocumentStream stream) throws MultiOpException;
+  public void delete(@NonNullable DocumentStream stream, @NonNullable FieldPath fieldAsKey)
       throws MultiOpException;
-  public void delete(DocumentStream stream, String fieldAsKey)
+  public void delete(@NonNullable DocumentStream stream, @NonNullable String fieldAsKey)
       throws MultiOpException;
 
   /**
@@ -417,11 +417,11 @@ public interface DocumentStore extends AutoCloseable {
    * @throws OpNotPermittedException when the server returned EPERM
    * @throws DocumentExistsException when a document with id already exists in DocumentStore
    */
-  public void insert(Value _id, Document doc) throws StoreException;
+  public void insert(@NonNullable Value _id, @NonNullable Document doc) throws StoreException;
 
-  public void insert(Document doc) throws StoreException;
-  public void insert(Document doc, FieldPath fieldAsKey) throws StoreException;
-  public void insert(Document doc, String fieldAsKey) throws StoreException;
+  public void insert(@NonNullable Document doc) throws StoreException;
+  public void insert(@NonNullable Document doc, @NonNullable FieldPath fieldAsKey) throws StoreException;
+  public void insert(@NonNullable Document doc, @NonNullable String fieldAsKey) throws StoreException;
 
   /**
    * Inserts a set of documents represented by the DocumentStream into the DocumentStore.
@@ -448,10 +448,10 @@ public interface DocumentStore extends AutoCloseable {
    * @throws MultiOpException which has a list of write-failed documents and
    *                          their errors
    */
-  public void insert(DocumentStream stream) throws MultiOpException;
-  public void insert(DocumentStream stream, FieldPath fieldAsKey)
+  public void insert(@NonNullable DocumentStream stream) throws MultiOpException;
+  public void insert(@NonNullable DocumentStream stream, @NonNullable FieldPath fieldAsKey)
       throws MultiOpException;
-  public void insert(DocumentStream stream, String fieldAsKey)
+  public void insert(@NonNullable DocumentStream stream, @NonNullable String fieldAsKey)
       throws MultiOpException;
 
   /**
@@ -483,11 +483,11 @@ public interface DocumentStore extends AutoCloseable {
    * @throws OpNotPermittedException when the server returns EPERM
    * @throws DocumentNotFoundException when a document with the id does not exist in DocumentStore
    */
-  public void replace(Value _id, Document doc) throws StoreException;
+  public void replace(@NonNullable Value _id, @NonNullable Document doc) throws StoreException;
 
-  public void replace(Document doc) throws StoreException;
-  public void replace(Document doc, FieldPath fieldAsKey) throws StoreException;
-  public void replace(Document doc, String fieldAsKey) throws StoreException;
+  public void replace(@NonNullable Document doc) throws StoreException;
+  public void replace(@NonNullable Document doc, @NonNullable FieldPath fieldAsKey) throws StoreException;
+  public void replace(@NonNullable Document doc, @NonNullable String fieldAsKey) throws StoreException;
 
   /**
    * Replaces a set of documents represented by the DocumentStream into the DocumentStore.
@@ -515,10 +515,10 @@ public interface DocumentStore extends AutoCloseable {
    * @throws MultiOpException which has list of write-failed documents and
    *                          their errors
    */
-  public void replace(DocumentStream stream) throws MultiOpException;
-  public void replace(DocumentStream stream, FieldPath fieldAsKey)
+  public void replace(@NonNullable DocumentStream stream) throws MultiOpException;
+  public void replace(@NonNullable DocumentStream stream, @NonNullable FieldPath fieldAsKey)
       throws MultiOpException;
-  public void replace(DocumentStream stream, String fieldAsKey)
+  public void replace(@NonNullable DocumentStream stream, @NonNullable String fieldAsKey)
       throws MultiOpException;
 
   /**
@@ -554,19 +554,26 @@ public interface DocumentStore extends AutoCloseable {
    * @param inc increment to apply to a field. Can be positive or negative
    * @throws StoreException
    */
-  public void increment(Value _id, String field, byte inc) throws StoreException;
+  public void increment(@NonNullable Value _id,
+      @NonNullable String field, byte inc) throws StoreException;
 
-  public void increment(Value _id, String field, short inc) throws StoreException;
+  public void increment(@NonNullable Value _id,
+      @NonNullable String field, short inc) throws StoreException;
 
-  public void increment(Value _id, String field, int inc) throws StoreException;
+  public void increment(@NonNullable Value _id,
+      @NonNullable String field, int inc) throws StoreException;
 
-  public void increment(Value _id, String field, long inc) throws StoreException;
+  public void increment(@NonNullable Value _id,
+      @NonNullable String field, long inc) throws StoreException;
 
-  public void increment(Value _id, String field, float inc) throws StoreException;
+  public void increment(@NonNullable Value _id,
+      @NonNullable String field, float inc) throws StoreException;
 
-  public void increment(Value _id, String field, double inc) throws StoreException;
+  public void increment(@NonNullable Value _id,
+      @NonNullable String field, double inc) throws StoreException;
 
-  public void increment(Value _id, String field, BigDecimal inc) throws StoreException;
+  public void increment(@NonNullable Value _id,
+      @NonNullable String field, @NonNullable BigDecimal inc) throws StoreException;
 
   /**
    * Atomically evaluates the condition on a given document and if the
@@ -582,7 +589,8 @@ public interface DocumentStore extends AutoCloseable {
    * @return True if the condition is true for the document; otherwise, false
    * @throws StoreException if the condition passes but the mutate fails
    */
-  public boolean checkAndMutate(Value _id, QueryCondition condition, DocumentMutation m) throws StoreException;
+  public boolean checkAndMutate(@NonNullable Value _id,
+      @NonNullable QueryCondition condition, @NonNullable DocumentMutation m) throws StoreException;
 
   /**
    * Atomically evaluates the condition on given document and if the
@@ -597,7 +605,8 @@ public interface DocumentStore extends AutoCloseable {
    * @return True if the condition is valid for the document, otherwise false.
    * @throws StoreException if the condition passes but the delete fails
    */
-  public boolean checkAndDelete(Value _id, QueryCondition condition) throws StoreException;
+  public boolean checkAndDelete(@NonNullable Value _id, @NonNullable 
+      QueryCondition condition) throws StoreException;
 
   /**
    * Atomically evaluates the condition on the given document and if the
@@ -614,7 +623,8 @@ public interface DocumentStore extends AutoCloseable {
    * @return True if the condition is true for the document otherwise false
    * @throws StoreException if the condition passes but the replace fails
    */
-  public boolean checkAndReplace(Value _id, QueryCondition condition, Document doc) throws StoreException;
+  public boolean checkAndReplace(@NonNullable Value _id,
+      @NonNullable QueryCondition condition, @NonNullable Document doc) throws StoreException;
 
   /**
    * Override {@link AutoCloseable#close()} to avoid declaring a checked exception.

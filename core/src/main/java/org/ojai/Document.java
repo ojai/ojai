@@ -23,6 +23,7 @@ import java.util.NoSuchElementException;
 
 import org.ojai.Value.Type;
 import org.ojai.annotation.API;
+import org.ojai.annotation.API.NonNullable;
 import org.ojai.exceptions.DecodingException;
 import org.ojai.exceptions.TypeException;
 import org.ojai.types.ODate;
@@ -38,7 +39,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param _id Value to set as the value of "_id" field
    * @return {@code this} for chaining
    */
-  public Document setId(Value _id);
+  public Document setId(@NonNullable Value _id);
 
   /**
    * @return The "_id" field of this Document
@@ -50,7 +51,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param _id String to set as the value of the "_id" field
    * @return {@code this} for chaining
    */
-  public Document setId(String _id);
+  public Document setId(@NonNullable String _id);
 
   /**
    * @return the String _id of this document
@@ -63,7 +64,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param _id ByteBuffer to set as the value of "_id" field
    * @return {@code this} for chaining
    */
-  public Document setId(ByteBuffer _id);
+  public Document setId(@NonNullable ByteBuffer _id);
 
   /**
    * @return the binary _id of this document
@@ -88,7 +89,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param beanClass the class of instance
    * @return An instance of the specified class converted from this Document
    */
-  public <T> T toJavaBean(Class<T> beanClass) throws DecodingException;
+  public <T> T toJavaBean(@NonNullable Class<T> beanClass) throws DecodingException;
 
   /**
    * Removes all of the entries from this document.
@@ -103,7 +104,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param value the String value
    * @return {@code this} for chaining
    */
-  Document set(String fieldPath, String value);
+  Document set(@NonNullable String fieldPath, @NonNullable String value);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -113,7 +114,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param value the String value
    * @return {@code this} for chaining
    */
-  Document set(FieldPath fieldPath, String value);
+  Document set(@NonNullable FieldPath fieldPath, @NonNullable String value);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -123,7 +124,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param value the boolean value
    * @return {@code this} for chaining
    */
-  Document set(String fieldPath, boolean value);
+  Document set(@NonNullable String fieldPath, boolean value);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -133,7 +134,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param value the boolean value
    * @return {@code this} for chaining
    */
-  Document set(FieldPath fieldPath, boolean value);
+  Document set(@NonNullable FieldPath fieldPath, boolean value);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -143,7 +144,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param value the byte value
    * @return {@code this} for chaining
    */
-  Document set(String fieldPath, byte value);
+  Document set(@NonNullable String fieldPath, byte value);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -153,7 +154,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param value the byte value
    * @return {@code this} for chaining
    */
-  Document set(FieldPath fieldPath, byte value);
+  Document set(@NonNullable FieldPath fieldPath, byte value);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -163,7 +164,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param value the short value
    * @return {@code this} for chaining
    */
-  Document set(String fieldPath, short value);
+  Document set(@NonNullable String fieldPath, short value);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -173,7 +174,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param value the short value
    * @return {@code this} for chaining.
    */
-  Document set(FieldPath fieldPath, short value);
+  Document set(@NonNullable FieldPath fieldPath, short value);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -183,7 +184,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param value the int value
    * @return {@code this} for chaining
    */
-  Document set(String fieldPath, int value);
+  Document set(@NonNullable String fieldPath, int value);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -193,7 +194,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param value the int value
    * @return {@code this} for chaining
    */
-  Document set(FieldPath fieldPath, int value);
+  Document set(@NonNullable FieldPath fieldPath, int value);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -203,7 +204,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param value the long value
    * @return {@code this} for chaining
    */
-  Document set(String fieldPath, long value);
+  Document set(@NonNullable String fieldPath, long value);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -213,7 +214,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param value the long value
    * @return {@code this} for chaining
    */
-  Document set(FieldPath fieldPath, long value);
+  Document set(@NonNullable FieldPath fieldPath, long value);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -223,7 +224,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param value the float value
    * @return {@code this} for chaining
    */
-  Document set(String fieldPath, float value);
+  Document set(@NonNullable String fieldPath, float value);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -233,7 +234,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param value the float value
    * @return {@code this} for chaining
    */
-  Document set(FieldPath fieldPath, float value);
+  Document set(@NonNullable FieldPath fieldPath, float value);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -243,7 +244,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param value the double value
    * @return {@code this} for chaining
    */
-  Document set(String fieldPath, double value);
+  Document set(@NonNullable String fieldPath, double value);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -253,7 +254,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param value the double value
    * @return {@code this} for chaining
    */
-  Document set(FieldPath fieldPath, double value);
+  Document set(@NonNullable FieldPath fieldPath, double value);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -263,7 +264,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param value the BigDecimal value
    * @return {@code this} for chaining
    */
-  Document set(String fieldPath, BigDecimal value);
+  Document set(@NonNullable String fieldPath, @NonNullable BigDecimal value);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -273,7 +274,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param value the BigDecimal value
    * @return {@code this} for chaining
    */
-  Document set(FieldPath fieldPath, BigDecimal value);
+  Document set(@NonNullable FieldPath fieldPath, @NonNullable BigDecimal value);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -283,7 +284,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param value the Time value
    * @return {@code this} for chaining
    */
-  Document set(String fieldPath, OTime value);
+  Document set(@NonNullable String fieldPath, @NonNullable OTime value);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -293,7 +294,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param value the Time value
    * @return {@code this} for chaining
    */
-  Document set(FieldPath fieldPath, OTime value);
+  Document set(@NonNullable FieldPath fieldPath, @NonNullable OTime value);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -303,7 +304,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param value the Date value
    * @return {@code this} for chaining
    */
-  Document set(String fieldPath, ODate value);
+  Document set(@NonNullable String fieldPath, @NonNullable ODate value);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -313,7 +314,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param value the Date value
    * @return {@code this} for chaining
    */
-  Document set(FieldPath fieldPath, ODate value);
+  Document set(@NonNullable FieldPath fieldPath, @NonNullable ODate value);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -323,7 +324,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param value the Timestamp value
    * @return {@code this} for chaining
    */
-  Document set(String fieldPath, OTimestamp value);
+  Document set(@NonNullable String fieldPath, @NonNullable OTimestamp value);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -333,7 +334,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param value the Timestamp value
    * @return {@code this} for chaining
    */
-  Document set(FieldPath fieldPath, OTimestamp value);
+  Document set(@NonNullable FieldPath fieldPath, @NonNullable OTimestamp value);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -343,7 +344,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param value the Interval value
    * @return {@code this} for chaining
    */
-  Document set(String fieldPath, OInterval value);
+  Document set(@NonNullable String fieldPath, @NonNullable OInterval value);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -353,7 +354,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param value the Interval value
    * @return {@code this} for chaining
    */
-  Document set(FieldPath fieldPath, OInterval value);
+  Document set(@NonNullable FieldPath fieldPath, @NonNullable OInterval value);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -363,7 +364,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param value the byte array containing the binary value
    * @return {@code this} for chaining
    */
-  Document set(String fieldPath, byte[] value);
+  Document set(@NonNullable String fieldPath, @NonNullable byte[] value);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -373,7 +374,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param value the byte array containing the binary value
    * @return {@code this} for chaining.
    */
-  Document set(FieldPath fieldPath, byte[] value);
+  Document set(@NonNullable FieldPath fieldPath, @NonNullable byte[] value);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -383,7 +384,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param value the byte array containing the binary value
    * @return {@code this} for chaining
    */
-  Document set(String fieldPath, byte[] value, int off, int len);
+  Document set(@NonNullable String fieldPath, @NonNullable byte[] value, int off, int len);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -393,7 +394,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param value the byte array containing the binary value
    * @return {@code this} for chaining
    */
-  Document set(FieldPath fieldPath, byte[] value, int off, int len);
+  Document set(@NonNullable FieldPath fieldPath, @NonNullable byte[] value, int off, int len);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -403,7 +404,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param value the ByteBuffer
    * @return {@code this} for chaining
    */
-  Document set(String fieldPath, ByteBuffer value);
+  Document set(@NonNullable String fieldPath, @NonNullable ByteBuffer value);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -413,7 +414,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param value the ByteBuffer
    * @return {@code this} for chaining
    */
-  Document set(FieldPath fieldPath, ByteBuffer value);
+  Document set(@NonNullable FieldPath fieldPath, @NonNullable ByteBuffer value);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -423,7 +424,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param value the Map value
    * @return {@code this} for chaining
    */
-  Document set(String fieldPath, Map<String, ? extends Object> value);
+  Document set(@NonNullable String fieldPath, @NonNullable Map<String, ? extends Object> value);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -433,7 +434,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param value the Map value
    * @return {@code this} for chaining
    */
-  Document set(FieldPath fieldPath, Map<String, ? extends Object> value);
+  Document set(@NonNullable FieldPath fieldPath, @NonNullable Map<String, ? extends Object> value);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -444,7 +445,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param value the Document
    * @return {@code this} for chaining
    */
-  Document set(String fieldPath, Document value);
+  Document set(@NonNullable String fieldPath, @NonNullable Document value);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -455,7 +456,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param value the Document
    * @return {@code this} for chaining
    */
-  Document set(FieldPath fieldPath, Document value);
+  Document set(@NonNullable FieldPath fieldPath, @NonNullable Document value);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -465,7 +466,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param value the Value
    * @return {@code this} for chaining
    */
-  Document set(String fieldPath, Value value);
+  Document set(@NonNullable String fieldPath, @NonNullable Value value);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -475,7 +476,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param value the Value
    * @return {@code this} for chaining
    */
-  Document set(FieldPath fieldPath, Value value);
+  Document set(@NonNullable FieldPath fieldPath, @NonNullable Value value);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -485,7 +486,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param value the Object List
    * @return {@code this} for chaining
    */
-  Document set(String fieldPath, List<? extends Object> value);
+  Document set(@NonNullable String fieldPath, @NonNullable List<? extends Object> value);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -495,7 +496,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param value the Object List
    * @return {@code this} for chaining
    */
-  Document set(FieldPath fieldPath, List<? extends Object> value);
+  Document set(@NonNullable FieldPath fieldPath, @NonNullable List<? extends Object> value);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -505,7 +506,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param values the boolean array
    * @return {@code this} for chaining
    */
-  Document setArray(String fieldPath, boolean[] values);
+  Document setArray(@NonNullable String fieldPath, @NonNullable boolean[] values);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -515,7 +516,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param values the boolean array
    * @return {@code this} for chaining
    */
-  Document setArray(FieldPath fieldPath, boolean[] values);
+  Document setArray(@NonNullable FieldPath fieldPath, @NonNullable boolean[] values);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -525,7 +526,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param values the byte array
    * @return {@code this} for chaining
    */
-  Document setArray(String fieldPath, byte[] values);
+  Document setArray(@NonNullable String fieldPath, @NonNullable byte[] values);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -535,7 +536,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param values the byte array
    * @return {@code this} for chaining
    */
-  Document setArray(FieldPath fieldPath, byte[] values);
+  Document setArray(@NonNullable FieldPath fieldPath, @NonNullable byte[] values);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -545,7 +546,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param values the short array
    * @return {@code this} for chaining
    */
-  Document setArray(String fieldPath, short[] values);
+  Document setArray(@NonNullable String fieldPath, @NonNullable short[] values);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -555,7 +556,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param values the short array
    * @return {@code this} for chaining
    */
-  Document setArray(FieldPath fieldPath, short[] values);
+  Document setArray(@NonNullable FieldPath fieldPath, @NonNullable short[] values);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -565,7 +566,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param values the int array
    * @return {@code this} for chaining
    */
-  Document setArray(String fieldPath, int[] values);
+  Document setArray(@NonNullable String fieldPath, @NonNullable int[] values);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -575,7 +576,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param values the int array
    * @return {@code this} for chaining
    */
-  Document setArray(FieldPath fieldPath, int[] values);
+  Document setArray(@NonNullable FieldPath fieldPath, @NonNullable int[] values);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -585,7 +586,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param values the long array
    * @return {@code this} for chaining
    */
-  Document setArray(String fieldPath, long[] values);
+  Document setArray(@NonNullable String fieldPath, @NonNullable long[] values);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -595,7 +596,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param values the long array
    * @return {@code this} for chaining
    */
-  Document setArray(FieldPath fieldPath, long[] values);
+  Document setArray(@NonNullable FieldPath fieldPath, @NonNullable long[] values);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -605,7 +606,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param values the float array
    * @return {@code this} for chaining
    */
-  Document setArray(String fieldPath, float[] values);
+  Document setArray(@NonNullable String fieldPath, @NonNullable float[] values);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -615,7 +616,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param values the float array
    * @return {@code this} for chaining
    */
-  Document setArray(FieldPath fieldPath, float[] values);
+  Document setArray(@NonNullable FieldPath fieldPath, @NonNullable float[] values);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -625,7 +626,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param values the double array
    * @return {@code this} for chaining
    */
-  Document setArray(String fieldPath, double[] values);
+  Document setArray(@NonNullable String fieldPath, @NonNullable double[] values);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -635,7 +636,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param values the double array
    * @return {@code this} for chaining
    */
-  Document setArray(FieldPath fieldPath, double[] values);
+  Document setArray(@NonNullable FieldPath fieldPath, @NonNullable double[] values);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -645,7 +646,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param values the String array
    * @return {@code this} for chaining
    */
-  Document setArray(String fieldPath, String[] values);
+  Document setArray(@NonNullable String fieldPath, @NonNullable String[] values);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -655,7 +656,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param values the String array
    * @return {@code this} for chaining
    */
-  Document setArray(FieldPath fieldPath, String[] values);
+  Document setArray(@NonNullable FieldPath fieldPath, @NonNullable String[] values);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -665,7 +666,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param values the Object array
    * @return {@code this} for chaining
    */
-  Document setArray(String fieldPath, Object... values);
+  Document setArray(@NonNullable String fieldPath, @NonNullable Object... values);
 
   /**
    * Sets the value of the specified fieldPath in this Document to the
@@ -675,7 +676,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param values the Object array
    * @return {@code this} for chaining
    */
-  Document setArray(FieldPath fieldPath, Object... values);
+  Document setArray(@NonNullable FieldPath fieldPath, @NonNullable Object... values);
 
   /**
    * Sets the value of the specified fieldPath in this Document to
@@ -684,7 +685,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param fieldPath the FieldPath to set
    * @return {@code this} for chaining
    */
-  Document setNull(String fieldPath);
+  Document setNull(@NonNullable String fieldPath);
 
   /**
    * Sets the value of the specified fieldPath in this Document to
@@ -693,21 +694,21 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @param fieldPath the FieldPath to set
    * @return {@code this} for chaining
    */
-  Document setNull(FieldPath fieldPath);
+  Document setNull(@NonNullable FieldPath fieldPath);
 
   /**
    * Deletes the value at the specified {@code FieldPath} if it exists.
    * @param fieldPath The {@code fieldPath} to delete from the document
    * @return {@code this} for chaining
    */
-  Document delete(String fieldPath);
+  Document delete(@NonNullable String fieldPath);
 
   /**
    * Deletes the value at the specified {@code FieldPath} if it exists.
    * @param fieldPath the {@code fieldPath} to delete from the document
    * @return {@code this} for chaining
    */
-  Document delete(FieldPath fieldPath);
+  Document delete(@NonNullable FieldPath fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@code String}
@@ -717,7 +718,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @throws TypeException if the value at the fieldPath is not of
    *         the <code>STRING</code> type
    */
-  String getString(String fieldPath);
+  String getString(@NonNullable String fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@code String}
@@ -727,7 +728,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @throws TypeException if the value at the fieldPath is not of
    *         the <code>STRING</code> type
    */
-  String getString(FieldPath fieldPath);
+  String getString(@NonNullable FieldPath fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@code boolean}.
@@ -737,7 +738,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @throws NoSuchElementException if the specified field does not
    *         exist in the {@code Document}
    */
-  boolean getBoolean(String fieldPath);
+  boolean getBoolean(@NonNullable String fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@code boolean}.
@@ -747,7 +748,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @throws NoSuchElementException if the specified field does not
    *         exist in the {@code Document}
    */
-  boolean getBoolean(FieldPath fieldPath);
+  boolean getBoolean(@NonNullable FieldPath fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@code Boolean}
@@ -757,7 +758,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @throws TypeException if the value at the fieldPath is not of
    *         the <code>BOOLEAN</code> type
    */
-  Boolean getBooleanObj(String fieldPath);
+  Boolean getBooleanObj(@NonNullable String fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@code Boolean}
@@ -767,7 +768,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @throws TypeException if the value at the fieldPath is not of
    *         the <code>BOOLEAN</code> type
    */
-  Boolean getBooleanObj(FieldPath fieldPath);
+  Boolean getBooleanObj(@NonNullable FieldPath fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@code byte}.
@@ -777,7 +778,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @throws NoSuchElementException if the specified field does not
    *         exist in the {@code Document}
    */
-  byte getByte(String fieldPath);
+  byte getByte(@NonNullable String fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@code byte}.
@@ -787,7 +788,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @throws NoSuchElementException if the specified field does not
    *         exist in the {@code Document}
    */
-  byte getByte(FieldPath fieldPath);
+  byte getByte(@NonNullable FieldPath fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@code Byte}
@@ -797,7 +798,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @throws TypeException if the value at the fieldPath is not one of
    *         the numeric types
    */
-  Byte getByteObj(String fieldPath);
+  Byte getByteObj(@NonNullable String fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@code Byte}
@@ -807,7 +808,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @throws TypeException if the value at the fieldPath is not one of
    *         the numeric types
    */
-  Byte getByteObj(FieldPath fieldPath);
+  Byte getByteObj(@NonNullable FieldPath fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@code short}.
@@ -817,7 +818,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @throws NoSuchElementException if the specified field does not
    *         exist in the {@code Document}
    */
-  short getShort(String fieldPath);
+  short getShort(@NonNullable String fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@code short}.
@@ -827,7 +828,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @throws NoSuchElementException if the specified field does not
    *         exist in the {@code Document}
    */
-  short getShort(FieldPath fieldPath);
+  short getShort(@NonNullable FieldPath fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@code Short}
@@ -837,7 +838,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @throws TypeException if the value at the fieldPath is not one of
    *         the numeric types
    */
-  Short getShortObj(String fieldPath);
+  Short getShortObj(@NonNullable String fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@code Short}
@@ -847,7 +848,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @throws TypeException if the value at the fieldPath is not one of
    *         the numeric types
    */
-  Short getShortObj(FieldPath fieldPath);
+  Short getShortObj(@NonNullable FieldPath fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as an {@code int}.
@@ -857,7 +858,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @throws NoSuchElementException if the specified field does not
    *         exist in the {@code Document}
    */
-  int getInt(String fieldPath);
+  int getInt(@NonNullable String fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as an {@code int}.
@@ -867,7 +868,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @throws NoSuchElementException if the specified field does not
    *         exist in the {@code Document}
    */
-  int getInt(FieldPath fieldPath);
+  int getInt(@NonNullable FieldPath fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as an {@code Integer}
@@ -877,7 +878,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @throws TypeException if the value at the fieldPath is not one of
    *         the numeric types
    */
-  Integer getIntObj(String fieldPath);
+  Integer getIntObj(@NonNullable String fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as an {@code Integer}
@@ -887,7 +888,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @throws TypeException if the value at the fieldPath is not one of
    *         the numeric types
    */
-  Integer getIntObj(FieldPath fieldPath);
+  Integer getIntObj(@NonNullable FieldPath fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@code long}.
@@ -897,7 +898,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @throws NoSuchElementException if the specified field does not
    *         exist in the {@code Document}
    */
-  long getLong(String fieldPath);
+  long getLong(@NonNullable String fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@code long}.
@@ -907,7 +908,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @throws NoSuchElementException if the specified field does not
    *         exist in the {@code Document}
    */
-  long getLong(FieldPath fieldPath);
+  long getLong(@NonNullable FieldPath fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@code Long}
@@ -917,7 +918,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @throws TypeException if the value at the fieldPath is not one of
    *         the numeric types
    */
-  Long getLongObj(String fieldPath);
+  Long getLongObj(@NonNullable String fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@code Long}
@@ -927,7 +928,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @throws TypeException if the value at the fieldPath is not one of
    *         the numeric types
    */
-  Long getLongObj(FieldPath fieldPath);
+  Long getLongObj(@NonNullable FieldPath fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@code float}.
@@ -937,7 +938,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @throws NoSuchElementException if the specified field does not
    *         exist in the {@code Document}
    */
-  float getFloat(String fieldPath);
+  float getFloat(@NonNullable String fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@code float}.
@@ -947,7 +948,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @throws NoSuchElementException if the specified field does not
    *         exist in the {@code Document}
    */
-  float getFloat(FieldPath fieldPath);
+  float getFloat(@NonNullable FieldPath fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@code Float}
@@ -957,7 +958,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @throws TypeException if the value at the fieldPath is not one of
    *         the numeric types
    */
-  Float getFloatObj(String fieldPath);
+  Float getFloatObj(@NonNullable String fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@code Float}
@@ -967,7 +968,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @throws TypeException if the value at the fieldPath is not one of
    *         the numeric types
    */
-  Float getFloatObj(FieldPath fieldPath);
+  Float getFloatObj(@NonNullable FieldPath fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@code double}.
@@ -977,7 +978,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @throws NoSuchElementException if the specified field does not
    *         exist in the {@code Document}
    */
-  double getDouble(String fieldPath);
+  double getDouble(@NonNullable String fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@code double}.
@@ -987,7 +988,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @throws NoSuchElementException if the specified field does not
    *         exist in the {@code Document}
    */
-  double getDouble(FieldPath fieldPath);
+  double getDouble(@NonNullable FieldPath fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@code Double}
@@ -997,7 +998,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @throws TypeException if the value at the fieldPath is not one of
    *         the numeric types
    */
-  Double getDoubleObj(String fieldPath);
+  Double getDoubleObj(@NonNullable String fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@code Double}
@@ -1007,7 +1008,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @throws TypeException if the value at the fieldPath is not one of
    *         the numeric types
    */
-  Double getDoubleObj(FieldPath fieldPath);
+  Double getDoubleObj(@NonNullable FieldPath fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@link BigDecimal}
@@ -1018,7 +1019,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @throws TypeException if the value at the fieldPath is not one of
    *         the numeric types
    */
-  BigDecimal getDecimal(String fieldPath);
+  BigDecimal getDecimal(@NonNullable String fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@link BigDecimal}
@@ -1029,7 +1030,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @throws TypeException if the value at the fieldPath is not one of
    *         the numeric types
    */
-  BigDecimal getDecimal(FieldPath fieldPath);
+  BigDecimal getDecimal(@NonNullable FieldPath fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@link OTime}
@@ -1040,7 +1041,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @throws TypeException if the value at the fieldPath is not of
    *         the <code>TIME</code> type
    */
-  OTime getTime(String fieldPath);
+  OTime getTime(@NonNullable String fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@link OTime}
@@ -1051,7 +1052,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @throws TypeException if the value at the fieldPath is not of
    *         the <code>TIME</code> type
    */
-  OTime getTime(FieldPath fieldPath);
+  OTime getTime(@NonNullable FieldPath fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@link ODate}
@@ -1062,7 +1063,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @throws TypeException if the value at the fieldPath is not of
    *         the <code>DATE</code> type
    */
-  ODate getDate(String fieldPath);
+  ODate getDate(@NonNullable String fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@link ODate}
@@ -1073,7 +1074,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @throws TypeException if the value at the fieldPath is not of
    *         the <code>DATE</code> type
    */
-  ODate getDate(FieldPath fieldPath);
+  ODate getDate(@NonNullable FieldPath fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@link OTimestamp}
@@ -1084,7 +1085,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @throws TypeException if the value at the fieldPath is not of
    *         the <code>TIMESTAMP</code> type
    */
-  OTimestamp getTimestamp(String fieldPath);
+  OTimestamp getTimestamp(@NonNullable String fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@link OTimestamp}
@@ -1095,7 +1096,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @throws TypeException if the value at the fieldPath is not of
    *         the <code>TIMESTAMP</code> type
    */
-  OTimestamp getTimestamp(FieldPath fieldPath);
+  OTimestamp getTimestamp(@NonNullable FieldPath fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@link ByteBuffer}
@@ -1106,7 +1107,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @throws TypeException if the value at the fieldPath is not of
    *         the <code>BINARY</code> type
    */
-  ByteBuffer getBinary(String fieldPath);
+  ByteBuffer getBinary(@NonNullable String fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@link ByteBuffer}
@@ -1117,7 +1118,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @throws TypeException if the value at the fieldPath is not of
    *         <code>BINARY</code> type
    */
-  ByteBuffer getBinary(FieldPath fieldPath);
+  ByteBuffer getBinary(@NonNullable FieldPath fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as an {@link OInterval}
@@ -1128,7 +1129,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @throws TypeException if the value at the fieldPath is not of
    *         the <code>INTERVAL</code> type
    */
-  OInterval getInterval(String fieldPath);
+  OInterval getInterval(@NonNullable String fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as an {@link OInterval}
@@ -1139,7 +1140,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @throws TypeException if the value at the fieldPath is not of
    *         the <code>INTERVAL</code> type
    */
-  OInterval getInterval(FieldPath fieldPath);
+  OInterval getInterval(@NonNullable FieldPath fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@link Value}
@@ -1147,7 +1148,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * exist in the document. Modifying the returned object does not alter the
    * content of the document.
    */
-  Value getValue(String fieldPath);
+  Value getValue(@NonNullable String fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@link Value}
@@ -1155,7 +1156,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * exist in the document. Modifying the returned object does not alter the
    * content of the document.
    */
-  Value getValue(FieldPath fieldPath);
+  Value getValue(@NonNullable FieldPath fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@link Map}
@@ -1166,7 +1167,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @throws TypeException if the value at the fieldPath is not of
    *         the <code>MAP</code> type
    */
-  Map<String, Object> getMap(String fieldPath);
+  Map<String, Object> getMap(@NonNullable String fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@link Map}
@@ -1177,7 +1178,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @throws TypeException if the value at the fieldPath is not of
    *         the <code>MAP</code> type
    */
-  Map<String, Object> getMap(FieldPath fieldPath);
+  Map<String, Object> getMap(@NonNullable FieldPath fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@link List}
@@ -1188,7 +1189,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @throws TypeException if the value at the fieldPath is not of
    *         the <code>ARRAY</code> type
    */
-  List<Object> getList(String fieldPath);
+  List<Object> getList(@NonNullable String fieldPath);
 
   /**
    * Returns the value at the specified fieldPath as a {@link List}
@@ -1199,7 +1200,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @throws TypeException if the value at the fieldPath is not of
    *         the <code>ARRAY</code> type
    */
-  List<Object> getList(FieldPath fieldPath);
+  List<Object> getList(@NonNullable FieldPath fieldPath);
 
   /**
    * @return This Document serialized as Json string using the default options.
@@ -1216,13 +1217,13 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * @return A new {@link DocumentReader} over the node specified by the
    *         fieldPath or <code>null</code> if the node does not exist
    */
-  DocumentReader asReader(String fieldPath);
+  DocumentReader asReader(@NonNullable String fieldPath);
 
   /**
    * @return A new {@link DocumentReader} over the node specified by the
    *         fieldPath or <code>null</code> if the node does not exist
    */
-  DocumentReader asReader(FieldPath fieldPath);
+  DocumentReader asReader(@NonNullable FieldPath fieldPath);
 
   /**
    * @return A new {@link Map} representing the Document.

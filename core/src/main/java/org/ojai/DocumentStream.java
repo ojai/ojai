@@ -18,6 +18,7 @@ package org.ojai;
 import java.util.Iterator;
 
 import org.ojai.annotation.API;
+import org.ojai.annotation.API.NonNullable;
 import org.ojai.exceptions.OjaiException;
 
 /**
@@ -39,7 +40,7 @@ public interface DocumentStream extends AutoCloseable, Iterable<Document> {
    * @throws StreamInUseException if an iterator is already retrieved from this
    *         {@code DocumentStream}.
    */
-  public void streamTo(DocumentListener listener);
+  public void streamTo(@NonNullable DocumentListener listener);
 
   /**
    * Returns an iterator over a set of {@code Document}.

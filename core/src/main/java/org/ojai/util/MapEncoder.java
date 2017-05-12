@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.ojai.annotation.API;
+import org.ojai.annotation.API.NonNullable;
 import org.ojai.exceptions.DecodingException;
 import org.ojai.exceptions.EncodingException;
 import org.ojai.exceptions.TypeException;
@@ -39,7 +40,7 @@ public class MapEncoder {
    * @throws EncodingException
    * @throws TypeException
    */
-  public static Map<String, Object> encode(DocumentReader reader)
+  public static Map<String, Object> encode(@NonNullable DocumentReader reader)
       throws EncodingException, TypeException {
     try {
       EventType event = reader.next();

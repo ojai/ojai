@@ -20,6 +20,8 @@ import java.util.Map;
 import org.ojai.Document;
 import org.ojai.DocumentBuilder;
 import org.ojai.annotation.API;
+import org.ojai.annotation.API.NonNullable;
+import org.ojai.annotation.API.Nullable;
 import org.ojai.exceptions.DecodingException;
 import org.ojai.exceptions.OjaiException;
 
@@ -42,7 +44,7 @@ public interface Driver {
    * Returns {@code true} if the other object is "equal to" this Driver.
    */
   @Override
-  boolean equals(Object obj);
+  boolean equals(@Nullable Object obj);
 
   /**
    * Creates and returns a new, empty instance of an OJAI Document.
@@ -52,17 +54,17 @@ public interface Driver {
   /**
    * Returns a new instance of OJAI Document parsed from the specified JSON string.
    */
-  public Document newDocument(String documentJson) throws DecodingException;
+  public Document newDocument(@NonNullable String documentJson) throws DecodingException;
 
   /**
    * Returns a new instance of Document constructed from the specified Map
    */
-  public Document newDocument(Map<String, Object> map) throws DecodingException;
+  public Document newDocument(@NonNullable Map<String, Object> map) throws DecodingException;
 
   /**
    * Returns a new instance of Document built from the specified Java bean.
    */
-  public Document newDocument(Object bean) throws DecodingException;
+  public Document newDocument(@NonNullable Object bean) throws DecodingException;
 
   /**
    * Returns a new DocumentBuilder object.
@@ -77,7 +79,7 @@ public interface Driver {
   /**
    * Creates and returns a new DocumentMutation object decoded from the supplied JSON String.
    */
-  public DocumentMutation newMutation(String mutationJson);
+  public DocumentMutation newMutation(@NonNullable String mutationJson);
 
   /**
    * Creates and returns a new QueryCondition object.
@@ -87,7 +89,7 @@ public interface Driver {
   /**
    * Creates and returns a new QueryCondition object decoded from the supplied JSON String.
    */
-  public QueryCondition newCondition(String conditionJson);
+  public QueryCondition newCondition(@NonNullable String conditionJson);
 
   /**
    * Creates and returns a new Query object.
@@ -97,7 +99,7 @@ public interface Driver {
   /**
    * Creates and returns a new Query object decoded from the supplied JSON String.
    */
-  public Query newQuery(String queryJson);
+  public Query newQuery(@NonNullable String queryJson);
 
   //
   // Methods used by OJAI DriverManager
@@ -107,7 +109,7 @@ public interface Driver {
    * Returns true if this Driver supports the protocol specified in the URL.
    */
   @API.Internal
-  public boolean accepts(String url);
+  public boolean accepts(@NonNullable String url);
 
   /**
    * Establishes and returns a Connection to an OJAI data source.
@@ -115,6 +117,6 @@ public interface Driver {
    * not use this API directly.
    */
   @API.Internal
-  public Connection connect(String url, Document info) throws OjaiException;
+  public Connection connect(@NonNullable String url, @Nullable Document options) throws OjaiException;
 
 }
