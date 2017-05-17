@@ -69,17 +69,7 @@ public class DummyJsonDriver implements Driver {
   }
 
   @Override
-  public DocumentMutation newMutation(String mutationJson) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
   public QueryCondition newCondition() {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public QueryCondition newCondition(String conditionJson) {
     throw new UnsupportedOperationException();
   }
 

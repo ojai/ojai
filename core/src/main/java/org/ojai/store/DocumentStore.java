@@ -126,7 +126,7 @@ public interface DocumentStore extends AutoCloseable {
    *
    * @throws StoreException
    */
-  public DocumentStream find(@NonNullable Query query) throws StoreException;
+  public DocumentStream findQuery(@NonNullable Query query) throws StoreException;
 
   /**
    * <p>Executes the specified query on the DocumentStore and return a DocumentStream of the result.
@@ -137,7 +137,7 @@ public interface DocumentStore extends AutoCloseable {
    *
    * @throws StoreException
    */
-  public DocumentStream find(@NonNullable String queryJSON) throws StoreException;
+  public DocumentStream findQuery(@NonNullable String queryJSON) throws StoreException;
 
   /**
    * <p>Executes a query to return all Documents in the DocumentStore.

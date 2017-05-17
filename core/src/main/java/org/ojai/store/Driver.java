@@ -77,19 +77,9 @@ public interface Driver {
   public DocumentMutation newMutation();
 
   /**
-   * Creates and returns a new DocumentMutation object decoded from the supplied JSON String.
-   */
-  public DocumentMutation newMutation(@NonNullable String mutationJson);
-
-  /**
    * Creates and returns a new QueryCondition object.
    */
   public QueryCondition newCondition();
-
-  /**
-   * Creates and returns a new QueryCondition object decoded from the supplied JSON String.
-   */
-  public QueryCondition newCondition(@NonNullable String conditionJson);
 
   /**
    * Creates and returns a new Query object.

@@ -83,22 +83,10 @@ public interface Connection extends Closeable {
   public DocumentMutation newMutation();
 
   /**
-   * <p>Creates and returns a new DocumentMutation object decoded from the supplied JSON String.</p>
-   * This is an alias to getDriver().newMutation().
-   */
-  public DocumentMutation newMutation(@NonNullable String mutationJson);
-
-  /**
    * <p>Creates and returns a new QueryCondition object.</p>
    * This is an alias to getDriver().newCondition().
    */
   public QueryCondition newCondition();
-
-  /**
-   * <p>Creates and returns a new QueryCondition object decoded from the supplied JSON String.</p>
-   * This is an alias to getDriver().newCondition().
-   */
-  public QueryCondition newCondition(@NonNullable String conditionJson);
 
   /**
    * <p>Creates and returns a new Query object.</p>

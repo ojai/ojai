@@ -84,18 +84,8 @@ public class DummyJsonConnection implements Connection {
   }
 
   @Override
-  public DocumentMutation newMutation(String mutationJson) {
-    return driver.newMutation(mutationJson);
-  }
-
-  @Override
   public QueryCondition newCondition() {
     return driver.newCondition();
-  }
-
-  @Override
-  public QueryCondition newCondition(String conditionJson) {
-    return driver.newCondition(conditionJson);
   }
 
   @Override

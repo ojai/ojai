@@ -30,7 +30,6 @@ import org.ojai.FieldPath;
 import org.ojai.Value.Type;
 import org.ojai.annotation.API;
 import org.ojai.annotation.API.NonNullable;
-import org.ojai.annotation.API.Nullable;
 import org.ojai.beans.BeanCodec;
 import org.ojai.exceptions.DecodingException;
 import org.ojai.json.impl.JsonDocument;
