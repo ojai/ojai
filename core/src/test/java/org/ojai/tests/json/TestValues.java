@@ -16,6 +16,8 @@
 package org.ojai.tests.json;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.net.URL;
@@ -64,6 +66,28 @@ public class TestValues extends BaseTest {
     assertEquals("{\"$date\":\"2012-10-20T14:42:46.123Z\"}", document.getValue("timestamp").asJsonString());
     assertEquals("172800000", document.getValue("interval").asJsonString());
     assertEquals("{\"$binary\":\"YWJjZA==\"}", document.getValue("binary").asJsonString());
+  }
+
+  @Test
+  public void testIsNumeric() throws IOException {
+    URL url = Resources.getResource("org/ojai/test/data/test.json");
+    String content = Resources.toString(url, Charsets.UTF_8);
+    Document document = Json.newDocument(content);
+
+    assertFalse(document.getValue("map.boolean").getType().isNumeric());
+    assertFalse(document.getValue("map.string").getType().isNumeric());
+    assertTrue(document.getValue("map.byte").getType().isNumeric());
+    assertTrue(document.getValue("map.short").getType().isNumeric());
+    assertTrue(document.getValue("map.int").getType().isNumeric());
+    assertTrue(document.getValue("map.long").getType().isNumeric());
+    assertTrue(document.getValue("map.float").getType().isNumeric());
+    assertTrue(document.getValue("map.double").getType().isNumeric());
+    assertTrue(document.getValue("map.decimal").getType().isNumeric());
+    assertFalse(document.getValue("map.date").getType().isNumeric());
+    assertFalse(document.getValue("map.time").getType().isNumeric());
+    assertFalse(document.getValue("map.timestamp").getType().isNumeric());
+    assertFalse(document.getValue("map.interval").getType().isNumeric());
+    assertFalse(document.getValue("map.binary").getType().isNumeric());
   }
 
 }

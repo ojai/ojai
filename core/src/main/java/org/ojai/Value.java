@@ -155,6 +155,10 @@ public interface Value extends JsonString {
       return this != MAP && this != ARRAY;
     }
 
+    public boolean isNumeric() {
+      return this.code >= BYTE.code && this.code <= DECIMAL.code;
+    }
+
     public static Type valueOf(int typeCode) {
       switch (typeCode) {
         case TYPE_CODE_NULL: return NULL;
