@@ -40,7 +40,8 @@ public enum ChangeOp {
   MERGE(3),
 
   /**
-   * The current field was deleted.
+   * All values older than or equal to the delete operation timestamp
+   * were deleted.
    */
   DELETE(4),
 
@@ -48,7 +49,12 @@ public enum ChangeOp {
    * The operation deleted the current field, or a version thereof, whose
    * timestamp was same as that of the current change node.
    */
-  DELETE_EXACT(5);
+  DELETE_EXACT(5),
+
+  /**
+   * Add another version to the current field.
+   */
+  PUT(6);
 
   private final byte code;
 
