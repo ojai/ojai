@@ -24,6 +24,7 @@ import java.util.regex.PatternSyntaxException;
 import org.ojai.FieldPath;
 import org.ojai.Value;
 import org.ojai.Value.Type;
+import org.ojai.annotation.API;
 import org.ojai.annotation.API.NonNullable;
 import org.ojai.exceptions.TypeException;
 import org.ojai.types.ODate;
@@ -31,6 +32,8 @@ import org.ojai.types.OInterval;
 import org.ojai.types.OTime;
 import org.ojai.types.OTimestamp;
 
+@API.Public
+@API.NotThreadSafe
 public interface QueryCondition {
 
   public enum Op {

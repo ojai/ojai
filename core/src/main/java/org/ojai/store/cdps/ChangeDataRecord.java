@@ -29,6 +29,7 @@ import org.ojai.store.DocumentStore;
  * were performed to a single {@link Document} in the source {@link DocumentStore}.
  */
 @API.Public
+@API.NotThreadSafe
 public interface ChangeDataRecord extends Iterable<KeyValue<FieldPath, ChangeNode>> {
 
   /**

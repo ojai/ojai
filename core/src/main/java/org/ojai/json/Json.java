@@ -46,6 +46,7 @@ import com.google.common.base.Preconditions;
  * of all OJAI interfaces.
  */
 @API.Public
+@API.Factory
 public final class Json {
 
   /**
@@ -154,6 +155,10 @@ public final class Json {
       @NonNullable FileSystem fs, @NonNullable String path, @NonNullable Events.Delegate eventDelegate)
           throws DecodingException, IOException {
     return JsonDocumentStream.newDocumentStream(fs, path, null, eventDelegate);
+  }
+
+  public static <T> T encode(@NonNullable String jsonString, @NonNullable Class<T> beanClass) {
+    return BeanCodec.encode(newDocumentReader(jsonString), beanClass);
   }
 
   public static String toJsonString(@NonNullable Document d) {

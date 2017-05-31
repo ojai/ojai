@@ -20,6 +20,7 @@ import java.util.Map;
 
 import org.ojai.Document;
 import org.ojai.DocumentBuilder;
+import org.ojai.annotation.API;
 import org.ojai.annotation.API.NonNullable;
 import org.ojai.exceptions.DecodingException;
 import org.ojai.exceptions.OjaiException;
@@ -28,6 +29,8 @@ import org.ojai.exceptions.OjaiException;
  * A logical connection to an OJAI data source. This could be a connection to
  * a database server, a distributed cluster or a set of distributed clusters.
  */
+@API.Public
+@API.ThreadSafe
 public interface Connection extends Closeable {
   /**
    * Returns a handle to an OJAI DocumentStore specified by the given name

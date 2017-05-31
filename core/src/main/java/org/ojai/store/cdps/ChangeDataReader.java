@@ -37,6 +37,7 @@ import org.w3c.dom.ranges.RangeException;
  * etc can be retrieved using various methods of this interface.
  */
 @API.Public
+@API.NotThreadSafe
 public interface ChangeDataReader extends Iterator<ChangeEvent> {
 
   /**

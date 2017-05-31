@@ -33,6 +33,7 @@ import com.google.common.base.Preconditions;
  * This is the entry point for any OJAI implementation.
  */
 @API.Public
+@API.Factory
 public final class DriverManager {
 
   public static final String OJAI_PROTOCOL_NAME = "ojai:";

@@ -108,6 +108,7 @@ import org.ojai.types.OTimestamp;
  * (65.675 will be truncated to 65).
  */
 @API.Public
+@API.NotThreadSafe
 public interface DocumentMutation extends Iterable<MutationOp> {
 
   /**

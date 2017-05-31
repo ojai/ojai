@@ -29,6 +29,7 @@ import org.ojai.exceptions.OjaiException;
  * from the stream.
  */
 @API.Public
+@API.NotThreadSafe
 public interface DocumentStream extends AutoCloseable, Iterable<Document> {
 
   /**

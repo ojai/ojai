@@ -27,6 +27,7 @@ import org.ojai.types.OTime;
 import org.ojai.types.OTimestamp;
 
 @API.Public
+@API.NotThreadSafe
 public interface DocumentBuilder {
 
   /* ===========

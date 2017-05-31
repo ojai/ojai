@@ -120,4 +120,12 @@ public class API {
   @Target(ElementType.TYPE)
   public @interface ImmutableOnBuild {};
 
+  /**
+   * Annotate a class to be a factory class containing only static methods.
+   */
+  @Documented
+  @Retention(RetentionPolicy.CLASS)
+  @Target(ElementType.TYPE)
+  public @interface Factory {};
+
 }

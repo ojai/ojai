@@ -41,6 +41,7 @@ import com.google.common.cache.CacheBuilder;
  * Immutable class for representing a field path.
  */
 @API.Public
+@API.Immutable
 public final class FieldPath implements Comparable<FieldPath>, Iterable<FieldSegment>, Expression {
   private static Logger logger = LoggerFactory.getLogger(FieldPath.class);
 

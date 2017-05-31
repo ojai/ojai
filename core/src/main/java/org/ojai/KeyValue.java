@@ -20,6 +20,7 @@ import java.util.Map;
 import org.ojai.annotation.API;
 
 @API.Public
+@API.NotThreadSafe
 public interface KeyValue<KEY, VALUE> extends Map.Entry<KEY, VALUE> {
 
   /**

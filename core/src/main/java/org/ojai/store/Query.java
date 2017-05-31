@@ -26,6 +26,7 @@ import org.ojai.exceptions.OjaiException;
  * on an OJAI DocumentStore.
  */
 @API.Public
+@API.NotThreadSafe
 public interface Query {
 
   /**

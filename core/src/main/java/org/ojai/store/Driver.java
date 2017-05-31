@@ -33,6 +33,7 @@ import org.ojai.exceptions.OjaiException;
  * source.
  */
 @API.Public
+@API.ThreadSafe
 public interface Driver {
 
   /**

@@ -26,6 +26,7 @@ import org.ojai.util.Fields;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @API.Public
+@API.Immutable
 public abstract class FieldSegment implements Comparable<FieldSegment>, JsonString {
 
   /**

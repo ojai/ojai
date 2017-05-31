@@ -32,6 +32,7 @@ import org.ojai.types.OTime;
 import org.ojai.types.OTimestamp;
 
 @API.Public
+@API.NotThreadSafe
 public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString {
 
   /**

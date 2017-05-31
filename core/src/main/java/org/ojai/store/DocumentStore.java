@@ -21,12 +21,15 @@ import org.ojai.Document;
 import org.ojai.DocumentStream;
 import org.ojai.FieldPath;
 import org.ojai.Value;
+import org.ojai.annotation.API;
 import org.ojai.annotation.API.NonNullable;
 import org.ojai.store.exceptions.DocumentExistsException;
 import org.ojai.store.exceptions.DocumentNotFoundException;
 import org.ojai.store.exceptions.MultiOpException;
 import org.ojai.store.exceptions.StoreException;
 
+@API.Public
+@API.NotThreadSafe
 public interface DocumentStore extends AutoCloseable {
 
   /**
