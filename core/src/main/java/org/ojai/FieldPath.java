@@ -241,7 +241,7 @@ public final class FieldPath implements Comparable<FieldPath>, Iterable<FieldSeg
 
   /**
    * @return Returns the root segment of the child if {@code FieldPath} contains ancestor
-   *  entirely,returns {@value FieldPath.EMPTY} if field and ancestor are identical field
+   *  entirely,returns {@value FieldPath#EMPTY} if field and ancestor are identical field
    *  paths or returns {@value null} if field and ancestor have a difference of at lease
    *  one field or its type.
    */

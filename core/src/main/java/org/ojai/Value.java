@@ -328,7 +328,7 @@ public interface Value extends JsonString {
   Map<String, Object> getMap();
 
   /**
-   * Returns the value as a <code>List&lt;Object></code>. The returned List
+   * Returns the value as a <code>List&lt;Object&gt;</code>. The returned List
    * could be mutable or immutable however, modifying the returned List does
    * not alter the content of the Value.
    *
@@ -337,25 +337,25 @@ public interface Value extends JsonString {
   List<Object> getList();
 
   /**
-   * Returns the value as an <code>Object} of the underlying type.
+   * Returns the value as an {@code Object} of the underlying type.
    * <pre>
-   * Type.NULL      => null
-   * Type.BOOLEAN   => Boolean
-   * Type.STRING    => String
-   * Type.BYTE      => Byte
-   * Type.SHORT     => Short
-   * Type.INT       => Integer
-   * Type.LONG      => Long
-   * Type.FLOAT     => Float
-   * Type.DOUBLE    => Double
-   * Type.DECIMAL   => BigDecimal
-   * Type.DATE      => org.ojai.types.ODate
-   * Type.TIME      => org.ojai.types.OTime
-   * Type.TIMESTAMP => org.ojai.types.OTimestamp
-   * Type.INTERVAL  => org.ojai.types.OInterval
-   * Type.BINARY    => java.nio.ByteBuffer
-   * Type.MAP       => Map<String, Object>
-   * Type.ARRAY     => List<Object>
+   * Type.NULL      =&gt; null
+   * Type.BOOLEAN   =&gt; Boolean
+   * Type.STRING    =&gt; String
+   * Type.BYTE      =&gt; Byte
+   * Type.SHORT     =&gt; Short
+   * Type.INT       =&gt; Integer
+   * Type.LONG      =&gt; Long
+   * Type.FLOAT     =&gt; Float
+   * Type.DOUBLE    =&gt; Double
+   * Type.DECIMAL   =&gt; BigDecimal
+   * Type.DATE      =&gt; org.ojai.types.ODate
+   * Type.TIME      =&gt; org.ojai.types.OTime
+   * Type.TIMESTAMP =&gt; org.ojai.types.OTimestamp
+   * Type.INTERVAL  =&gt; org.ojai.types.OInterval
+   * Type.BINARY    =&gt; java.nio.ByteBuffer
+   * Type.MAP       =&gt; Map&lt;String, Object&gt;
+   * Type.ARRAY     =&gt; List&lt;Object&gt;
    * </pre>
    * <br/>Modifying the returned object does not alter the content of the Value.
    */
@@ -363,7 +363,6 @@ public interface Value extends JsonString {
 
   /**
    * Returns a {@link DocumentReader} over the current document.
-   * @return
    */
   DocumentReader asReader();
 
