@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.PatternSyntaxException;
 
+import org.ojai.Buildable;
 import org.ojai.FieldPath;
 import org.ojai.Value;
 import org.ojai.Value.Type;
@@ -33,8 +34,8 @@ import org.ojai.types.OTime;
 import org.ojai.types.OTimestamp;
 
 @API.Public
-@API.NotThreadSafe
-public interface QueryCondition {
+@API.ImmutableOnBuild
+public interface QueryCondition extends Buildable {
 
   public enum Op {
     /**

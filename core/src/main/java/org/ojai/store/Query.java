@@ -15,19 +15,25 @@
  */
 package org.ojai.store;
 
+import java.util.Iterator;
+
+import org.ojai.Buildable;
 import org.ojai.Document;
+import org.ojai.DocumentListener;
+import org.ojai.DocumentStream;
 import org.ojai.FieldPath;
 import org.ojai.annotation.API;
 import org.ojai.annotation.API.NonNullable;
 import org.ojai.exceptions.OjaiException;
+import org.ojai.exceptions.QueryTimeoutException;
 
 /**
  * OJAI interface which lets user build an OJAI Query that can be executed
  * on an OJAI DocumentStore.
  */
 @API.Public
-@API.NotThreadSafe
-public interface Query {
+@API.ImmutableOnBuild
+public interface Query extends Buildable {
 
   /**
    * Set a named query option. A query option can be used to provide hints to query execution engine.
@@ -52,6 +58,19 @@ public interface Query {
    * @return {@code this} for chained invocation.
    */
   public Query setOptions(@NonNullable Document options) throws IllegalArgumentException;
+
+  /**
+   * Sets a duration after which the query will fails with {@link QueryTimeoutException}.
+   * <p/>
+   * A query timeout occurs when the specified time has passed since a query response was requested,
+   * either by calling {@link Iterator#next()} on iterator of query's {@link DocumentStream},
+   * or between successive callback of {@link DocumentListener#documentArrived(Document)}.
+   *
+   * @return {@code this} for chained invocation.
+   *
+   * @throws IllegalArgumentException if the timeout value is negative
+   */
+  public Query setTimeout(long timeoutInMilliseconds) throws IllegalArgumentException;
 
   /**
    * Set the commit-context for this query.
@@ -184,5 +203,13 @@ public interface Query {
    * @return {@code this} for chained invocation.
    */
   public Query limit(long limit) throws IllegalArgumentException;
+
+  /**
+   * Build this Query object and make it immutable.
+   *
+   * @return {@code this} for chaining.
+   */
+  @Override
+  public Query build();
 
 }
