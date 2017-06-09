@@ -48,6 +48,11 @@ public interface Driver {
   boolean equals(@Nullable Object obj);
 
   /**
+   * Returns a ValueBuilder object from this Driver.
+   */
+  public ValueBuilder getValueBuilder();
+
+  /**
    * Creates and returns a new, empty instance of an OJAI Document.
    */
   public Document newDocument();

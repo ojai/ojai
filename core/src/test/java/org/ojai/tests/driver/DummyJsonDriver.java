@@ -22,12 +22,14 @@ import org.ojai.DocumentBuilder;
 import org.ojai.exceptions.DecodingException;
 import org.ojai.exceptions.OjaiException;
 import org.ojai.json.Json;
+import org.ojai.json.impl.JsonValueBuilder;
 import org.ojai.store.Connection;
 import org.ojai.store.DocumentMutation;
 import org.ojai.store.Driver;
 import org.ojai.store.DriverManager;
 import org.ojai.store.Query;
 import org.ojai.store.QueryCondition;
+import org.ojai.store.ValueBuilder;
 
 import com.google.common.base.Preconditions;
 
@@ -114,6 +116,11 @@ public class DummyJsonDriver implements Driver {
     if (getClass() != obj.getClass())
       return false;
     return true;
+  }
+
+  @Override
+  public ValueBuilder getValueBuilder() {
+    return JsonValueBuilder.INSTANCE;
   }
 
 }

@@ -25,6 +25,7 @@ import org.ojai.Value;
 import org.ojai.Value.Type;
 import org.ojai.annotation.API;
 import org.ojai.exceptions.TypeException;
+import org.ojai.store.ValueBuilder;
 import org.ojai.types.ODate;
 import org.ojai.types.OInterval;
 import org.ojai.types.OTime;
@@ -35,7 +36,14 @@ import org.ojai.types.OTimestamp;
  * JsonValue class from different input types
  */
 @API.Internal
-public class JsonValueBuilder {
+public class JsonValueBuilder implements ValueBuilder {
+
+  public static final JsonValueBuilder INSTANCE = new JsonValueBuilder();
+
+  /**
+   * Singleton, should not be instantiated.
+   */
+  private JsonValueBuilder() {}
 
   public static JsonValue initFromNull() {
     return new JsonValue(Type.NULL);
@@ -380,6 +388,96 @@ public class JsonValueBuilder {
       list.addToList(JsonValueBuilder.initFromObject(values[i]));
     }
     return list;
+  }
+
+  @Override
+  public Value newNullValue() {
+    return initFromNull();
+  }
+
+  @Override
+  public Value newValue(boolean value) {
+    return initFrom(value);
+  }
+
+  @Override
+  public Value newValue(String value) {
+    return initFrom(value);
+  }
+
+  @Override
+  public Value newValue(byte value) {
+    return initFrom(value);
+  }
+
+  @Override
+  public Value newValue(short value) {
+    return initFrom(value);
+  }
+
+  @Override
+  public Value newValue(int value) {
+    return initFrom(value);
+  }
+
+  @Override
+  public Value newValue(long value) {
+    return initFrom(value);
+  }
+
+  @Override
+  public Value newValue(float value) {
+    return initFrom(value);
+  }
+
+  @Override
+  public Value newValue(double value) {
+    return initFrom(value);
+  }
+
+  @Override
+  public Value newValue(OTime value) {
+    return initFrom(value);
+  }
+
+  @Override
+  public Value newValue(ODate value) {
+    return initFrom(value);
+  }
+
+  @Override
+  public Value newValue(BigDecimal value) {
+    return initFrom(value);
+  }
+
+  @Override
+  public Value newValue(OTimestamp value) {
+    return initFrom(value);
+  }
+
+  @Override
+  public Value newValue(OInterval value) {
+    return initFrom(value);
+  }
+
+  @Override
+  public Value newValue(ByteBuffer value) {
+    return initFrom(value);
+  }
+
+  @Override
+  public Value newValue(byte[] value) {
+    return initFrom(ByteBuffer.wrap(value));
+  }
+
+  @Override
+  public Value newValue(List<? extends Object> list) {
+    return initFrom(list);
+  }
+
+  @Override
+  public Value newValue(Map<String, ? extends Object> map) {
+    return initFrom(map);
   }
 
 }

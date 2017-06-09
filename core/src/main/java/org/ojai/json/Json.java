@@ -37,6 +37,7 @@ import org.ojai.json.impl.JsonDocumentBuilder;
 import org.ojai.json.impl.JsonDocumentStream;
 import org.ojai.json.impl.JsonUtils;
 import org.ojai.json.impl.JsonValueBuilder;
+import org.ojai.store.ValueBuilder;
 import org.ojai.util.Documents;
 
 import com.google.common.base.Preconditions;
@@ -54,6 +55,13 @@ public final class Json {
    */
   public static Document newDocument() {
     return new JsonDocument();
+  }
+
+  /**
+   * Returns a ValueBuilder object.
+   */
+  public static ValueBuilder getValueBuilder() {
+    return JsonValueBuilder.INSTANCE;
   }
 
   /**
