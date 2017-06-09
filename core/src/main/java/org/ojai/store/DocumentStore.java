@@ -112,6 +112,180 @@ public interface DocumentStore extends AutoCloseable {
   public void clearCommitContext() throws StoreException;
 
   /**
+   * Return the Document with the given `_id` or {@code null} if the document with that `_id`
+   * doesn't exist in this DocumentStore.
+   *
+   * @param _id document id
+   *
+   * @return An OJAI Document with the specified id or {@code null} if one does not exist in
+   *         this DocumentStore.
+   *
+   * @throws StoreException
+   */
+  public Document findById(String _id) throws StoreException;
+
+  /**
+   * Return the Document with the given `_id` or {@code null} if the document with that `_id`
+   * doesn't exist in this DocumentStore.
+   *
+   * @param _id Document _id
+   *
+   * @return An OJAI Document with the specified id or {@code null} if one does not exist in
+   *         this DocumentStore.
+   *
+   * @throws StoreException
+   */
+  public Document findById(Value _id) throws StoreException;
+
+  /**
+   * Return the Document with the given `_id` or {@code null} if the document with that `_id`
+   * doesn't exist in this DocumentStore. The returned Document will include only the specified
+   * fields.
+   *
+   * @param _id Document _id
+   * @param fieldPaths Array of of field paths that should be returned
+   *
+   * @return An OJAI Document with the specified id or {@code null} if one does not exist in
+   *         this DocumentStore.
+   *
+   * @throws StoreException
+   */
+  public Document findById(String _id, String...fieldPaths) throws StoreException;
+
+  /**
+   * Return the Document with the given `_id` or {@code null} if the document with that `_id`
+   * doesn't exist in this DocumentStore. The returned Document will include only the specified
+   * fields.
+   *
+   * @param _id Document _id
+   * @param fieldPaths Array of of field paths that should be returned
+   *
+   * @return An OJAI Document with the specified id or {@code null} if one does not exist in
+   *         this DocumentStore.
+   *
+   * @throws StoreException
+   */
+  public Document findById(String _id, FieldPath...fieldPaths) throws StoreException;
+
+  /**
+   * Return the Document with the given `_id` or {@code null} if the document with that `_id`
+   * doesn't exist in this DocumentStore. The returned Document will include only the specified
+   * fields.
+   *
+   * @param _id Document _id
+   * @param fieldPaths Array of of field paths that should be returned
+   *
+   * @return An OJAI Document with the specified id or {@code null} if one does not exist in
+   *         this DocumentStore.
+   *
+   * @throws StoreException
+   */
+  public Document findById(Value _id, String...fieldPaths) throws StoreException;
+
+  /**
+   * Return the Document with the given `_id` or {@code null} if the document with that `_id`
+   * doesn't exist in this DocumentStore. The returned Document will include only the specified
+   * fields.
+   *
+   * @param _id Document _id
+   * @param fieldPaths Array of of field paths that should be returned
+   *
+   * @return An OJAI Document with the specified id or {@code null} if one does not exist in
+   *         this DocumentStore.
+   *
+   * @throws StoreException
+   */
+  public Document findById(Value _id, FieldPath...fieldPaths) throws StoreException;
+
+  /**
+   * Return the Document with the given `_id` if it matches the specified condition. If a Document
+   * with the specified `_id` does not exist in this DocumentStore or does not satisfy the specified
+   * condition, {@code null} is returned.
+   *
+   * @param _id document id
+   * @param condition query condition to test the document
+   *
+   * @return An OJAI Document with the specified _id
+   *
+   * @throws StoreException
+   */
+  public Document findById(String _id, QueryCondition condition) throws StoreException;
+
+  /**
+   * Return the Document with the given `_id` if it matches the specified condition. If a Document
+   * with the specified `_id` does not exist in this DocumentStore or does not satisfy the specified
+   * condition, {@code null} is returned.
+   *
+   * @param _id document id
+   * @param condition query condition to test the document
+   *
+   * @return An OJAI Document with the specified _id
+   *
+   * @throws StoreException
+   */
+  public Document findById(Value _id, QueryCondition condition) throws StoreException;
+
+  /**
+   * Return the Document with the given `_id` if it matches the specified condition. If a Document
+   * with the specified `_id` does not exist in this DocumentStore or does not satisfy the specified
+   * condition, {@code null} is returned. The returned Document will include only the specified fields.
+   *
+   * @param _id document id
+   * @param fieldPaths list of fields that should be returned in the read document
+   * @param condition query condition to test the document
+   *
+   * @return An OJAI Document with the specified _id
+   *
+   * @throws StoreException
+   */
+  public Document findById(String _id, QueryCondition condition, String...fieldPaths) throws StoreException;
+
+  /**
+   * Return the Document with the given `_id` if it matches the specified condition. If a Document
+   * with the specified `_id` does not exist in this DocumentStore or does not satisfy the specified
+   * condition, {@code null} is returned. The returned Document will include only the specified fields.
+   *
+   * @param _id document id
+   * @param fieldPaths list of fields that should be returned in the read document
+   * @param condition query condition to test the document
+   *
+   * @return An OJAI Document with the specified _id
+   *
+   * @throws StoreException
+   */
+  public Document findById(String _id, QueryCondition condition, FieldPath...fieldPaths) throws StoreException;
+
+  /**
+   * Return the Document with the given `_id` if it matches the specified condition. If a Document
+   * with the specified `_id` does not exist in this DocumentStore or does not satisfy the specified
+   * condition, {@code null} is returned. The returned Document will include only the specified fields.
+   *
+   * @param _id document id
+   * @param fieldPaths list of fields that should be returned in the read document
+   * @param condition query condition to test the document
+   *
+   * @return An OJAI Document with the specified _id
+   *
+   * @throws StoreException
+   */
+  public Document findById(Value _id, QueryCondition condition, String...fieldPaths) throws StoreException;
+
+  /**
+   * Return the Document with the given `_id` if it matches the specified condition. If a Document
+   * with the specified `_id` does not exist in this DocumentStore or does not satisfy the specified
+   * condition, {@code null} is returned. The returned Document will include only the specified fields.
+   *
+   * @param _id document id
+   * @param fieldPaths list of fields that should be returned in the read document
+   * @param condition query condition to test the document
+   *
+   * @return An OJAI Document with the specified _id
+   *
+   * @throws StoreException
+   */
+  public Document findById(Value _id, QueryCondition condition, FieldPath...fieldPaths) throws StoreException;
+
+  /**
    * <p>Executes a query to return all Documents in the DocumentStore.
    * <p>The returned DocumentStream must be closed after retrieving the documents.
    *
@@ -170,11 +344,11 @@ public interface DocumentStore extends AutoCloseable {
    * Returns a DocumentStream with all the documents in the DocumentStore that
    * satisfies the QueryCondition.
    *
-   * @param c The QueryCondition to match the documents
+   * @param condition The QueryCondition to match the documents
    * @return A DocumentStream that can be used to retrieve the documents in the result.
    *
    */
-  public DocumentStream find(@NonNullable QueryCondition c) throws StoreException;
+  public DocumentStream find(@NonNullable QueryCondition condition) throws StoreException;
 
   /**
    * <p>Execute a query on the DocumentStore and return a DocumentStream of the Document
@@ -182,13 +356,13 @@ public interface DocumentStore extends AutoCloseable {
    * <p>Each Document will contain only those field paths that are specified in the
    * argument. If no fields are specified then it returns a full document.
    *
-   * @param c The QueryCondition to match the documents
+   * @param condition The QueryCondition to match the documents
    * @param fieldPaths list of fields that should be returned in the read document
    *
    * @return A DocumentStream that can be used to retrieve the documents in the result.
    * @throws StoreException
    */
-  public DocumentStream find(@NonNullable QueryCondition c, @NonNullable String...fieldPaths)
+  public DocumentStream find(@NonNullable QueryCondition condition, @NonNullable String...fieldPaths)
       throws StoreException;
 
   /**
@@ -197,13 +371,13 @@ public interface DocumentStore extends AutoCloseable {
    * <p>Each Document will contain only those field paths that are specified in the
    * argument. If no fields are specified then it returns a full document.
    *
-   * @param c The QueryCondition to match the documents
+   * @param condition The QueryCondition to match the documents
    * @param fieldPaths list of fields that should be returned in the read document
    *
    * @return A DocumentStream that can be used to retrieve the documents in the result.
    * @throws StoreException
    */
-  public DocumentStream find(@NonNullable QueryCondition c, @NonNullable FieldPath... fieldPaths)
+  public DocumentStream find(@NonNullable QueryCondition condition, @NonNullable FieldPath... fieldPaths)
       throws StoreException;
 
   /**
