@@ -233,6 +233,21 @@ public interface DocumentStore extends AutoCloseable {
    * @param _id value to be used as the _id for this document
    * @throws StoreException
    */
+  public void insertOrReplace(@NonNullable String _id, @NonNullable Document r) throws StoreException;
+
+  /**
+   * Inserts or replace a new document in this DocumentStore with the given _id.
+   * <br/><br/>
+   * The specified document should either not contain an {@code "_id"} field or
+   * its value should be same as the specified _id or the operation will fail.
+   * <br/><br/>
+   * If the document with the given _id exists in the DocumentStore then that
+   * document will be replaced by the specified document.
+   *
+   * @param doc The Document to be inserted or replaced in the DocumentStore.
+   * @param _id value to be used as the _id for this document
+   * @throws StoreException
+   */
   public void insertOrReplace(@NonNullable Value _id, @NonNullable Document doc) throws StoreException;
 
   /**
@@ -349,7 +364,20 @@ public interface DocumentStore extends AutoCloseable {
    * @param m a mutation object specifying the mutation operations on the document
    * @throws StoreException
    */
-  public void update(@NonNullable Value _id, @NonNullable DocumentMutation m) throws StoreException;
+  public void update(@NonNullable String _id, @NonNullable DocumentMutation mutation) throws StoreException;
+
+  /**
+   * Applies a mutation on the document identified by the document id.<br/><br/>
+   * All updates specified by the mutation object should be applied atomically,
+   * and consistently meaning either all of the updates in mutation are applied
+   * or none of them is applied and a partial update should not be visible to an
+   * observer.
+   *
+   * @param _id document id
+   * @param m a mutation object specifying the mutation operations on the document
+   * @throws StoreException
+   */
+  public void update(@NonNullable Value _id, @NonNullable DocumentMutation mutation) throws StoreException;
 
   /**
    * Deletes a document with the given id. This operation is successful even
@@ -364,6 +392,7 @@ public interface DocumentStore extends AutoCloseable {
    *                   passed in and a document doesn't have an "_id" field
    * @throws StoreException
    */
+  public void delete(@NonNullable String _id) throws StoreException;
   public void delete(@NonNullable Value _id) throws StoreException;
   public void delete(@NonNullable Document doc) throws StoreException;
 
@@ -406,8 +435,6 @@ public interface DocumentStore extends AutoCloseable {
    * an error will be thrown. When reading the document back from the DB, the
    * key will be returned back as usual as the "_id" field.
    *
-   * If the passed in id is not a direct byte buffer, there will be a copy to one.
-   *
    * Note that an insertOrReplace() operation would be more efficient than an
    * insert() call.
    *
@@ -420,6 +447,7 @@ public interface DocumentStore extends AutoCloseable {
    * @throws OpNotPermittedException when the server returned EPERM
    * @throws DocumentExistsException when a document with id already exists in DocumentStore
    */
+  public void insert(@NonNullable String _id, @NonNullable Document doc) throws StoreException;
   public void insert(@NonNullable Value _id, @NonNullable Document doc) throws StoreException;
 
   public void insert(@NonNullable Document doc) throws StoreException;
@@ -472,8 +500,6 @@ public interface DocumentStore extends AutoCloseable {
    * an error will be thrown. When reading the document back from the DB, the
    * key would be returned back as usual as "_id" field.
    *
-   * If the passed in id is not a direct byte buffer, there will be a copy to one.
-   *
    * Note that an insertOrReplace() operation would be more efficient than an
    * replace() call.
 
@@ -486,6 +512,7 @@ public interface DocumentStore extends AutoCloseable {
    * @throws OpNotPermittedException when the server returns EPERM
    * @throws DocumentNotFoundException when a document with the id does not exist in DocumentStore
    */
+  public void replace(@NonNullable String _id, @NonNullable Document doc) throws StoreException;
   public void replace(@NonNullable Value _id, @NonNullable Document doc) throws StoreException;
 
   public void replace(@NonNullable Document doc) throws StoreException;
@@ -551,12 +578,32 @@ public interface DocumentStore extends AutoCloseable {
    * If the type to which the increment is applied is a byte, short, or int,
    * then it needs to use long as the operation.
    *
-   * If the passed in id is not a direct byte buffer, there will be a copy to one.
    * @param _id document id
    * @param field the field name in dot separated notation
    * @param inc increment to apply to a field. Can be positive or negative
    * @throws StoreException
    */
+  public void increment(@NonNullable String _id,
+      @NonNullable String field, byte inc) throws StoreException;
+
+  public void increment(@NonNullable String _id,
+      @NonNullable String field, short inc) throws StoreException;
+
+  public void increment(@NonNullable String _id,
+      @NonNullable String field, int inc) throws StoreException;
+
+  public void increment(@NonNullable String _id,
+      @NonNullable String field, long inc) throws StoreException;
+
+  public void increment(@NonNullable String _id,
+      @NonNullable String field, float inc) throws StoreException;
+
+  public void increment(@NonNullable String _id,
+      @NonNullable String field, double inc) throws StoreException;
+
+  public void increment(@NonNullable String _id,
+      @NonNullable String field, @NonNullable BigDecimal inc) throws StoreException;
+
   public void increment(@NonNullable Value _id,
       @NonNullable String field, byte inc) throws StoreException;
 
@@ -585,15 +632,16 @@ public interface DocumentStore extends AutoCloseable {
    * If an id doesn't exist, the function returns false (no exception is thrown).
    * If the mutation operation fails, it throws exception.
    *
-   * If the passed in id is not a direct byte buffer, there will be a copy to one.
    * @param _id document id
    * @param condition the condition to evaluate on the document
    * @param m mutation to apply on the document
    * @return True if the condition is true for the document; otherwise, false
    * @throws StoreException if the condition passes but the mutate fails
    */
-  public boolean checkAndMutate(@NonNullable Value _id,
-      @NonNullable QueryCondition condition, @NonNullable DocumentMutation m) throws StoreException;
+  public boolean checkAndMutate(@NonNullable String _id,
+      @NonNullable QueryCondition condition, @NonNullable DocumentMutation mutation) throws StoreException;
+  public boolean checkAndMutate(@NonNullable Value _id, @NonNullable QueryCondition condition,
+      @NonNullable DocumentMutation mutation) throws StoreException;
 
   /**
    * Atomically evaluates the condition on given document and if the
@@ -602,13 +650,14 @@ public interface DocumentStore extends AutoCloseable {
    * If id doesnt exist, returns false (no exception is thrown).
    * If deletion operation fails, it throws exception.
    *
-   * If the passed in id is not a direct byte buffer, there will be a copy to one.
    * @param _id document id
    * @param condition condition to evaluate on the document
    * @return True if the condition is valid for the document, otherwise false.
    * @throws StoreException if the condition passes but the delete fails
    */
-  public boolean checkAndDelete(@NonNullable Value _id, @NonNullable 
+  public boolean checkAndDelete(@NonNullable String _id, @NonNullable
+      QueryCondition condition) throws StoreException;
+  public boolean checkAndDelete(@NonNullable Value _id, @NonNullable
       QueryCondition condition) throws StoreException;
 
   /**
@@ -619,13 +668,14 @@ public interface DocumentStore extends AutoCloseable {
    * If the id doesn't exist, the function returns false (no exception is thrown).
    * If the replace operation fails, it throws an exception.
    *
-   * If the passed in id is not a direct byte buffer, there will be a copy to one.
    * @param _id document id
    * @param condition the condition to evaluate on the document
    * @param doc document to replace
    * @return True if the condition is true for the document otherwise false
    * @throws StoreException if the condition passes but the replace fails
    */
+  public boolean checkAndReplace(@NonNullable String _id,
+      @NonNullable QueryCondition condition, @NonNullable Document doc) throws StoreException;
   public boolean checkAndReplace(@NonNullable Value _id,
       @NonNullable QueryCondition condition, @NonNullable Document doc) throws StoreException;
 
