@@ -77,6 +77,8 @@
   </distributionManagement>
 
   <properties>
+    <ojai.version>2.0-SNAPSHOT</ojai.version>
+
     <distMgmtSnapshotsId>ossrh</distMgmtSnapshotsId>
     <distMgmtSnapshotsName>Sonatype Snapshot Repository</distMgmtSnapshotsName>
     <distMgmtSnapshotsUrl>https://oss.sonatype.org/content/repositories/snapshots</distMgmtSnapshotsUrl>
@@ -259,7 +261,7 @@
       <dependency>
         <groupId>org.ojai</groupId>
         <artifactId>ojai</artifactId>
-        <version>${project.version}</version>
+        <version>${ojai.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.hadoop</groupId>

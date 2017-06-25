@@ -17,6 +17,7 @@ package org.ojai.store;
 
 import java.util.ServiceLoader;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.regex.Pattern;
 
 import org.ojai.Document;
 import org.ojai.annotation.API;
@@ -36,7 +37,10 @@ import com.google.common.base.Preconditions;
 @API.Factory
 public final class DriverManager {
 
-  public static final String OJAI_PROTOCOL_NAME = "ojai:";
+  /**
+   * <p>Pattern for OJAI Connection URLs.
+   */
+  public static final Pattern OJAI_PROTOCOL_PATTERN = Pattern.compile("ojai:[\\w\\-]+:.*");
 
   /**
    * Discover and load the OJAI Driver implementation which supported the
@@ -49,8 +53,7 @@ public final class DriverManager {
    * @throws OjaiException if no registered driver for found for the specified URL.
    */
   public static Driver getDriver(@NonNullable String url) throws OjaiException {
-    Preconditions.checkNotNull(url);
-    Preconditions.checkArgument(url.startsWith(OJAI_PROTOCOL_NAME));
+    checkUrl(url);
     for (Driver driver : ojaiDrivers) {
       if (driver.accepts(url)) {
         return driver;
@@ -87,8 +90,7 @@ public final class DriverManager {
    * @throws StoreException if connection to the data-source failed.
    */
   public static Connection getConnection(@NonNullable String url, @NonNullable Document options) throws OjaiException {
-    Preconditions.checkNotNull(url);
-    Preconditions.checkArgument(url.startsWith(OJAI_PROTOCOL_NAME));
+    checkUrl(url);
     for (Driver driver : ojaiDrivers) {
       if (driver.accepts(url)) {
         logger.debug("URL '{}' was accepted by driver '{}'.", url, driver.getName());
@@ -122,6 +124,14 @@ public final class DriverManager {
     for (Driver driver : loadedDrivers) {
       logger.debug("Loaded driver '{}'.", driver.getClass().getName());
     }
+  }
+
+  private static void checkUrl(String url) {
+    Preconditions.checkNotNull(url);    
+    Preconditions.checkArgument(OJAI_PROTOCOL_PATTERN.matcher(url).matches(),
+        "Invalid OJAI connection URL `%s`. "
+        + "A valid OJAI url must be of the form \"ojai:<provider_name>:[optional_connection_parameters]\"",
+        url);
   }
 
 }
