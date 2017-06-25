@@ -27,6 +27,7 @@ import org.ojai.store.DocumentStore;
 import org.ojai.store.Driver;
 import org.ojai.store.Query;
 import org.ojai.store.QueryCondition;
+import org.ojai.store.ValueBuilder;
 
 import com.google.common.base.Preconditions;
 
@@ -51,6 +52,11 @@ public class DummyJsonConnection implements Connection {
   @Override
   public DocumentStore getStore(String storeName, Document options) throws OjaiException {
     throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public ValueBuilder getValueBuilder() {
+    return driver.getValueBuilder();
   }
 
   @Override

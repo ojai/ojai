@@ -50,6 +50,12 @@ public interface Connection extends Closeable {
   public DocumentStore getStore(@NonNullable String storeName, @NonNullable Document options) throws OjaiException;
 
   /**
+   * Returns a ValueBuilder object from this Connection.
+   * This is an alias to getDriver().getValueBuilder().
+   */
+  public ValueBuilder getValueBuilder();
+
+  /**
    * <p>Creates and returns a new, empty instance of an OJAI Document.</p>
    * This is an alias to getDriver().newDocument().
    */
