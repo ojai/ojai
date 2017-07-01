@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ojai.store.cdps;
+package org.ojai.store.cdc;
 
 import org.ojai.annotation.API;
 
