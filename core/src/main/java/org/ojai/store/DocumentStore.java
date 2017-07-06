@@ -105,6 +105,10 @@ public interface DocumentStore extends AutoCloseable {
 
   /**
    * Stop the commit tracking and clear any state on this {@link DocumentStore} instance.
+   * <p/>
+   * This API should be called to stop tracking the commit context in case where
+   * {@link #beginCommitContext()} was previously called but a commit context is not needed
+   * anymore, for example in case of an error in any of the mutation.
    *
    * @throws IllegalStateException if a corresponding {@link #beginCommitContext()} was not
    *         called before calling this method.
