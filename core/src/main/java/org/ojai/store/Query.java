@@ -73,21 +73,21 @@ public interface Query extends Buildable {
   public Query setTimeout(long timeoutInMilliseconds) throws IllegalArgumentException;
 
   /**
-   * Set the commit-context for this query.
+   * Set the writes-context for this query.
    * <p/>
-   * A commit-context allows this query to "see" all the writes that happened before
-   * the commit-context was retrieved from a {@link DocumentStore}.
+   * A writes-context allows this query to "see" all the writes that happened inside
+   * the writes-context of a {@link DocumentStore}.
    *
-   * @see DocumentStore#beginCommitContext()
-   * @see DocumentStore#beginCommitContext(String)
-   * @see DocumentStore#commitAndGetContext(String)
+   * @see DocumentStore#beginTrackingWrites()
+   * @see DocumentStore#beginTrackingWrites(String)
+   * @see DocumentStore#endTrackingWrites()
    *
    * @throws NullPointerException if the commit context is {@code null}.
-   * @throws IllegalArgumentException if the specified commit-context can not be parsed.
+   * @throws IllegalArgumentException if the specified writes-context can not be parsed.
    *
    * @return {@code this} for chained invocation.
    */
-  public Query setCommitContext(@NonNullable String commitContext) throws IllegalArgumentException;
+  public Query waitForTrackedWrites(@NonNullable String writesContext) throws IllegalArgumentException;
 
   /**
    * Add the list of field paths to the list of projected fields.

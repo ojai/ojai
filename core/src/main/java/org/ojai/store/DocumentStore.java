@@ -47,73 +47,71 @@ public interface DocumentStore extends AutoCloseable {
   public void flush() throws StoreException;
 
   /**
-   * Begin tracking a commit-context over the ensuing write operations performed through
-   * this instance of {@link DocumentStore}.
+   * Begin tracking the write operations performed through this instance of {@link DocumentStore}.
    *
-   * @see #commitAndGetContext()
-   * @see #clearCommitContext()
-   * @see Query#setCommitContext(String)
+   * @see #endTrackingWrites()
+   * @see #clearTrackedWrites()
+   * @see Query#waitForTrackedWrites(String)
    *
-   * @throws IllegalStateException if a beginCommitContext() was already called
-   *         and a corresponding commitAndGetContext()/clearCommitContext() wasn't.
+   * @throws IllegalStateException if a beginTrackingWrites() was already called
+   *         and a corresponding endTrackingWrites()/clearTrackedWrites() wasn't.
    */
-  public void beginCommitContext() throws StoreException;
+  public void beginTrackingWrites() throws StoreException;
 
   /**
-   * Begin tracking a commit-context over the ensuing write operations performed through
-   * this instance of {@link DocumentStore}.
+   * Begin tracking the write operations performed through this instance of {@link DocumentStore}.
    *
-   * @param previousContext a previous commit-context that was retrieved from this document-store,
-   *        including through other DocumentStore instances. The tracking begins by using this
-   *        context as the base state.
+   * @param previousWritesContext previously tracked writes that were retrieved from this
+   *        {@link DocumentStore}, or from other {@link DocumentStore} instances. The tracking
+   *        begins by using this context as the base state.
    *
-   * @see #commitAndGetContext()
-   * @see #clearCommitContext()
-   * @see Query#setCommitContext(String)
+   * @see #endTrackingWrites()
+   * @see #clearTrackedWrites()
+   * @see Query#waitForTrackedWrites(String)
    *
-   * @throws NullPointerException if the previous commit context is {@code null}
-   * @throws IllegalStateException if a beginCommitContext() was already called
-   *         and a corresponding commitAndGetContext()/clearCommitContext() wasn't.
-   * @throws IllegalArgumentException if the specified commit-context can not be parsed
-   *         or was not obtained from this document-store.
+   * @throws NullPointerException if previousWrites is {@code null}
+   * @throws IllegalStateException if a beginTrackingWrites() was already called
+   *         and a corresponding endTrackingWrites()/clearTrackedWrites() wasn't.
+   * @throws IllegalArgumentException if the specified argument can not be parsed.
    */
-  public void beginCommitContext(@NonNullable String previousContext) throws StoreException;
+  public void beginTrackingWrites(@NonNullable String previousWritesContext) throws StoreException;
 
   /**
-   * Flushes any buffered writes operations for this DocumentStore and returns a commit-context
-   * which can be used to ensure that such writes are visible to ensuing queries.
+   * Flushes any buffered writes operations for this {@link DocumentStore} and returns a
+   * writesContext which can be used to ensure that such writes are visible to ensuing queries.
    * <p/>
-   * The commit-context is cleared and tracking is stopped.
+   * The write-context is cleared and tracking is stopped.
    * <p/>
-   * This call does not isolates the writes originating from this instance of DocumentStore
+   * This call does not isolate the writes originating from this instance of DocumentStore
    * from other instances and as a side-effect other writes issued to the same document-store
    * through other DocumentStore instances could get flushed.
    *
-   * @see #beginCommitContext()
-   * @see #clearCommitContext()
-   * @see Query#setCommitContext(String)
+   * @see #beginTrackingWrites()
+   * @see #clearTrackedWrites()
+   * @see Query#waitForTrackedWrites(String)
    *
-   * @return An encoded string representing the commit-context of all writes issued,
-   *         until now, through this instance of {@link DocumentStore}.
+   * @return An encoded string representing the write-context of all writes issued,
+   *         since {@link #beginTrackingWrites()} until now, through this instance of
+   *         {@link DocumentStore}.
    *
    * @throws StoreException if the flush failed or if the flush of any
    *         buffered operation resulted in an error.
-   * @throws IllegalStateException if a corresponding {@link #beginCommitContext()} was not
+   * @throws IllegalStateException if a corresponding {@link #beginTrackingWrites()} was not
    *         called before calling this method.
    */
-  public String commitAndGetContext() throws StoreException;
+  public String endTrackingWrites() throws StoreException;
 
   /**
-   * Stop the commit tracking and clear any state on this {@link DocumentStore} instance.
+   * Stop the writes tracking and clear any state on this {@link DocumentStore} instance.
    * <p/>
-   * This API should be called to stop tracking the commit context in case where
-   * {@link #beginCommitContext()} was previously called but a commit context is not needed
+   * This API should be called to stop tracking the writes-context in case where
+   * {@link #beginTrackingWrites()} was previously called but a commit context is not needed
    * anymore, for example in case of an error in any of the mutation.
    *
-   * @throws IllegalStateException if a corresponding {@link #beginCommitContext()} was not
+   * @throws IllegalStateException if a corresponding {@link #beginTrackingWrites()} was not
    *         called before calling this method.
    */
-  public void clearCommitContext() throws StoreException;
+  public void clearTrackedWrites() throws StoreException;
 
   /**
    * Return the Document with the given `_id` or {@code null} if the document with that `_id`
