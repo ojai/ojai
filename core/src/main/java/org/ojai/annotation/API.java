@@ -108,7 +108,7 @@ public class API {
   @Retention(RetentionPolicy.CLASS)
   @Target(ElementType.TYPE)
   public @interface Immutable {};
-  
+
   /**
    * Annotate a type to be immutable after its {@code build()} method is called.
    *
@@ -127,5 +127,15 @@ public class API {
   @Retention(RetentionPolicy.CLASS)
   @Target(ElementType.TYPE)
   public @interface Factory {};
+
+  /**
+   * Annotate a class or method as an evolving API.
+   * <p>
+   * Any class or method tagged with this annotation is considered experimental and
+   * as such their behavior can change in future.
+   */
+  @Documented
+  @Retention(RetentionPolicy.CLASS)
+  public @interface Evolving {};
 
 }
