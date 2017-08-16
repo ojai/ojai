@@ -84,10 +84,20 @@ public class MapEncoder {
     }
   }
 
+  private static int addToArrayList(List<Object> list, Object elem, int lastIndex, int currentIndex) {
+    int nullCount = currentIndex - lastIndex;
+    for (int i = 1; i <= nullCount; i++) {
+      list.add(null);
+    }
+    list.set(currentIndex, elem);
+    return currentIndex;
+  }
+
   private static List<Object> encodeArray(DocumentReader dr)
       throws EncodingException, TypeException {
     List<Object> objList = new ArrayList<Object>();
     EventType event = null;
+    int lastIndex = -1;
     try {
       event = dr.next();
     } catch (DecodingException de) {
@@ -102,13 +112,13 @@ public class MapEncoder {
       case END_ARRAY:
         throw new EncodingException("Unexpected event: " + event);
       case START_MAP:
-        objList.add(dr.getArrayIndex(), encodeMap(dr));
+        lastIndex = addToArrayList(objList, encodeMap(dr), lastIndex, dr.getArrayIndex());
         break;
       case START_ARRAY:
-        objList.add(dr.getArrayIndex(), encodeArray(dr));
+        lastIndex = addToArrayList(objList, encodeArray(dr), lastIndex, dr.getArrayIndex());
         break;
       default:
-        objList.add(dr.getArrayIndex(), encodeValue(dr, event));
+        lastIndex = addToArrayList(objList, encodeValue(dr, event), lastIndex, dr.getArrayIndex());
         break;
       }
       try {
