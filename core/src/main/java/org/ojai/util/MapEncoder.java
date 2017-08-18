@@ -109,8 +109,9 @@ public class MapEncoder {
       }
       switch (event) {
       case END_MAP:
-      case END_ARRAY:
         throw new EncodingException("Unexpected event: " + event);
+      case END_ARRAY:
+        return objList;
       case START_MAP:
         lastIndex = addToArrayList(objList, encodeMap(dr), lastIndex, dr.getArrayIndex());
         break;
