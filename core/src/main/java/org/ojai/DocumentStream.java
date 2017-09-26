@@ -41,7 +41,7 @@ public interface DocumentStream extends AutoCloseable, Iterable<Document> {
    * @throws StreamInUseException if an iterator is already retrieved from this
    *         {@code DocumentStream}.
    */
-  public void streamTo(@NonNullable DocumentListener listener);
+   void streamTo(@NonNullable DocumentListener listener);
 
   /**
    * Returns an iterator over a set of {@code Document}.
@@ -61,4 +61,10 @@ public interface DocumentStream extends AutoCloseable, Iterable<Document> {
    * Overridden to remove checked exception
    */
   void close() throws OjaiException;
+
+  /**
+   * Returns a query plan that was used for this DocumentStream
+   */
+  @API.Evolving
+  Document getQueryPlan();
 }

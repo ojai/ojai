@@ -173,4 +173,8 @@ public class JsonDocumentStream implements DocumentStream {
     }
   }
 
+  @Override
+  public Document getQueryPlan() {
+    return new JsonDocument();
+  }
 }
