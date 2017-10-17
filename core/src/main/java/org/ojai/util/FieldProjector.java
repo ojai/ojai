@@ -40,23 +40,24 @@ import com.google.common.base.Preconditions;
  * emitted to the applications.
  * <p/>
  * A single instance of ProjectionTree can not be, concurrently, used with multiple {@link DocumentReader}s.
+ * Use {@link #cloneWithSharedProjectionTree()} in such cases.
  */
 @API.Public
 public final class FieldProjector implements JsonString {
 
   private static final FieldSegment DOCUMENT_ROOT = new NameSegment(DOCUMENT_KEY, null, false);
 
-  private final ProjectionTree rootSegment = new ProjectionTree(DOCUMENT_ROOT, null);
+  private final ProjectionTree rootSegment;
 
   private DocumentReader reader;
 
-  private ProjectionTree currentSegment = rootSegment;
+  private ProjectionTree currentSegment;
 
-  private ProjectionTree lastSegment = rootSegment;
+  private ProjectionTree lastSegment;
 
-  private MutableFieldSegment readerFieldSegment = new MutableFieldSegment();
+  private MutableFieldSegment readerFieldSegment;
 
-  private int level = 0;
+  private int level;
 
   /**
    * This flag indicates that the current Field should be projected because its FieldPath
@@ -84,11 +85,39 @@ public final class FieldProjector implements JsonString {
   }
 
   public FieldProjector(@NonNullable Collection<FieldPath> includedPaths) {
-    includeField = false;
-    includeAllChildren = false;
+    rootSegment = new ProjectionTree(DOCUMENT_ROOT, null);
     for (FieldPath includedPath : Preconditions.checkNotNull(includedPaths)) {
       rootSegment.addOrGetChild(includedPath.getRootSegment());
     }
+    finishConstruction();
+  }
+
+  /**
+   * Creates a lightweight clone of this FieldProjector with shared ProjectionTree.
+   */
+  public FieldProjector cloneWithSharedProjectionTree() {
+    return new FieldProjector(rootSegment);
+  }
+
+  private FieldProjector(final ProjectionTree rootSegment) {
+    this.rootSegment = rootSegment;
+    finishConstruction();
+  }
+
+  /**
+   * Sets/resets the state variable to their state at the construction time.
+   */
+  private void finishConstruction() {
+    if (rootSegment == null) {
+      throw new AssertionError("`rootSegment` needs to be set before calling this method");
+    }
+    level = 0;
+    reader = null;
+    currentSegment = rootSegment;
+    lastSegment = rootSegment;
+    includeField = false;
+    includeAllChildren = false;
+    readerFieldSegment = new MutableFieldSegment();
   }
 
   boolean shouldEmitEvent() {
