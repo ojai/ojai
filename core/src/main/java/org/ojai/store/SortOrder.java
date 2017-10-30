@@ -16,7 +16,7 @@
 package org.ojai.store;
 
 /**
- * Enum specifying the sort ordering.
+ * Enumeration specifying the sort ordering.
  */
 public enum SortOrder {
   /**

@@ -42,28 +42,28 @@ public interface DocumentStore extends AutoCloseable {
    * Flushes any buffered writes operations for this DocumentStore.
    *
    * @throws StoreException if the flush failed or if the flush of any
-   *         buffered operation resulted in an error.
+   *         buffered operation resulted in an error
    */
   public void flush() throws StoreException;
 
   /**
-   * Begin tracking the write operations performed through this instance of {@link DocumentStore}.
+   * Begins tracking the write operations performed through this instance of {@link DocumentStore}.
    *
    * @see #endTrackingWrites()
    * @see #clearTrackedWrites()
    * @see Query#waitForTrackedWrites(String)
    *
    * @throws IllegalStateException if a beginTrackingWrites() was already called
-   *         and a corresponding endTrackingWrites()/clearTrackedWrites() wasn't.
+   *         and a corresponding endTrackingWrites()/clearTrackedWrites() wasn't
    */
   public void beginTrackingWrites() throws StoreException;
 
   /**
-   * Begin tracking the write operations performed through this instance of {@link DocumentStore}.
+   * Begins tracking the write operations performed through this instance of {@link DocumentStore}.
    *
    * @param previousWritesContext previously tracked writes that were retrieved from this
    *        {@link DocumentStore}, or from other {@link DocumentStore} instances. The tracking
-   *        begins by using this context as the base state.
+   *        begins by using this context as the base state
    *
    * @see #endTrackingWrites()
    * @see #clearTrackedWrites()
@@ -71,8 +71,8 @@ public interface DocumentStore extends AutoCloseable {
    *
    * @throws NullPointerException if previousWrites is {@code null}
    * @throws IllegalStateException if a beginTrackingWrites() was already called
-   *         and a corresponding endTrackingWrites()/clearTrackedWrites() wasn't.
-   * @throws IllegalArgumentException if the specified argument can not be parsed.
+   *         and a corresponding endTrackingWrites()/clearTrackedWrites() wasn't
+   * @throws IllegalArgumentException if the specified argument can not be parsed
    */
   public void beginTrackingWrites(@NonNullable String previousWritesContext) throws StoreException;
 
@@ -90,145 +90,145 @@ public interface DocumentStore extends AutoCloseable {
    * @see #clearTrackedWrites()
    * @see Query#waitForTrackedWrites(String)
    *
-   * @return An encoded string representing the write-context of all writes issued,
+   * @return an encoded string representing the write-context of all writes issued,
    *         since {@link #beginTrackingWrites()} until now, through this instance of
-   *         {@link DocumentStore}.
+   *         {@link DocumentStore}
    *
    * @throws StoreException if the flush failed or if the flush of any
    *         buffered operation resulted in an error.
    * @throws IllegalStateException if a corresponding {@link #beginTrackingWrites()} was not
-   *         called before calling this method.
+   *         called before calling this method
    */
   public String endTrackingWrites() throws StoreException;
 
   /**
-   * Stop the writes tracking and clear any state on this {@link DocumentStore} instance.
+   * Stops the writes tracking and clears any state on this {@link DocumentStore} instance.
    * <p/>
    * This API should be called to stop tracking the writes-context in case where
    * {@link #beginTrackingWrites()} was previously called but a commit context is not needed
    * anymore, for example in case of an error in any of the mutation.
    *
    * @throws IllegalStateException if a corresponding {@link #beginTrackingWrites()} was not
-   *         called before calling this method.
+   *         called before calling this method
    */
   public void clearTrackedWrites() throws StoreException;
 
   /**
-   * Return the Document with the given `_id` or {@code null} if the document with that `_id`
+   * Returns the Document with the given `_id` or {@code null} if the document with that `_id`
    * doesn't exist in this DocumentStore.
    *
    * @param _id document id
    *
-   * @return An OJAI Document with the specified id or {@code null} if one does not exist in
-   *         this DocumentStore.
+   * @return an OJAI Document with the specified id or {@code null} if one does not exist in
+   *         this DocumentStore
    *
    * @throws StoreException
    */
   public Document findById(String _id) throws StoreException;
 
   /**
-   * Return the Document with the given `_id` or {@code null} if the document with that `_id`
+   * Returns the Document with the given `_id` or {@code null} if the document with that `_id`
    * doesn't exist in this DocumentStore.
    *
    * @param _id Document _id
    *
-   * @return An OJAI Document with the specified id or {@code null} if one does not exist in
-   *         this DocumentStore.
+   * @return an OJAI Document with the specified id or {@code null} if one does not exist in
+   *         this DocumentStore
    *
    * @throws StoreException
    */
   public Document findById(Value _id) throws StoreException;
 
   /**
-   * Return the Document with the given `_id` or {@code null} if the document with that `_id`
+   * Returns the Document with the given `_id` or {@code null} if the document with that `_id`
    * doesn't exist in this DocumentStore. The returned Document will include only the specified
    * fields.
    *
    * @param _id Document _id
-   * @param fieldPaths Array of of field paths that should be returned
+   * @param fieldPaths Array of field paths that should be returned
    *
-   * @return An OJAI Document with the specified id or {@code null} if one does not exist in
-   *         this DocumentStore.
+   * @return an OJAI Document with the specified id or {@code null} if one does not exist in
+   *         this DocumentStore
    *
    * @throws StoreException
    */
   public Document findById(String _id, String...fieldPaths) throws StoreException;
 
   /**
-   * Return the Document with the given `_id` or {@code null} if the document with that `_id`
+   * Returns the Document with the given `_id` or {@code null} if the document with that `_id`
    * doesn't exist in this DocumentStore. The returned Document will include only the specified
    * fields.
    *
    * @param _id Document _id
-   * @param fieldPaths Array of of field paths that should be returned
+   * @param fieldPaths Array of field paths that should be returned
    *
-   * @return An OJAI Document with the specified id or {@code null} if one does not exist in
-   *         this DocumentStore.
+   * @return an OJAI Document with the specified id or {@code null} if one does not exist in
+   *         this DocumentStore
    *
    * @throws StoreException
    */
   public Document findById(String _id, FieldPath...fieldPaths) throws StoreException;
 
   /**
-   * Return the Document with the given `_id` or {@code null} if the document with that `_id`
+   * Returns the Document with the given `_id` or {@code null} if the document with that `_id`
    * doesn't exist in this DocumentStore. The returned Document will include only the specified
    * fields.
    *
    * @param _id Document _id
    * @param fieldPaths Array of of field paths that should be returned
    *
-   * @return An OJAI Document with the specified id or {@code null} if one does not exist in
-   *         this DocumentStore.
+   * @return an OJAI Document with the specified id or {@code null} if one does not exist in
+   *         this DocumentStore
    *
    * @throws StoreException
    */
   public Document findById(Value _id, String...fieldPaths) throws StoreException;
 
   /**
-   * Return the Document with the given `_id` or {@code null} if the document with that `_id`
+   * Returns the Document with the given `_id` or {@code null} if the document with that `_id`
    * doesn't exist in this DocumentStore. The returned Document will include only the specified
    * fields.
    *
    * @param _id Document _id
    * @param fieldPaths Array of of field paths that should be returned
    *
-   * @return An OJAI Document with the specified id or {@code null} if one does not exist in
-   *         this DocumentStore.
+   * @return an OJAI Document with the specified id or {@code null} if one does not exist in
+   *         this DocumentStore
    *
    * @throws StoreException
    */
   public Document findById(Value _id, FieldPath...fieldPaths) throws StoreException;
 
   /**
-   * Return the Document with the given `_id` if it matches the specified condition. If a Document
+   * Returns the Document with the given `_id` if it matches the specified condition. If a Document
    * with the specified `_id` does not exist in this DocumentStore or does not satisfy the specified
    * condition, {@code null} is returned.
    *
    * @param _id document id
    * @param condition query condition to test the document
    *
-   * @return An OJAI Document with the specified _id
+   * @return an OJAI Document with the specified _id
    *
    * @throws StoreException
    */
   public Document findById(String _id, QueryCondition condition) throws StoreException;
 
   /**
-   * Return the Document with the given `_id` if it matches the specified condition. If a Document
+   * Returns the Document with the given `_id` if it matches the specified condition. If a Document
    * with the specified `_id` does not exist in this DocumentStore or does not satisfy the specified
    * condition, {@code null} is returned.
    *
    * @param _id document id
    * @param condition query condition to test the document
    *
-   * @return An OJAI Document with the specified _id
+   * @return an OJAI Document with the specified _id
    *
    * @throws StoreException
    */
   public Document findById(Value _id, QueryCondition condition) throws StoreException;
 
   /**
-   * Return the Document with the given `_id` if it matches the specified condition. If a Document
+   * Returns the Document with the given `_id` if it matches the specified condition. If a Document
    * with the specified `_id` does not exist in this DocumentStore or does not satisfy the specified
    * condition, {@code null} is returned. The returned Document will include only the specified fields.
    *
@@ -236,14 +236,14 @@ public interface DocumentStore extends AutoCloseable {
    * @param fieldPaths list of fields that should be returned in the read document
    * @param condition query condition to test the document
    *
-   * @return An OJAI Document with the specified _id
+   * @return an OJAI Document with the specified _id
    *
    * @throws StoreException
    */
   public Document findById(String _id, QueryCondition condition, String...fieldPaths) throws StoreException;
 
   /**
-   * Return the Document with the given `_id` if it matches the specified condition. If a Document
+   * Returns the Document with the given `_id` if it matches the specified condition. If a Document
    * with the specified `_id` does not exist in this DocumentStore or does not satisfy the specified
    * condition, {@code null} is returned. The returned Document will include only the specified fields.
    *
@@ -251,14 +251,14 @@ public interface DocumentStore extends AutoCloseable {
    * @param fieldPaths list of fields that should be returned in the read document
    * @param condition query condition to test the document
    *
-   * @return An OJAI Document with the specified _id
+   * @return an OJAI Document with the specified _id
    *
    * @throws StoreException
    */
   public Document findById(String _id, QueryCondition condition, FieldPath...fieldPaths) throws StoreException;
 
   /**
-   * Return the Document with the given `_id` if it matches the specified condition. If a Document
+   * Returns the Document with the given `_id` if it matches the specified condition. If a Document
    * with the specified `_id` does not exist in this DocumentStore or does not satisfy the specified
    * condition, {@code null} is returned. The returned Document will include only the specified fields.
    *
@@ -266,14 +266,14 @@ public interface DocumentStore extends AutoCloseable {
    * @param fieldPaths list of fields that should be returned in the read document
    * @param condition query condition to test the document
    *
-   * @return An OJAI Document with the specified _id
+   * @return an OJAI Document with the specified _id
    *
    * @throws StoreException
    */
   public Document findById(Value _id, QueryCondition condition, String...fieldPaths) throws StoreException;
 
   /**
-   * Return the Document with the given `_id` if it matches the specified condition. If a Document
+   * Returns the Document with the given `_id` if it matches the specified condition. If a Document
    * with the specified `_id` does not exist in this DocumentStore or does not satisfy the specified
    * condition, {@code null} is returned. The returned Document will include only the specified fields.
    *
@@ -281,7 +281,7 @@ public interface DocumentStore extends AutoCloseable {
    * @param fieldPaths list of fields that should be returned in the read document
    * @param condition query condition to test the document
    *
-   * @return An OJAI Document with the specified _id
+   * @return an OJAI Document with the specified _id
    *
    * @throws StoreException
    */
@@ -291,7 +291,7 @@ public interface DocumentStore extends AutoCloseable {
    * <p>Executes a query to return all Documents in the DocumentStore.
    * <p>The returned DocumentStream must be closed after retrieving the documents.
    *
-   * @return A DocumentStream of all documents in the this DocumentStore.
+   * @return a DocumentStream of all documents in the this DocumentStore
    *
    * @throws StoreException
    */
@@ -301,7 +301,7 @@ public interface DocumentStore extends AutoCloseable {
    * <p>Executes the specified query on the DocumentStore and return a DocumentStream of the result.
    * <p>The returned DocumentStream must be closed after retrieving the documents.
    *
-   * @return A DocumentStream that can be used to retrieve the documents in the result.
+   * @return a DocumentStream that can be used to retrieve the documents in the result
    *
    * @throws StoreException
    */
@@ -311,8 +311,8 @@ public interface DocumentStore extends AutoCloseable {
    * <p>Executes the specified query on the DocumentStore and return a DocumentStream of the result.
    * <p>The returned DocumentStream must be closed after retrieving the documents.
    *
-   * @param queryJSON a Json string representation of OJAI Query.
-   * @return A DocumentStream that can be used to retrieve the documents in the result.
+   * @param queryJSON a Json string representation of OJAI Query
+   * @return a DocumentStream that can be used to retrieve the documents in the result
    *
    * @throws StoreException
    */
@@ -324,7 +324,7 @@ public interface DocumentStore extends AutoCloseable {
    * argument. If no fields are specified then it returns a full document.
    *
    * @param fieldPaths list of fields that should be returned in the read document
-   * @return A DocumentStream that can be used to retrieve the documents in the result.
+   * @return a DocumentStream that can be used to retrieve the documents in the result
    *
    * @throws StoreException
    */
@@ -336,7 +336,7 @@ public interface DocumentStore extends AutoCloseable {
    * argument. If no fields are specified then it returns a full document.
    *
    * @param fieldPaths list of fields that should be returned in the read document
-   * @return A DocumentStream that can be used to retrieve the documents in the result.
+   * @return a DocumentStream that can be used to retrieve the documents in the result
    *
    * @throws StoreException
    */
@@ -346,44 +346,44 @@ public interface DocumentStore extends AutoCloseable {
    * Returns a DocumentStream with all the documents in the DocumentStore that
    * satisfies the QueryCondition.
    *
-   * @param condition The QueryCondition to match the documents
-   * @return A DocumentStream that can be used to retrieve the documents in the result.
+   * @param condition the QueryCondition to match the documents
+   * @return a DocumentStream that can be used to retrieve the documents in the result
    *
    */
   public DocumentStream find(@NonNullable QueryCondition condition) throws StoreException;
 
   /**
-   * <p>Execute a query on the DocumentStore and return a DocumentStream of the Document
+   * <p>Executes a query on the DocumentStore and return a DocumentStream of the Document
    * matching the specified QueryCondition.
    * <p>Each Document will contain only those field paths that are specified in the
    * argument. If no fields are specified then it returns a full document.
    *
-   * @param condition The QueryCondition to match the documents
+   * @param condition the QueryCondition to match the documents
    * @param fieldPaths list of fields that should be returned in the read document
    *
-   * @return A DocumentStream that can be used to retrieve the documents in the result.
+   * @return a DocumentStream that can be used to retrieve the documents in the result
    * @throws StoreException
    */
   public DocumentStream find(@NonNullable QueryCondition condition, @NonNullable String...fieldPaths)
       throws StoreException;
 
   /**
-   * <p>Execute a query on the DocumentStore and return a DocumentStream of the Document
+   * <p>Executes a query on the DocumentStore and return a DocumentStream of the Document
    * matching the specified QueryCondition.
    * <p>Each Document will contain only those field paths that are specified in the
    * argument. If no fields are specified then it returns a full document.
    *
-   * @param condition The QueryCondition to match the documents
+   * @param condition the QueryCondition to match the documents
    * @param fieldPaths list of fields that should be returned in the read document
    *
-   * @return A DocumentStream that can be used to retrieve the documents in the result.
+   * @return a DocumentStream that can be used to retrieve the documents in the result
    * @throws StoreException
    */
   public DocumentStream find(@NonNullable QueryCondition condition, @NonNullable FieldPath... fieldPaths)
       throws StoreException;
 
   /**
-   * Inserts or replace a new document in this DocumentStore.
+   * Inserts or replaces a new document in this DocumentStore.
    * <br/><br/>
    * The specified Document must contain an {@code "_id"} field or the operation
    * will fail.
@@ -391,13 +391,13 @@ public interface DocumentStore extends AutoCloseable {
    * If the document with the given _id exists in the DocumentStore then that
    * document will be replaced by the specified document.
    *
-   * @param doc The Document to be inserted or replaced in the DocumentStore.
+   * @param doc the Document to be inserted or replaced in the DocumentStore
    * @throws StoreException
    */
   public void insertOrReplace(@NonNullable Document doc) throws StoreException;
 
   /**
-   * Inserts or replace a new document in this DocumentStore with the given _id.
+   * Inserts or replaces a new document in this DocumentStore with the given _id.
    * <br/><br/>
    * The specified document should either not contain an {@code "_id"} field or
    * its value should be same as the specified _id or the operation will fail.
@@ -405,14 +405,14 @@ public interface DocumentStore extends AutoCloseable {
    * If the document with the given _id exists in the DocumentStore then that
    * document will be replaced by the specified document.
    *
-   * @param doc The Document to be inserted or replaced in the DocumentStore.
+   * @param doc the Document to be inserted or replaced in the DocumentStore
    * @param _id value to be used as the _id for this document
    * @throws StoreException
    */
   public void insertOrReplace(@NonNullable String _id, @NonNullable Document r) throws StoreException;
 
   /**
-   * Inserts or replace a new document in this DocumentStore with the given _id.
+   * Inserts or replaces a new document in this DocumentStore with the given _id.
    * <br/><br/>
    * The specified document should either not contain an {@code "_id"} field or
    * its value should be same as the specified _id or the operation will fail.
@@ -420,38 +420,38 @@ public interface DocumentStore extends AutoCloseable {
    * If the document with the given _id exists in the DocumentStore then that
    * document will be replaced by the specified document.
    *
-   * @param doc The Document to be inserted or replaced in the DocumentStore.
+   * @param doc the Document to be inserted or replaced in the DocumentStore
    * @param _id value to be used as the _id for this document
    * @throws StoreException
    */
   public void insertOrReplace(@NonNullable Value _id, @NonNullable Document doc) throws StoreException;
 
   /**
-   * Inserts or replace a new document in this DocumentStore with the value of
+   * Inserts or replaces a new document in this DocumentStore with the value of
    * the specified Field as the {@code _id}.
    * <br/><br/>
    * If the document with the given _id exists in the DocumentStore then that
    * document will be replaced by the specified document.
    *
-   * @param doc The Document to be inserted or replaced in the DocumentStore.
+   * @param doc the Document to be inserted or replaced in the DocumentStore
    * @param fieldAsKey document's field to be used as the key when an id is not
    *                   passed in and the document doesn't have an "_id" field or
-   *                   a different field is desired to be used as _id.
+   *                   a different field is desired to be used as _id
    * @throws StoreException
    */
   public void insertOrReplace(@NonNullable Document doc, @NonNullable FieldPath fieldAsKey) throws StoreException;
 
   /**
-   * Inserts or replace a new document in this DocumentStore with the value of
+   * Inserts or replaces a new document in this DocumentStore with the value of
    * the specified Field as the {@code _id}.
    * <br/><br/>
    * If the document with the given _id exists in the DocumentStore then that
    * document will be replaced by the specified document.
    *
-   * @param doc The Document to be inserted or replaced in the DocumentStore.
+   * @param doc the Document to be inserted or replaced in the DocumentStore
    * @param fieldAsKey document's field to be used as the key when an id is not
    *                   passed in and the document doesn't have an "_id" field or
-   *                   a different field is desired to be used as _id.
+   *                   a different field is desired to be used as _id
    * @throws StoreException
    */
   public void insertOrReplace(@NonNullable Document doc, @NonNullable String fieldAsKey) throws StoreException;
@@ -470,10 +470,10 @@ public interface DocumentStore extends AutoCloseable {
    * first read error. If only write errors occur, the iterator will stop and the
    * rest of the documents will remain un-consumed in the DocumentStream.
    *
-   * @param stream The DocumentStream to read the documents from.
+   * @param stream the DocumentStream to read the documents from
    *
    * @throws MultiOpException which has a list of write-failed documents and
-   *                          their errors.
+   *                          their errors
    */
   public void insertOrReplace(@NonNullable DocumentStream stream) throws MultiOpException;
 
@@ -493,12 +493,12 @@ public interface DocumentStore extends AutoCloseable {
    * first read error. If only write errors occur, the iterator will stop and the
    * rest of the documents will remain un-consumed in the DocumentStream.
    *
-   * @param stream The DocumentStream to read the documents from.
+   * @param stream the DocumentStream to read the documents from
    * @param fieldAsKey field from each document whose value is to be used as
    *                   the document key for insertion
    *
    * @throws MultiOpException which has a list of write-failed documents and
-   *                          their errors.
+   *                          their errors
    */
   public void insertOrReplace(@NonNullable DocumentStream stream, @NonNullable FieldPath fieldAsKey)
       throws MultiOpException;
@@ -519,12 +519,12 @@ public interface DocumentStore extends AutoCloseable {
    * first read error. If only write errors occur, the iterator will stop and the
    * rest of the documents will remain un-consumed in the DocumentStream.
    *
-   * @param stream The DocumentStream to read the documents from.
+   * @param stream the DocumentStream to read the documents from
    * @param fieldAsKey field from each document whose value is to be used as
    *                   the document key for insertion
    *
    * @throws MultiOpException which has a list of write-failed documents and
-   *                          their errors.
+   *                          their errors
    */
   public void insertOrReplace(@NonNullable DocumentStream stream, @NonNullable String fieldAsKey)
       throws MultiOpException;
@@ -714,7 +714,7 @@ public interface DocumentStore extends AutoCloseable {
    * and the current list of failed document is returned in a multi op exception.
    * The untouched documents will remain in the DocumentStream.
    *
-   * @param stream A DocumentStream to read the documents from
+   * @param stream a DocumentStream to read the documents from
    * @param fieldAsKey field from each document whose value is to be used as
    *                     the document key for deletion
    *

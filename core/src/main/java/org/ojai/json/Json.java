@@ -89,7 +89,7 @@ public final class Json {
   }
 
   /**
-   * Returns a new instance of a Document built from the specified Map
+   * Returns a new instance of a Document built from the specified Map.
    */
   public static <T extends Object> Document newDocument(@NonNullable Map<String, T> map)
       throws DecodingException {

@@ -136,7 +136,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * Sets the field at the given FieldPath to the specified value.
    *
    * @param path path of the field that needs to be updated
-   * @param value The new value to set at the FieldPath
+   * @param value the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation set(@NonNullable String path, @NonNullable Value value);
@@ -145,7 +145,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * Sets the field at the given FieldPath to the specified value.
    *
    * @param path path of the field that needs to be updated
-   * @param value The new value to set at the FieldPath
+   * @param value the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation set(@NonNullable FieldPath path, @NonNullable Value value);
@@ -154,7 +154,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * Sets the field at the given FieldPath to the specified {@code boolean} value.
    *
    * @param path path of the field that needs to be updated
-   * @param b The new value to set at the FieldPath
+   * @param b the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation set(@NonNullable String path, boolean b);
@@ -163,7 +163,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * Sets the field at the given FieldPath to the specified {@code boolean} value.
    *
    * @param path path of the field that needs to be updated
-   * @param b The new value to set at the FieldPath
+   * @param b the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation set(@NonNullable FieldPath path, boolean b);
@@ -172,7 +172,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * Sets the field at the given FieldPath to the specified {@code byte} value.
    *
    * @param path path of the field that needs to be updated
-   * @param b The new value to set at the FieldPath
+   * @param b the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation set(@NonNullable String path, byte b);
@@ -181,7 +181,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * Sets the field at the given FieldPath to the specified {@code byte} value.
    *
    * @param path path of the field that needs to be updated
-   * @param b The new value to set at the FieldPath
+   * @param b the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation set(@NonNullable FieldPath path, byte b);
@@ -190,7 +190,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * Sets the field at the given FieldPath to the specified {@code short} value.
    *
    * @param path path of the field that needs to be updated
-   * @param s The new value to set at the FieldPath
+   * @param s the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation set(@NonNullable String path, short s);
@@ -199,7 +199,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * Sets the field at the given FieldPath to the specified {@code short} value.
    *
    * @param path path of the field that needs to be updated
-   * @param s The new value to set at the FieldPath
+   * @param s the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation set(@NonNullable FieldPath path, short s);
@@ -208,7 +208,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * Sets the field at the given FieldPath to the specified {@code int} value.
    *
    * @param path path of the field that needs to be updated
-   * @param i The new value to set at the FieldPath
+   * @param i the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation set(@NonNullable String path, int i);
@@ -217,7 +217,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * Sets the field at the given FieldPath to the specified {@code int} value.
    *
    * @param path path of the field that needs to be updated
-   * @param i The new value to set at the FieldPath
+   * @param i the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation set(@NonNullable FieldPath path, int i);
@@ -226,7 +226,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * Sets the field at the given FieldPath to the specified {@code long} value.
    *
    * @param path path of the field that needs to be updated
-   * @param l The new value to set at the FieldPath
+   * @param l the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation set(@NonNullable String path, long l);
@@ -235,7 +235,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * Sets the field at the given FieldPath to the specified {@code long} value.
    *
    * @param path path of the field that needs to be updated
-   * @param l The new value to set at the FieldPath
+   * @param l the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation set(@NonNullable FieldPath path, long l);
@@ -244,7 +244,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * Sets the field at the given FieldPath to the specified {@code float} value.
    *
    * @param path path of the field that needs to be updated
-   * @param f The new value to set at the FieldPath
+   * @param f the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation set(@NonNullable String path, float f);
@@ -253,7 +253,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * Sets the field at the given FieldPath to the specified {@code float} value.
    *
    * @param path path of the field that needs to be updated
-   * @param f The new value to set at the FieldPath
+   * @param f the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation set(@NonNullable FieldPath path, float f);
@@ -262,7 +262,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * Sets the field at the given FieldPath to the specified {@code double} value.
    *
    * @param path path of the field that needs to be updated
-   * @param d The new value to set at the FieldPath
+   * @param d the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation set(@NonNullable String path, double d);
@@ -271,7 +271,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * Sets the field at the given FieldPath to the specified {@code double} value.
    *
    * @param path path of the field that needs to be updated
-   * @param d The new value to set at the FieldPath
+   * @param d the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation set(@NonNullable FieldPath path, double d);
@@ -280,7 +280,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * Sets the field at the given FieldPath to the specified {@code String} value.
    *
    * @param path path of the field that needs to be updated
-   * @param value The new value to set at the FieldPath
+   * @param value the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation set(@NonNullable String path, @NonNullable String value);
@@ -289,7 +289,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * Sets the field at the given FieldPath to the specified {@code String} value.
    *
    * @param path path of the field that needs to be updated
-   * @param value The new value to set at the FieldPath
+   * @param value the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation set(@NonNullable FieldPath path, @NonNullable String value);
@@ -298,7 +298,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * Sets the field at the given FieldPath to the specified {@code BigDecimal} value.
    *
    * @param path path of the field that needs to be updated
-   * @param bd The new value to set at the FieldPath
+   * @param bd the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation set(@NonNullable String path, @NonNullable BigDecimal bd);
@@ -307,7 +307,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * Sets the field at the given FieldPath to the specified {@code BigDecimal} value.
    *
    * @param path path of the field that needs to be updated
-   * @param bd The new value to set at the FieldPath
+   * @param bd the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation set(@NonNullable FieldPath path, @NonNullable BigDecimal bd);
@@ -316,7 +316,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * Sets the field at the given FieldPath to the specified {@code Date} value.
    *
    * @param path path of the field that needs to be updated
-   * @param d The new value to set at the FieldPath
+   * @param d the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation set(@NonNullable String path, @NonNullable ODate d);
@@ -325,7 +325,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * Sets the field at the given FieldPath to the specified {@code Date} value.
    *
    * @param path path of the field that needs to be updated
-   * @param d The new value to set at the FieldPath
+   * @param d the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation set(@NonNullable FieldPath path, @NonNullable ODate d);
@@ -334,7 +334,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * Sets the field at the given FieldPath to the specified {@code Time} value.
    *
    * @param path path of the field that needs to be updated
-   * @param t The new value to set at the FieldPath
+   * @param t the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation set(@NonNullable String path, @NonNullable OTime t);
@@ -343,7 +343,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * Sets the field at the given FieldPath to the specified {@code Time} value.
    *
    * @param path path of the field that needs to be updated
-   * @param t The new value to set at the FieldPath
+   * @param t the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation set(@NonNullable FieldPath path, @NonNullable OTime t);
@@ -352,7 +352,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * Sets the field at the given FieldPath to the specified {@code Timestamp} value.
    *
    * @param path path of the field that needs to be updated
-   * @param ts The new value to set at the FieldPath
+   * @param ts the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation set(@NonNullable String path, @NonNullable OTimestamp ts);
@@ -361,7 +361,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * Sets the field at the given FieldPath to the specified {@code Timestamp} value.
    *
    * @param path path of the field that needs to be updated
-   * @param ts The new value to set at the FieldPath
+   * @param ts the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation set(@NonNullable FieldPath path, @NonNullable OTimestamp ts);
@@ -370,7 +370,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * Sets the field at the given FieldPath to the specified {@code Interval} value.
    *
    * @param path path of the field that needs to be updated
-   * @param intv The new value to set at the FieldPath
+   * @param intv the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation set(@NonNullable String path, @NonNullable OInterval intv);
@@ -379,7 +379,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * Sets the field at the given FieldPath to the specified {@code Interval} value.
    *
    * @param path path of the field that needs to be updated
-   * @param intv The new value to set at the FieldPath
+   * @param intv the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation set(@NonNullable FieldPath path, @NonNullable OInterval intv);
@@ -388,7 +388,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * Sets the field at the given FieldPath to the specified {@code ByteBuffer}.
    *
    * @param path path of the field that needs to be updated
-   * @param bb The new value to set at the FieldPath
+   * @param bb the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation set(@NonNullable String path, @NonNullable ByteBuffer bb);
@@ -397,7 +397,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * Sets the field at the given FieldPath to the specified {@code ByteBuffer}.
    *
    * @param path path of the field that needs to be updated
-   * @param bb The new value to set at the FieldPath
+   * @param bb the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation set(@NonNullable FieldPath path, @NonNullable ByteBuffer bb);
@@ -406,7 +406,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * Sets the field at the given FieldPath to the specified {@code List}.
    *
    * @param path path of the field that needs to be updated
-   * @param list The new value to set at the FieldPath
+   * @param list the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation set(@NonNullable String path, @NonNullable List<? extends Object> list);
@@ -415,7 +415,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * Sets the field at the given FieldPath to the specified {@code List}.
    *
    * @param path path of the field that needs to be updated
-   * @param list The new value to set at the FieldPath
+   * @param list the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation set(@NonNullable FieldPath path, @NonNullable List<? extends Object> list);
@@ -424,7 +424,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * Sets the field at the given FieldPath to the specified {@code Map}.
    *
    * @param path path of the field that needs to be updated
-   * @param map The new value to set at the FieldPath
+   * @param map the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation set(@NonNullable String path, @NonNullable Map<String, ? extends Object> map);
@@ -433,7 +433,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * Sets the field at the given FieldPath to the specified {@code Map}.
    *
    * @param path path of the field that needs to be updated
-   * @param map The new value to set at the FieldPath
+   * @param map the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation set(@NonNullable FieldPath path, @NonNullable Map<String, ? extends Object> map);
@@ -442,7 +442,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * Sets the field at the given FieldPath to the specified {@code Document}.
    *
    * @param path path of the field that needs to be updated
-   * @param doc The new value to set at the FieldPath
+   * @param doc the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation set(@NonNullable String path, @NonNullable Document doc);
@@ -451,7 +451,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * Sets the field at the given FieldPath to the specified {@code Document}.
    *
    * @param path path of the field that needs to be updated
-   * @param doc The new value to set at the FieldPath
+   * @param doc the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation set(@NonNullable FieldPath path, @NonNullable Document doc);
@@ -476,7 +476,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * Sets or replaces the field at the given FieldPath to the new value.
    *
    * @param path FieldPath in the document that needs to be updated
-   * @param value The new value to set or replace at the FieldPath
+   * @param value the new value to set or replace at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation setOrReplace(@NonNullable String path, @NonNullable Value value);
@@ -485,7 +485,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * Sets or replaces the field at the given FieldPath to the new value.
    *
    * @param path FieldPath in the document that needs to be updated
-   * @param value The new value to set or replace at the FieldPath
+   * @param value the new value to set or replace at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation setOrReplace(@NonNullable FieldPath path, @NonNullable Value value);
@@ -495,7 +495,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * {@code boolean} value.
    *
    * @param path path of the field that needs to be updated
-   * @param b The new value to set at the FieldPath
+   * @param b the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation setOrReplace(@NonNullable String path, boolean b);
@@ -505,7 +505,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * {@code boolean} value.
    *
    * @param path path of the field that needs to be updated
-   * @param b The new value to set at the FieldPath
+   * @param b the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation setOrReplace(@NonNullable FieldPath path, boolean b);
@@ -515,7 +515,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * {@code byte} value.
    *
    * @param path path of the field that needs to be updated
-   * @param b The new value to set at the FieldPath
+   * @param b the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation setOrReplace(@NonNullable String path, byte b);
@@ -525,7 +525,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * {@code byte} value.
    *
    * @param path path of the field that needs to be updated
-   * @param b The new value to set at the FieldPath
+   * @param b the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation setOrReplace(@NonNullable FieldPath path, byte b);
@@ -535,7 +535,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * {@code short} value.
    *
    * @param path path of the field that needs to be updated
-   * @param s The new value to set at the FieldPath
+   * @param s the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation setOrReplace(@NonNullable String path, short s);
@@ -545,7 +545,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * {@code short} value.
    *
    * @param path path of the field that needs to be updated
-   * @param s The new value to set at the FieldPath
+   * @param s the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation setOrReplace(@NonNullable FieldPath path, short s);
@@ -555,7 +555,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * {@code int} value.
    *
    * @param path path of the field that needs to be updated
-   * @param i The new value to set at the FieldPath
+   * @param i the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation setOrReplace(@NonNullable String path, int i);
@@ -565,7 +565,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * {@code int} value.
    *
    * @param path path of the field that needs to be updated
-   * @param i The new value to set at the FieldPath
+   * @param i the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation setOrReplace(@NonNullable FieldPath path, int i);
@@ -575,7 +575,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * {@code long} value.
    *
    * @param path path of the field that needs to be updated
-   * @param l The new value to set at the FieldPath
+   * @param l the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation setOrReplace(@NonNullable String path, long l);
@@ -585,7 +585,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * {@code long} value.
    *
    * @param path path of the field that needs to be updated
-   * @param l The new value to set at the FieldPath
+   * @param l the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation setOrReplace(@NonNullable FieldPath path, long l);
@@ -595,7 +595,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * {@code float} value.
    *
    * @param path path of the field that needs to be updated
-   * @param f The new value to set at the FieldPath
+   * @param f the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation setOrReplace(@NonNullable String path, float f);
@@ -605,7 +605,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * {@code float} value.
    *
    * @param path path of the field that needs to be updated
-   * @param f The new value to set at the FieldPath
+   * @param f the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation setOrReplace(@NonNullable FieldPath path, float f);
@@ -615,7 +615,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * {@code double} value.
    *
    * @param path path of the field that needs to be updated
-   * @param d The new value to set at the FieldPath
+   * @param d the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation setOrReplace(@NonNullable String path, double d);
@@ -625,7 +625,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * {@code double} value.
    *
    * @param path path of the field that needs to be updated
-   * @param d The new value to set at the FieldPath
+   * @param d the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation setOrReplace(@NonNullable FieldPath path, double d);
@@ -635,7 +635,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * {@code String} value.
    *
    * @param path path of the field that needs to be updated
-   * @param string The new value to set at the FieldPath
+   * @param string the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation setOrReplace(@NonNullable String path, @NonNullable String string);
@@ -645,7 +645,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * {@code String} value.
    *
    * @param path path of the field that needs to be updated
-   * @param string The new value to set at the FieldPath
+   * @param string the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation setOrReplace(@NonNullable FieldPath path, @NonNullable String string);
@@ -655,7 +655,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * {@code BigDecimal} value.
    *
    * @param path path of the field that needs to be updated
-   * @param bd The new value to set at the FieldPath
+   * @param bd the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation setOrReplace(@NonNullable String path, @NonNullable BigDecimal bd);
@@ -665,7 +665,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * {@code BigDecimal} value.
    *
    * @param path path of the field that needs to be updated
-   * @param bd The new value to set at the FieldPath
+   * @param bd the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation setOrReplace(@NonNullable FieldPath path, @NonNullable BigDecimal bd);
@@ -675,7 +675,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * {@code Date} value.
    *
    * @param path path of the field that needs to be updated
-   * @param d The new value to set at the FieldPath
+   * @param d the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation setOrReplace(@NonNullable String path, @NonNullable ODate d);
@@ -685,7 +685,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * {@code Date} value.
    *
    * @param path path of the field that needs to be updated
-   * @param d The new value to set at the FieldPath
+   * @param d the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation setOrReplace(@NonNullable FieldPath path, @NonNullable ODate d);
@@ -695,7 +695,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * {@code Time} value.
    *
    * @param path path of the field that needs to be updated
-   * @param t The new value to set at the FieldPath
+   * @param t the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation setOrReplace(@NonNullable String path, @NonNullable OTime t);
@@ -705,7 +705,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * {@code Time} value.
    *
    * @param path path of the field that needs to be updated
-   * @param t The new value to set at the FieldPath
+   * @param t the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation setOrReplace(@NonNullable FieldPath path, @NonNullable OTime t);
@@ -715,7 +715,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * {@code Timestamp} value.
    *
    * @param path path of the field that needs to be updated
-   * @param ts The new value to set at the FieldPath
+   * @param ts the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation setOrReplace(@NonNullable String path, @NonNullable OTimestamp ts);
@@ -725,7 +725,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * {@code Timestamp} value.
    *
    * @param path path of the field that needs to be updated
-   * @param ts The new value to set at the FieldPath
+   * @param ts the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation setOrReplace(@NonNullable FieldPath path, @NonNullable OTimestamp ts);
@@ -735,7 +735,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * {@code Interval}.
    *
    * @param path path of the field that needs to be updated
-   * @param intv The new value to set at the FieldPath
+   * @param intv the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation setOrReplace(@NonNullable String path, @NonNullable OInterval intv);
@@ -745,7 +745,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * {@code Interval}.
    *
    * @param path path of the field that needs to be updated
-   * @param intv The new value to set at the FieldPath
+   * @param intv the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation setOrReplace(@NonNullable FieldPath path, @NonNullable OInterval intv);
@@ -755,7 +755,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * {@code ByteBuffer}.
    *
    * @param path path of the field that needs to be updated
-   * @param bb The new value to set at the FieldPath
+   * @param bb the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation setOrReplace(@NonNullable String path, @NonNullable ByteBuffer bb);
@@ -765,7 +765,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * {@code ByteBuffer}.
    *
    * @param path path of the field that needs to be updated
-   * @param bb The new value to set at the FieldPath
+   * @param bb the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation setOrReplace(@NonNullable FieldPath path, @NonNullable ByteBuffer bb);
@@ -775,7 +775,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * {@code List}.
    *
    * @param path path of the field that needs to be updated
-   * @param list The new value to set at the FieldPath
+   * @param list the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation setOrReplace(@NonNullable String path, @NonNullable List<? extends Object> list);
@@ -785,7 +785,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * {@code List}.
    *
    * @param path path of the field that needs to be updated
-   * @param list The new value to set at the FieldPath
+   * @param list the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation setOrReplace(@NonNullable FieldPath path, @NonNullable List<? extends Object> list);
@@ -795,7 +795,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * {@code Map}.
    *
    * @param path path of the field that needs to be updated
-   * @param map The new value to set at the FieldPath
+   * @param map the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation setOrReplace(@NonNullable String path, @NonNullable Map<String, ? extends Object> map);
@@ -805,7 +805,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * {@code Map}.
    *
    * @param path path of the field that needs to be updated
-   * @param map The new value to set at the FieldPath
+   * @param map the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation setOrReplace(@NonNullable FieldPath path, @NonNullable Map<String, ? extends Object> map);
@@ -815,7 +815,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * {@code Document}.
    *
    * @param path path of the field that needs to be updated
-   * @param doc The new value to set at the FieldPath
+   * @param doc the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation setOrReplace(@NonNullable String path, @NonNullable Document doc);
@@ -825,7 +825,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * {@code Document}.
    *
    * @param path path of the field that needs to be updated
-   * @param doc The new value to set at the FieldPath
+   * @param doc the new value to set at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation setOrReplace(@NonNullable FieldPath path, @NonNullable Document doc);
@@ -838,7 +838,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * then this operation will fail.
    *
    * @param path path of the field that needs to be appended
-   * @param list The List to append at the FieldPath
+   * @param list the List to append at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation append(@NonNullable String path, @NonNullable List<? extends Object> list);
@@ -851,7 +851,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * then this operation will fail.
    *
    * @param path path of the field that needs to be appended
-   * @param list The List to append at the FieldPath
+   * @param list the List to append at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation append(@NonNullable FieldPath path, @NonNullable List<? extends Object> list);
@@ -864,7 +864,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * then this operation will fail.
    *
    * @param path path of the field that needs to be appended
-   * @param string The String to append at the FieldPath
+   * @param string the String to append at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation append(@NonNullable String path, @NonNullable String string);
@@ -877,7 +877,7 @@ public interface DocumentMutation extends Iterable<MutationOp> {
    * then this operation will fail.
    *
    * @param path path of the field that needs to be appended
-   * @param string The String to append at the FieldPath
+   * @param string the String to append at the FieldPath
    * @return {@code this} for chained invocation
    */
   public DocumentMutation append(@NonNullable FieldPath path, @NonNullable String string);

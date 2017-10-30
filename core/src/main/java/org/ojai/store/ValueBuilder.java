@@ -30,7 +30,7 @@ import org.ojai.types.OTime;
 import org.ojai.types.OTimestamp;
 
 /**
- * Provides APIs to create instance of {@link Value} interface.
+ * Provides APIs to create instances of the {@link Value} interface.
  */
 @API.Public
 @API.ThreadSafe

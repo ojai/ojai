@@ -29,7 +29,7 @@ public class DocumentExistsException extends StoreException {
 
   /**
    * Constructor.
-   * @param s message
+   * @param s Message.
    */
   public DocumentExistsException(String s) {
     super(s);

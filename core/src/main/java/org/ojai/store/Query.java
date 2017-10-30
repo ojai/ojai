@@ -28,7 +28,7 @@ import org.ojai.exceptions.OjaiException;
 import org.ojai.exceptions.QueryTimeoutException;
 
 /**
- * OJAI interface which lets user build an OJAI Query that can be executed
+ * OJAI interface which lets users build an OJAI Query that can be executed
  * on an OJAI DocumentStore.
  */
 @API.Public
@@ -36,26 +36,26 @@ import org.ojai.exceptions.QueryTimeoutException;
 public interface Query extends Buildable {
 
   /**
-   * Set a named query option. A query option can be used to provide hints to query execution engine.
+   * Sets a named query option. A query option can be used to provide hints to query execution engine.
    * However, under stable conditions, a query option can not alter the result of the query.
    * <p/>
    * Refer to OJAI Driver's documentation for the list of supported options.
    *
-   * @return {@code this} for chained invocation.
+   * @return {@code this} for chained invocation
    */
   public Query setOption(@NonNullable String optionName, @NonNullable Object value) throws IllegalArgumentException;
 
   /**
    * Returns the value of the named query option.
    *
-   * @return value of the named query option, {@code null} if no such option exist.
+   * @return value of the named query option; {@code null} if no such option exist
    */
   public Object getOption(@NonNullable String optionName);
 
   /**
-   * Set multiple query options for this Query.
+   * Sets multiple query options for this Query.
    *
-   * @return {@code this} for chained invocation.
+   * @return {@code this} for chained invocation
    */
   public Query setOptions(@NonNullable Document options) throws IllegalArgumentException;
 
@@ -66,14 +66,14 @@ public interface Query extends Buildable {
    * either by calling {@link Iterator#next()} on iterator of query's {@link DocumentStream},
    * or between successive callback of {@link DocumentListener#documentArrived(Document)}.
    *
-   * @return {@code this} for chained invocation.
+   * @return {@code this} for chained invocation
    *
-   * @throws IllegalArgumentException if the timeout value is negative
+   * @throws IllegalArgumentException If the timeout value is negative
    */
   public Query setTimeout(long timeoutInMilliseconds) throws IllegalArgumentException;
 
   /**
-   * Set the writes-context for this query.
+   * Sets the writes-context for this query.
    * <p/>
    * A writes-context allows this query to "see" all the writes that happened inside
    * the writes-context of a {@link DocumentStore}.
@@ -82,30 +82,30 @@ public interface Query extends Buildable {
    * @see DocumentStore#beginTrackingWrites(String)
    * @see DocumentStore#endTrackingWrites()
    *
-   * @throws NullPointerException if the commit context is {@code null}.
-   * @throws IllegalArgumentException if the specified writes-context can not be parsed.
+   * @throws NullPointerException if the commit context is {@code null}
+   * @throws IllegalArgumentException if the specified writes-context can not be parsed
    *
-   * @return {@code this} for chained invocation.
+   * @return {@code this} for chained invocation
    */
   public Query waitForTrackedWrites(@NonNullable String writesContext) throws IllegalArgumentException;
 
   /**
-   * Add the list of field paths to the list of projected fields.
+   * Adds the list of field paths to the list of projected fields.
    * If not specified, the entire Document will be returned.
    * <p/>
    * Multiple invocation will append new fields to the list.
    *
-   * @return {@code this} for chained invocation.
+   * @return {@code this} for chained invocation
    */
   public Query select(@NonNullable String... fieldPaths) throws IllegalArgumentException;
 
   /**
-   * Add the list of field paths to the list of projected fields.
+   * Adds the list of field paths to the list of projected fields.
    * If not specified, the entire Document will be returned.
    * <p/>
    * Multiple invocation will append new fields to the list.
    *
-   * @return {@code this} for chained invocation.
+   * @return {@code this} for chained invocation
    */
   public Query select(@NonNullable FieldPath... fieldPaths) throws IllegalArgumentException;
 
@@ -114,7 +114,7 @@ public interface Query extends Buildable {
    * <p/>
    * Multiple invocation will 'AND' the individual conditions.
    *
-   * @return {@code this} for chained invocation.
+   * @return {@code this} for chained invocation
    */
   public Query where(@NonNullable String conditionJson) throws OjaiException, IllegalArgumentException;
 
@@ -123,7 +123,7 @@ public interface Query extends Buildable {
    * <p/>
    * Multiple invocation will 'AND' the individual conditions.
    *
-   * @return {@code this} for chained invocation.
+   * @return {@code this} for chained invocation
    */
   public Query where(@NonNullable QueryCondition condition) throws OjaiException, IllegalArgumentException;
 
@@ -132,9 +132,9 @@ public interface Query extends Buildable {
    * <p/>
    * Multiple invocation will append the field to the sort list.
    *
-   * @throws IllegalArgumentException if the same field is specified more than once.
+   * @throws IllegalArgumentException if the same field is specified more than once
    *
-   * @return {@code this} for chained invocation.
+   * @return {@code this} for chained invocation
    */
   public Query orderBy(@NonNullable String... fieldPaths) throws IllegalArgumentException;
 
@@ -143,9 +143,9 @@ public interface Query extends Buildable {
    * <p/>
    * Multiple invocation will append the field to the sort list.
    *
-   * @throws IllegalArgumentException if the same field is specified more than once.
+   * @throws IllegalArgumentException if the same field is specified more than once
    *
-   * @return {@code this} for chained invocation.
+   * @return {@code this} for chained invocation
    */
   public Query orderBy(@NonNullable FieldPath... fieldPaths) throws IllegalArgumentException;
 
@@ -154,11 +154,11 @@ public interface Query extends Buildable {
    * <p/>
    * Multiple invocation will append the field to the sort list.
    *
-   * @throws IllegalArgumentException if the same field is specified more than once.
+   * @throws IllegalArgumentException if the same field is specified more than once
    * @throws IllegalArgumentException if the supplied field path can not be parsed or
-   *         order is neither "ASC" or "DESC", ignoring case.
+   *         order is neither "ASC" or "DESC", ignoring case
    *
-   * @return {@code this} for chained invocation.
+   * @return {@code this} for chained invocation
    */
   public Query orderBy(@NonNullable String field, @NonNullable String order) throws IllegalArgumentException;
 
@@ -167,9 +167,9 @@ public interface Query extends Buildable {
    * <p/>
    * Multiple invocation will append the field to the sort list.
    *
-   * @throws IllegalArgumentException if the same field is specified more than once.
+   * @throws IllegalArgumentException if the same field is specified more than once
    *
-   * @return {@code this} for chained invocation.
+   * @return {@code this} for chained invocation
    */
   public Query orderBy(@NonNullable String field, @NonNullable SortOrder order) throws IllegalArgumentException;
 
@@ -178,9 +178,9 @@ public interface Query extends Buildable {
    * <p/>
    * Multiple invocation will append the field to the sort list.
    *
-   * @throws IllegalArgumentException if the same field is specified more than once.
+   * @throws IllegalArgumentException if the same field is specified more than once
    *
-   * @return {@code this} for chained invocation.
+   * @return {@code this} for chained invocation
    */
   public Query orderBy(@NonNullable FieldPath field, @NonNullable SortOrder order) throws IllegalArgumentException;
 
@@ -190,7 +190,7 @@ public interface Query extends Buildable {
    * <p/>
    * Multiple invocation will overwrite the previous value.
    *
-   * @return {@code this} for chained invocation.
+   * @return {@code this} for chained invocation
    */
   public Query offset(long offset) throws IllegalArgumentException;
 
@@ -200,14 +200,14 @@ public interface Query extends Buildable {
    * <p/>
    * Multiple invocation will overwrite the previous value.
    *
-   * @return {@code this} for chained invocation.
+   * @return {@code this} for chained invocation
    */
   public Query limit(long limit) throws IllegalArgumentException;
 
   /**
-   * Build this Query object and make it immutable.
+   * Builds this Query object and make it immutable.
    *
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   @Override
   public Query build();

@@ -70,7 +70,7 @@ public abstract class FieldSegment implements Comparable<FieldSegment>, JsonStri
 
   /**
    * @return <code>true</code> if the current segment has a child and
-   * <code>child.isNamed()</code> is <code>true</code>.
+   * <code>child.isNamed()</code> is <code>true</code>
    */
   public boolean isMap() {
     return type == Type.MAP;
@@ -78,28 +78,28 @@ public abstract class FieldSegment implements Comparable<FieldSegment>, JsonStri
 
   /**
    * @return <code>true</code> if the current segment has a child and
-   * <code>child.isIndexed()</code> is <code>true</code>.
+   * <code>child.isIndexed()</code> is <code>true</code>
    */
   public boolean isArray() {
     return type == Type.ARRAY;
   }
 
   /**
-   * @return <code>true</code> if the current segment has no child.
+   * @return <code>true</code> if the current segment has no child
    */
   public boolean isLeaf() {
     return type == Type.LEAF;
   }
 
   /**
-   * @return <code>true</code> if the current segment is identified by an index.
+   * @return <code>true</code> if the current segment is identified by an index
    */
   public boolean isIndexed() {
     return false;
   }
 
   /**
-   * @return <code>true</code> if the current segment is identified by a name.
+   * @return <code>true</code> if the current segment is identified by a name
    */
   public boolean isNamed() {
     return false;
@@ -489,7 +489,7 @@ public abstract class FieldSegment implements Comparable<FieldSegment>, JsonStri
   }
 
   /**
-   * Check if another path is contained in this one. This is useful for 2 cases. The first
+   * Checks to see if another path is contained in this one. This is useful for 2 cases. The first
    * is checking if the other is lower down in the tree, below this path. The other is if
    * a path is actually contained above the current one.
    *
@@ -500,13 +500,13 @@ public abstract class FieldSegment implements Comparable<FieldSegment>, JsonStri
    * This behavior is used for cases like scanning json in an event based fashion, when we arrive at
    * a node in a complex type, we will know the complete path back to the root. This method can
    * be used to determine if we need the data below. This is true in both the cases where the
-   * column requested from the user is below the current node (in which case we may ignore other nodes
+   * column requested from the user is below the current node (in which case, we may ignore other nodes
    * further down the tree, while keeping others). This is also the case if the requested path is further
    * up the tree, if we know we are at position a.b.c and a.b was a requested column, we need to scan
    * all of the data at and below the current a.b.c node.
    *
-   * @param otherSeg - path segment to check if it is contained below this one.
-   * @return - is this a match
+   * @param otherSeg Path segment to check if it is contained below this one
+   * @return is this a match
    */
   public boolean contains(FieldSegment otherSeg) {
     if (this == otherSeg) {

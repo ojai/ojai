@@ -141,7 +141,7 @@ public interface DocumentBuilder {
   /**
    * Sets the index in the current array at which the next value will be added.
    *
-   * @param index the index at which the next value will be added.
+   * @param index the index at which the next value will be added
    * @return {@code this} for chained invocation
    *
    * @throws IllegalArgumentException if the index is not larger than the last
@@ -195,7 +195,7 @@ public interface DocumentBuilder {
    * advances the current index by 1.
    *
    * @param value the {@code int} value to append
-   * @return {@code this} for chained invocation.
+   * @return {@code this} for chained invocation
    * @throws IllegalStateException if the builder is not in an ARRAY segment.
    */
   DocumentBuilder add(int value);

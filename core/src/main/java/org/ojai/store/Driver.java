@@ -29,7 +29,7 @@ import org.ojai.exceptions.OjaiException;
  * Entry point of an implementation of OJAI APIs. An OJAI Driver implementation must
  * support JAVA Service Provider Interface.
  *
- * DriverManager uses the implementation to establish connection to the OJAI data
+ * DriverManager uses the implementation to establish a connection to the OJAI data
  * source.
  */
 @API.Public
@@ -63,7 +63,7 @@ public interface Driver {
   public Document newDocument(@NonNullable String documentJson) throws DecodingException;
 
   /**
-   * Returns a new instance of Document constructed from the specified Map
+   * Returns a new instance of Document constructed from the specified Map.
    */
   public Document newDocument(@NonNullable Map<String, Object> map) throws DecodingException;
 

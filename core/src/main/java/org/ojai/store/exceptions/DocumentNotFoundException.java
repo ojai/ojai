@@ -29,7 +29,7 @@ public class DocumentNotFoundException extends StoreException {
 
   /**
    * Constructor.
-   * @param s message
+   * @param s Message.
    */
   public DocumentNotFoundException(String s) {
     super(s);

@@ -27,8 +27,8 @@ public interface DocumentListener {
    *
    * @param document the available <code>Document</code>
    *
-   * @return The implementation should return <code>false</code> to stop
-   *         listening for more documents at which point the stream is closed.
+   * @return the implementation should return <code>false</code> to stop
+   *         listening for more documents at which point the stream is closed
    */
   boolean documentArrived(@NonNullable Document document);
 

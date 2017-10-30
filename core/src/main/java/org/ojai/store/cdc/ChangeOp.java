@@ -24,13 +24,13 @@ import org.ojai.annotation.API;
 public enum ChangeOp {
 
   /**
-   * The current change node does not have an operation, for example, the event of the node is an END_ARRAY
-   * or END_MAP operation.
+   * The current change node does not have an operation. 
+   * For example, the event of the node is an END_ARRAY or END_MAP operation.
    */
   NULL(1),
 
   /**
-   * The current field was set to the specified value.
+   * The current field was set to the specified value
    */
   SET(2),
 
@@ -52,7 +52,8 @@ public enum ChangeOp {
   DELETE_EXACT(5),
 
   /**
-   * Add another version to the current field.
+   * This operation added another version of the field into the store.
+   * For a multi-version DocumentStore, this event is emitted instead of SET.
    */
   PUT(6);
 
@@ -62,6 +63,9 @@ public enum ChangeOp {
     this.code = (byte) code;
   }
 
+  /**
+   * Returns the numerical code of the enumeration.
+   */
   public byte getCode() {
     return code;
   }

@@ -48,8 +48,9 @@ public interface ChangeNode {
   Type getType();
 
   /**
-   * Returns the timestamp associated with the current change
-   * operation as number of milliseconds since Unix epoch.
+   * Returns the logical time of the data.
+   * The version is the same as the timestamp when this operation occurs.
+   * For a multi-version DocumentStore, the version is specified by the user. 
    */
   long getOpTimestamp();
 
@@ -60,93 +61,93 @@ public interface ChangeNode {
   long getServerTimestamp();
 
   /**
-   * Returns The {@code byte} value of the current node.
+   * Returns the {@code byte} value of the current node.
    *
-   * @throws TypeException if this change node is not one of the numeric types.
+   * @throws TypeException if this change node is not one of the numeric types
    */
   byte getByte();
 
   /**
    * Returns the value as a <code>short</code>.
    *
-   * @throws TypeException if this change node is not one of the numeric types.
+   * @throws TypeException if this change node is not one of the numeric types
    */
   short getShort();
 
   /**
    * Returns the value as an {@code int}.
    *
-   * @throws TypeException if this change node is not one of the numeric types.
+   * @throws TypeException if this change node is not one of the numeric types
    */
   int getInt();
 
   /**
    * Returns the value as a <code>long</code>.
    *
-   * @throws TypeException if this change node is not one of the numeric types.
+   * @throws TypeException if this change node is not one of the numeric types
    */
   long getLong();
 
   /**
    * Returns the value as a <code>float</code>.
    *
-   * @throws TypeException if this change node is not one of the numeric types.
+   * @throws TypeException if this change node is not one of the numeric types
    */
   float getFloat();
 
   /**
    * Returns the value as a <code>double</code>.
    *
-   * @throws TypeException if this change node is not one of the numeric types.
+   * @throws TypeException if this change node is not one of the numeric types
    */
   double getDouble();
 
   /**
    * Returns the value as a <code>BigDecimal</code>.
    *
-   * @throws TypeException if this change node is not one of the numeric types.
+   * @throws TypeException if this change node is not one of the numeric types
    */
   BigDecimal getDecimal();
 
   /**
    * Returns the value as a <code>boolean</code>.
    *
-   * @throws TypeException if this change node is not of <code>BOOLEAN</code> type.
+   * @throws TypeException if this change node is not of <code>BOOLEAN</code> type
    */
   boolean getBoolean();
 
   /**
    * Returns the value as a <code>String</code>.
    *
-   * @throws TypeException if this change node is not of <code>STRING</code> type.
+   * @throws TypeException if this change node is not of <code>STRING</code> type
    */
   String getString();
 
   /**
    * Returns the value as a {@link org.ojai.types.OTimestamp} object.
    *
-   * @throws TypeException if this change node is not of <code>TIMESTAMP</code> type.
+   * @throws TypeException if this change node is not of <code>TIMESTAMP</code> type
    */
   OTimestamp getTimestamp();
 
   /**
    * Returns a long value representing the number of milliseconds since epoch.
    *
-   * @throws TypeException if this change node is not of <code>TIMESTAMP</code> type.
+   * @throws TypeException if this change node is not of <code>TIMESTAMP</code> type
    */
   long getTimestampAsLong();
 
   /**
    * Returns the value as a {@link org.ojai.types.ODate} object.
    *
-   * @throws TypeException if this change node is not of <code>DATE</code> type.
+   * @throws TypeException if this change node is not of <code>DATE</code> type
    */
   ODate getDate();
 
   /**
    * Returns a {@code int} representing the number of DAYS since Unix epoch.
    *
-   * @throws TypeException if this change node is not of <code>DATE</code> type.
+   * @throws TypeException if this change node is not of <code>DATE</code> type
    */
   int getDateAsInt();
 
@@ -154,29 +155,29 @@ public interface ChangeNode {
    * Returns the value as a {@link org.ojai.types.OTime} object. Modifying the
    * returned object does not alter the content of the Value.
    *
-   * @throws TypeException if this change node is not of <code>TIME</code> type.
+   * @throws TypeException if this change node is not of <code>TIME</code> type
    */
   OTime getTime();
 
   /**
-   * Returns a {@code int} representing the number of milliseconds since midnight.
+   * Returns an {@code int} representing the number of milliseconds since midnight.
    *
-   * @throws TypeException if this change node is not of <code>TIME</code> type.
+   * @throws TypeException if this change node is not of <code>TIME</code> type
    */
   int getTimeAsInt();
 
   /**
-   * Returns the value as a {@link org.ojai.types.OInterval} object.
+   * Returns the value as an {@link org.ojai.types.OInterval} object.
    * Modifying the returned object does not alter the content of the Value.
    *
-   * @throws TypeException if this change node is not of <code>INTERVAL</code> type.
+   * @throws TypeException if this change node is not of <code>INTERVAL</code> type
    */
   OInterval getInterval();
 
   /**
    * Returns a <code>long</code> representing interval duration in milliseconds.
    *
-   * @throws TypeException if this change node is not of <code>INTERVAL</code> type.
+   * @throws TypeException if this change node is not of <code>INTERVAL</code> type
    */
   long getIntervalAsLong();
 
@@ -184,25 +185,25 @@ public interface ChangeNode {
    * Returns the value as a {@link java.nio.ByteBuffer}. Modifying the
    * returned object does not alter the content of the Value.
    *
-   * @throws TypeException if this change node is not of <code>BINARY</code> type.
+   * @throws TypeException if this change node is not of <code>BINARY</code> type
    */
   ByteBuffer getBinary();
 
   /**
    * Returns the value as a <code>Map&lt;String, Object&gt;</code>. The returned
-   * Map could be mutable or immutable however, modifying the returned Map
+   * Map could be mutable or immutable. Modifying the returned Map
    * does not alter the content of the Value.
    *
-   * @throws TypeException if this change node is not of <code>MAP<code> type.
+   * @throws TypeException if this change node is not of <code>MAP<code> type
    */
   Map<String, Object> getMap();
 
   /**
    * Returns the value as a <code>List&lt;Object&gt;</code>. The returned List
-   * could be mutable or immutable however, modifying the returned List does
+   * could be mutable or immutable. Modifying the returned List does
    * not alter the content of the Value.
    *
-   * @throws TypeException If this change node is not of <code>ARRAY</code> type.
+   * @throws TypeException if this change node is not of <code>ARRAY</code> type
    */
   List<Object> getList();
 

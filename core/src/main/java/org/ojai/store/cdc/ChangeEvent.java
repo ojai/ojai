@@ -26,7 +26,8 @@ import org.ojai.annotation.API;
 public enum ChangeEvent {
 
   /**
-   * The reader arrived at a field which does not have an event or event infomation is not available.
+   * The reader arrived at a field which does not have an event or 
+   * event information is not available.
    */
   NULL(1),
 
@@ -41,17 +42,17 @@ public enum ChangeEvent {
   START_MAP(3),
 
   /**
-   * The reader reached the end of a map.
+   * The reader reached the end of a {@link Type#MAP MAP}.
    */
   END_MAP(4),
 
   /**
-   * The reader arrived at beginning of a {@link Type#ARRAY ARRAY}.
+   * The reader arrived at beginning of an {@link Type#ARRAY ARRAY}.
    */
   START_ARRAY(5),
 
   /**
-   * The reader reached the end of an array.
+   * The reader reached the end of an {@link Type#ARRAY ARRAY}.
    */
   END_ARRAY(6);
 
@@ -61,6 +62,9 @@ public enum ChangeEvent {
     this.code = (byte) code;
   }
 
+  /**
+   * Returns the numerical code of the enumeration.
+   */
   public byte getCode() {
     return code;
   }

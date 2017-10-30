@@ -21,9 +21,9 @@ import org.ojai.annotation.API;
 public interface Buildable {
 
   /**
-   * Build this object and make it immutable.
+   * Builds this object and makes it immutable.
    *
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   public Buildable build();
 

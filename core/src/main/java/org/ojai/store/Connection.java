@@ -27,7 +27,7 @@ import org.ojai.exceptions.OjaiException;
 
 /**
  * A logical connection to an OJAI data source. This could be a connection to
- * a database server, a distributed cluster or a set of distributed clusters.
+ * a database server, a distributed cluster, or a set of distributed clusters.
  */
 @API.Public
 @API.ThreadSafe
@@ -36,7 +36,7 @@ public interface Connection extends Closeable {
    * Returns a handle to an OJAI DocumentStore specified by the given name
    * or path.
    *
-   * @param storeName name or path of an OJAI data source table/store.
+   * @param storeName name or path of an OJAI data source table/store
    */
   public DocumentStore getStore(@NonNullable String storeName) throws OjaiException;
 
@@ -44,7 +44,7 @@ public interface Connection extends Closeable {
    * Returns a handle to an OJAI DocumentStore specified by the given name
    * or path.
    *
-   * @param storeName name or path of an OJAI data source table/store.
+   * @param storeName name or path of an OJAI data source table/store
    * @param options an OJAI Document containing arbitrary, implementation specific settings
    */
   public DocumentStore getStore(@NonNullable String storeName, @NonNullable Document options) throws OjaiException;

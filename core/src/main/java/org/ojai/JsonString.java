@@ -21,12 +21,12 @@ import org.ojai.json.JsonOptions;
 public interface JsonString {
 
   /**
-   * @return This OJAI object serialized as JSON string using the default options.
+   * @return this OJAI object serialized as JSON string using the default options
    */
   String asJsonString();
 
   /**
-   * @return This OJAI object serialized as JSON string using the specified options.
+   * @return this OJAI object serialized as JSON string using the specified options
    */
   String asJsonString(@NonNullable JsonOptions options);
 

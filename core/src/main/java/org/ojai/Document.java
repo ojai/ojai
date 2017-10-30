@@ -43,7 +43,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
   public Document setId(@NonNullable Value _id);
 
   /**
-   * @return The "_id" field of this Document
+   * @return the "_id" field of this Document
    */
   public Value getId();
 
@@ -61,7 +61,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
   public String getIdString();
 
   /**
-   * Sets the the "_id" field of this Document to the specified string.
+   * Sets the "_id" field of this Document to the specified string.
    * @param _id ByteBuffer to set as the value of "_id" field
    * @return {@code this} for chaining
    */
@@ -80,7 +80,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
   public boolean isReadOnly();
 
   /**
-   * @return The number of top level entries in the document.
+   * @return the number of top level entries in the document.
    */
   int size();
 
@@ -88,7 +88,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    * Converts this Document to an instance of the specified class.
    *
    * @param beanClass the class of instance
-   * @return An instance of the specified class converted from this Document
+   * @return an instance of the specified class converted from this Document
    */
   public <T> T toJavaBean(@NonNullable Class<T> beanClass) throws DecodingException;
 
@@ -373,7 +373,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
    *
    * @param fieldPath the FieldPath to set
    * @param value the byte array containing the binary value
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   Document set(@NonNullable FieldPath fieldPath, @NonNullable byte[] value);
 
@@ -699,7 +699,7 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
 
   /**
    * Deletes the value at the specified {@code FieldPath} if it exists.
-   * @param fieldPath The {@code fieldPath} to delete from the document
+   * @param fieldPath the {@code fieldPath} to delete from the document
    * @return {@code this} for chaining
    */
   Document delete(@NonNullable String fieldPath);
@@ -1204,30 +1204,30 @@ public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString
   List<Object> getList(@NonNullable FieldPath fieldPath);
 
   /**
-   * @return This Document serialized as Json string using the default options.
+   * @return this Document serialized as Json string using the default options
    */
   @Override
   String toString();
 
   /**
-   * @return A new {@link DocumentReader} over the current <code>document</code>
+   * @return a new {@link DocumentReader} over the current <code>document</code>
    */
   DocumentReader asReader();
 
   /**
-   * @return A new {@link DocumentReader} over the node specified by the
+   * @return a new {@link DocumentReader} over the node specified by the
    *         fieldPath or <code>null</code> if the node does not exist
    */
   DocumentReader asReader(@NonNullable String fieldPath);
 
   /**
-   * @return A new {@link DocumentReader} over the node specified by the
+   * @return a new {@link DocumentReader} over the node specified by the
    *         fieldPath or <code>null</code> if the node does not exist
    */
   DocumentReader asReader(@NonNullable FieldPath fieldPath);
 
   /**
-   * @return A new {@link Map} representing the Document.
+   * @return a new {@link Map} representing the Document
    */
   Map<String, Object> asMap();
 

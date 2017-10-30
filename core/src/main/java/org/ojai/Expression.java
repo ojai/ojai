@@ -26,7 +26,7 @@ import org.ojai.annotation.API;
 public interface Expression extends JsonString {
 
   /**
-   * @return name of this expression.
+   * @return name of this expression
    */
   public String getName();
 

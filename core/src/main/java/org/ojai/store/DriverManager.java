@@ -43,14 +43,14 @@ public final class DriverManager {
   public static final Pattern OJAI_PROTOCOL_PATTERN = Pattern.compile("ojai:[\\w\\-]+:.*");
 
   /**
-   * Discover and load the OJAI Driver implementation which supported the
+   * Discovers and loads the OJAI Driver implementation which supported the
    * specified URL.
    *
    * @param url a URL of the form "ojai:<driver_name>"
    *
    * @throws NullPointerException if the specified URL is {@code null}
    * @throws IllegalArgumentException if the specified URL does does not begin with "ojai:"
-   * @throws OjaiException if no registered driver for found for the specified URL.
+   * @throws OjaiException if no registered driver for found for the specified URL
    */
   public static Driver getDriver(@NonNullable String url) throws OjaiException {
     checkUrl(url);
@@ -70,8 +70,8 @@ public final class DriverManager {
    *
    * @throws NullPointerException if the specified URL is {@code null}
    * @throws IllegalArgumentException if the specified URL does does not begin with "ojai:"
-   * @throws OjaiException if no registered driver for found for the specified URL.
-   * @throws StoreException if connection to the data-source failed.
+   * @throws OjaiException if no registered driver for found for the specified URL
+   * @throws StoreException if connection to the data-source failed
    */
   public static Connection getConnection(@NonNullable String url) throws OjaiException {
     return getConnection(url, null);
@@ -86,8 +86,8 @@ public final class DriverManager {
    *
    * @throws NullPointerException if the specified URL is {@code null}
    * @throws IllegalArgumentException if the specified URL does does not begin with "ojai:"
-   * @throws OjaiException if no registered driver for found for the specified URL.
-   * @throws StoreException if connection to the data-source failed.
+   * @throws OjaiException if no registered driver for found for the specified URL
+   * @throws StoreException if connection to the data-source failed
    */
   public static Connection getConnection(@NonNullable String url, @NonNullable Document options) throws OjaiException {
     checkUrl(url);
@@ -101,7 +101,7 @@ public final class DriverManager {
   }
 
   /**
-   * Register the specified Driver with this DriverManager.
+   * Registers the specified Driver with this DriverManager.
    * <p/>
    * All OJAI Driver should register themselves with DriverManager during their
    * class initialization using this method.

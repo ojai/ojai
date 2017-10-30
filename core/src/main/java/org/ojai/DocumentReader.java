@@ -57,14 +57,14 @@ public interface DocumentReader {
    * Moves the {@code DocumentReader} to the next node and returns the node
    * type as {@code EventType}.
    *
-   * @return The {@code EventType} for the current node or {@code null} if the
+   * @return the {@code EventType} for the current node or {@code null} if the
    *         reader is past the end of the document
    * @throws DecodingException if the document is malformed or incomplete.
    */
   EventType next();
 
   /**
-   * @return The event emitted by the last call to {@link #next()}.
+   * @return the event emitted by the last call to {@link #next()}
    */
   EventType getCurrentEvent();
 
@@ -75,72 +75,72 @@ public interface DocumentReader {
    * <p/>
    * For all other events, this is a NO-OP.
    *
-   * @return {@code this} for chaining.
+   * @return {@code this} for chaining
    */
   DocumentReader skipChildren();
 
   /**
    * @return {@code true} while traversing a Map, {@code false} if traversing
-   * an Array.
+   * an Array
    */
   boolean inMap();
 
   /**
-   * @return The name of the current field, {@code null} for the top level Document.
+   * @return the name of the current field, {@code null} for the top level Document
    * @throws IllegalStateException if the reader is not traversing a Map
    */
   String getFieldName();
 
   /**
-   * @return The index of the current element in the Array
+   * @return the index of the current element in the Array
    * @throws IllegalStateException if the reader is not traversing an Array
    */
   int getArrayIndex();
 
   /**
-   * @return The {@code byte} value of the current node
+   * @return the {@code byte} value of the current node
    * @throws TypeException if the current {@code EventType} is not
    *         {@code BYTE}
    */
   byte getByte();
 
   /**
-   * @return The {@code byte} value of the current node
+   * @return the {@code byte} value of the current node
    * @throws TypeException if the current {@code EventType} is not
    *         {@code SHORT}.
    */
   short getShort();
 
   /**
-   * @return The {@code int} value of the current node
+   * @return the {@code int} value of the current node
    * @throws TypeException if the current {@code EventType} is not
    *         {@code INT}
    */
   int getInt();
 
   /**
-   * @return The {@code long} value of the current node
+   * @return the {@code long} value of the current node
    * @throws TypeException if the current {@code EventType} is not
    *         {@code LONG}
    */
   long getLong();
 
   /**
-   * @return The {@code float} value of the current node
+   * @return the {@code float} value of the current node
    * @throws TypeException if the current {@code EventType} is not
    *         {@code FLOAT}
    */
   float getFloat();
 
   /**
-   * @return The {@code double} value of the current node
+   * @return the {@code double} value of the current node
    * @throws TypeException if the current {@code EventType} is not
    *         {@code DOUBLE}
    */
   double getDouble();
 
   /**
-   * @return The {@code BigDecimal} value of the current node
+   * @return the {@code BigDecimal} value of the current node
    * @throws TypeException if the current {@code EventType} is not
    *         {@code DECIMAL}
    */
@@ -151,7 +151,7 @@ public interface DocumentReader {
    * (The precision is the number of digits in the unscaled value.)
    *
    * <p>The precision of a zero value is 1.
-   * @return The precision of current {@code DECIMAL} node
+   * @return the precision of current {@code DECIMAL} node
    * @throws TypeException if the current {@code EventType} is not
    *         {@code DECIMAL}
    */
@@ -164,7 +164,7 @@ public interface DocumentReader {
    * multiplied by ten to the power of the negation of the scale.  For example,
    * a scale of {@code -3} means the unscaled value is multiplied by 1000.
    *
-   * @return The scale of current {@code DECIMAL} node
+   * @return the scale of current {@code DECIMAL} node
    * @throws TypeException if the current {@code EventType} is not
    *         {@code DECIMAL}
    */
@@ -174,7 +174,7 @@ public interface DocumentReader {
    * Returns an {@code int} whose value is the <i>unscaled value</i> of this
    * {@code DECIMAL}.
    *
-   * @return The unscaled value of current {@code DECIMAL} node
+   * @return the unscaled value of current {@code DECIMAL} node
    * @throws TypeException if the current {@code EventType} is not
    *         {@code DECIMAL}
    * @throws RangeException if the precision of the decimal number is greater
@@ -186,7 +186,7 @@ public interface DocumentReader {
    * Returns a {@code long} whose value is the <i>unscaled value</i> of this
    * {@code DECIMAL}.
    *
-   * @return The unscaled value of current {@code DECIMAL} node
+   * @return the unscaled value of current {@code DECIMAL} node
    * @throws TypeException if the current {@code EventType} is not
    *         {@code DECIMAL}
    * @throws RangeException if the precision of the decimal number is greater
@@ -201,27 +201,27 @@ public interface DocumentReader {
    * array will contain the minimum number of bytes required to represent this
    * {@code DECIMAL}, including one sign bit.
    *
-   * @return A byte array containing the two's complement representation of
+   * @return a byte array containing the two's complement representation of
    *         current {@code DECIMAL} node
    */
   ByteBuffer getDecimalValueAsBytes();
 
   /**
-   * @return The {@code boolean} value of the current node
+   * @return the {@code boolean} value of the current node
    * @throws TypeException if the current {@code EventType} is not
    *         {@code BOOLEAN}
    */
   boolean getBoolean();
 
   /**
-   * @return The {@code String} value of the current node
+   * @return the {@code String} value of the current node
    * @throws TypeException if the current {@code EventType} is not
    *         {@code STRING}
    */
   String getString();
 
   /**
-   * @return The {@code Timestamp} value of the current node as a {@code long}
+   * @return the {@code Timestamp} value of the current node as a {@code long}
    *         representing the number of milliseconds since epoch
    * @throws TypeException if the current {@code EventType} is not
    *         {@code TIMESTAMP}
@@ -229,14 +229,14 @@ public interface DocumentReader {
   long getTimestampLong();
 
   /**
-   * @return The {@code Timestamp} value of the current node
+   * @return the {@code Timestamp} value of the current node
    * @throws TypeException if the current {@code EventType} is not
    *         {@code TIMESTAMP}
    */
   OTimestamp getTimestamp();
 
   /**
-   * @return The {@code Date} value of the current node as an {@code int}
+   * @return the {@code Date} value of the current node as an {@code int}
    *         representing the number of DAYS since epoch
    * @throws TypeException if the current {@code EventType} is not
    *         {@code DATE}
@@ -244,14 +244,14 @@ public interface DocumentReader {
   int getDateInt();
 
   /**
-   * @return The {@code Date} value of the current node
+   * @return the {@code Date} value of the current node
    * @throws TypeException if the current {@code EventType} is not
    *         {@code DATE}
    */
   ODate getDate();
 
   /**
-   * @return The {@code Time} value of the current node as an {@code int}
+   * @return the {@code Time} value of the current node as an {@code int}
    *         representing the number of milliseconds since midnight.
    * @throws TypeException if the current {@code EventType} is not
    *         {@code TIME}
@@ -259,14 +259,14 @@ public interface DocumentReader {
   int getTimeInt();
 
   /**
-   * @return The {@code Time} value of the current node
+   * @return the {@code Time} value of the current node
    * @throws TypeException if the current {@code EventType} is not
    *         {@code TIME}
    */
   OTime getTime();
 
   /**
-   * @return The {@code Interval} value of the current node
+   * @return the {@code Interval} value of the current node
    * @throws TypeException if the current {@code EventType} is not
    *         {@code INTERVAL}
    */
@@ -275,7 +275,7 @@ public interface DocumentReader {
   long getIntervalMillis();
 
   /**
-   * @return The {@code ByteBuffer} value of the current node
+   * @return the {@code ByteBuffer} value of the current node
    * @throws TypeException if the current {@code EventType} is not
    *         {@code BINARY}
    */

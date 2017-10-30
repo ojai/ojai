@@ -431,7 +431,7 @@ public interface QueryCondition extends Buildable {
    * {@code FieldPath} satisfies the given {@link Op} against
    * the specified {@code String} value.
    *
-   * @param path the {@code FieldPath} to test
+   * @param path the {@code FieldPath} to test.
    * @param op the {@code QueryCondition.Op} to apply
    * @param value the reference String {@code Value}
    * @return {@code this} for chained invocation

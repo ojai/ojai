@@ -45,9 +45,9 @@ public interface ChangeDataRecord extends Iterable<KeyValue<FieldPath, ChangeNod
   ChangeDataRecordType getType();
 
   /**
-   * Returns the timestamp of this change data record as number of
-   * milliseconds since Unix epoch.<br/>
-   * This is set to -1 if ChangeDataRecordType is {@code RECORD_UPDATE}.
+   * Returns the logical time of the data.
+   * The version is the same as the timestamp when this operation occurs.
+   * For a multi-version DocumentStore, the version is specified by the user. 
    */
   long getOpTimestamp();
 

@@ -18,7 +18,7 @@ package org.ojai.store.cdc;
 import org.ojai.annotation.API;
 
 /**
- * This enum specifies the mode of change for change data record.
+ * This enumeration specifies the mode of change for a change data record.
  */
 @API.Public
 public enum ChangeDataRecordType {
@@ -44,6 +44,9 @@ public enum ChangeDataRecordType {
     this.code = (byte) code;
   }
 
+  /**
+   * Returns the numerical value of the enumeration.
+   */
   public byte getCode() {
     return code;
   }

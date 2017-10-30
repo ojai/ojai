@@ -30,11 +30,11 @@ import org.w3c.dom.ranges.RangeException;
 
 /**
  * A parser that traverses over the individual change nodes in a {@link ChangeDataRecord}.
- * It provides a cursor like semantics which can be moved, one node at a time by invoking
+ * It provides a cursor-like semantics which can be moved, one node at a time by invoking
  * {@link #next()}.
  * <p/>
- * The properties of individual change node, for example data type, field name, field value,
- * etc can be retrieved using various methods of this interface.
+ * The properties of individual change node. For example, data type, field name, 
+ * field value, etc. can be retrieved using various methods of this interface.
  */
 @API.Public
 @API.NotThreadSafe
@@ -53,89 +53,98 @@ public interface ChangeDataReader extends Iterator<ChangeEvent> {
   ChangeOp getOp();
 
   /**
-   * @return the field name of the current change node.
+   * @return the field name of the current change node
    */
   String getFieldName();
 
   /**
-   * @return the byte array equivalent of field name of the current change node.
+   * @return the byte array equivalent of the field name of the current change node
    */
   ByteBuffer getFieldNameBytes();
 
   /**
-   * @return The index of the current node in an Array.
+   * @return the index of the current node in an Array
    */
   int getArrayIndex();
 
   /**
-   * @returns Whether this node is in a Map. {@code `true`} for all top level fields.
+   * If it returns true, the current field is in a map; 
+   * otherwise, the current field is not in a map.
+   * 
+   * @return whether this node is in a Map. {@code `true`} for all top level fields
    */
   boolean inMap();
 
   /**
-   * @returns Whether this node is in an Array.
+   * If it returns true, the current field is in an array; 
+   * otherwise, the current field is not in an array.
+   * 
+   * @return whether this node is an Array
    */
   boolean inArray();
 
   /**
-   * @return the type of the OJAI Value of the current node.
+   * 
+   * @return the type of the OJAI Value of the current node
    */
   Type getType();
 
   /**
-   * @return the timestamp of the current change operation as Unix epoch.
+   * Returns the logical time of the data.
+   * The version is the same as the timestamp when this operation occurs.
+   * For a multi-version DocumentStore, the version is specified by the user. 
    */
   long getOpTimestamp();
-
+  
   /**
-   * @return the timestamp when the operation arrived on the server.
+   * @return the timestamp when the operation arrived on the server
    */
   long getServerTimestamp();
 
   /**
-   * @return The {@code byte} value of the current node
+   * @return the {@code byte} value of the current node
    * @throws TypeException if the current {@code EventType} is not
    *         {@code BYTE}
    */
   byte getByte();
 
   /**
-   * @return The {@code byte} value of the current node
+   * @return the {@code byte} value of the current node
    * @throws TypeException if the current {@code EventType} is not
-   *         {@code SHORT}.
+   *         {@code SHORT}
    */
   short getShort();
 
   /**
-   * @return The {@code int} value of the current node
+   * @return the {@code int} value of the current node
    * @throws TypeException if the current {@code EventType} is not
    *         {@code INT}
    */
   int getInt();
 
   /**
-   * @return The {@code long} value of the current node
+   * @return the {@code long} value of the current node
    * @throws TypeException if the current {@code EventType} is not
    *         {@code LONG}
    */
   long getLong();
 
   /**
-   * @return The {@code float} value of the current node
+   * @return the {@code float} value of the current node
    * @throws TypeException if the current {@code EventType} is not
    *         {@code FLOAT}
    */
   float getFloat();
 
   /**
-   * @return The {@code double} value of the current node
+   * @return the {@code double} value of the current node
    * @throws TypeException if the current {@code EventType} is not
    *         {@code DOUBLE}
    */
   double getDouble();
 
   /**
-   * @return The {@code BigDecimal} value of the current node
+   * @return the {@code BigDecimal} value of the current node
    * @throws TypeException if the current {@code EventType} is not
    *         {@code DECIMAL}
    */
@@ -146,7 +155,7 @@ public interface ChangeDataReader extends Iterator<ChangeEvent> {
    * (The precision is the number of digits in the unscaled value.)
    *
    * <p>The precision of a zero value is 1.
-   * @return The precision of current {@code DECIMAL} node
+   * @return the precision of current {@code DECIMAL} node
    * @throws TypeException if the current {@code EventType} is not
    *         {@code DECIMAL}
    */
@@ -159,7 +168,7 @@ public interface ChangeDataReader extends Iterator<ChangeEvent> {
    * multiplied by ten to the power of the negation of the scale.  For example,
    * a scale of {@code -3} means the unscaled value is multiplied by 1000.
    *
-   * @return The scale of current {@code DECIMAL} node
+   * @return the scale of current {@code DECIMAL} node
    * @throws TypeException if the current {@code EventType} is not
    *         {@code DECIMAL}
    */
@@ -169,7 +178,7 @@ public interface ChangeDataReader extends Iterator<ChangeEvent> {
    * Returns an {@code int} whose value is the <i>unscaled value</i> of this
    * {@code DECIMAL}.
    *
-   * @return The unscaled value of current {@code DECIMAL} node
+   * @return the unscaled value of current {@code DECIMAL} node
    * @throws TypeException if the current {@code EventType} is not
    *         {@code DECIMAL}
    * @throws RangeException if the precision of the decimal number is greater
@@ -181,7 +190,7 @@ public interface ChangeDataReader extends Iterator<ChangeEvent> {
    * Returns a {@code long} whose value is the <i>unscaled value</i> of this
    * {@code DECIMAL}.
    *
-   * @return The unscaled value of current {@code DECIMAL} node
+   * @return the unscaled value of current {@code DECIMAL} node
    * @throws TypeException if the current {@code EventType} is not
    *         {@code DECIMAL}
    * @throws RangeException if the precision of the decimal number is greater
@@ -202,21 +211,21 @@ public interface ChangeDataReader extends Iterator<ChangeEvent> {
   ByteBuffer getDecimalValueAsBytes();
 
   /**
-   * @return The {@code boolean} value of the current node
+   * @return the {@code boolean} value of the current node
    * @throws TypeException if the current {@code EventType} is not
    *         {@code BOOLEAN}
    */
   boolean getBoolean();
 
   /**
-   * @return The {@code String} value of the current node
+   * @return the {@code String} value of the current node
    * @throws TypeException if the current {@code EventType} is not
    *         {@code STRING}
    */
   String getString();
 
   /**
-   * @return The {@code Timestamp} value of the current node as a {@code long}
+   * @return the {@code Timestamp} value of the current node as a {@code long}
    *         representing the number of milliseconds since epoch
    * @throws TypeException if the current {@code EventType} is not
    *         {@code TIMESTAMP}
@@ -224,14 +233,14 @@ public interface ChangeDataReader extends Iterator<ChangeEvent> {
   long getTimestampLong();
 
   /**
-   * @return The {@code Timestamp} value of the current node
+   * @return the {@code Timestamp} value of the current node
    * @throws TypeException if the current {@code EventType} is not
    *         {@code TIMESTAMP}
    */
   OTimestamp getTimestamp();
 
   /**
-   * @return The {@code Date} value of the current node as an {@code int}
+   * @return the {@code Date} value of the current node as an {@code int}
    *         representing the number of DAYS since epoch
    * @throws TypeException if the current {@code EventType} is not
    *         {@code DATE}
@@ -239,29 +248,29 @@ public interface ChangeDataReader extends Iterator<ChangeEvent> {
   int getDateInt();
 
   /**
-   * @return The {@code Date} value of the current node
+   * @return the {@code Date} value of the current node
    * @throws TypeException if the current {@code EventType} is not
    *         {@code DATE}
    */
   ODate getDate();
 
   /**
-   * @return The {@code Time} value of the current node as an {@code int}
-   *         representing the number of milliseconds since midnight.
+   * @return the {@code Time} value of the current node as an {@code int}
+   *         representing the number of milliseconds since midnight
    * @throws TypeException if the current {@code EventType} is not
    *         {@code TIME}
    */
   int getTimeInt();
 
   /**
-   * @return The {@code Time} value of the current node
+   * @return the {@code Time} value of the current node
    * @throws TypeException if the current {@code EventType} is not
    *         {@code TIME}
    */
   OTime getTime();
 
   /**
-   * @return The {@code Interval} value of the current node
+   * @return the {@code Interval} value of the current node
    * @throws TypeException if the current {@code EventType} is not
    *         {@code INTERVAL}
    */
@@ -269,7 +278,7 @@ public interface ChangeDataReader extends Iterator<ChangeEvent> {
 
   /**
    * Returns the value of this interval duration in milliseconds computed from
-   * individual fields. This value will be approximate if months or years
+   * individual fields. This value will be approximate if the months or years
    * field of this interval is non-zero.
    *
    * @throws TypeException if the current {@code EventType} is not
@@ -278,7 +287,7 @@ public interface ChangeDataReader extends Iterator<ChangeEvent> {
   long getIntervalMillis();
 
   /**
-   * @return The {@code ByteBuffer} value of the current node
+   * @return the {@code ByteBuffer} value of the current node
    * @throws TypeException if the current {@code EventType} is not
    *         {@code BINARY}
    */

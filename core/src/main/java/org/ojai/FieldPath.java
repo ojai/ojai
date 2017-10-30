@@ -50,12 +50,12 @@ public final class FieldPath implements Comparable<FieldPath>, Iterable<FieldSeg
   /**
    * Use this method to translate a <code>String</code> into <code>FieldPath</code>.
    *
-   * @param fieldPath The String to parse.
+   * @param fieldPath the String to parse
    *
-   * @return An immutable instance of {@link FieldPath} parsed from the input string.
+   * @return an immutable instance of {@link FieldPath} parsed from the input string
    *
-   * @throws NullPointerException If the input string is null.
-   * @throws IllegalArgumentException If the input string has syntax error.
+   * @throws NullPointerException if the input string is null
+   * @throws IllegalArgumentException if the input string has syntax error
    */
   public static FieldPath parseFrom(@NonNullable String fieldPath) {
     if (fieldPath == null) {
@@ -129,11 +129,11 @@ public final class FieldPath implements Comparable<FieldPath>, Iterable<FieldSeg
    * position in a FieldPath, a name segment is considered greater
    * than the indexed segment.
    *
-   * @return  The value {@code 0} if the specified FieldPath is equal to
+   * @return  the value {@code 0} if the specified FieldPath is equal to
    *          this FieldPath; a value less than {@code 0} if this FieldPath
    *          is smaller than the specified FieldPath; and a value greater
    *          than {@code 0} if this FieldPath is greater than the specified
-   *          FieldPath.
+   *          FieldPath
    */
   @Override
   public int compareTo(FieldPath other) {
@@ -141,7 +141,7 @@ public final class FieldPath implements Comparable<FieldPath>, Iterable<FieldSeg
   }
 
   /**
-   * Return the {@code String} representation of this field path, quoting
+   * Returns the {@code String} representation of this field path, quoting
    * only those name segments which were parsed from a quoted identifier.
    * @return The {@code String} representation of this {@code FieldPath}.
    */
@@ -158,8 +158,8 @@ public final class FieldPath implements Comparable<FieldPath>, Iterable<FieldSeg
   }
 
   /**
-   * @return A FieldPath with the specified name segment as the
-   *         parent of the this FieldPath.
+   * @return a FieldPath with the specified name segment as the
+   *         parent of the this FieldPath
    */
   public FieldPath cloneWithNewParent(String parentSegment) {
     String rootSegmentName = Fields.unquoteFieldName(parentSegment);
@@ -169,8 +169,8 @@ public final class FieldPath implements Comparable<FieldPath>, Iterable<FieldSeg
   }
 
   /**
-   * @return A FieldPath with the specified name segment added as the
-   *         child of the leaf of this FieldPath.
+   * @return a FieldPath with the specified name segment added as the
+   *         child of the leaf of this FieldPath
    */
   public FieldPath cloneWithNewChild(String childSegment) {
     NameSegment newRoot = rootSegment.cloneWithNewChild(new NameSegment(childSegment));
@@ -178,8 +178,8 @@ public final class FieldPath implements Comparable<FieldPath>, Iterable<FieldSeg
   }
 
   /**
-   * @return A FieldPath with the specified index segment added as the
-   *         child of the leaf of this FieldPath.
+   * @return a FieldPath with the specified index segment added as the
+   *         child of the leaf of this FieldPath
    */
   public FieldPath cloneWithNewChild(int index) {
     NameSegment newRoot = rootSegment.cloneWithNewChild(new IndexSegment(index));
@@ -187,16 +187,16 @@ public final class FieldPath implements Comparable<FieldPath>, Iterable<FieldSeg
   }
 
   /**
-   * @return A {@code FieldPath} with specified {@codeFieldSegment} added as
-   * the child of the leaf of this {@code FieldPath}.
+   * @return a {@code FieldPath} with specified {@codeFieldSegment} added as
+   * the child of the leaf of this {@code FieldPath}
    */
   public FieldPath cloneWithNewChild(FieldSegment childSegment) {
     return new FieldPath(rootSegment.cloneWithNewChild(childSegment));
   }
 
   /**
-   * @return A sub-segment of this FieldPath starting after the specified
-   *         ancestor. For example if the current FieldPath is "a.b.c.d"
+   * @return a sub-segment of this FieldPath starting after the specified
+   *         ancestor. For example, if the current FieldPath is "a.b.c.d"
    *         and the specified ancestor is "a.b", will return "c.d".<br/>
    *         If the ancestor is same as this, will return EMPTY. If the
    *         ancestor is not an actual ancestor, will return null.
@@ -226,23 +226,23 @@ public final class FieldPath implements Comparable<FieldPath>, Iterable<FieldSeg
   }
 
   /**
-   * @return true if the other {@code FieldPath} is same or a child of this.
+   * @return true if the other {@code FieldPath} is same or a child of this
    */
   public boolean isAtOrBelow(FieldPath other) {
     return rootSegment.isAtOrBelow(other.rootSegment);
   }
 
   /**
-   * @return true if the other {@code FieldPath} is same or parent of this.
+   * @return true if the other {@code FieldPath} is same or parent of this
    */
   public boolean isAtOrAbove(FieldPath other) {
     return rootSegment.isAtOrAbove(other.rootSegment);
   }
 
   /**
-   * @return Returns the root segment of the child if {@code FieldPath} contains ancestor
-   *  entirely,returns {@value FieldPath#EMPTY} if field and ancestor are identical field
-   *  paths or returns {@value null} if field and ancestor have a difference of at lease
+   * @return the root segment of the child if {@code FieldPath} contains ancestor
+   *  entirely, returns {@value FieldPath#EMPTY} if field and ancestor are identical field
+   *  paths or returns {@value null} if field and ancestor have a difference of at least
    *  one field or its type.
    */
   public FieldSegment segmentAfterAncestor(FieldPath ancestor) {
