@@ -43,6 +43,7 @@
           <execution>
             <goals>
               <goal>compile</goal>
+              <goal>doc-jar</goal>
               <goal>testCompile</goal>
             </goals>
           </execution>
