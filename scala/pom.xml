@@ -43,7 +43,6 @@
           <execution>
             <goals>
               <goal>compile</goal>
-              <goal>doc-jar</goal>
               <goal>testCompile</goal>
             </goals>
           </execution>
@@ -79,5 +78,26 @@
       <artifactId>jackson-module-scala_2.11</artifactId>
     </dependency>
   </dependencies>
+
+  <profiles>
+    <profile>
+      <id>release</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>net.alchim31.maven</groupId>
+            <artifactId>scala-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>doc-jar</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 
 </project>
