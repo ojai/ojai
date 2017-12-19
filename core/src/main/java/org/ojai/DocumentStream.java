@@ -62,9 +62,4 @@ public interface DocumentStream extends AutoCloseable, Iterable<Document> {
    */
   void close() throws OjaiException;
 
-  /**
-   * Returns a query plan that was used for this DocumentStream
-   */
-  @API.Evolving
-  Document getQueryPlan();
 }
