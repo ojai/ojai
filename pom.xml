@@ -97,8 +97,8 @@
   </properties>
 
   <modules>
-    <module>core</module>
-    <module>map-reduce</module>
+    <module>java/core</module>
+    <module>java/map-reduce</module>
     <module>scala</module>
   </modules>
 
