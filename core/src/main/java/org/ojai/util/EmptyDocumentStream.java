@@ -23,7 +23,6 @@ import org.ojai.DocumentListener;
 import org.ojai.DocumentReader;
 import org.ojai.DocumentStream;
 import org.ojai.exceptions.OjaiException;
-import org.ojai.json.impl.JsonDocument;
 
 /**
  * A DocumentStream that returns no documents.
@@ -92,8 +91,4 @@ public class EmptyDocumentStream implements DocumentStream {
     }
   }
 
-  @Override
-  public Document getQueryPlan() {
-    return new JsonDocument();
-  }
 }

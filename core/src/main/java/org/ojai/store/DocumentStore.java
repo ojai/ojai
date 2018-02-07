@@ -288,10 +288,21 @@ public interface DocumentStore extends AutoCloseable {
   public Document findById(Value _id, QueryCondition condition, FieldPath...fieldPaths) throws StoreException;
 
   /**
+   * <p>Executes the specified query on the DocumentStore and return a QueryResult.
+   * <p>The returned QueryResult must be closed after retrieving the documents.
+   *
+   * @return a QueryResult that can be used to retrieve the documents in the result
+   *
+   * @throws StoreException
+   */
+  public QueryResult find(@NonNullable Query query) throws StoreException;
+
+  /**
    * <p>Executes a query to return all Documents in the DocumentStore.
    * <p>The returned DocumentStream must be closed after retrieving the documents.
    *
    * @return a DocumentStream of all documents in the this DocumentStore
+   * @deprecated use {@link #find(Query)}
    *
    * @throws StoreException
    */
@@ -302,6 +313,7 @@ public interface DocumentStore extends AutoCloseable {
    * <p>The returned DocumentStream must be closed after retrieving the documents.
    *
    * @return a DocumentStream that can be used to retrieve the documents in the result
+   * @deprecated use {@link #find(Query)}
    *
    * @throws StoreException
    */
@@ -313,6 +325,7 @@ public interface DocumentStore extends AutoCloseable {
    *
    * @param queryJSON a Json string representation of OJAI Query
    * @return a DocumentStream that can be used to retrieve the documents in the result
+   * @deprecated use {@link #find(Query)}
    *
    * @throws StoreException
    */
@@ -325,6 +338,7 @@ public interface DocumentStore extends AutoCloseable {
    *
    * @param fieldPaths list of fields that should be returned in the read document
    * @return a DocumentStream that can be used to retrieve the documents in the result
+   * @deprecated use {@link #find(Query)}
    *
    * @throws StoreException
    */
@@ -337,6 +351,7 @@ public interface DocumentStore extends AutoCloseable {
    *
    * @param fieldPaths list of fields that should be returned in the read document
    * @return a DocumentStream that can be used to retrieve the documents in the result
+   * @deprecated use {@link #find(Query)}
    *
    * @throws StoreException
    */
@@ -348,7 +363,9 @@ public interface DocumentStore extends AutoCloseable {
    *
    * @param condition the QueryCondition to match the documents
    * @return a DocumentStream that can be used to retrieve the documents in the result
+   * @deprecated use {@link #find(Query)}
    *
+   * @throws StoreException
    */
   public DocumentStream find(@NonNullable QueryCondition condition) throws StoreException;
 
@@ -360,8 +377,9 @@ public interface DocumentStore extends AutoCloseable {
    *
    * @param condition the QueryCondition to match the documents
    * @param fieldPaths list of fields that should be returned in the read document
-   *
    * @return a DocumentStream that can be used to retrieve the documents in the result
+   * @deprecated use {@link #find(Query)}
+   *
    * @throws StoreException
    */
   public DocumentStream find(@NonNullable QueryCondition condition, @NonNullable String...fieldPaths)
@@ -375,8 +393,9 @@ public interface DocumentStore extends AutoCloseable {
    *
    * @param condition the QueryCondition to match the documents
    * @param fieldPaths list of fields that should be returned in the read document
-   *
    * @return a DocumentStream that can be used to retrieve the documents in the result
+   * @deprecated use {@link #find(Query)}
+   *
    * @throws StoreException
    */
   public DocumentStream find(@NonNullable QueryCondition condition, @NonNullable FieldPath... fieldPaths)

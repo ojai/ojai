@@ -13,22 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ojai.json.impl;
+package org.ojai.util.impl;
 
+import org.ojai.annotation.API;
 import org.ojai.Value.Type;
 
-class ContainerContext {
+@API.Internal
+public class ContainerContext {
   private final String fieldName;
   private final Type type;
   private int index;
 
-  static final ContainerContext NULL = new ContainerContext(null);
+  public static final ContainerContext NULL = new ContainerContext(null);
 
-  ContainerContext(Type t) {
+  public ContainerContext(Type t) {
     this(t, null);
   }
 
-  ContainerContext(Type t, String n) {
+  public ContainerContext(Type t, String n) {
     type = t;
     fieldName = n;
     index = -1;
@@ -38,7 +40,7 @@ class ContainerContext {
     return type;
   }
 
-  ContainerContext setIndex(int newIndex) {
+  public ContainerContext setIndex(int newIndex) {
     if (type != Type.ARRAY) {
       throw new IllegalStateException("setIndex() called on a map");
     }
@@ -46,14 +48,14 @@ class ContainerContext {
     return this;
   }
 
-  int getIndex() {
+  public int getIndex() {
     if (type != Type.ARRAY) {
       throw new IllegalStateException("getIndex() called on a map");
     }
     return index;
   }
 
-  void incrementIndex() {
+  public void incrementIndex() {
     if (type != Type.ARRAY) {
       throw new IllegalStateException("incrementIndex() called on a map");
     }

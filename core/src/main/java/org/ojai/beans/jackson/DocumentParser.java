@@ -20,10 +20,13 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.util.LinkedList;
+import java.util.Stack;
 
 import org.ojai.DocumentReader;
 import org.ojai.DocumentReader.EventType;
+import org.ojai.Value.Type;
 import org.ojai.annotation.API;
+import org.ojai.util.impl.ContainerContext;
 
 import com.fasterxml.jackson.core.Base64Variant;
 import com.fasterxml.jackson.core.JsonLocation;
@@ -43,10 +46,12 @@ public class DocumentParser extends ParserMinimalBase {
   protected ObjectCodec _objectCodec;
   protected boolean _closed = false;
   protected LinkedList<JsonToken> tokens;
+  protected Stack<ContainerContext> containerStack;
 
   public DocumentParser(DocumentReader dr) {
     r = dr;
     tokens = new LinkedList<JsonToken>();
+    containerStack = new Stack<ContainerContext>();
   }
 
   @Override
@@ -69,28 +74,53 @@ public class DocumentParser extends ParserMinimalBase {
     _closed = true;
   }
 
+  /**
+   * Set the current array index in the DocumentParser using the index
+   * emitted out by the DocumentReader, adding nulls whenever the starting
+   * index is greater than zero.
+   */
+  private void setCurrentArrayIndex() {
+    ContainerContext currentContainer = containerStack.peek();
+    int nullCount = r.getArrayIndex() - currentContainer.getIndex();
+    for (int i = 1; i < nullCount; i++) {
+      tokens.add(JsonToken.VALUE_NULL);
+    }
+    currentContainer.incrementIndex();
+  }
+
   @Override
   public JsonToken nextToken() throws IOException, JsonParseException {
     if (tokens.isEmpty()
         && (_currEventType = r.next()) != null) {
-      if (r.inMap()
-          && r.getFieldName() != null
-          && _currEventType != EventType.END_MAP
+
+      if (_currEventType != EventType.END_MAP
           && _currEventType != EventType.END_ARRAY) {
-        tokens.add(JsonToken.FIELD_NAME);
+        if (r.inMap() && r.getFieldName() != null) {
+          tokens.add(JsonToken.FIELD_NAME);
+        } else if (!r.inMap()) {
+          setCurrentArrayIndex();
+        }
       }
 
       switch (_currEventType) {
       case START_ARRAY:
+        containerStack.push(new ContainerContext(Type.ARRAY));
         tokens.add(JsonToken.START_ARRAY);
         break;
       case END_ARRAY:
+        if (!containerStack.empty()) {
+          containerStack.pop();
+        }
         tokens.add(JsonToken.END_ARRAY);
         break;
       case START_MAP:
+        containerStack.push(new ContainerContext(Type.MAP));
         tokens.add(JsonToken.START_OBJECT);
         break;
       case END_MAP:
+        if (!containerStack.empty()) {
+          containerStack.pop();
+        }
         tokens.add(JsonToken.END_OBJECT);
         break;
       case NULL:
