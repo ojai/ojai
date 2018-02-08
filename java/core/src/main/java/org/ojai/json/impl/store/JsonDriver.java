@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ojai.tests.driver;
+package org.ojai.json.impl.store;
 
 import java.util.Map;
 
@@ -21,104 +21,107 @@ import org.ojai.Document;
 import org.ojai.DocumentBuilder;
 import org.ojai.exceptions.DecodingException;
 import org.ojai.exceptions.OjaiException;
+import org.ojai.json.Json;
+import org.ojai.json.JsonConsts;
+import org.ojai.json.impl.JsonValueBuilder;
 import org.ojai.store.Connection;
 import org.ojai.store.DocumentMutation;
-import org.ojai.store.DocumentStore;
 import org.ojai.store.Driver;
+import org.ojai.store.DriverManager;
 import org.ojai.store.Query;
 import org.ojai.store.QueryCondition;
 import org.ojai.store.ValueBuilder;
 
 import com.google.common.base.Preconditions;
 
-public class DummyJsonConnection implements Connection {
-  private final DummyJsonDriver driver;
-  private final String url;
-  private final Document options;
+public class JsonDriver implements Driver {
+  private final static JsonDriver DRIVER_INSTANCE = new JsonDriver();
 
-  public DummyJsonConnection(DummyJsonDriver dummyJsonDriver, String connectionUrl, Document options) {
-    Preconditions.checkNotNull(dummyJsonDriver);
-
-    driver = dummyJsonDriver;
-    this.options = options;
-    url = connectionUrl;
-  }
-
-  @Override
-  public DocumentStore getStore(String storeName) throws OjaiException {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public DocumentStore getStore(String storeName, Document options) throws OjaiException {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public ValueBuilder getValueBuilder() {
-    return driver.getValueBuilder();
+  static {
+    DriverManager.registerDriver(DRIVER_INSTANCE);
   }
 
   @Override
   public Document newDocument() {
-    return driver.newDocument();
+    return Json.newDocument();
   }
 
   @Override
-  public Document newDocument(String jsonString) throws DecodingException {
-    return driver.newDocument(jsonString);
+  public Document newDocument(String documentJson) throws DecodingException {
+    return Json.newDocument(documentJson);
   }
 
   @Override
   public Document newDocument(Map<String, Object> map) throws DecodingException {
-    return driver.newDocument(map);
+    return Json.newDocument(map);
   }
 
   @Override
   public Document newDocument(Object bean) throws DecodingException {
-    return driver.newDocument(bean);
+    return Json.newDocument(bean);
   }
 
   @Override
   public DocumentBuilder newDocumentBuilder() {
-    return driver.newDocumentBuilder();
+    return Json.newDocumentBuilder();
   }
 
   @Override
   public DocumentMutation newMutation() {
-    return driver.newMutation();
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public QueryCondition newCondition() {
-    return driver.newCondition();
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public Query newQuery() {
-    return driver.newQuery();
+    throw new UnsupportedOperationException();
   }
 
   @Override
   public Query newQuery(String queryJson) {
-    return driver.newQuery(queryJson);
+    throw new UnsupportedOperationException();
   }
 
   @Override
-  public Driver getDriver() {
-    return driver;
+  public boolean accepts(String url) {
+    Preconditions.checkNotNull(url);
+    return url.startsWith(JsonConsts.BASE_URL);
   }
 
   @Override
-  public void close() {
+  public Connection connect(String url, Document options) throws OjaiException {
+    Preconditions.checkArgument(accepts(url));
+    return new JsonConnection(this, url, options);
   }
 
-  public String getUrl() {
-    return url;
+  @Override
+  public String getName() {
+    return JsonConsts.DRIVER_NAME;
   }
 
-  public Document getOptions() {
-    return options;
+  @Override
+  public int hashCode() {
+    return 31;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    return true;
+  }
+
+  @Override
+  public ValueBuilder getValueBuilder() {
+    return JsonValueBuilder.INSTANCE;
   }
 
 }

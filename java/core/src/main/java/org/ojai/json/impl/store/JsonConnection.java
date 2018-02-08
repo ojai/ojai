@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ojai.tests.driver;
+package org.ojai.json.impl.store;
 
 import java.util.Map;
 
@@ -21,106 +21,104 @@ import org.ojai.Document;
 import org.ojai.DocumentBuilder;
 import org.ojai.exceptions.DecodingException;
 import org.ojai.exceptions.OjaiException;
-import org.ojai.json.Json;
-import org.ojai.json.impl.JsonValueBuilder;
 import org.ojai.store.Connection;
 import org.ojai.store.DocumentMutation;
+import org.ojai.store.DocumentStore;
 import org.ojai.store.Driver;
-import org.ojai.store.DriverManager;
 import org.ojai.store.Query;
 import org.ojai.store.QueryCondition;
 import org.ojai.store.ValueBuilder;
 
 import com.google.common.base.Preconditions;
 
-public class DummyJsonDriver implements Driver {
-  private final static DummyJsonDriver DRIVER_INSTANCE = new DummyJsonDriver();
+public class JsonConnection implements Connection {
+  private final JsonDriver driver;
+  private final String url;
+  private final Document options;
 
-  static {
-    DriverManager.registerDriver(DRIVER_INSTANCE);
+  public JsonConnection(JsonDriver dummyJsonDriver, String connectionUrl, Document options) {
+    Preconditions.checkNotNull(dummyJsonDriver);
+
+    driver = dummyJsonDriver;
+    this.options = options;
+    url = connectionUrl;
   }
 
   @Override
-  public Document newDocument() {
-    return Json.newDocument();
-  }
-
-  @Override
-  public Document newDocument(String documentJson) throws DecodingException {
-    return Json.newDocument(documentJson);
-  }
-
-  @Override
-  public Document newDocument(Map<String, Object> map) throws DecodingException {
-    return Json.newDocument(map);
-  }
-
-  @Override
-  public Document newDocument(Object bean) throws DecodingException {
-    return Json.newDocument(bean);
-  }
-
-  @Override
-  public DocumentBuilder newDocumentBuilder() {
-    return Json.newDocumentBuilder();
-  }
-
-  @Override
-  public DocumentMutation newMutation() {
+  public DocumentStore getStore(String storeName) throws OjaiException {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public QueryCondition newCondition() {
+  public DocumentStore getStore(String storeName, Document options) throws OjaiException {
     throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public Query newQuery() {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public Query newQuery(String queryJson) {
-    throw new UnsupportedOperationException();
-  }
-
-  @Override
-  public boolean accepts(String url) {
-    Preconditions.checkNotNull(url);
-    return url.startsWith(DummyDriverConsts.BASE_URL);
-  }
-
-  @Override
-  public Connection connect(String url, Document options) throws OjaiException {
-    Preconditions.checkArgument(accepts(url));
-    return new DummyJsonConnection(this, url, options);
-  }
-
-  @Override
-  public String getName() {
-    return DummyDriverConsts.DRIVER_NAME;
-  }
-
-  @Override
-  public int hashCode() {
-    return 31;
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    return true;
   }
 
   @Override
   public ValueBuilder getValueBuilder() {
-    return JsonValueBuilder.INSTANCE;
+    return driver.getValueBuilder();
+  }
+
+  @Override
+  public Document newDocument() {
+    return driver.newDocument();
+  }
+
+  @Override
+  public Document newDocument(String jsonString) throws DecodingException {
+    return driver.newDocument(jsonString);
+  }
+
+  @Override
+  public Document newDocument(Map<String, Object> map) throws DecodingException {
+    return driver.newDocument(map);
+  }
+
+  @Override
+  public Document newDocument(Object bean) throws DecodingException {
+    return driver.newDocument(bean);
+  }
+
+  @Override
+  public DocumentBuilder newDocumentBuilder() {
+    return driver.newDocumentBuilder();
+  }
+
+  @Override
+  public DocumentMutation newMutation() {
+    return driver.newMutation();
+  }
+
+  @Override
+  public QueryCondition newCondition() {
+    return driver.newCondition();
+  }
+
+  @Override
+  public Query newQuery() {
+    return driver.newQuery();
+  }
+
+  @Override
+  public Query newQuery(String queryJson) {
+    return driver.newQuery(queryJson);
+  }
+
+  @Override
+  public Driver getDriver() {
+    return driver;
+  }
+
+  @Override
+  public void close() {
+  }
+
+  public String getUrl() {
+    return url;
+  }
+
+  public Document getOptions() {
+    return options;
   }
 
 }

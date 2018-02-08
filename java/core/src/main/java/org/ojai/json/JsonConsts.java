@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ojai.tests.driver;
+package org.ojai.json;
 
-public class DummyDriverConsts {
+public class JsonConsts {
 
-  public static final String BASE_URL = "ojai:dummyjson:";
+  public static final String BASE_URL = "ojai:json:";
 
-  public static final String DRIVER_NAME = "Dummy Json OJAI Driver";
+  public static final String DRIVER_NAME = "Json OJAI Driver";
 
 }

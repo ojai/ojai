@@ -18,6 +18,8 @@ package org.ojai.tests.driver;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+import org.ojai.json.JsonConsts;
+import org.ojai.json.impl.store.JsonDriver;
 import org.ojai.store.Driver;
 import org.ojai.store.DriverManager;
 
@@ -25,10 +27,10 @@ public class TestDummyDriver {
 
   @Test
   public void testDummyDriver() {
-    Driver driver = DriverManager.getDriver(DummyDriverConsts.BASE_URL);
+    Driver driver = DriverManager.getDriver(JsonConsts.BASE_URL);
     assertNotNull(driver);
-    assertTrue(driver instanceof DummyJsonDriver);
-    assertEquals(DummyDriverConsts.DRIVER_NAME, driver.getName());
+    assertTrue(driver instanceof JsonDriver);
+    assertEquals(JsonConsts.DRIVER_NAME, driver.getName());
   }
 
 }
