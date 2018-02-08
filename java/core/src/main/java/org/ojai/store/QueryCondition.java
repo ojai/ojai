@@ -112,6 +112,20 @@ public interface QueryCondition extends Buildable {
   public QueryCondition or();
 
   /**
+   * Begins a new element-wise AND compound condition block.
+   * @param fieldPath the array expression for the fields' container
+   * @return {@code this} for chaining
+   */
+  public QueryCondition elementAnd(String fieldPath);
+
+  /**
+   * Begins a new element-wise AND compound condition block.
+   * @param fieldPath the array expression for the fields' container
+   * @return {@code this} for chaining
+   */
+  public QueryCondition elementAnd(FieldPath fieldPath);
+
+  /**
    * Closes a compound condition block.
    * @return {@code this} for chaining
    */
