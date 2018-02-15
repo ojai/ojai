@@ -32,22 +32,76 @@ import org.ojai.exceptions.OjaiException;
 @API.Public
 @API.ThreadSafe
 public interface Connection extends Closeable {
+
   /**
-   * Returns a handle to an OJAI DocumentStore specified by the given name
-   * or path.
+   * Creates an OJAI DocumentStore specified by the given name or path and returns a handle.
    *
    * @param storeName name or path of an OJAI data source table/store
+   *
+   * @return a {@link DocumentStore} object.
    */
-  public DocumentStore getStore(@NonNullable String storeName) throws OjaiException;
+  default public DocumentStore createStore(@NonNullable String storeName) throws OjaiException {
+    throw new UnsupportedOperationException();
+  }
+
+  /**
+   * Creates an OJAI DocumentStore specified by the given name or path and returns a handle.
+   *
+   * @param storeName name or path of an OJAI data source table/store
+   * @param options an OJAI Document containing implementation specific options
+   *
+   * @return a {@link DocumentStore} object.
+   */
+  default public DocumentStore createStore(@NonNullable String storeName, @NonNullable Document options)
+      throws OjaiException {
+    throw new UnsupportedOperationException();
+  }
+
+  /**
+   * Deletes the OJAI DocumentStore specified by the given name or path.
+   *
+   * @param storeName name or path of an OJAI data source table/store
+   *
+   * @return {@code true} if the store was deleted, {@code false} otherwise
+   */
+  default public boolean deleteStore(@NonNullable String storeName) throws OjaiException {
+    throw new UnsupportedOperationException();
+  }
+
+  /**
+   * Tests if the OJAI DocumentStore specified by the given name or path exists.
+   *
+   * @param storeName name or path of an OJAI data source table/store
+   *
+   * @return {@code true} if the store exists, {@code false} otherwise
+   */
+  default public boolean storeExists(@NonNullable String storeName) throws OjaiException {
+    throw new UnsupportedOperationException();
+  }
 
   /**
    * Returns a handle to an OJAI DocumentStore specified by the given name
    * or path.
    *
    * @param storeName name or path of an OJAI data source table/store
-   * @param options an OJAI Document containing arbitrary, implementation specific settings
+   *
+   * @return a {@link DocumentStore} object.
    */
-  public DocumentStore getStore(@NonNullable String storeName, @NonNullable Document options) throws OjaiException;
+  default public DocumentStore getStore(@NonNullable String storeName) throws OjaiException {
+    throw new UnsupportedOperationException();
+  }
+
+  /**
+   * Returns a handle to an OJAI DocumentStore specified by the given name
+   * or path.
+   *
+   * @param storeName name or path of an OJAI data source table/store
+   * @param options an OJAI Document containing implementation specific options
+   */
+  default public DocumentStore getStore(@NonNullable String storeName, @NonNullable Document options)
+      throws OjaiException {
+    throw new UnsupportedOperationException();
+  }
 
   /**
    * Returns a ValueBuilder object from this Connection.
