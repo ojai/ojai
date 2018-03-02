@@ -6,6 +6,30 @@ class Connection:
     __metaclass__ = ABCMeta
 
     @abstractmethod
+    def create_store(self, store_path):
+        """Creates a store into database and returns a DocumentStore instance, otherwise raise error
+        :param store_path: store path
+        :raises StoreAlreadyExistsError, StoreError
+        :return DocumentStore"""
+        raise NotImplementedError("Should have implemented this")
+
+    @abstractmethod
+    def is_store_exists(self, store_path):
+        """Check is given store path exists in database.
+        :param store_path: store path
+        :raises StoreError
+        :return boolean"""
+        raise NotImplementedError("Should have implemented this")
+
+    @abstractmethod
+    def delete_store(self, store_path):
+        """Delete a store from database and returns boolean, otherwise raise error
+        :param store_path: store path
+        :raises StoreError
+        :return boolean"""
+        raise NotImplementedError("Should have implemented this")
+
+    @abstractmethod
     def get_store(self, store_path, options=None):
         """Returns a handle to an OJAI DocumentStore specified by the given name or path.
         :param store_path: name or path of an OJAI data source table.
