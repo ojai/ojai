@@ -46,7 +46,8 @@
               <goal>antlr4</goal>
             </goals>
             <configuration>
-              <includes><include>**/FieldPath.g4</include></includes>
+              <includes><include>FieldPath.g4</include></includes>
+              <sourceDirectory>${basedir}/../../antlr4</sourceDirectory>
               <outputDirectory>${project.build.directory}/generated-sources/antlr4/org/ojai/antlr4</outputDirectory>
             </configuration>
           </execution>

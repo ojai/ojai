@@ -11,3 +11,4 @@ target/
 *.patch
 *~
 git.properties
+.pydevproject
