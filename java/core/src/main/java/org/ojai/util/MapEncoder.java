@@ -20,16 +20,16 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.ojai.DocumentReader;
+import org.ojai.DocumentReader.EventType;
 import org.ojai.annotation.API;
 import org.ojai.annotation.API.NonNullable;
 import org.ojai.exceptions.DecodingException;
 import org.ojai.exceptions.EncodingException;
 import org.ojai.exceptions.TypeException;
 
-import org.ojai.DocumentReader;
-import org.ojai.DocumentReader.EventType;
-
 @API.Public
+@API.Evolving
 public class MapEncoder {
 
   /**
@@ -54,7 +54,15 @@ public class MapEncoder {
     }
   }
 
-  private static Map<String, Object> encodeMap(DocumentReader dr)
+  /**
+   * Encodes values from the specified DocumentReader into a Java Map.<p/>
+   * The difference between this method and {@link #encode(DocumentReader)} is that
+   * this should be called after consuming {@link EventType#START_MAP}.
+   *
+   * @throws EncodingException
+   * @throws TypeException
+   */
+  public static Map<String, Object> encodeMap(DocumentReader dr)
       throws EncodingException, TypeException {
     try {
       Map<String, Object> docMap = new LinkedHashMap<String, Object>();
@@ -84,16 +92,14 @@ public class MapEncoder {
     }
   }
 
-  private static int addToArrayList(List<Object> list, Object elem, int lastIndex, int currentIndex) {
-    int nullCount = currentIndex - lastIndex;
-    for (int i = 1; i <= nullCount; i++) {
-      list.add(null);
-    }
-    list.set(currentIndex, elem);
-    return currentIndex;
-  }
-
-  private static List<Object> encodeArray(DocumentReader dr)
+  /**
+   * Encodes values from the specified DocumentReader into a Java Map.<p/>
+   * This method should be called after consuming {@link EventType#START_ARRAY}.
+   *
+   * @throws EncodingException
+   * @throws TypeException
+   */
+  public static List<Object> encodeArray(DocumentReader dr)
       throws EncodingException, TypeException {
     List<Object> objList = new ArrayList<Object>();
     EventType event = null;
@@ -129,6 +135,15 @@ public class MapEncoder {
       }
     } while (event != EventType.END_ARRAY);
     return objList;
+  }
+
+  private static int addToArrayList(List<Object> list, Object elem, int lastIndex, int currentIndex) {
+    int nullCount = currentIndex - lastIndex;
+    for (int i = 1; i <= nullCount; i++) {
+      list.add(null);
+    }
+    list.set(currentIndex, elem);
+    return currentIndex;
   }
 
   private static Object encodeValue(DocumentReader dr, EventType event)
