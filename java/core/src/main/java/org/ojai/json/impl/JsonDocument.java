@@ -44,8 +44,8 @@ import org.ojai.types.ODate;
 import org.ojai.types.OInterval;
 import org.ojai.types.OTime;
 import org.ojai.types.OTimestamp;
+import org.ojai.util.DocumentReaders;
 import org.ojai.util.Documents;
-import org.ojai.util.MapEncoder;
 
 @API.Internal
 public class JsonDocument extends JsonValue implements Document, Map<String, Object> {
@@ -1050,7 +1050,7 @@ public class JsonDocument extends JsonValue implements Document, Map<String, Obj
 
   @Override
   public Map<String, Object> asMap() throws DecodingException {
-    return MapEncoder.encode(asReader());
+    return DocumentReaders.encode(asReader());
   }
 
 }

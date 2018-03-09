@@ -51,9 +51,11 @@ import org.ojai.types.ODate;
 import org.ojai.types.OInterval;
 import org.ojai.types.OTime;
 import org.ojai.types.OTimestamp;
-import org.ojai.util.MapEncoder;
+import org.ojai.util.DocumentReaders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.collect.ImmutableList;
 
 public class TestJsonDocument extends BaseTest {
   private static Logger logger = LoggerFactory .getLogger(TestJsonDocument.class);
@@ -484,6 +486,7 @@ public class TestJsonDocument extends BaseTest {
     .set("arr2bigdecimal", new BigDecimal("1000000000.11111111111111111111"));
 
     docInArr3.setArray("arr3", new Object[] {"arr3", true, (long)123456, (float)12345.6789, (double)123.4567890, dateTimeDoc});
+    doc.set("emptyList", ImmutableList.of());
 
     doc.set("a.b", "value1")
     .set("a.c", true)
@@ -500,7 +503,8 @@ public class TestJsonDocument extends BaseTest {
     String jsonStr = "{";
     DocumentReader dr = Json.newDocumentReader(jsonStr);
     try {
-      doc = (Document) MapEncoder.encode(dr);
+      doc = (Document) DocumentReaders.encode(dr);
+      fail();
     } catch (EncodingException e) {
       logger.info("Encoding document '{}' as map got exception: {}", jsonStr, e.getMessage());
     }
@@ -509,7 +513,8 @@ public class TestJsonDocument extends BaseTest {
     jsonStr = "{\"a\":{\"b\":[true,1234,\"string\"}}";
     dr = Json.newDocumentReader(jsonStr);
     try {
-      doc = (Document) MapEncoder.encode(dr);
+      doc = (Document) DocumentReaders.encode(dr);
+      fail();
     } catch (EncodingException e) {
       logger.info("Encoding document '{}' as map got exception: {}", jsonStr, e.getMessage());
     }
@@ -518,7 +523,8 @@ public class TestJsonDocument extends BaseTest {
     jsonStr = "{\"a\":{\"b\":[true,1234,\"string\"]}";
     dr = Json.newDocumentReader(jsonStr);
     try {
-      doc = (Document) MapEncoder.encode(dr);
+      doc = (Document) DocumentReaders.encode(dr);
+      fail();
     } catch (EncodingException e) {
       logger.info("Encoding document '{}' as map got exception: {}", jsonStr, e.getMessage());
     }
