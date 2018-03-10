@@ -173,7 +173,19 @@ public class JsonDocumentBuilder implements DocumentBuilder {
 
   @Override
   public JsonDocumentBuilder put(String field, float value) {
-    return put(field, (double)value);
+    try {
+      preparePut();
+      if (jsonOptions.isWithTags()) {
+        putNewMap(field);
+        jsonGenerator.writeNumberField(Types.TAG_FLOAT, value);
+        endMap();
+      } else {
+        jsonGenerator.writeNumberField(field, value);
+      }
+      return this;
+    } catch (IOException ie) {
+      throw transformIOException(ie);
+    }
   }
 
   @Override
@@ -566,7 +578,19 @@ public class JsonDocumentBuilder implements DocumentBuilder {
 
   @Override
   public JsonDocumentBuilder add(float value) {
-    return add((double)value);
+    try {
+      prepareAdd();
+      if (jsonOptions.isWithTags()) {
+        jsonGenerator.writeStartObject();
+        jsonGenerator.writeNumberField(Types.TAG_FLOAT, value);
+        jsonGenerator.writeEndObject();
+      } else {
+        jsonGenerator.writeNumber(value);
+      }
+      return this;
+    } catch (IOException ie) {
+      throw transformIOException(ie);
+    }
   }
 
   @Override

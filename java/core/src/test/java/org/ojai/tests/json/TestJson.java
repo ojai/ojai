@@ -149,9 +149,9 @@ public class TestJson extends BaseTest {
 
       String s = Json.toJsonString(doc, JsonOptions.WITH_TAGS);
       assertEquals("{\"map\":{\"null\":null,\"boolean\":true,\"string\":\"eureka\","
-          + "\"byte\":{\"$numberLong\":127},\"short\":{\"$numberLong\":32767},"
-          + "\"int\":{\"$numberLong\":2147483647},\"long\":{\"$numberLong\":9223372036854775807},"
-          + "\"float\":3.4028235,\"double\":1.7976931348623157E308,"
+          + "\"byte\":{\"$numberByte\":127},\"short\":{\"$numberShort\":32767},"
+          + "\"int\":{\"$numberInt\":2147483647},\"long\":{\"$numberLong\":9223372036854775807},"
+          + "\"float\":{\"$numberFloat\":3.015625},\"double\":1.7976931348623157E308,"
           + "\"decimal\":{\"$decimal\":\"123456789012345678901234567890123456789012345678901.23456789\"},"
           + "\"date\":{\"$dateDay\":\"2012-10-20\"},\"time\":{\"$time\":\"07:42:46.123\"},"
           + "\"timestamp\":{\"$date\":\"2012-10-20T14:42:46.123Z\"},\"interval\":{\"$interval\":172800000},"
@@ -159,7 +159,7 @@ public class TestJson extends BaseTest {
 
       s = Json.toJsonString(doc, new JsonOptions().withoutTags());
       assertEquals("{\"map\":{\"null\":null,\"boolean\":true,\"string\":\"eureka\",\"byte\":127,\"short\":32767,"
-          + "\"int\":2147483647,\"long\":9223372036854775807,\"float\":3.4028235,\"double\":1.7976931348623157E308,"
+          + "\"int\":2147483647,\"long\":9223372036854775807,\"float\":3.015625,\"double\":1.7976931348623157E308,"
           + "\"decimal\":123456789012345678901234567890123456789012345678901.23456789,\"date\":\"2012-10-20\","
           + "\"time\":\"07:42:46.123\",\"timestamp\":\"2012-10-20T14:42:46.123Z\",\"interval\":172800000,"
           + "\"binary\":\"YWJjZA==\",\"array\":[42,\"open sesame\",3.14,\"2015-01-21\"]}}", s);
@@ -174,7 +174,7 @@ public class TestJson extends BaseTest {
           "    \"short\" : 32767,\n" +
           "    \"int\" : 2147483647,\n" +
           "    \"long\" : 9223372036854775807,\n" +
-          "    \"float\" : 3.4028235,\n" +
+          "    \"float\" : 3.015625,\n" +
           "    \"double\" : 1.7976931348623157E308,\n" +
           "    \"decimal\" : 123456789012345678901234567890123456789012345678901.23456789,\n" +
           "    \"date\" : \"2012-10-20\",\n" +
@@ -193,18 +193,20 @@ public class TestJson extends BaseTest {
           "    \"boolean\" : true,\n" +
           "    \"string\" : \"eureka\",\n" +
           "    \"byte\" : {\n" +
-          "      \"$numberLong\" : 127\n" +
+          "      \"$numberByte\" : 127\n" +
           "    },\n" +
           "    \"short\" : {\n" +
-          "      \"$numberLong\" : 32767\n" +
+          "      \"$numberShort\" : 32767\n" +
           "    },\n" +
           "    \"int\" : {\n" +
-          "      \"$numberLong\" : 2147483647\n" +
+          "      \"$numberInt\" : 2147483647\n" +
           "    },\n" +
           "    \"long\" : {\n" +
           "      \"$numberLong\" : 9223372036854775807\n" +
           "    },\n" +
-          "    \"float\" : 3.4028235,\n" +
+          "    \"float\" : {\n" + 
+          "      \"$numberFloat\" : 3.015625\n" + 
+          "    },\n" +
           "    \"double\" : 1.7976931348623157E308,\n" +
           "    \"decimal\" : {\n" +
           "      \"$decimal\" : \"123456789012345678901234567890123456789012345678901.23456789\"\n" +
@@ -247,19 +249,19 @@ public class TestJson extends BaseTest {
       assertEquals("\"eureka\"",
           Json.toJsonString(doc.getValue("map.string").asReader(), JsonOptions.WITH_TAGS));
 
-      assertEquals("{\"$numberLong\":127}",
+      assertEquals("{\"$numberByte\":127}",
           Json.toJsonString(doc.getValue("map.byte").asReader(), JsonOptions.WITH_TAGS));
 
-      assertEquals("{\"$numberLong\":32767}",
+      assertEquals("{\"$numberShort\":32767}",
           Json.toJsonString(doc.getValue("map.short").asReader(), JsonOptions.WITH_TAGS));
 
-      assertEquals("{\"$numberLong\":2147483647}",
+      assertEquals("{\"$numberInt\":2147483647}",
           Json.toJsonString(doc.getValue("map.int").asReader(), JsonOptions.WITH_TAGS));
 
       assertEquals("{\"$numberLong\":9223372036854775807}",
           Json.toJsonString(doc.getValue("map.long").asReader(), JsonOptions.WITH_TAGS));
 
-      assertEquals("3.4028235",
+      assertEquals("{\"$numberFloat\":3.015625}",
           Json.toJsonString(doc.getValue("map.float").asReader(), JsonOptions.WITH_TAGS));
 
       assertEquals("1.7976931348623157E308",

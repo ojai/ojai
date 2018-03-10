@@ -54,11 +54,11 @@ public class TestValues extends BaseTest {
 
     assertEquals("true", document.getValue("boolean").asJsonString());
     assertEquals("\"eureka\"", document.getValue("string").asJsonString());
-    assertEquals("{\"$numberLong\":127}", document.getValue("byte").asJsonString());
-    assertEquals("{\"$numberLong\":32767}", document.getValue("short").asJsonString());
-    assertEquals("{\"$numberLong\":2147483647}", document.getValue("int").asJsonString());
+    assertEquals("{\"$numberByte\":127}", document.getValue("byte").asJsonString());
+    assertEquals("{\"$numberShort\":32767}", document.getValue("short").asJsonString());
+    assertEquals("{\"$numberInt\":2147483647}", document.getValue("int").asJsonString());
     assertEquals("{\"$numberLong\":9223372036854775807}", document.getValue("long").asJsonString());
-    assertEquals("3.4028235", document.getValue("float").asJsonString());
+    assertEquals("{\"$numberFloat\":3.015625}", document.getValue("float").asJsonString());
     assertEquals("1.7976931348623157E308", document.getValue("double").asJsonString());
     assertEquals("\"123456789012345678901234567890123456789012345678901.23456789\"", document.getValue("decimal").asJsonString());
     assertEquals("{\"$dateDay\":\"2012-10-20\"}", document.getValue("date").asJsonString());

@@ -17,10 +17,14 @@ package org.ojai.json.impl;
 
 import static org.ojai.util.Constants.MILLISECONDSPERDAY;
 import static org.ojai.util.Types.TAG_BINARY;
+import static org.ojai.util.Types.TAG_BYTE;
 import static org.ojai.util.Types.TAG_DATE;
 import static org.ojai.util.Types.TAG_DECIMAL;
+import static org.ojai.util.Types.TAG_FLOAT;
+import static org.ojai.util.Types.TAG_INT;
 import static org.ojai.util.Types.TAG_INTERVAL;
 import static org.ojai.util.Types.TAG_LONG;
+import static org.ojai.util.Types.TAG_SHORT;
 import static org.ojai.util.Types.TAG_TIME;
 import static org.ojai.util.Types.TAG_TIMESTAMP;
 
@@ -40,8 +44,8 @@ import org.ojai.types.ODate;
 import org.ojai.types.OInterval;
 import org.ojai.types.OTime;
 import org.ojai.types.OTimestamp;
-import org.ojai.util.impl.ContainerContext;
 import org.ojai.util.Values;
+import org.ojai.util.impl.ContainerContext;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
@@ -93,8 +97,20 @@ public class JsonStreamDocumentReader extends DocumentReaderBase {
       // determine extended type
       isExtended = true;
       switch(field_name) {
+      case TAG_BYTE:
+        setCurrentEventType(EventType.BYTE);
+        break;
+      case TAG_SHORT:
+        setCurrentEventType(EventType.SHORT);
+        break;
+      case TAG_INT:
+        setCurrentEventType(EventType.INT);
+        break;
       case TAG_LONG:
         setCurrentEventType(EventType.LONG);
+        break;
+      case TAG_FLOAT:
+        setCurrentEventType(EventType.FLOAT);
         break;
       case TAG_DECIMAL:
         setCurrentEventType(EventType.DECIMAL);

@@ -85,7 +85,7 @@ public class TestJsonDocument extends BaseTest {
           + "\"short\":32767,"
           + "\"int\":2147483647,"
           + "\"long\":9223372036854775807,"
-          + "\"float\":3.4028235,"
+          + "\"float\":3.015625,"
           + "\"double\":1.7976931348623157E308,"
           + "\"decimal\":123456789012345678901234567890123456789012345678901.23456789,"
           + "\"date\":\"2012-10-20\","
@@ -102,11 +102,11 @@ public class TestJsonDocument extends BaseTest {
           + "\"null\":null,"
           + "\"boolean\":true,"
           + "\"string\":\"eureka\","
-          + "\"byte\":{\"$numberLong\":127},"
-          + "\"short\":{\"$numberLong\":32767},"
-          + "\"int\":{\"$numberLong\":2147483647},"
+          + "\"byte\":{\"$numberByte\":127},"
+          + "\"short\":{\"$numberShort\":32767},"
+          + "\"int\":{\"$numberInt\":2147483647},"
           + "\"long\":{\"$numberLong\":9223372036854775807},"
-          + "\"float\":3.4028235,"
+          + "\"float\":{\"$numberFloat\":3.015625},"
           + "\"double\":1.7976931348623157E308,"
           + "\"decimal\":{\"$decimal\":\"123456789012345678901234567890123456789012345678901.23456789\"},"
           + "\"date\":{\"$dateDay\":\"2012-10-20\"},"
@@ -539,7 +539,7 @@ public class TestJsonDocument extends BaseTest {
     objArr[3] = (short) 32767;
     objArr[4] = 2147483647;
     objArr[5] = (long) 123456789;
-    objArr[6] = (float) 3.4028235;
+    objArr[6] = (float) 3.015625;
     objArr[7] = 1.7976931348623157e308;
     objArr[8] = ODate.parse("2015-12-31");
     objArr[9] = OTime.parse("11:59:59");

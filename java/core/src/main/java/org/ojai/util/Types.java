@@ -41,9 +41,10 @@ public class Types {
   public static final String TAG_DATE       = "$dateDay";
   public static final String TAG_DECIMAL    = "$decimal";
   public static final String TAG_LONG       = "$numberLong";
-  public static final String TAG_BYTE       = TAG_LONG;
-  public static final String TAG_SHORT      = TAG_LONG;
-  public static final String TAG_INT        = TAG_LONG;
+  public static final String TAG_BYTE       = "$numberByte";
+  public static final String TAG_SHORT      = "$numberShort";
+  public static final String TAG_INT        = "$numberInt";
+  public static final String TAG_FLOAT      = "$numberFloat";
 
   /**
    * The map between a type and its tag names for the nonintrinsic JSON types.
@@ -54,6 +55,7 @@ public class Types {
     TYPE_TAG_MAP.put(Type.SHORT, TAG_SHORT);
     TYPE_TAG_MAP.put(Type.INT, TAG_INT);
     TYPE_TAG_MAP.put(Type.LONG, TAG_LONG);
+    TYPE_TAG_MAP.put(Type.FLOAT, TAG_FLOAT);
     TYPE_TAG_MAP.put(Type.DECIMAL, TAG_DECIMAL);
     TYPE_TAG_MAP.put(Type.DATE, TAG_DATE);
     TYPE_TAG_MAP.put(Type.TIME, TAG_TIME);
@@ -61,7 +63,7 @@ public class Types {
     TYPE_TAG_MAP.put(Type.INTERVAL, TAG_INTERVAL);
     TYPE_TAG_MAP.put(Type.BINARY, TAG_BINARY);
 
-    assert TYPE_TAG_MAP.size() == (Type.values().length - (7 /*Json intrinsic types*/))
+    assert TYPE_TAG_MAP.size() == (Type.values().length - (6 /*Json intrinsic types*/))
         : "Map is missing some of the Type enum elements";
   }
 

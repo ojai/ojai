@@ -131,21 +131,21 @@ public class TestJsonDocumentReader extends BaseTest {
 
     assertNotNull((et = r.next()));
     assertTrue(r.inMap());
-    assertEquals(EventType.LONG, et);
+    assertEquals(EventType.BYTE, et);
     assertEquals("byte", r.getFieldName());
-    assertEquals(127, r.getLong());
+    assertEquals(127, r.getByte());
 
     assertNotNull((et = r.next()));
     assertTrue(r.inMap());
-    assertEquals(EventType.LONG, et);
+    assertEquals(EventType.SHORT, et);
     assertEquals("short", r.getFieldName());
-    assertEquals(32767, r.getLong());
+    assertEquals(32767, r.getShort());
 
     assertNotNull((et = r.next()));
     assertTrue(r.inMap());
-    assertEquals(EventType.LONG, et);
+    assertEquals(EventType.INT, et);
     assertEquals("int", r.getFieldName());
-    assertEquals(2147483647, r.getLong());
+    assertEquals(2147483647, r.getInt());
 
     assertNotNull((et = r.next()));
     assertTrue(r.inMap());
@@ -155,9 +155,9 @@ public class TestJsonDocumentReader extends BaseTest {
 
     assertNotNull((et = r.next()));
     assertTrue(r.inMap());
-    assertEquals(EventType.DOUBLE, et);
+    assertEquals(EventType.FLOAT, et);
     assertEquals("float", r.getFieldName());
-    assertEquals(3.4028235, r.getDouble(), 0);
+    assertEquals(3.015625, r.getFloat(), 0);
 
     assertNotNull((et = r.next()));
     assertTrue(r.inMap());

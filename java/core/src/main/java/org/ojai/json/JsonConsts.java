@@ -17,7 +17,7 @@ package org.ojai.json;
 
 public class JsonConsts {
 
-  public static final String BASE_URL = "ojai:json:";
+  public static final String BASE_URL = "ojai:json:@";
 
   public static final String DRIVER_NAME = "Json OJAI Driver";
 
