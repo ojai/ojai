@@ -1,34 +1,13 @@
-Repository for python client OJAI support for MapR-DB.
+#OJAI Python APIs.#
 
-Steps to execute:
-1. Now it builds only for python 2.7 or higher. Check your python version
-```python --version```
-2. Check that pip installed:
-```pip -V```
-3. Next, install the following libraries, if not already installed.
-```pip install twine wheel setuptools```
-If some issue occurs with setuptools, use command:
-```sudo -H pip install setuptools --upgrade```
-4. Make sure that you are in the project root directory:
-```ls -l setup.py```
-5. Run command:
-```python setup.py bdist_wheel```
-6. Upon completion, the following directories will be created:
-- build
-- dist
-- ojai_python_appi.egg-info
-If you want to add created package locally in your project, copy dist/ojai_python_api-* to your project 
-and in virtual env execute:
-```pip install ojai_python_api-0.1-py2-none-any.whl```
+## Steps to build the package. ##
 
+Instruction how to build the package you can find [here](https://github.com/ojai/ojai/blob/master/python/build_instruction.md)
 
+## How to generate a documentation with Doxygen.##
 
-Done.
+Instruction how to generate the documentations you can find [here](https://github.com/ojai/ojai/blob/master/python/doc_generation_instruction.md)
 
-Now you able to use the public API.
+## How to generate antlr4 files. ##
 
-Example:
-```
-from ojai.document.Document import Document
-class JsonDocument(Document):
-```
+Instruction how to generate the antlr4 files you can find [here](https://github.com/ojai/ojai/blob/master/python/generate_antlr4_files.md)

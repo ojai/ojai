@@ -8,11 +8,11 @@ setup(name='ojai_python_api',
       version='0.1',
       description='OJAI Python APIs',
       url='https://github.com/ojai/ojai/tree/master/python',
-      author='MapR inc.',
-      authoer_email='dshylov@mapr.com',
-      keywords='ojai python client mapr',
-      packages=find_packages(exclude=['contrib', 'docs', 'tests*', 'document', 'values', 'store']),
-      python_requires='>=2.7'
+      author='MapR, Inc.',
+      keywords='ojai python api',
+      packages=find_packages(exclude=['docs*', 'test*', 'documentations*', 'values', 'store']),
+      python_requires='>=2.7',
+      install_requires=['aenum==2.0.10', 'antlr4-python2-runtime']
       )
 
 # Get the long description from the README file

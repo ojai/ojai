@@ -54,7 +54,7 @@ document_stream = store.find_query(query)
 
 # go to fetched records and print them
 for document in document_stream.iterator():
-    print document
+    print(document)
 
 
 # close

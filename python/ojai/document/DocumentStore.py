@@ -21,6 +21,7 @@ class DocumentStore:
          :param _id: Document id. Type may be str, Value.
          :param field_paths: list of fields that should be returned in the read document.
          :param condition: query condition to test the document
+         :raises StoreError
          :return an OJAI Document with the specified _id"""
         raise NotImplementedError("Should have implemented this")
 
@@ -29,6 +30,7 @@ class DocumentStore:
         """Returns a QueryResult with all the documents in the DocumentStore that
          satisfies the condition.
          :param query: OJAI Query.
+         :raises StoreError
          :return Method returns an instance of QueryResult class which extends from DocumentStream"""
         raise NotImplementedError("Should have implemented this")
 
@@ -40,7 +42,8 @@ class DocumentStore:
         :param field_as_key: document's field to be used as the key when an id is not passed in and the
         document doesn't have an "_id" field or a different field is desired to be used as _id.
         :param doc_stream: the DocumentStream to read the documents from.
-        :param json_dictionary: representation of OJAI Document in dictionary."""
+        :param json_dictionary: representation of OJAI Document in dictionary.
+        :raises StoreError"""
         raise NotImplementedError("Should have implemented this")
 
     @abstractmethod
@@ -51,7 +54,8 @@ class DocumentStore:
         or none of them is applied and a partial update should not be visible to an
         observer.
         :param _id: document id. Type may be str, Value.
-        :param mutation: a mutation object specifying the mutation operations on the document. Type DocumentMutation."""
+        :param mutation: a mutation object specifying the mutation operations on the document. Type DocumentMutation.
+        :raises StoreError"""
         raise NotImplementedError("Should have implemented this")
 
     @abstractmethod
@@ -64,7 +68,8 @@ class DocumentStore:
         passed in and a document doesn't have an "_id" field.
         If the parameter field_as_key is provided, its value will be used as
         the "_id" to delete the document.
-        :param doc_stream: DocumentStream."""
+        :param doc_stream: DocumentStream.
+        :raises StoreError"""
         raise NotImplementedError("Should have implemented this")
 
     @abstractmethod
@@ -77,7 +82,8 @@ class DocumentStore:
         :param field_as_key: document's field to be used as the key when the id is not
         passed in and document doesn't have an "_id" field.
         :param doc_stream: DocumentStream.
-        :param json_dictionary: dictionary representation of Document."""
+        :param json_dictionary: dictionary representation of Document.
+        :raises StoreError"""
         raise NotImplementedError("Should have implemented this")
 
     @abstractmethod
@@ -92,7 +98,8 @@ class DocumentStore:
         :param field_as_key: document's field to be used as the key when the id is not
         passed in and document doesn't have an "_id" field.
         :param doc_stream: DocumentStream.
-        :param json_dictionary: dictionary representation of Document. """
+        :param json_dictionary: dictionary representation of Document.
+        :raises StoreError"""
         raise NotImplementedError("Should have implemented this")
 
     @abstractmethod

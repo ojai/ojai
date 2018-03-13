@@ -9,7 +9,7 @@ class Connection:
     def create_store(self, store_path):
         """Creates a store into database and returns a DocumentStore instance, otherwise raise error
         :param store_path: store path
-        :raises StoreAlreadyExistsError, StoreError
+        :raises StoreError
         :return DocumentStore"""
         raise NotImplementedError("Should have implemented this")
 
