@@ -12,7 +12,7 @@ setup(name='ojai_python_api',
       keywords='ojai python api',
       packages=find_packages(exclude=['docs*', 'test*', 'documentations*', 'values', 'store']),
       python_requires='>=2.7',
-      install_requires=['aenum==2.0.10', 'antlr4-python2-runtime', 'dateutil']
+      install_requires=['aenum==2.0.10', 'antlr4-python2-runtime', 'python-dateutil']
       )
 
 # Get the long description from the README file
