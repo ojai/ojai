@@ -15,24 +15,14 @@
  */
 package org.ojai.util;
 
-import static org.ojai.DocumentConstants.DOCUMENT_KEY;
-
-import java.util.Arrays;
 import java.util.Collection;
 
 import org.ojai.DocumentReader;
 import org.ojai.DocumentReader.EventType;
 import org.ojai.FieldPath;
-import org.ojai.FieldSegment;
-import org.ojai.FieldSegment.NameSegment;
-import org.ojai.JsonString;
 import org.ojai.annotation.API;
 import org.ojai.annotation.API.NonNullable;
-import org.ojai.json.JsonOptions;
 import org.ojai.util.impl.ProjectionTree;
-import org.ojai.util.impl.MutableFieldSegment;
-
-import com.google.common.base.Preconditions;
 
 /**
  * A helper class, which maintains a projection tree built form the list of user specified {@link FieldPath}s
@@ -43,92 +33,40 @@ import com.google.common.base.Preconditions;
  * Use {@link #cloneWithSharedProjectionTree()} in such cases.
  */
 @API.Public
-public final class FieldProjector implements JsonString {
-
-  private static final FieldSegment DOCUMENT_ROOT = new NameSegment(DOCUMENT_KEY, null, false);
-
-  private final ProjectionTree rootSegment;
+public final class FieldProjector extends BaseFieldProjector {
 
   private DocumentReader reader;
 
-  private ProjectionTree currentSegment;
-
-  private ProjectionTree lastSegment;
-
-  private MutableFieldSegment readerFieldSegment;
-
-  private int level;
-
-  /**
-   * This flag indicates that the current Field should be projected because its FieldPath
-   * is a "suffix" of the FieldPath of one of the projected fields.
-   * <p/>
-   * For example, is "a.b.c" is is one of the projected FieldPath then, this is set for
-   * "a", "a.b", and "a.b.c" but not for "a.b.c.d".
-   */
-  private boolean includeField;
-
-  /**
-   * This flag indicates that the current Field should be projected because its FieldPath
-   * is a descendant of one of the projected fields.
-   */
-  private boolean includeAllChildren;
-
   public FieldProjector(@NonNullable String... includedPaths) {
-    this(Fields.toFieldPathArray(
-        Preconditions.checkNotNull(includedPaths)));
+    super(includedPaths);
   }
 
   public FieldProjector(@NonNullable FieldPath... includedPaths) {
-    this(Arrays.asList(
-        Preconditions.checkNotNull(includedPaths)));
+    super(includedPaths);
   }
 
   public FieldProjector(@NonNullable Collection<FieldPath> includedPaths) {
-    rootSegment = new ProjectionTree(DOCUMENT_ROOT, null);
-    for (FieldPath includedPath : Preconditions.checkNotNull(includedPaths)) {
-      rootSegment.addOrGetChild(includedPath.getRootSegment());
-    }
-    finishConstruction();
+    super(includedPaths);
   }
 
   /**
    * Creates a lightweight clone of this FieldProjector with shared ProjectionTree.
    */
+  @Override
   public FieldProjector cloneWithSharedProjectionTree() {
     return new FieldProjector(rootSegment);
   }
 
-  private FieldProjector(final ProjectionTree rootSegment) {
-    this.rootSegment = rootSegment;
-    finishConstruction();
-  }
-
-  /**
-   * Sets/resets the state variable to their state at the construction time.
-   */
-  private void finishConstruction() {
-    if (rootSegment == null) {
-      throw new AssertionError("`rootSegment` needs to be set before calling this method");
-    }
-    level = 0;
-    reader = null;
-    currentSegment = rootSegment;
-    lastSegment = rootSegment;
-    includeField = false;
-    includeAllChildren = false;
-    readerFieldSegment = new MutableFieldSegment();
-  }
-
-  boolean shouldEmitEvent() {
-    return includeField || includeAllChildren;
+  public FieldProjector(final ProjectionTree rootSegment) {
+    super(rootSegment);
   }
 
   /**
    * This is the main algorithm that determine if the current {@link DocumentReader}
    * node should be included or excluded based on the set of projected fields.
    */
-  void moveTo(EventType event) {
+  @Override
+  public void moveTo(EventType event) {
     ProjectionTree childSegment = null;
     if (currentSegment != null) { // skipped in short-circuit mode
         if (event == EventType.END_MAP || event == EventType.END_ARRAY) {
@@ -147,14 +85,17 @@ public final class FieldProjector implements JsonString {
            */
           childSegment = currentSegment.findChild(readerFieldSegment);
           /*
-           * If a matching field segment if found, the current reader field is included
+           * If a matching field segment if found or current segment is an array of single values,
+           * like "a[]", the current reader field is included
            */
-          includeField = (childSegment != null)
+          includeField = (currentSegment.isSingleValueArray() ||
+                          ((childSegment != null)
               /*
                * however, if the current reader field is a scalar type, the corresponding
                * field segment in the projection tree must be a leaf node.
                */
-              && (event == EventType.START_MAP || event == EventType.START_ARRAY || childSegment.isLeafSegment());
+              && (event == EventType.START_MAP || event == EventType.START_ARRAY ||
+                  (childSegment.isLeafSegment() || childSegment.isSingleValueArray()))));
         }
     }
 
@@ -218,25 +159,21 @@ public final class FieldProjector implements JsonString {
    * Resets the state of this projection tree to the root of the Document.
    * @return {@code this} for chaining.
    */
-  FieldProjector reset(DocumentReader reader) {
+  @Override
+  public FieldProjector reset(DocumentReader reader) {
     this.reader = reader;
     this.currentSegment = rootSegment;
     return this;
   }
 
+  /**
+   * Resets the state of this projection tree to the root of the Document
+   * when not using with a DocumentReader
+   * @return {@code this} for chaining;
+   */
   @Override
-  public String toString() {
-    return asJsonString();
-  }
-
-  @Override
-  public String asJsonString() {
-    return rootSegment.toString();
-  }
-
-  @Override
-  public String asJsonString(JsonOptions options) {
-    return asJsonString();
+  public FieldProjector reset() {
+    throw new UnsupportedOperationException();
   }
 
 }

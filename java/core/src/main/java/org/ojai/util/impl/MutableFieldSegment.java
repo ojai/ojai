@@ -52,6 +52,18 @@ public class MutableFieldSegment implements Comparable<MutableFieldSegment> {
     return this;
   }
 
+  public boolean isNamed() {
+    return this.isNamed;
+  }
+
+  public boolean hasIndex() {
+    return !this.isNamed;
+  }
+
+  public int getIndex() {
+    return this.fieldIndex;
+  }
+
   @Override
   public int compareTo(MutableFieldSegment that) {
     if (this.isNamed == that.isNamed) {

@@ -20,6 +20,7 @@ import static org.junit.Assert.assertNull;
 import java.io.InputStream;
 
 import org.junit.Test;
+import org.ojai.Document;
 import org.ojai.DocumentReader;
 import org.ojai.DocumentReader.EventType;
 import org.ojai.DocumentStream;
@@ -425,6 +426,209 @@ public class TestDocumentReaderWithProjection extends BaseTest {
 
       assertNull(r.next());
     }
+  }
+
+  @Test
+  public void testProjectEntireArrayOnSubdocument() {
+    Document doc = Json.newDocument()
+                       .set("a.b", "ab")
+                       .set("a.c.d", "acd")
+                       .set("a.x", "ax")
+                       .setArray("a.d", new Object[] {"ad1","ad2","ad3"});
+
+    DocumentReader docReader = doc.asReader();
+    String[] paths = {"a[].b","a.c[]","a.d[2]","a[].x[]"};
+    FieldProjector fieldProjector = new FieldProjector(paths);
+
+    DocumentReaderWithProjection r = new DocumentReaderWithProjection(docReader, fieldProjector);
+
+    assertMapEvent(r, EventType.START_MAP, null);
+      assertMapEvent(r, EventType.START_MAP, "a");
+        assertMapEvent(r, EventType.STRING, "b");
+
+        assertMapEvent(r, EventType.START_MAP, "c");
+          assertMapEvent(r, EventType.STRING, "d");
+        assertMapEvent(r, EventType.END_MAP, "c");
+
+        assertMapEvent(r, EventType.STRING, "x");
+
+        assertMapEvent(r, EventType.START_ARRAY, "d");
+          assertArrayEvent(r, EventType.STRING, 2);
+        assertMapEvent(r, EventType.END_ARRAY, "d");
+
+      assertMapEvent(r, EventType.END_MAP, "a");
+    assertMapEvent(r, EventType.END_MAP, null);
+    assertNull(r.next());
+  }
+
+  @Test
+  public void testProjectEntireArrayOnArray() {
+    Document subDoc1 = Json.newDocument()
+                           .set("d", "cd1");
+    Document subDoc2 = Json.newDocument()
+                           .set("d1", "cd2");
+    Document subDoc3 = Json.newDocument()
+                           .set("d", "cd3");
+
+    Document doc = Json.newDocument()
+                       .setArray("a.b", new Object[] { "ab1", "ab2", "ab3"})
+                       .setArray("a.c", new Object[] { subDoc1, subDoc2, subDoc3 })
+                       .setArray("a.d", new Object[] {
+                                        new Object [] { (long) 0xad1, (long) 0xad2 },
+                                        new Object [] { (long) 0xad3, (long) 0xad4 }
+                                        }
+                        )
+                       .set("a.e", "ae");
+
+    DocumentReader docReader = doc.asReader();
+    String[] paths = {"a[].b[]","a.c[].d","a.d[]"};
+    FieldProjector fieldProjector = new FieldProjector(paths);
+
+    DocumentReaderWithProjection r = new DocumentReaderWithProjection(docReader, fieldProjector);
+
+    assertMapEvent(r, EventType.START_MAP, null);
+      assertMapEvent(r, EventType.START_MAP, "a");
+
+        assertMapEvent(r, EventType.START_ARRAY, "b");
+          assertArrayEvent(r, EventType.STRING, 0);
+          assertArrayEvent(r, EventType.STRING, 1);
+          assertArrayEvent(r, EventType.STRING, 2);
+        assertMapEvent(r, EventType.END_ARRAY, "b");
+
+        assertMapEvent(r, EventType.START_ARRAY, "c");
+          assertArrayEvent(r, EventType.START_MAP, 0);
+            assertMapEvent(r, EventType.STRING, "d");
+          assertArrayEvent(r, EventType.END_MAP, 0);
+
+          assertArrayEvent(r, EventType.START_MAP, 1);
+          assertArrayEvent(r, EventType.END_MAP, 1);
+
+          assertArrayEvent(r, EventType.START_MAP, 2);
+            assertMapEvent(r, EventType.STRING, "d");
+          assertArrayEvent(r, EventType.END_MAP, 2);
+        assertMapEvent(r, EventType.END_ARRAY, "c");
+
+        assertMapEvent(r, EventType.START_ARRAY, "d");
+          assertArrayEvent(r, EventType.START_ARRAY, 0);
+            assertArrayEvent(r, EventType.LONG, 0);
+            assertArrayEvent(r, EventType.LONG, 1);
+          assertArrayEvent(r, EventType.END_ARRAY, 0);
+
+          assertArrayEvent(r, EventType.START_ARRAY, 1);
+            assertArrayEvent(r, EventType.LONG, 0);
+            assertArrayEvent(r, EventType.LONG, 1);
+          assertArrayEvent(r, EventType.END_ARRAY, 1);
+        assertMapEvent(r, EventType.END_ARRAY, "d");
+
+      assertMapEvent(r, EventType.END_MAP, "a");
+    assertMapEvent(r, EventType.END_MAP, null);
+  }
+
+  @Test
+  public void testProjecEntireArrayOfScalar() {
+    Document doc = Json.newDocument()
+                     .set("a.b", "ab1")
+                     .setArray("a.c.e", new Object[] { "ace1", "ace2", "ace3"})
+                     .setArray("a.c.d",
+                                new Object[] {
+                               new Object[] { "acd1", "acd2", "acd3" },
+                               new Object[] { "acd4", "acd5", "acd6" }
+                             }
+                     )
+                     .set("a.d", "ad");
+
+    DocumentReader docReader = doc.asReader();
+    String[] paths = {"a.b[]","a.c.d[0][]","a.d[][]"};
+    FieldProjector fieldProjector = new FieldProjector(paths);
+
+    DocumentReaderWithProjection r = new DocumentReaderWithProjection(docReader, fieldProjector);
+
+    assertMapEvent(r, EventType.START_MAP, null);
+    assertMapEvent(r, EventType.START_MAP, "a");
+
+      assertMapEvent(r, EventType.STRING, "b");
+
+      assertMapEvent(r, EventType.START_MAP, "c");
+        assertMapEvent(r, EventType.START_ARRAY, "d");
+          assertArrayEvent(r, EventType.START_ARRAY, 0);
+            assertArrayEvent(r, EventType.STRING, 0);
+            assertArrayEvent(r, EventType.STRING, 1);
+            assertArrayEvent(r, EventType.STRING, 2);
+          assertArrayEvent(r, EventType.END_ARRAY, 0);
+        assertMapEvent(r, EventType.END_ARRAY, "d");
+      assertMapEvent(r, EventType.END_MAP, "c");
+
+    assertMapEvent(r, EventType.END_MAP, "a");
+    assertMapEvent(r, EventType.END_MAP, null);
+  }
+
+  @Test
+  public void testProjectionEntireArrayMixed() {
+    Document doc = Json.newDocument()
+                       .set("a.scalar1", "ab1")
+                       .setArray("a.array", new Object[] { "ac1", "ac2", "ac3", "ac4"})
+                       .setArray("a.arrayOfArray", new Object[] {
+                               new Object[] { "aoa1", "aoa2" , "aoa3" },
+                               new Object[] { "aoa4", "aoa5", "aoa6" }
+                        })
+                       .setArray("a.arrayOfMaps", new Object[] {
+                               Json.newDocument().set("map1", "aom1")
+                                                 .set("map2", "aom2")
+                                                 .set("map3", "aom3"),
+                               Json.newDocument().set("map4", "aom4")
+                                                 .set("map5", "aom5")
+                                                 .set("map6", "aom6")
+                        })
+                       .set("a.scalar2", (long) 0x12345)
+                       .set("b.c", "bc1");
+
+    DocumentReader docReader = doc.asReader();
+    String[] paths = {"a.scalar1[]",
+                      "a[].array[2]",
+                      "a.arrayOfArray[][1]",
+                      "a.arrayOfMaps[].map2",
+                      "a[].scalar2",
+                      "b[]"};
+
+    FieldProjector fieldProjector = new FieldProjector(paths);
+
+    DocumentReaderWithProjection r = new DocumentReaderWithProjection(docReader, fieldProjector);
+
+    assertMapEvent(r, EventType.START_MAP, null);
+      assertMapEvent(r, EventType.START_MAP, "a");
+
+        assertMapEvent(r, EventType.STRING, "scalar1");
+
+        assertMapEvent(r, EventType.START_ARRAY, "array");
+          assertArrayEvent(r, EventType.STRING, 2);
+        assertMapEvent(r, EventType.END_ARRAY, "array");
+
+        assertMapEvent(r, EventType.START_ARRAY, "arrayOfArray");
+          assertArrayEvent(r, EventType.START_ARRAY, 0);
+            assertArrayEvent(r, EventType.STRING, 1);
+          assertArrayEvent(r, EventType.END_ARRAY, 0);
+
+          assertArrayEvent(r, EventType.START_ARRAY, 1);
+            assertArrayEvent(r, EventType.STRING, 1);
+          assertArrayEvent(r, EventType.END_ARRAY, 1);
+        assertMapEvent(r, EventType.END_ARRAY, "arrayOfArray");
+
+        assertMapEvent(r, EventType.START_ARRAY, "arrayOfMaps");
+          assertArrayEvent(r, EventType.START_MAP, 0);
+            assertMapEvent(r, EventType.STRING, "map2");
+          assertArrayEvent(r, EventType.END_MAP, 0);
+
+          assertArrayEvent(r, EventType.START_MAP, 1);
+          assertArrayEvent(r, EventType.END_MAP, 1);
+        assertMapEvent(r, EventType.END_ARRAY, "arrayOfMaps");
+
+        assertMapEvent(r, EventType.LONG, "scalar2");
+      assertMapEvent(r, EventType.END_MAP, "a");
+
+      assertMapEvent(r, EventType.START_MAP, "b");
+        assertMapEvent(r, EventType.STRING, "c");
+      assertMapEvent(r, EventType.END_MAP, "b");
+    assertMapEvent(r, EventType.END_MAP, null);
   }
 
 }
