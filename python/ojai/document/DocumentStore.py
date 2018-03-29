@@ -15,27 +15,32 @@ class DocumentStore:
         raise NotImplementedError("Should have implemented this")
 
     @abstractmethod
-    def find_by_id(self, _id, field_paths=None, condition=None):
-        """Returns the Document with the given `_id` or None if the document with that `_id`
-         doesn't exist in this DocumentStore.
-         :param _id: Document id. Type may be str, Value.
-         :param field_paths: list of fields that should be returned in the read document.
-         :param condition: query condition to test the document
-         :raises StoreError
-         :return an OJAI Document with the specified _id"""
+    def find_by_id(self, _id, field_paths=None, condition=None, result_as_document=False):
+        """Returns the document with the specified `_id` or None if the document with that `_id` either doesn't exist
+        in this DocumentStore or does not meet the specified condition.
+        When 'result_as_document' flag is set to False (default), the document is returned as Python dictionary
+        and when True, the document is returned as an object of OJAI Document class.
+        :param _id: Document id. Type may be str, Value.
+        :param field_paths: list of fields that should be returned in the read document.
+        :param condition: query condition to test the document
+        :param result_as_document: if True, the document is returned as object of OJAI Document class.
+        :raises StoreError
+        :return an OJAI document with the specified _id"""
         raise NotImplementedError("Should have implemented this")
 
     @abstractmethod
-    def find(self, query):
-        """Returns a QueryResult with all the documents in the DocumentStore that
-         satisfies the condition.
-         :param query: OJAI Query.
-         :raises StoreError
-         :return Method returns an instance of QueryResult class which extends from DocumentStream"""
+    def find(self, query, result_as_document=False):
+        """Returns a QueryResult with all the documents from this DocumentStore that matachs the specified query criteia.
+        When 'result_as_document' flag is set to False (default), the documents are returned as Python dictionaries
+        and when True, the documents are returned as objects of OJAI Document class.
+        :param query: OJAI Query.
+        :param result_as_document: if True, the documents are returned as objects of OJAI Document class.
+        :raises StoreError
+        :return Method returns an object of QueryResult containing OJAI documents"""
         raise NotImplementedError("Should have implemented this")
 
     @abstractmethod
-    def insert_or_replace(self, doc=None, _id=None, field_as_key=None, doc_stream=None, json_dictionary=None):
+    def insert_or_replace(self, doc, _id=None, field_as_key=None, doc_stream=None, json_dictionary=None):
         """Inserts or replaces a new document in this DocumentStore with the given _id.
         :param doc: the Document to be inserted or replaced in the DocumentStore.
         :param _id: value to be used as the _id for this document.
@@ -73,7 +78,7 @@ class DocumentStore:
         raise NotImplementedError("Should have implemented this")
 
     @abstractmethod
-    def insert(self, doc=None, _id=None, field_as_key=None, doc_stream=None, json_dictionary=None):
+    def insert(self, doc, _id=None, field_as_key=None, doc_stream=None, json_dictionary=None):
         """Inserts a document with the given id or documents represent by the DocumentStream.
         This operation is successful only when the document with the given id doesn't exist.
         If "_id" already existed in the document, then an error will be thrown.
@@ -87,7 +92,7 @@ class DocumentStore:
         raise NotImplementedError("Should have implemented this")
 
     @abstractmethod
-    def replace(self, doc=None, _id=None, field_as_key=None, doc_stream=None, json_dictionary=None):
+    def replace(self, doc, _id=None, field_as_key=None, doc_stream=None, json_dictionary=None):
         """Replaces a document or set of documents represented by the DocumentStream in the DocumentStore.
         The document id is either explicitly specified as parameter "id" or it is implicitly specified as the
         field "_id" in the passed document. If the document id is explicitly passed then the document should
