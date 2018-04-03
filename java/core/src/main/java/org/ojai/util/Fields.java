@@ -70,4 +70,19 @@ public class Fields {
     }
   }
 
+  private static final String[] EMPTRY_FIELDPATH_STRING_ARRAY = new String[0];
+  public static String[] toFieldPathStringArray(@Nullable FieldPath... fieldPaths) {
+    if (fieldPaths == null) {
+      return null;
+    } else if (fieldPaths.length == 0) {
+      return EMPTRY_FIELDPATH_STRING_ARRAY;
+    } else {
+      final String[] fpArray = new String[fieldPaths.length];
+      for (int i = 0; i < fieldPaths.length; i++) {
+        fpArray[i] = fieldPaths[i].asPathString();
+      }
+      return fpArray;
+    }
+  }
+
 }

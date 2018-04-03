@@ -45,4 +45,26 @@ public class TestFields {
         Fields.toFieldPathArray("a", "b"));
   }
 
+  @Test
+  public void toFieldPathStringArray_NullArray() {
+    assertArrayEquals(null, Fields.toFieldPathStringArray((FieldPath[])null));
+  }
+
+  @Test
+  public void toFieldPathStringArray_EmptyArray() {
+    assertArrayEquals(new String[0], Fields.toFieldPathStringArray(new FieldPath[0]));
+  }
+
+  @Test
+  public void toFieldPathStringArray_SingleFieldPath() {
+    assertArrayEquals(new String[] {"a"},
+        Fields.toFieldPathStringArray(FieldPath.parseFrom("a")));
+  }
+
+  @Test
+  public void toFieldPathStringArray_MultiFieldPath() {
+    assertArrayEquals(new String[] {"a", "b"},
+        Fields.toFieldPathStringArray(FieldPath.parseFrom("a"), FieldPath.parseFrom("b")));
+  }
+
 }
