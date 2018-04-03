@@ -36,6 +36,31 @@ import org.ojai.exceptions.QueryTimeoutException;
 public interface Query extends Buildable {
 
   /**
+   * OJAI field name for the {@link #select(FieldPath...)} operator.
+   */
+  public static final String SELECT   = "$select";
+
+  /**
+   * OJAI field name for the {@link #orderBy(FieldPath...)} operator
+   */
+  public static final String ORDERBY  = "$orderby";
+
+  /**
+   * OJAI field name for the {@link #where(QueryCondition)} operator
+   */
+  public static final String WHERE    = "$where";
+
+  /**
+   * OJAI field name for the {@link #limit(long)} operator
+   */
+  public static final String LIMIT    = "$limit";
+
+  /**
+   * OJAI field name for the {@link #offset(long)} operator
+   */
+  public static final String OFFSET   = "$offset";
+
+  /**
    * Sets a named query option. A query option can be used to provide hints to query execution engine.
    * However, under stable conditions, a query option can not alter the result of the query.
    * <p/>
