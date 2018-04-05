@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017 MapR, Inc.
+ * Copyright (c) 2018 MapR, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,16 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ojai.util;
+package org.ojai.base;
 
 import org.ojai.Document;
 import org.ojai.json.impl.JsonDocument;
 import org.ojai.store.QueryResult;
 
-/**
- * A QueryResult that returns no documents.
- */
-public class EmptyQueryResult extends EmptyDocumentStream implements QueryResult {
+public abstract class QueryResultBase extends DocumentStreamBase implements QueryResult {
 
   @Override
   public Document getQueryPlan() {

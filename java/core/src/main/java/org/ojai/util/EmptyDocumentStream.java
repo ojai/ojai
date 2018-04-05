@@ -19,52 +19,12 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import org.ojai.Document;
-import org.ojai.DocumentListener;
-import org.ojai.DocumentReader;
-import org.ojai.DocumentStream;
-import org.ojai.exceptions.OjaiException;
+import org.ojai.base.DocumentStreamBase;
 
 /**
  * A DocumentStream that returns no documents.
  */
-public class EmptyDocumentStream implements DocumentStream {
-  private boolean isUsed;
-  private boolean isClosed;
-
-  @Override
-  public Iterator<Document> iterator() {
-    checkState();
-    return new EmptyIterator<Document>();
-  }
-
-  @Override
-  public void streamTo(DocumentListener listener) {
-    checkState();
-    listener.eos();
-  }
-
-  @Override
-  public Iterable<DocumentReader> documentReaders() {
-    checkState();
-    return new EmptyIterable<DocumentReader>();
-  }
-
-  @Override
-  public void close() throws OjaiException {
-    isClosed = true;
-  }
-
-  private void checkState() {
-    checkOpen();
-    if (isUsed) {
-      throw new IllegalStateException("DocumentStream has already been used once");
-    }
-  }
-  private void checkOpen() {
-    if (isClosed) {
-      throw new IllegalStateException("DocumentStream is already closed");
-    }
-  }
+public class EmptyDocumentStream extends DocumentStreamBase {
 
   /**
    * An empty Iterator that returns nothing.
@@ -81,14 +41,9 @@ public class EmptyDocumentStream implements DocumentStream {
     }
   }
 
-  /**
-   * An empty Iterable that returns nothing.
-   */
-  private static class EmptyIterable<T> implements Iterable<T> {
-    @Override
-    public Iterator<T> iterator() {
-      return new EmptyIterator<T>();
-    }
+  @Override
+  protected Iterator<Document> iteratorDerived() {
+    return new EmptyIterator<>();
   }
 
 }
