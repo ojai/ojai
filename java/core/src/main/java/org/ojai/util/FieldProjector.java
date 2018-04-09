@@ -22,6 +22,7 @@ import org.ojai.DocumentReader.EventType;
 import org.ojai.FieldPath;
 import org.ojai.annotation.API;
 import org.ojai.annotation.API.NonNullable;
+import org.ojai.util.impl.MutableFieldSegment;
 import org.ojai.util.impl.ProjectionTree;
 
 /**
@@ -165,15 +166,4 @@ public final class FieldProjector extends BaseFieldProjector {
     this.currentSegment = rootSegment;
     return this;
   }
-
-  /**
-   * Resets the state of this projection tree to the root of the Document
-   * when not using with a DocumentReader
-   * @return {@code this} for chaining;
-   */
-  @Override
-  public FieldProjector reset() {
-    throw new UnsupportedOperationException();
-  }
-
 }

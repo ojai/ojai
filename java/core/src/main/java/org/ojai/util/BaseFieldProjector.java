@@ -111,23 +111,69 @@ public abstract class BaseFieldProjector implements JsonString {
   }
 
   /**
-   * This is the main algorithm that determine if the current {@link DocumentReader}
-   * node should be included or excluded based on the set of projected fields.
+   * This is the main algorithm that determine if the current {@link DocumentReader} or
+   * {@link MutableFieldSegment} node should be included or excluded based on the set
+   * of projected fields.
    */
-  protected abstract void moveTo(EventType event);
+  protected void moveTo(EventType event) {
+    throw new UnsupportedOperationException();
+  }
+
+  /**
+   * To be used when input {@link Document} is not from a {@link DocumentReader}
+   * but provided externally as a {@link MutableFieldSegment}.
+   *
+   * A {@link MutableFieldSegment} can represent an {@link IndexSegment} or {@link NameSegment}
+   * with appropriate attributes set. A single {@link MutableFieldSegment} should represent
+   * on independent {@link FieldSegment} which is part of a {@link FieldPath} that has been
+   * encountered while decoding or traversing a {@link Document}.
+   *
+   * When {@link moveTo} is called with a {@link MutableFieldSegment} keySegment input, the method
+   * will try to search if the keySegment is a child of the {@link currentSegment}. The outcome of the
+   * search is captured in the {@link BaseFieldProjector} state. The caller can subsequently call
+   * {@link shouldEmitEvent} in order to find out whether the child keySegment was found.
+   * If the child keySegment is indeed found, the {@link currentSegment} will be set to the
+   * child keySegment.
+   *
+   * Since {@link moveTo} can cause a change to the {@link currentSegment} being pointed to, in a hierarchical
+   * tree traversal, the effect of walking 'down' the {@link ProjectionTree} needs to be reversed when
+   * walking back 'up' the {@link ProjectionTree}. Therefore, {@link moveTo} should be called twice for each
+   * {@link MutableFieldSegment} - once to traverse 'down' the tree and once to travrse back 'up'.
+   */
+  protected void moveTo(MutableFieldSegment keySegment, EventType event) {
+    throw new UnsupportedOperationException();
+  }
+
+  /**
+   * Returns {@code true} if ProjectionTree has visited all nodes
+   */
+  public boolean isDone() {
+    return (currentSegment == null);
+  }
 
   /**
    * Resets the state of this projection tree to the root of the Document.
    * @return {@code this} for chaining.
    */
-  protected abstract BaseFieldProjector reset(DocumentReader reader);
+  protected BaseFieldProjector reset(DocumentReader reader) {
+    throw new UnsupportedOperationException();
+  }
 
   /**
    * Resets the state of this projection tree to the root of the Document
-   * when not using with a DocumentReader
+   * when not using with a DocumentReader.
    * @return {@code this} for chaining;
    */
-  protected abstract BaseFieldProjector reset();
+  public BaseFieldProjector reset() {
+    throw new UnsupportedOperationException();
+  }
+
+  /**
+   * Returns {@code true} if ProjectionTree has visited all nodes
+   */
+  public boolean done() {
+    return currentSegment == null;
+  }
 
   @Override
   public String toString() {
@@ -143,5 +189,4 @@ public abstract class BaseFieldProjector implements JsonString {
   public String asJsonString(JsonOptions options) {
     return asJsonString();
   }
-
 }

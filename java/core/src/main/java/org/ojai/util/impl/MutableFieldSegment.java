@@ -33,6 +33,16 @@ public class MutableFieldSegment implements Comparable<MutableFieldSegment> {
   public MutableFieldSegment() {
   }
 
+  public MutableFieldSegment(String name) {
+    isNamed = true;
+    fieldName = name;
+  }
+
+  public MutableFieldSegment(int index) {
+    isNamed = false;
+    fieldIndex = index;
+  }
+
   MutableFieldSegment(FieldSegment fieldSegment) {
     isNamed = fieldSegment.isNamed();
     if (isNamed) {
