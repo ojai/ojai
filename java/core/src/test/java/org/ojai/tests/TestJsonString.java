@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017 MapR, Inc.
+ * Copyright (c) 2018 MapR, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,26 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ojai;
+package org.ojai.tests;
 
-import org.ojai.annotation.API.NonNullable;
+import static org.junit.Assert.fail;
+
+import org.junit.Test;
+import org.ojai.JsonString;
 import org.ojai.json.JsonOptions;
 
-public interface JsonString {
+public class TestJsonString extends BaseTest {
 
-  /**
-   * @return this OJAI object serialized as JSON string using the default options
-   */
-  default String asJsonString() {
-    throw new UnsupportedOperationException(this.getClass().getTypeName()
-        + " has not implemented asJsonString() method.");
-  }
+  @Test
+  public void testDefaultJsonString() {
+    JsonString derived = new JsonString() {};
 
-  /**
-   * @return this OJAI object serialized as JSON string using the specified options
-   */
-  default String asJsonString(@NonNullable JsonOptions options) {
-    return asJsonString(); 
+    try {
+      derived.asJsonString();
+      fail();
+    } catch (UnsupportedOperationException e) {}
+
+    try {
+      derived.asJsonString(JsonOptions.DEFAULT);
+      fail();
+    } catch (UnsupportedOperationException e) {}
   }
 
 }

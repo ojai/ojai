@@ -22,6 +22,7 @@ import org.ojai.Document;
 import org.ojai.DocumentListener;
 import org.ojai.DocumentStream;
 import org.ojai.FieldPath;
+import org.ojai.JsonString;
 import org.ojai.annotation.API;
 import org.ojai.annotation.API.NonNullable;
 import org.ojai.exceptions.OjaiException;
@@ -33,7 +34,7 @@ import org.ojai.exceptions.QueryTimeoutException;
  */
 @API.Public
 @API.ImmutableOnBuild
-public interface Query extends Buildable {
+public interface Query extends Buildable, JsonString {
 
   /**
    * OJAI field name for the {@link #select(FieldPath...)} operator.

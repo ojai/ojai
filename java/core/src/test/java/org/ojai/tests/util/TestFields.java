@@ -19,9 +19,10 @@ import static org.junit.Assert.assertArrayEquals;
 
 import org.junit.Test;
 import org.ojai.FieldPath;
+import org.ojai.tests.BaseTest;
 import org.ojai.util.Fields;
 
-public class TestFields {
+public class TestFields extends BaseTest {
 
   @Test
   public void testToFieldPathArray_NullArray() {

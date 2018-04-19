@@ -23,10 +23,11 @@ import org.junit.Test;
 import org.ojai.Document;
 import org.ojai.Value.Type;
 import org.ojai.json.Json;
+import org.ojai.tests.BaseTest;
 import org.ojai.tests.beans.model.BeanWithAllTypes;
 import org.ojai.tests.beans.model.User;
 
-public class TestJavaBeans {
+public class TestJavaBeans extends BaseTest {
 
   @Test
   public void testJavaBeansWithAllTypes() {

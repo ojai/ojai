@@ -24,9 +24,10 @@ import org.junit.Test;
 import org.ojai.Document;
 import org.ojai.DocumentListener;
 import org.ojai.DocumentStream;
+import org.ojai.tests.BaseTest;
 import org.ojai.util.EmptyDocumentStream;
 
-public class TestEmptyDocumentStream {
+public class TestEmptyDocumentStream extends BaseTest {
 
   @Test
   public void test_EmptyDocumentStream() {

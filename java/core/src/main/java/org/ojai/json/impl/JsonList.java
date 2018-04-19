@@ -292,8 +292,7 @@ class JsonList extends JsonValue implements List<Object> {
 
     // if this is the last path then return the value at this key in map
     if (field.isLastPath()) {
-      list.remove(kv.key);
-
+      list.remove(kv);
     }
 
     if (field.isMap()) {

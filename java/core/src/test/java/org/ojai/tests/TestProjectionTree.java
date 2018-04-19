@@ -26,7 +26,7 @@ import org.ojai.util.impl.ProjectionTree;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class TestProjectionTree {
+public class TestProjectionTree extends BaseTest {
   private static final Logger _logger = LoggerFactory.getLogger(TestProjectionTree.class);
 
   @Test

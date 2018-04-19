@@ -23,6 +23,7 @@ import java.util.Map;
 
 import org.ojai.Document;
 import org.ojai.FieldPath;
+import org.ojai.JsonString;
 import org.ojai.Value;
 import org.ojai.Value.Type;
 import org.ojai.annotation.API;
@@ -109,7 +110,12 @@ import org.ojai.types.OTimestamp;
  */
 @API.Public
 @API.NotThreadSafe
-public interface DocumentMutation extends Iterable<MutationOp> {
+public interface DocumentMutation extends Iterable<MutationOp>, JsonString {
+
+  /**
+   * OJAI field name for the {@link DocumentMutation} object.
+   */
+  public static final String MUTATION   = "$mutation";
 
   /**
    * Empties this DocumentMutation object.

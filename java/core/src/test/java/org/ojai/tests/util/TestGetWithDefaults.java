@@ -26,9 +26,10 @@ import org.junit.Test;
 import org.ojai.Document;
 import org.ojai.FieldPath;
 import org.ojai.json.Json;
+import org.ojai.tests.BaseTest;
 import org.ojai.util.Documents;
 
-public class TestGetWithDefaults {
+public class TestGetWithDefaults extends BaseTest {
 
   private static final String docStrWithTags =
       "{\"map\":{"

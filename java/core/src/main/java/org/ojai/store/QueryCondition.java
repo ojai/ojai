@@ -23,6 +23,7 @@ import java.util.regex.PatternSyntaxException;
 
 import org.ojai.Buildable;
 import org.ojai.FieldPath;
+import org.ojai.JsonString;
 import org.ojai.Value;
 import org.ojai.Value.Type;
 import org.ojai.annotation.API;
@@ -35,7 +36,7 @@ import org.ojai.types.OTimestamp;
 
 @API.Public
 @API.ImmutableOnBuild
-public interface QueryCondition extends Buildable {
+public interface QueryCondition extends Buildable, JsonString {
 
   public enum Op {
     /**

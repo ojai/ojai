@@ -22,7 +22,6 @@ import org.ojai.DocumentReader.EventType;
 import org.ojai.FieldPath;
 import org.ojai.annotation.API;
 import org.ojai.annotation.API.NonNullable;
-import org.ojai.util.impl.MutableFieldSegment;
 import org.ojai.util.impl.ProjectionTree;
 
 /**

@@ -15,15 +15,18 @@
  */
 package org.ojai.tests.driver;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.ojai.json.JsonConsts;
 import org.ojai.json.impl.store.JsonDriver;
 import org.ojai.store.Driver;
 import org.ojai.store.DriverManager;
+import org.ojai.tests.BaseTest;
 
-public class TestDummyDriver {
+public class TestDummyDriver extends BaseTest {
 
   @Test
   public void testDummyDriver() {

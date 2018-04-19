@@ -33,7 +33,7 @@ import org.ojai.types.OTimestamp;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
-public class TestValueBuilder {
+public class TestValueBuilder extends BaseTest {
 
   @Test
   public void testDBValueBuilder() {
