@@ -827,22 +827,78 @@ public interface DocumentStore extends AutoCloseable {
    * If an id doesn't exist, the function returns false (no exception is thrown).
    * If the mutation operation fails, it throws exception.
    *
+   * @deprecated Use {@link #checkAndUpdate(String, QueryCondition, DocumentMutation)}
+   *
    * @param _id document id
    * @param condition the condition to evaluate on the document
    * @param m mutation to apply on the document
    * @return True if the condition is true for the document; otherwise, false
    * @throws StoreException if the condition passes but the mutate fails
    */
+  @Deprecated
   public boolean checkAndMutate(@NonNullable String _id,
       @NonNullable QueryCondition condition, @NonNullable DocumentMutation mutation) throws StoreException;
+
+  /**
+   * Atomically evaluates the condition on a given document and if the
+   * condition holds true for the document then a mutation is applied on the document.
+   *
+   * If an id doesn't exist, the function returns false (no exception is thrown).
+   * If the mutation operation fails, it throws exception.
+   *
+   * @deprecated Use {@link #checkAndUpdate(Value, QueryCondition, DocumentMutation)}
+   *
+   * @param _id document id
+   * @param condition the condition to evaluate on the document
+   * @param m mutation to apply on the document
+   * @return True if the condition is true for the document; otherwise, false
+   * @throws StoreException if the condition passes but the mutate fails
+   */
+  @Deprecated
   public boolean checkAndMutate(@NonNullable Value _id, @NonNullable QueryCondition condition,
       @NonNullable DocumentMutation mutation) throws StoreException;
+
+  /**
+   * Atomically evaluates the condition on a given document and if the
+   * condition holds true for the document then a mutation is applied on the document.
+   *
+   * If an id doesn't exist, the function returns false (no exception is thrown).
+   * If the mutation operation fails, it throws exception.
+   *
+   * @param _id document id
+   * @param condition the condition to evaluate on the document
+   * @param m mutation to apply on the document
+   * @return True if the condition is true for the document; otherwise, false
+   * @throws StoreException if the condition passes but the mutate fails
+   */
+  default public boolean checkAndUpdate(@NonNullable String _id,
+      @NonNullable QueryCondition condition, @NonNullable DocumentMutation mutation) throws StoreException {
+    return checkAndMutate(_id, condition, mutation);
+  }
+
+  /**
+   * Atomically evaluates the condition on a given document and if the
+   * condition holds true for the document then a mutation is applied on the document.
+   *
+   * If an id doesn't exist, the function returns false (no exception is thrown).
+   * If the mutation operation fails, it throws exception.
+   *
+   * @param _id document id
+   * @param condition the condition to evaluate on the document
+   * @param m mutation to apply on the document
+   * @return True if the condition is true for the document; otherwise, false
+   * @throws StoreException if the condition passes but the mutate fails
+   */
+  default public boolean checkAndUpdate(@NonNullable Value _id, @NonNullable QueryCondition condition,
+      @NonNullable DocumentMutation mutation) throws StoreException {
+    return checkAndMutate(_id, condition, mutation);
+  }
 
   /**
    * Atomically evaluates the condition on given document and if the
    * condition holds true for the document then it is atomically deleted.
    *
-   * If id doesnt exist, returns false (no exception is thrown).
+   * If id doesn't exist, returns false (no exception is thrown).
    * If deletion operation fails, it throws exception.
    *
    * @param _id document id
