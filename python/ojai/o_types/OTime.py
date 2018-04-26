@@ -87,7 +87,7 @@ class OTime(object):
         return self.__get_time().strftime(pattern)
 
     def __str__(self):
-        self.time_to_str()
+        return self.time_to_str()
 
     def __hash__(self):
         return self.millis_of_day

@@ -122,7 +122,7 @@ class DocumentStore:
         raise NotImplementedError("Should have implemented this")
 
     @abstractmethod
-    def check_and_mutate(self, _id, query_condition, mutation):
+    def check_and_update(self, _id, query_condition, mutation):
         """Atomically evaluates the condition on a given document and if the
         condition holds true for the document then a mutation is applied on the document.
         :param _id: document id.
