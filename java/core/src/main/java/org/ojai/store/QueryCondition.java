@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.regex.PatternSyntaxException;
 
 import org.ojai.Buildable;
+import org.ojai.Container;
 import org.ojai.FieldPath;
 import org.ojai.JsonString;
 import org.ojai.Value;
@@ -36,7 +37,7 @@ import org.ojai.types.OTimestamp;
 
 @API.Public
 @API.ImmutableOnBuild
-public interface QueryCondition extends Buildable, JsonString {
+public interface QueryCondition extends Buildable, Container, JsonString {
 
   public enum Op {
     /**
@@ -46,7 +47,7 @@ public interface QueryCondition extends Buildable, JsonString {
      * [NULL, BOOLEAN, STRING, BYTE, SHORT, INT, LONG, FLOAT, DOUBLE,
      * DECIMAL, DATE, TIME, TIMESTAMP, INTERVAL, BINARY]}.
      */
-    LESS,
+    LESS("$lt"),
 
     /**
      * The Value at the specified path is less than or equal to the
@@ -55,21 +56,21 @@ public interface QueryCondition extends Buildable, JsonString {
      * [NULL, BOOLEAN, STRING, BYTE, SHORT, INT, LONG, FLOAT, DOUBLE,
      * DECIMAL, DATE, TIME, TIMESTAMP, INTERVAL, BINARY]}.
      */
-    LESS_OR_EQUAL,
+    LESS_OR_EQUAL("$le"),
 
     /**
      * The Value at the specified path is equal to the reference value.
      * </br></br>
      * Reference value type: All {@link org.ojai.Value.Type}.
      */
-    EQUAL,
+    EQUAL("eq"),
 
     /**
      * The Value at the specified path is not equal to the reference value.
      * </br></br>
      * Reference value type: All {@link org.ojai.Value.Type}.
      */
-    NOT_EQUAL,
+    NOT_EQUAL("$ne"),
 
     /**
      * The Value at the specified path is greater than or equal to the
@@ -78,7 +79,7 @@ public interface QueryCondition extends Buildable, JsonString {
      * [NULL, BOOLEAN, STRING, BYTE, SHORT, INT, LONG, FLOAT, DOUBLE,
      * DECIMAL, DATE, TIME, TIMESTAMP, INTERVAL, BINARY]}.
      */
-    GREATER_OR_EQUAL,
+    GREATER_OR_EQUAL("$ge"),
 
     /**
      * The Value at the specified path is greater than the reference value.
@@ -87,18 +88,23 @@ public interface QueryCondition extends Buildable, JsonString {
      * [NULL, BOOLEAN, STRING, BYTE, SHORT, INT, LONG, FLOAT, DOUBLE,
      * DECIMAL, DATE, TIME, TIMESTAMP, INTERVAL, BINARY]}.
      */
-    GREATER;
+    GREATER("$gt");
+
+    private final String tagName;
+
+    Op(final String tag) {
+      this.tagName = tag;
+    }
+
+    /**
+     * @since 3.0
+     * @return the OJAI tag name for the operator.
+     */
+    public String getTagName() {
+      return tagName;
+    }
+
   }
-
-  /**
-   * @return {@code true} if this condition is empty
-   */
-  public boolean isEmpty();
-
-  /**
-   * @return {@code true} if this condition is built
-   */
-  public boolean isBuilt();
 
   /**
    * Begins a new AND compound condition block.

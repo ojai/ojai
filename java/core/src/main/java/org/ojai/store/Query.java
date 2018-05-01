@@ -18,6 +18,7 @@ package org.ojai.store;
 import java.util.Iterator;
 
 import org.ojai.Buildable;
+import org.ojai.Container;
 import org.ojai.Document;
 import org.ojai.DocumentListener;
 import org.ojai.DocumentStream;
@@ -34,7 +35,7 @@ import org.ojai.exceptions.QueryTimeoutException;
  */
 @API.Public
 @API.ImmutableOnBuild
-public interface Query extends Buildable, JsonString {
+public interface Query extends Buildable, Container, JsonString {
 
   /**
    * OJAI field name for the {@link #select(FieldPath...)} operator.

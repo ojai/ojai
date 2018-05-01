@@ -33,7 +33,7 @@ import org.ojai.types.OTimestamp;
 
 @API.Public
 @API.NotThreadSafe
-public interface Document extends Iterable<Map.Entry<String, Value>>, JsonString {
+public interface Document extends Iterable<Map.Entry<String, Value>>, Container, JsonString {
 
   /**
    * Sets the the "_id" field of this Document to the specified Value.

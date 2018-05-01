@@ -16,6 +16,7 @@
 package org.ojai;
 
 import org.ojai.annotation.API;
+import org.ojai.exceptions.OjaiException;
 
 @API.ImmutableOnBuild
 public interface Buildable {
@@ -25,6 +26,13 @@ public interface Buildable {
    *
    * @return {@code this} for chaining
    */
-  public Buildable build();
+  public Buildable build() throws OjaiException;
+
+  /**
+   * @return {@code true} if this object is built.
+   */
+  default public boolean isBuilt() {
+    throw new UnsupportedOperationException(this.getClass().getTypeName());
+  }
 
 }

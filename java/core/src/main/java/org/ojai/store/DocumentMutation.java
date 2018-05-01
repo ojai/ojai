@@ -21,6 +21,7 @@ import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.Map;
 
+import org.ojai.Container;
 import org.ojai.Document;
 import org.ojai.FieldPath;
 import org.ojai.JsonString;
@@ -110,7 +111,7 @@ import org.ojai.types.OTimestamp;
  */
 @API.Public
 @API.NotThreadSafe
-public interface DocumentMutation extends Iterable<MutationOp>, JsonString {
+public interface DocumentMutation extends Iterable<MutationOp>, Container, JsonString {
 
   /**
    * OJAI field name for the {@link DocumentMutation} object.
