@@ -302,7 +302,6 @@ public interface DocumentStore extends AutoCloseable {
    * <p>The returned DocumentStream must be closed after retrieving the documents.
    *
    * @return a DocumentStream of all documents in the this DocumentStore
-   * @deprecated use {@link #find(Query)}
    *
    * @throws StoreException
    */
