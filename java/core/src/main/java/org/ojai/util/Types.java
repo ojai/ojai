@@ -34,17 +34,28 @@ import com.google.common.collect.Maps;
 @API.Public
 public class Types {
 
-  public static final String TAG_BINARY     = "$binary";
-  public static final String TAG_INTERVAL   = "$interval";
-  public static final String TAG_TIMESTAMP  = "$date";
-  public static final String TAG_TIME       = "$time";
-  public static final String TAG_DATE       = "$dateDay";
-  public static final String TAG_DECIMAL    = "$decimal";
-  public static final String TAG_LONG       = "$numberLong";
-  public static final String TAG_BYTE       = "$numberByte";
-  public static final String TAG_SHORT      = "$numberShort";
-  public static final String TAG_INT        = "$numberInt";
-  public static final String TAG_FLOAT      = "$numberFloat";
+  @Deprecated
+  public static final String TAG_BINARY     = Value.TAG_BINARY;
+  @Deprecated
+  public static final String TAG_INTERVAL   = Value.TAG_INTERVAL;
+  @Deprecated
+  public static final String TAG_TIMESTAMP  = Value.TAG_TIMESTAMP;
+  @Deprecated
+  public static final String TAG_TIME       = Value.TAG_TIME;
+  @Deprecated
+  public static final String TAG_DATE       = Value.TAG_DATE;
+  @Deprecated
+  public static final String TAG_DECIMAL    = Value.TAG_DECIMAL;
+  @Deprecated
+  public static final String TAG_LONG       = Value.TAG_LONG;
+  @Deprecated
+  public static final String TAG_BYTE       = Value.TAG_BYTE;
+  @Deprecated
+  public static final String TAG_SHORT      = Value.TAG_SHORT;
+  @Deprecated
+  public static final String TAG_INT        = Value.TAG_INT;
+  @Deprecated
+  public static final String TAG_FLOAT      = Value.TAG_FLOAT;
 
   /**
    * The map between a type and its tag names for the nonintrinsic JSON types.

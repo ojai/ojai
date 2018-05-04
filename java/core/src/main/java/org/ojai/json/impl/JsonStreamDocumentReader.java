@@ -16,17 +16,17 @@
 package org.ojai.json.impl;
 
 import static org.ojai.util.Constants.MILLISECONDSPERDAY;
-import static org.ojai.util.Types.TAG_BINARY;
-import static org.ojai.util.Types.TAG_BYTE;
-import static org.ojai.util.Types.TAG_DATE;
-import static org.ojai.util.Types.TAG_DECIMAL;
-import static org.ojai.util.Types.TAG_FLOAT;
-import static org.ojai.util.Types.TAG_INT;
-import static org.ojai.util.Types.TAG_INTERVAL;
-import static org.ojai.util.Types.TAG_LONG;
-import static org.ojai.util.Types.TAG_SHORT;
-import static org.ojai.util.Types.TAG_TIME;
-import static org.ojai.util.Types.TAG_TIMESTAMP;
+import static org.ojai.Value.TAG_BINARY;
+import static org.ojai.Value.TAG_BYTE;
+import static org.ojai.Value.TAG_DATE;
+import static org.ojai.Value.TAG_DECIMAL;
+import static org.ojai.Value.TAG_FLOAT;
+import static org.ojai.Value.TAG_INT;
+import static org.ojai.Value.TAG_INTERVAL;
+import static org.ojai.Value.TAG_LONG;
+import static org.ojai.Value.TAG_SHORT;
+import static org.ojai.Value.TAG_TIME;
+import static org.ojai.Value.TAG_TIMESTAMP;
 
 import java.io.IOException;
 import java.math.BigDecimal;

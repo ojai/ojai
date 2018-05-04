@@ -17,6 +17,7 @@ package org.ojai.store;
 
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.PatternSyntaxException;
@@ -39,6 +40,96 @@ import org.ojai.types.OTimestamp;
 @API.ImmutableOnBuild
 public interface QueryCondition extends Buildable, Container, JsonString {
 
+  /**
+   * OJAI tag name for the {@link Op#LESS} operator.
+   */
+  public static final String[] TAGS_LESS = { "$lt" };
+
+  /**
+   * OJAI tag name for the {@link Op#LESS_OR_EQUAL} operator.
+   */
+  public static final String[] TAGS_LESS_OR_EQUAL = { "$le" };
+
+  /**
+   * OJAI tag name for the {@link Op#EQUAL} operator.
+   */
+  public static final String[] TAGS_EQUAL = { "$eq" };
+
+  /**
+   * OJAI tag name for the {@link Op#NOT_EQUAL} operator.
+   */
+  public static final String[] TAGS_NOT_EQUAL = { "$ne" };
+
+  /**
+   * OJAI tag name for the {@link Op#GREATER_OR_EQUAL} operator.
+   */
+  public static final String[] TAGS_GREATER_OR_EQUAL = { "$ge" };
+
+  /**
+   * OJAI tag name for the {@link Op#GREATER} operator.
+   */
+  public static final String[] TAGS_GREATER = { "$gt" };
+
+  /**
+   * OJAI tag name for the {@link #exists(FieldPath)} operator.
+   */
+  public static final String[] TAGS_EXISTS = { "$exists" };
+
+  /**
+   * OJAI tag name for the {@link #notExists(FieldPath)} operator.
+   */
+  public static final String[] TAGS_NOT_EXISTS = { "$notexists" };
+
+  /**
+   * OJAI tag name for the {@link #typeOf(FieldPath, Type)} operator.
+   */
+  public static final String[] TAGS_TYPE_OF = { "$typeof" };
+
+  /**
+   * OJAI tag name for the {@link #notTypeOf(FieldPath, Type)} operator.
+   */
+  public static final String[] TAGS_NOT_TYPE_OF = { "$nottypeof" };
+
+  /**
+   * OJAI tag name for the {@link #like(FieldPath, String)} operator.
+   */
+  public static final String[] TAGS_LIKE = { "$like" };
+
+  /**
+   * OJAI tag name for the {@link #notLike(FieldPath, String)} operator.
+   */
+  public static final String[] TAGS_NOT_LIKE = { "$notlike" };
+
+  /**
+   * OJAI tag name for the {@link #sizeOf(FieldPath, Op, long)} operator.
+   */
+  public static final String[] TAGS_SIZE_OF = { "$sizeof" };
+
+  /**
+   * OJAI tag name for the {@link #in(FieldPath, List)} operator.
+   */
+  public static final String[] TAGS_IN = { "$in" };
+
+  /**
+   * OJAI tag name for the {@link #notIn(FieldPath, List)} operator.
+   */
+  public static final String[] TAGS_NOT_IN = { "$notin" };
+
+  /**
+   * OJAI tag name for the {@link #matches(FieldPath, String)} operator.
+   */
+  public static final String[] TAGS_MATCHES = { "$matches" };
+
+  /**
+   * OJAI tag name for the {@link #notMatches(FieldPath, String)} operator.
+   */
+  public static final String[] TAGS_NOT_MATCHES = { "$notmatches" };
+
+  /**
+   * OJAI tag name for BETWEEN operator.
+   */
+  public static final String[] TAGS_BETWEEN = { "$between" };
+
   public enum Op {
     /**
      * The Value at the specified path is less than the reference value.
@@ -47,7 +138,7 @@ public interface QueryCondition extends Buildable, Container, JsonString {
      * [NULL, BOOLEAN, STRING, BYTE, SHORT, INT, LONG, FLOAT, DOUBLE,
      * DECIMAL, DATE, TIME, TIMESTAMP, INTERVAL, BINARY]}.
      */
-    LESS("$lt"),
+    LESS(TAGS_LESS),
 
     /**
      * The Value at the specified path is less than or equal to the
@@ -56,21 +147,21 @@ public interface QueryCondition extends Buildable, Container, JsonString {
      * [NULL, BOOLEAN, STRING, BYTE, SHORT, INT, LONG, FLOAT, DOUBLE,
      * DECIMAL, DATE, TIME, TIMESTAMP, INTERVAL, BINARY]}.
      */
-    LESS_OR_EQUAL("$le"),
+    LESS_OR_EQUAL(TAGS_LESS_OR_EQUAL),
 
     /**
      * The Value at the specified path is equal to the reference value.
      * </br></br>
      * Reference value type: All {@link org.ojai.Value.Type}.
      */
-    EQUAL("eq"),
+    EQUAL(TAGS_EQUAL),
 
     /**
      * The Value at the specified path is not equal to the reference value.
      * </br></br>
      * Reference value type: All {@link org.ojai.Value.Type}.
      */
-    NOT_EQUAL("$ne"),
+    NOT_EQUAL(TAGS_NOT_EQUAL),
 
     /**
      * The Value at the specified path is greater than or equal to the
@@ -79,7 +170,7 @@ public interface QueryCondition extends Buildable, Container, JsonString {
      * [NULL, BOOLEAN, STRING, BYTE, SHORT, INT, LONG, FLOAT, DOUBLE,
      * DECIMAL, DATE, TIME, TIMESTAMP, INTERVAL, BINARY]}.
      */
-    GREATER_OR_EQUAL("$ge"),
+    GREATER_OR_EQUAL(TAGS_GREATER_OR_EQUAL),
 
     /**
      * The Value at the specified path is greater than the reference value.
@@ -88,12 +179,12 @@ public interface QueryCondition extends Buildable, Container, JsonString {
      * [NULL, BOOLEAN, STRING, BYTE, SHORT, INT, LONG, FLOAT, DOUBLE,
      * DECIMAL, DATE, TIME, TIMESTAMP, INTERVAL, BINARY]}.
      */
-    GREATER("$gt");
+    GREATER(TAGS_GREATER);
 
-    private final String tagName;
+    private final String[] tagNames;
 
-    Op(final String tag) {
-      this.tagName = tag;
+    private Op(final String[] tags) {
+      this.tagNames = tags;
     }
 
     /**
@@ -101,7 +192,15 @@ public interface QueryCondition extends Buildable, Container, JsonString {
      * @return the OJAI tag name for the operator.
      */
     public String getTagName() {
-      return tagName;
+      return tagNames[0];
+    }
+
+    /**
+     * @since 3.0
+     * @return the OJAI tag names for the operator.
+     */
+    public String[] getTagNames() {
+      return Arrays.copyOf(tagNames, tagNames.length);
     }
 
   }

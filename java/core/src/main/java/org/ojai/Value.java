@@ -49,6 +49,18 @@ public interface Value extends JsonString {
   public static final byte TYPE_CODE_MAP        = 16;
   public static final byte TYPE_CODE_ARRAY      = 17;
 
+  public static final String TAG_BINARY     = "$binary";
+  public static final String TAG_INTERVAL   = "$interval";
+  public static final String TAG_TIMESTAMP  = "$date";
+  public static final String TAG_TIME       = "$time";
+  public static final String TAG_DATE       = "$dateDay";
+  public static final String TAG_DECIMAL    = "$decimal";
+  public static final String TAG_LONG       = "$numberLong";
+  public static final String TAG_BYTE       = "$numberByte";
+  public static final String TAG_SHORT      = "$numberShort";
+  public static final String TAG_INT        = "$numberInt";
+  public static final String TAG_FLOAT      = "$numberFloat";
+
   public enum Type {
     /**
      * A non-existing value of unknown type and quantity.
@@ -68,27 +80,27 @@ public interface Value extends JsonString {
     /**
      * 8-bit signed integer.
      */
-    BYTE(TYPE_CODE_BYTE),
+    BYTE(TYPE_CODE_BYTE, TAG_BYTE),
 
     /**
      * 16-bit signed integer.
      */
-    SHORT(TYPE_CODE_SHORT),
+    SHORT(TYPE_CODE_SHORT, TAG_SHORT),
 
     /**.
      * 32-bit signed integer.
      */
-    INT(TYPE_CODE_INT),
+    INT(TYPE_CODE_INT, TAG_INT),
 
     /**
      * 64-bit signed integer.
      */
-    LONG(TYPE_CODE_LONG),
+    LONG(TYPE_CODE_LONG, TAG_LONG),
 
     /**
      * Single-precision 32-bit floating point number.
      */
-    FLOAT(TYPE_CODE_FLOAT),
+    FLOAT(TYPE_CODE_FLOAT, TAG_FLOAT),
 
     /**
      * Double-precision 64-bit floating point number.
@@ -98,7 +110,7 @@ public interface Value extends JsonString {
     /**
      * Arbitrary precision, fixed point decimal value.
      */
-    DECIMAL(TYPE_CODE_DECIMAL),
+    DECIMAL(TYPE_CODE_DECIMAL, TAG_DECIMAL),
 
     /**
      * 32-bit integer representing the number of DAYS since Unix epoch,
@@ -106,30 +118,30 @@ public interface Value extends JsonString {
      * is time-zone independent. Negative values represents dates before
      * epoch.
      */
-    DATE(TYPE_CODE_DATE),
+    DATE(TYPE_CODE_DATE, TAG_DATE),
 
     /**
      * 32-bit integer representing time of the day in milliseconds.
      * The value is absolute and is time-zone independent.
      */
-    TIME(TYPE_CODE_TIME),
+    TIME(TYPE_CODE_TIME, TAG_TIME),
 
     /**
      * 64-bit integer representing the number of milliseconds since epoch,
      * i.e. January 1, 1970 00:00:00 UTC. Negative values represent dates
      * before epoch.
      */
-    TIMESTAMP(TYPE_CODE_TIMESTAMP),
+    TIMESTAMP(TYPE_CODE_TIMESTAMP, TAG_TIMESTAMP),
 
     /**
      * A value representing a period of time between two instants.
      */
-    INTERVAL(TYPE_CODE_INTERVAL),
+    INTERVAL(TYPE_CODE_INTERVAL, TAG_INTERVAL),
 
     /**
      * Uninterpreted sequence of bytes.
      */
-    BINARY(TYPE_CODE_BINARY),
+    BINARY(TYPE_CODE_BINARY, TAG_BINARY),
 
     /**
      * Mapping of String and <code>Value</code>.
@@ -142,13 +154,30 @@ public interface Value extends JsonString {
     ARRAY(TYPE_CODE_ARRAY);
 
     private final byte code;
+    private final String tagName;
 
     private Type(int code) {
+      this(code, null);
+    }
+
+    private Type(int code, String tagName) {
       this.code = (byte) code;
+      this.tagName = tagName;
     }
 
     public byte getCode() {
       return code;
+    }
+
+    /**
+     * @return the OJAI tag name for the extended types, {@code null} for intrinsic JSON types.
+     */
+    public String getTagName() {
+      return tagName;
+    }
+
+    public boolean isIntrinsic() {
+      return tagName == null;
     }
 
     public boolean isScalar() {

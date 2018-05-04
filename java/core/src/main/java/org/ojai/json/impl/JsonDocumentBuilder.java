@@ -46,7 +46,6 @@ import org.ojai.types.OTime;
 import org.ojai.types.OTimestamp;
 import org.ojai.util.impl.ContainerContext;
 import org.ojai.util.Decimals;
-import org.ojai.util.Types;
 
 import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.JsonFactory;
@@ -153,22 +152,22 @@ public class JsonDocumentBuilder implements DocumentBuilder {
 
   @Override
   public JsonDocumentBuilder put(String field, byte value) {
-    return putLongWithTag(field, Types.TAG_BYTE, value);
+    return putLongWithTag(field, Value.TAG_BYTE, value);
   }
 
   @Override
   public JsonDocumentBuilder put(String field, short value) {
-    return putLongWithTag(field, Types.TAG_SHORT, value);
+    return putLongWithTag(field, Value.TAG_SHORT, value);
   }
 
   @Override
   public JsonDocumentBuilder put(String field, int value) {
-    return putLongWithTag(field, Types.TAG_INT, value);
+    return putLongWithTag(field, Value.TAG_INT, value);
   }
 
   @Override
   public JsonDocumentBuilder put(String field, long value) {
-    return putLongWithTag(field, Types.TAG_LONG, value);
+    return putLongWithTag(field, Value.TAG_LONG, value);
   }
 
   @Override
@@ -177,7 +176,7 @@ public class JsonDocumentBuilder implements DocumentBuilder {
       preparePut();
       if (jsonOptions.isWithTags()) {
         putNewMap(field);
-        jsonGenerator.writeNumberField(Types.TAG_FLOAT, value);
+        jsonGenerator.writeNumberField(Value.TAG_FLOAT, value);
         endMap();
       } else {
         jsonGenerator.writeNumberField(field, value);
@@ -209,7 +208,7 @@ public class JsonDocumentBuilder implements DocumentBuilder {
       preparePut();
       if (jsonOptions.isWithTags()) {
         putNewMap(field);
-        jsonGenerator.writeStringField(Types.TAG_DECIMAL, value.toString());
+        jsonGenerator.writeStringField(Value.TAG_DECIMAL, value.toString());
         endMap();
       } else {
         jsonGenerator.writeNumberField(field, value);
@@ -251,7 +250,7 @@ public class JsonDocumentBuilder implements DocumentBuilder {
       preparePut();
       if (jsonOptions.isWithTags()) {
         putNewMap(field);
-        jsonGenerator.writeBinaryField(Types.TAG_BINARY, value);
+        jsonGenerator.writeBinaryField(Value.TAG_BINARY, value);
         endMap();
       } else {
         jsonGenerator.writeBinaryField(field, value);
@@ -268,7 +267,7 @@ public class JsonDocumentBuilder implements DocumentBuilder {
       preparePut();
       if (jsonOptions.isWithTags()) {
         putNewMap(field);
-        jsonGenerator.writeFieldName(Types.TAG_BINARY);
+        jsonGenerator.writeFieldName(Value.TAG_BINARY);
         jsonGenerator.writeBinary(value, offset, length);
         endMap();
       } else {
@@ -322,17 +321,17 @@ public class JsonDocumentBuilder implements DocumentBuilder {
 
   @Override
   public JsonDocumentBuilder put(String field, ODate value) {
-    return putStringWithTag(field, Types.TAG_DATE, value.toDateStr());
+    return putStringWithTag(field, Value.TAG_DATE, value.toDateStr());
   }
 
   @Override
   public JsonDocumentBuilder putDate(String field, int days) {
-    return putStringWithTag(field, Types.TAG_DATE, ODate.fromDaysSinceEpoch(days).toDateStr());
+    return putStringWithTag(field, Value.TAG_DATE, ODate.fromDaysSinceEpoch(days).toDateStr());
   }
 
   @Override
   public JsonDocumentBuilder put(String field, OTime value) {
-    return putStringWithTag(field, Types.TAG_TIME, value.toTimeStr());
+    return putStringWithTag(field, Value.TAG_TIME, value.toTimeStr());
   }
 
   @Override
@@ -341,33 +340,33 @@ public class JsonDocumentBuilder implements DocumentBuilder {
       throw new IllegalArgumentException("Long value exceeds "
           + Long.toString(MILLISECONDSPERDAY) + " " + Long.toString(millis));
     }
-    return putStringWithTag(field, Types.TAG_TIME, OTime.fromMillisOfDay(millis).toTimeStr());
+    return putStringWithTag(field, Value.TAG_TIME, OTime.fromMillisOfDay(millis).toTimeStr());
   }
 
   @Override
   public JsonDocumentBuilder put(String field, OTimestamp value) {
-    return putStringWithTag(field, Types.TAG_TIMESTAMP, value.toUTCString());
+    return putStringWithTag(field, Value.TAG_TIMESTAMP, value.toUTCString());
   }
 
   @Override
   public JsonDocumentBuilder putTimestamp(String field, long timeMillis) {
-    return putStringWithTag(field, Types.TAG_TIMESTAMP, new OTimestamp(timeMillis).toUTCString());
+    return putStringWithTag(field, Value.TAG_TIMESTAMP, new OTimestamp(timeMillis).toUTCString());
   }
 
   @Override
   public JsonDocumentBuilder put(String field, OInterval value) {
-    return putLongWithTag(field, Types.TAG_INTERVAL, value.getTimeInMillis());
+    return putLongWithTag(field, Value.TAG_INTERVAL, value.getTimeInMillis());
   }
 
   @Override
   public JsonDocumentBuilder putInterval(String field, long durationInMs) {
-    return putLongWithTag(field, Types.TAG_INTERVAL, durationInMs);
+    return putLongWithTag(field, Value.TAG_INTERVAL, durationInMs);
   }
 
   @Override
   public JsonDocumentBuilder putInterval(String field, int months, int days, int milliseconds) {
     long total_milliseconds = milliseconds + (days + (long) months * 30) * MILLISECONDSPERDAY;
-    return putLongWithTag(field, Types.TAG_INTERVAL, total_milliseconds);
+    return putLongWithTag(field, Value.TAG_INTERVAL, total_milliseconds);
   }
 
   @Override
@@ -542,22 +541,22 @@ public class JsonDocumentBuilder implements DocumentBuilder {
 
   @Override
   public JsonDocumentBuilder add(byte value) {
-    return addLong(Types.TAG_BYTE, value);
+    return addLong(Value.TAG_BYTE, value);
   }
 
   @Override
   public JsonDocumentBuilder add(short value) {
-    return addLong(Types.TAG_SHORT, value);
+    return addLong(Value.TAG_SHORT, value);
   }
 
   @Override
   public JsonDocumentBuilder add(int value) {
-    return addLong(Types.TAG_INT, value);
+    return addLong(Value.TAG_INT, value);
   }
 
   @Override
   public JsonDocumentBuilder add(long value) {
-    return addLong(Types.TAG_LONG, value);
+    return addLong(Value.TAG_LONG, value);
   }
 
   private JsonDocumentBuilder addLong(String tagName, long value) {
@@ -582,7 +581,7 @@ public class JsonDocumentBuilder implements DocumentBuilder {
       prepareAdd();
       if (jsonOptions.isWithTags()) {
         jsonGenerator.writeStartObject();
-        jsonGenerator.writeNumberField(Types.TAG_FLOAT, value);
+        jsonGenerator.writeNumberField(Value.TAG_FLOAT, value);
         jsonGenerator.writeEndObject();
       } else {
         jsonGenerator.writeNumber(value);
@@ -614,7 +613,7 @@ public class JsonDocumentBuilder implements DocumentBuilder {
       prepareAdd();
       if (jsonOptions.isWithTags()) {
         jsonGenerator.writeStartObject();
-        jsonGenerator.writeStringField(Types.TAG_DECIMAL, value.toPlainString());
+        jsonGenerator.writeStringField(Value.TAG_DECIMAL, value.toPlainString());
         jsonGenerator.writeEndObject();
       } else {
         jsonGenerator.writeNumber(value);
@@ -631,7 +630,7 @@ public class JsonDocumentBuilder implements DocumentBuilder {
       prepareAdd();
       if (jsonOptions.isWithTags()) {
         jsonGenerator.writeStartObject();
-        jsonGenerator.writeStringField(Types.TAG_DECIMAL, String.valueOf(decimalValue));
+        jsonGenerator.writeStringField(Value.TAG_DECIMAL, String.valueOf(decimalValue));
         jsonGenerator.writeEndObject();
       } else {
         jsonGenerator.writeNumber(decimalValue);
@@ -648,7 +647,7 @@ public class JsonDocumentBuilder implements DocumentBuilder {
       prepareAdd();
       if (jsonOptions.isWithTags()) {
         jsonGenerator.writeStartObject();
-        jsonGenerator.writeStringField(Types.TAG_DECIMAL, String.valueOf(decimalValue));
+        jsonGenerator.writeStringField(Value.TAG_DECIMAL, String.valueOf(decimalValue));
         jsonGenerator.writeEndObject();
       } else {
         jsonGenerator.writeNumber(decimalValue);
@@ -680,7 +679,7 @@ public class JsonDocumentBuilder implements DocumentBuilder {
       prepareAdd();
       if (jsonOptions.isWithTags()) {
         jsonGenerator.writeStartObject();
-        jsonGenerator.writeBinaryField(Types.TAG_BINARY, value);
+        jsonGenerator.writeBinaryField(Value.TAG_BINARY, value);
         jsonGenerator.writeEndObject();
       } else {
         jsonGenerator.writeBinary(value);
@@ -697,7 +696,7 @@ public class JsonDocumentBuilder implements DocumentBuilder {
       prepareAdd();
       if (jsonOptions.isWithTags()) {
         jsonGenerator.writeStartObject();
-        jsonGenerator.writeFieldName(Types.TAG_BINARY);
+        jsonGenerator.writeFieldName(Value.TAG_BINARY);
         jsonGenerator.writeBinary(value, offset, length);
         jsonGenerator.writeEndObject();
       } else {
@@ -843,42 +842,42 @@ public class JsonDocumentBuilder implements DocumentBuilder {
 
   @Override
   public JsonDocumentBuilder add(OTime value) {
-    return addStringWithTag(Types.TAG_TIME, value.toTimeStr());
+    return addStringWithTag(Value.TAG_TIME, value.toTimeStr());
   }
 
   @Override
   public JsonDocumentBuilder addTime(int millis) {
-    return addStringWithTag(Types.TAG_TIME, OTime.fromMillisOfDay(millis).toTimeStr());
+    return addStringWithTag(Value.TAG_TIME, OTime.fromMillisOfDay(millis).toTimeStr());
   }
 
   @Override
   public JsonDocumentBuilder add(ODate value) {
-    return addStringWithTag(Types.TAG_DATE, value.toDateStr());
+    return addStringWithTag(Value.TAG_DATE, value.toDateStr());
   }
 
   @Override
   public JsonDocumentBuilder addDate(int days) {
-    return addStringWithTag(Types.TAG_DATE, ODate.fromDaysSinceEpoch(days).toDateStr());
+    return addStringWithTag(Value.TAG_DATE, ODate.fromDaysSinceEpoch(days).toDateStr());
   }
 
   @Override
   public JsonDocumentBuilder add(OTimestamp value) {
-    return addStringWithTag(Types.TAG_TIMESTAMP, value.toUTCString());
+    return addStringWithTag(Value.TAG_TIMESTAMP, value.toUTCString());
   }
 
   @Override
   public JsonDocumentBuilder addTimestamp(long timeMillis) {
-    return addStringWithTag(Types.TAG_TIMESTAMP, new OTimestamp(timeMillis).toUTCString());
+    return addStringWithTag(Value.TAG_TIMESTAMP, new OTimestamp(timeMillis).toUTCString());
   }
 
   @Override
   public JsonDocumentBuilder add(OInterval value) {
-    return addLongWithTag(Types.TAG_INTERVAL, value.getTimeInMillis());
+    return addLongWithTag(Value.TAG_INTERVAL, value.getTimeInMillis());
   }
 
   @Override
   public JsonDocumentBuilder addInterval(long durationInMs) {
-    return addLongWithTag(Types.TAG_INTERVAL, durationInMs);
+    return addLongWithTag(Value.TAG_INTERVAL, durationInMs);
   }
 
   private JsonDocumentBuilder addLongWithTag(String tagName, long value) {
