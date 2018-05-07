@@ -40,14 +40,13 @@ class DocumentStore:
         raise NotImplementedError("Should have implemented this")
 
     @abstractmethod
-    def insert_or_replace(self, doc, _id=None, field_as_key=None, doc_stream=None, json_dictionary=None):
+    def insert_or_replace(self, doc=None, _id=None, field_as_key=None, doc_stream=None):
         """Inserts or replaces a new document in this DocumentStore with the given _id.
-        :param doc: the Document to be inserted or replaced in the DocumentStore.
+        :param doc: the Document or json dictionary to be inserted or replaced in the DocumentStore.
         :param _id: value to be used as the _id for this document.
         :param field_as_key: document's field to be used as the key when an id is not passed in and the
         document doesn't have an "_id" field or a different field is desired to be used as _id.
         :param doc_stream: the DocumentStream to read the documents from.
-        :param json_dictionary: representation of OJAI Document in dictionary.
         :raises StoreError"""
         raise NotImplementedError("Should have implemented this")
 
@@ -67,7 +66,7 @@ class DocumentStore:
     def delete(self, doc=None, _id=None, field_as_key=None, doc_stream=None):
         """Deletes a document with the given id or set of documents represent by stream.
         This operation is successful even when the document with the given id doesn't exist.
-        :param doc: JSON document to be deleted.
+        :param doc: the Document or json dictionary to be deleted.
         :param _id: document id.
         :param field_as_key: document's field to be used as the key when an id is not
         passed in and a document doesn't have an "_id" field.
@@ -78,32 +77,30 @@ class DocumentStore:
         raise NotImplementedError("Should have implemented this")
 
     @abstractmethod
-    def insert(self, doc, _id=None, field_as_key=None, doc_stream=None, json_dictionary=None):
+    def insert(self, doc=None, _id=None, field_as_key=None, doc_stream=None):
         """Inserts a document with the given id or documents represent by the DocumentStream.
         This operation is successful only when the document with the given id doesn't exist.
         If "_id" already existed in the document, then an error will be thrown.
-        :param doc: JSON document as the new value for the given document.
+        :param doc: the Document or json dictionary to be inserted in the DocumentStore.
         :param _id: to be used as the key for the document.
         :param field_as_key: document's field to be used as the key when the id is not
         passed in and document doesn't have an "_id" field.
         :param doc_stream: DocumentStream.
-        :param json_dictionary: dictionary representation of Document.
         :raises StoreError"""
         raise NotImplementedError("Should have implemented this")
 
     @abstractmethod
-    def replace(self, doc, _id=None, field_as_key=None, doc_stream=None, json_dictionary=None):
+    def replace(self, doc=None, _id=None, field_as_key=None, doc_stream=None):
         """Replaces a document or set of documents represented by the DocumentStream in the DocumentStore.
         The document id is either explicitly specified as parameter "id" or it is implicitly specified as the
         field "_id" in the passed document. If the document id is explicitly passed then the document should
         not contain "_id" field or its value should be the same as the explicitly
         specified id; otherwise, the operation will  fail.
-        :param doc: JSON document as the new value for the given document.
+        :param doc: the Document or json dictionary to be replaced in the DocumentStore.
         :param _id: to be used as the key for the document.
         :param field_as_key: document's field to be used as the key when the id is not
         passed in and document doesn't have an "_id" field.
         :param doc_stream: DocumentStream.
-        :param json_dictionary: dictionary representation of Document.
         :raises StoreError"""
         raise NotImplementedError("Should have implemented this")
 

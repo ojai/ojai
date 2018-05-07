@@ -36,6 +36,13 @@ class QueryCondition:
         raise NotImplementedError("This should have been implemented.")
 
     @abstractmethod
+    def element_and(self, field_path):
+        """Begins a new element-wise AND compound condition block.
+        :param field_path: the array expression for the fields' container
+        :return self for chaining"""
+        raise NotImplementedError("This should have been implemented.")
+
+    @abstractmethod
     def close(self):
         """Closes a compound condition block."""
         raise NotImplementedError("This should have been implemented.")
