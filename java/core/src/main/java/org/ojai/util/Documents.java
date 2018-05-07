@@ -30,12 +30,14 @@ import org.ojai.Value;
 import org.ojai.annotation.API;
 import org.ojai.annotation.API.NonNullable;
 import org.ojai.annotation.API.Nullable;
+import org.ojai.exceptions.ReadOnlyObjectException;
 import org.ojai.exceptions.TypeException;
 import org.ojai.json.impl.JsonUtils;
 import org.ojai.types.ODate;
 import org.ojai.types.OInterval;
 import org.ojai.types.OTime;
 import org.ojai.types.OTimestamp;
+import org.ojai.util.impl.ReadOnlyDocument;
 
 import com.google.common.collect.Maps;
 
@@ -76,6 +78,17 @@ public class Documents {
       }
     }
     return true;
+  }
+
+  /**
+   * Creates and return a read-only view of the specified OJAI document.<p/>
+   * Any attempt to modify the returned document will result in {@link ReadOnlyObjectException} being thrown.
+   *
+   * @param src the source {@link Document}
+   * @return a read only view of the specified Document
+   */
+  public static Document readOnly(final Document src) {
+    return new ReadOnlyDocument(src);
   }
 
   /**
