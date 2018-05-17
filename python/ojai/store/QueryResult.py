@@ -1,6 +1,6 @@
 from abc import ABCMeta, abstractmethod
 
-from ojai.document.DocumentStream import DocumentStream
+from ojai.DocumentStream import DocumentStream
 
 
 class QueryResult(DocumentStream):

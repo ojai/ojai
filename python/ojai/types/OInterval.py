@@ -1,5 +1,5 @@
 from ojai.error.UnsupportedConstructorException import UnsupportedConstructorException
-from ojai.o_types import constants
+from ojai.types import constants
 
 
 class OInterval(object):

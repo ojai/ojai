@@ -1,6 +1,6 @@
 from __future__ import unicode_literals
 
-from ojai.o_types.OTime import OTime
+from ojai.types.OTime import OTime
 
 try:
     import unittest2 as unittest
