@@ -23,6 +23,7 @@ import org.ojai.Document;
 import org.ojai.annotation.API;
 import org.ojai.annotation.API.NonNullable;
 import org.ojai.exceptions.OjaiException;
+import org.ojai.json.Json;
 import org.ojai.store.exceptions.StoreException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,7 +75,7 @@ public final class DriverManager {
    * @throws StoreException if connection to the data-source failed
    */
   public static Connection getConnection(@NonNullable String url) throws OjaiException {
-    return getConnection(url, null);
+    return getConnection(url, Json.newDocument());
   }
 
   /**
