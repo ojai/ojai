@@ -15,6 +15,8 @@
  */
 package org.ojai.json;
 
+import java.util.IdentityHashMap;
+
 import org.ojai.exceptions.OjaiException;
 
 /**
@@ -28,9 +30,17 @@ import org.ojai.exceptions.OjaiException;
  */
 public class JsonOptions implements Cloneable {
 
-  public static final JsonOptions DEFAULT = new JsonOptions();
+  public static final JsonOptions DEFAULT;
+  public static final JsonOptions WITH_TAGS;
+  public static final JsonOptions WITHOUT_TAGS;
 
-  public static final JsonOptions WITH_TAGS = new JsonOptions().withTags();
+  private static final IdentityHashMap<JsonOptions, Boolean> constants;
+  static {
+    constants = new IdentityHashMap<JsonOptions, Boolean>();
+    constants.put(DEFAULT = new JsonOptions(), true);
+    constants.put(WITH_TAGS = new JsonOptions().withTags(), true);
+    constants.put(WITHOUT_TAGS = new JsonOptions().withoutTags(), true);
+  }
 
   private boolean pretty = false;
   private boolean withTags = false;
@@ -82,8 +92,7 @@ public class JsonOptions implements Cloneable {
   }
 
   private void checkMutationOfConstants() {
-    if (this == DEFAULT
-        || this == WITH_TAGS) {
+    if (constants.containsKey(this)) {
       throw new UnsupportedOperationException("Can not modify constants options.");
     }
   }

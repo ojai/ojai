@@ -1,0 +1,32 @@
+{
+  "map":{
+    "null":null,
+    "booleanTrue":true,
+    "booleanFalse":false,
+    "string":"eureka",
+    "stringEmpty":"",
+    "stringTrue":"True",
+    "stringFalse":"faLse",
+    "byteTrue":{"$numberByte":127},
+    "shortTrue":{"$numberShort":32767},
+    "intTrue":{"$numberInt":2147483647},
+    "longTrue":{"$numberLong":9223372036854775807},
+    "floatTrue":{"$numberFloat":3.015625},
+    "doubleTrue":1.7976931348623157e308,
+    "decimalTrue":{"$decimal":"123456789012345678901234567890123456789012345678901.23456789"},
+    "byteFalse":{"$numberByte":0},
+    "shortFalse":{"$numberShort":0},
+    "intFalse":{"$numberInt":0},
+    "longFalse":{"$numberLong":0},
+    "floatFalse":{"$numberFloat":0.0},
+    "doubleFalse":0.0,
+    "decimalFalse":{"$decimal":"0.0"},
+    "date":{"$dateDay":"2012-10-20"},
+    "time":{"$time":"07:42:46.123"},
+    "timestamp":{"$date":"2012-10-20T07:42:46.123-07:00"},
+    "interval":{"$interval":172800000},
+    "binary":{"$binary":"YWJjZA=="},
+    "array":[42, "open sesame", 3.14, {"$dateDay":"2015-01-21"}],
+    "map": {"a": 4, "b": "c"}
+  }
+}

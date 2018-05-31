@@ -114,7 +114,7 @@ public class Values {
    * @return The specified value as a <code>Number</code>.
    * This may involve rounding or truncation.
    * @throws IllegalArgumentException if the specified value is
-   * not one of the number types
+   * not one of the number types or a string that can not be converted to a number.
    */
   public static Number asNumber(@NonNullable Value value) {
     Preconditions.checkNotNull(value);
@@ -133,8 +133,65 @@ public class Values {
       return value.getDouble();
     case DECIMAL:
       return value.getDecimal();
+    case STRING:
+      try {
+        return new BigDecimal(value.getString());
+      } catch (NumberFormatException e) {}
+      // falls through to throw TypeException
     default:
-      throw new TypeException(value.getType() + " can not be converted to a Number.");
+      throw new TypeException(value.asJsonString() + " can not be converted to a Number.");
+    }
+  }
+
+  /**
+   * @return The specified value as a <code>boolean</code>.
+   * @throws IllegalArgumentException if the specified value is
+   * not can not be converted to a boolean.
+   */
+  public static boolean asBoolean(@NonNullable Value value) {
+    Preconditions.checkNotNull(value);
+    switch (value.getType()) {
+    case NULL:
+      return false;
+    case BOOLEAN:
+      return value.getBoolean();
+    case STRING:
+      final String strValue = value.getString();
+      if (strValue.equalsIgnoreCase("true")) {
+        return true;
+      } else if (strValue.equalsIgnoreCase("false")) {
+        return false;
+      }
+      break;
+    default:
+      if (value.getType().isNumeric()) {
+        return 0.0 != asNumber(value).doubleValue();
+      }
+      // falls through to throw TypeException
+    }
+    throw new TypeException(value.asJsonString() + " can not be converted to a Boolean value.");
+  }
+
+  /**
+   * @return The specified value as a <code>String</code>.
+   */
+  public static String asString(@NonNullable Value value) {
+    Preconditions.checkNotNull(value);
+    switch (value.getType()) {
+    case NULL:
+      return null;
+    case STRING:
+      return value.getString();
+    case DATE:
+      return value.getDate().toDateStr();
+    case INTERVAL:
+      return String.valueOf(value.getInterval().getTimeInMillis());
+    case TIME:
+      return value.getTime().toTimeStr();
+    case TIMESTAMP:
+      return value.getTimestamp().toUTCString();
+    default:
+      return Json.toJsonString(value.asReader(), JsonOptions.WITHOUT_TAGS);
     }
   }
 

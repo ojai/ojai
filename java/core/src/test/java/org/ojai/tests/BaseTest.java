@@ -18,6 +18,7 @@ package org.ojai.tests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.InputStream;
 
@@ -55,6 +56,30 @@ public class BaseTest {
     assertTrue(r.inMap());
     assertEquals(expectedEt, et);
     assertEquals(expectedFieldName, r.getFieldName());
+  }
+
+  @FunctionalInterface
+  public interface OperationWithException {
+    public void apply();
+  }
+
+  protected void expectException(
+      final Class<? extends Throwable> expectedException, final OperationWithException function) {
+    boolean exception = true;
+    try {
+      function.apply();
+      exception = false;
+    } catch (final Throwable t) {
+      if (!t.getClass().isAssignableFrom(expectedException)) {
+        t.printStackTrace();
+        fail("An unexpected exception was thrown.");
+      }
+    } finally {
+      if (!exception) {
+        fail("Expected the test to throw: " + expectedException.getTypeName());
+      }
+    }
+    
   }
 
 }

@@ -20,20 +20,24 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.URL;
 import java.nio.ByteBuffer;
 
 import org.junit.Test;
 import org.ojai.Document;
 import org.ojai.Value;
+import org.ojai.exceptions.TypeException;
 import org.ojai.json.Json;
 import org.ojai.json.impl.JsonValueBuilder;
 import org.ojai.tests.BaseTest;
+import org.ojai.util.Values;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 
 public class TestValues extends BaseTest {
+  final Class<? extends Throwable> TYPE_EXCEPTION = TypeException.class;
 
   @Test
   public void testEmptyByteBufferSerialization() throws Exception {
@@ -88,6 +92,108 @@ public class TestValues extends BaseTest {
     assertFalse(document.getValue("map.timestamp").getType().isNumeric());
     assertFalse(document.getValue("map.interval").getType().isNumeric());
     assertFalse(document.getValue("map.binary").getType().isNumeric());
+  }
+
+  @Test
+  public void test_asBoolean() throws IOException {
+    URL url = Resources.getResource("org/ojai/test/data/test5.json");
+    String content = Resources.toString(url, Charsets.UTF_8);
+    Document document = Json.newDocument(content);
+
+    assertFalse(Values.asBoolean(document.getValue("map.null")));
+    assertTrue(Values.asBoolean(document.getValue("map.booleanTrue")));
+    assertFalse(Values.asBoolean(document.getValue("map.booleanFalse")));
+    assertTrue(Values.asBoolean(document.getValue("map.stringTrue")));
+    assertFalse(Values.asBoolean(document.getValue("map.stringFalse")));
+    assertTrue(Values.asBoolean(document.getValue("map.byteTrue")));
+    assertFalse(Values.asBoolean(document.getValue("map.byteFalse")));
+    assertTrue(Values.asBoolean(document.getValue("map.shortTrue")));
+    assertFalse(Values.asBoolean(document.getValue("map.shortFalse")));
+    assertTrue(Values.asBoolean(document.getValue("map.intTrue")));
+    assertFalse(Values.asBoolean(document.getValue("map.intFalse")));
+    assertTrue(Values.asBoolean(document.getValue("map.longTrue")));
+    assertFalse(Values.asBoolean(document.getValue("map.longFalse")));
+    assertTrue(Values.asBoolean(document.getValue("map.floatTrue")));
+    assertFalse(Values.asBoolean(document.getValue("map.floatFalse")));
+    assertTrue(Values.asBoolean(document.getValue("map.doubleTrue")));
+    assertFalse(Values.asBoolean(document.getValue("map.doubleFalse")));
+    assertTrue(Values.asBoolean(document.getValue("map.decimalTrue")));
+    assertFalse(Values.asBoolean(document.getValue("map.decimalFalse")));
+
+    expectException(TYPE_EXCEPTION, () -> { Values.asBoolean(document.getValue("map.string"));});
+    expectException(TYPE_EXCEPTION, () -> { Values.asBoolean(document.getValue("map.stringEmpty"));});
+    expectException(TYPE_EXCEPTION, () -> { Values.asBoolean(document.getValue("map.date"));});
+    expectException(TYPE_EXCEPTION, () -> { Values.asBoolean(document.getValue("map.time"));});
+    expectException(TYPE_EXCEPTION, () -> { Values.asBoolean(document.getValue("map.timestamp"));});
+    expectException(TYPE_EXCEPTION, () -> { Values.asBoolean(document.getValue("map.interval"));});
+    expectException(TYPE_EXCEPTION, () -> { Values.asBoolean(document.getValue("map.binary"));});
+    expectException(TYPE_EXCEPTION, () -> { Values.asBoolean(document.getValue("map.array"));});
+    expectException(TYPE_EXCEPTION, () -> { Values.asBoolean(document.getValue("map"));});
+  }
+
+  @Test
+  public void test_asString() throws IOException {
+    URL url = Resources.getResource("org/ojai/test/data/test5.json");
+    String content = Resources.toString(url, Charsets.UTF_8);
+    Document document = Json.newDocument(content);
+
+    assertEquals(null, Values.asString(document.getValue("map.null")));
+    assertEquals("true", Values.asString(document.getValue("map.booleanTrue")));
+    assertEquals("false", Values.asString(document.getValue("map.booleanFalse")));
+    assertEquals("True", Values.asString(document.getValue("map.stringTrue")));
+    assertEquals("faLse", Values.asString(document.getValue("map.stringFalse")));
+    assertEquals("127", Values.asString(document.getValue("map.byteTrue")));
+    assertEquals("0", Values.asString(document.getValue("map.byteFalse")));
+    assertEquals("32767", Values.asString(document.getValue("map.shortTrue")));
+    assertEquals("0", Values.asString(document.getValue("map.shortFalse")));
+    assertEquals("2147483647", Values.asString(document.getValue("map.intTrue")));
+    assertEquals("0", Values.asString(document.getValue("map.intFalse")));
+    assertEquals("9223372036854775807", Values.asString(document.getValue("map.longTrue")));
+    assertEquals("0", Values.asString(document.getValue("map.longFalse")));
+    assertEquals("3.015625", Values.asString(document.getValue("map.floatTrue")));
+    assertEquals("0.0", Values.asString(document.getValue("map.floatFalse")));
+    assertEquals("1.7976931348623157E308", Values.asString(document.getValue("map.doubleTrue")));
+    assertEquals("0", Values.asString(document.getValue("map.doubleFalse")));
+    assertEquals("123456789012345678901234567890123456789012345678901.23456789", Values.asString(document.getValue("map.decimalTrue")));
+    assertEquals("0.0", Values.asString(document.getValue("map.decimalFalse")));
+
+    assertEquals("eureka", Values.asString(document.getValue("map.string")));
+    assertEquals("", Values.asString(document.getValue("map.stringEmpty")));
+    assertEquals("2012-10-20", Values.asString(document.getValue("map.date")));
+    assertEquals("07:42:46.123", Values.asString(document.getValue("map.time")));
+    assertEquals("2012-10-20T14:42:46.123Z", Values.asString(document.getValue("map.timestamp")));
+    assertEquals("172800000", Values.asString(document.getValue("map.interval")));
+    assertEquals("\"YWJjZA==\"", Values.asString(document.getValue("map.binary")));
+    assertEquals("[42,\"open sesame\",3.14,\"2015-01-21\"]", Values.asString(document.getValue("map.array")));
+    assertEquals("{\"a\":4,\"b\":\"c\"}", Values.asString(document.getValue("map.map")));
+  }
+
+
+  @Test
+  public void test_asNumber() throws IOException {
+    URL url = Resources.getResource("org/ojai/test/data/test5.json");
+    String content = Resources.toString(url, Charsets.UTF_8);
+    Document document = Json.newDocument(content);
+
+    assertEquals(127, (byte)Values.asNumber(document.getValue("map.byteTrue")));
+    assertEquals(32767, (short)Values.asNumber(document.getValue("map.shortTrue")));
+    assertEquals(2147483647, (int)Values.asNumber(document.getValue("map.intTrue")));
+    assertEquals(3.015625f, (float)Values.asNumber(document.getValue("map.floatTrue")), 0.0);
+    assertEquals(9223372036854775807L, (long)Values.asNumber(document.getValue("map.longTrue")));
+    assertEquals(1.7976931348623157E308, (double)Values.asNumber(document.getValue("map.doubleTrue")), 0.0);
+    assertEquals(new BigDecimal("123456789012345678901234567890123456789012345678901.23456789"),
+        Values.asNumber(document.getValue("map.decimalTrue")));
+
+    expectException(TYPE_EXCEPTION, () -> { Values.asNumber(document.getValue("map.null")); });
+    expectException(TYPE_EXCEPTION, () -> { Values.asNumber(document.getValue("map.booleanTrue")); });
+    expectException(TYPE_EXCEPTION, () -> { Values.asNumber(document.getValue("map.string")); });
+    expectException(TYPE_EXCEPTION, () -> { Values.asNumber(document.getValue("map.date")); });
+    expectException(TYPE_EXCEPTION, () -> { Values.asNumber(document.getValue("map.time")); });
+    expectException(TYPE_EXCEPTION, () -> { Values.asNumber(document.getValue("map.timestamp")); });
+    expectException(TYPE_EXCEPTION, () -> { Values.asNumber(document.getValue("map.interval")); });
+    expectException(TYPE_EXCEPTION, () -> { Values.asNumber(document.getValue("map.binary")); });
+    expectException(TYPE_EXCEPTION, () -> { Values.asNumber(document.getValue("map.array")); });
+    expectException(TYPE_EXCEPTION, () -> { Values.asNumber(document.getValue("map.map")); });
   }
 
 }
