@@ -27,6 +27,7 @@ import org.junit.Test;
 import org.ojai.DocumentReader;
 import org.ojai.DocumentReader.EventType;
 import org.ojai.DocumentStream;
+import org.ojai.exceptions.DecodingException;
 import org.ojai.json.Json;
 import org.ojai.tests.BaseTest;
 import org.ojai.util.Values;
@@ -40,6 +41,18 @@ public class TestJsonDocumentReader extends BaseTest {
       DocumentReader r = stream.documentReaders().iterator().next();
       testReader(r);
     }
+  }
+
+  @Test
+  public void test_illegalBinaryValues() throws Exception {
+    final String illegalJSONChars = "{\"b\": {\"$binary\": \"\u0006\u0006\"}}";
+    expectException(DecodingException.class, () -> { Json.newDocument(illegalJSONChars); });
+
+    final String illegalBase64Chars = "{\"b\": {\"$binary\": \"{}\"}}";
+    expectException(DecodingException.class, () -> { Json.newDocument(illegalBase64Chars); });
+
+    final String illegalBase64StringLength = "{\"b\": {\"$binary\": \"A\"}}";
+    expectException(DecodingException.class, () -> { Json.newDocument(illegalBase64StringLength); });
   }
 
   @Test

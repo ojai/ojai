@@ -47,11 +47,15 @@ import org.ojai.types.OTimestamp;
 import org.ojai.util.Values;
 import org.ojai.util.impl.ContainerContext;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
+import com.google.common.io.BaseEncoding;
 
 @API.Internal
 public class JsonStreamDocumentReader extends DocumentReaderBase {
+  
+  BaseEncoding CODEC = BaseEncoding.base64(); 
 
   private final JsonDocumentStream documentStream;
   private int mapLevel;
@@ -163,13 +167,14 @@ public class JsonStreamDocumentReader extends DocumentReaderBase {
    */
   protected void cacheCurrentValue() {
     try {
+      final JsonParser parser = getParser();
       switch (currentEvent) {
       case BOOLEAN:
-        currentObjValue = isEventBoolean() ? getParser().getBooleanValue()
+        currentObjValue = isEventBoolean() ? parser.getBooleanValue()
             : Boolean.valueOf(getValueAsString());
         break;
       case STRING:
-        currentObjValue = getParser().getText();
+        currentObjValue = parser.getText();
         break;
       case BYTE:
         currentLongValue = getValueAsLong() & 0xff;
@@ -188,22 +193,28 @@ public class JsonStreamDocumentReader extends DocumentReaderBase {
         currentDoubleValue = getValueAsDouble();
         break;
       case DECIMAL:
-        currentObjValue = Values.parseBigDecimal(getParser().getText());
+        currentObjValue = Values.parseBigDecimal(parser.getText());
         break;
       case DATE:
-        currentObjValue = ODate.parse(getParser().getText());
+        currentObjValue = ODate.parse(parser.getText());
         break;
       case TIME:
-        currentObjValue = OTime.parse(getParser().getText());
+        currentObjValue = OTime.parse(parser.getText());
         break;
       case TIMESTAMP:
-        currentObjValue = OTimestamp.parse(getParser().getText());
+        currentObjValue = OTimestamp.parse(parser.getText());
         break;
       case INTERVAL:
         currentLongValue = getValueAsLong();
         break;
       case BINARY:
-        currentObjValue = ByteBuffer.wrap(getParser().getBinaryValue());
+        try {
+          final String base64String = parser.getText();
+          final byte[] value = CODEC.decode(base64String);
+          currentObjValue = ByteBuffer.wrap(value);
+        } catch (JsonParseException | IllegalArgumentException e) {
+          throw new DecodingException("Unable to decode base64 encoded binary value: " + e.getMessage(), e);
+        }
         break;
       default:
         // ARRAY, MAP and NULL need not be cached
