@@ -37,4 +37,9 @@ public class DocumentConstants {
    */
   public static final FieldPath ID_FIELD = FieldPath.parseFrom(ID_KEY);
 
+  /**
+   * Index segment indicating all elements in a list
+   */
+  public static final String ELEMENTS_ALL = "[]";
+
 }
