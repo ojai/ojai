@@ -110,7 +110,7 @@ class DocumentStore:
         of the given document id. If the field doesn't exist on the server
         then it will be created with the type of the incremental value.
         The increment operation can be applied on any of the numeric
-        types, such as byte, int, long, float, or decimal,
+        types, such as byte, int, long or float,
         of a field. The operation will fail if the increment is applied to a
         field that is of a non-numeric type.
         :param _id: document id.

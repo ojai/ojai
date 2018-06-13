@@ -18,7 +18,7 @@ class DocumentMutation:
         """Sets the field at the given FieldPath to given value
         :param field_path: path of the field that needs to be updated. Type may be FieldPath, str.
         :param value: the new value to set at the path. Type may be None, Value, bool, byte, int, long, float, str,
-         decimal, ODate, OTime, OTimestamp, OInterval, bytearray, list, dictionary, Document.
+         ODate, OTime, OTimestamp, OInterval, bytearray, list, dictionary, Document.
         :return self for chained invocation"""
         raise NotImplementedError("Should have implemented this")
 
@@ -27,7 +27,7 @@ class DocumentMutation:
         """Sets or replaces the field at the given FieldPath to Value
         :param field_path: FieldPath in the document that needs to be updated. Type may be FieldPath, str.
         :param value: the new value to set or replace at the given path. Type may be None, Value, bool, byte, int, long,
-        float, str, decimal, ODate, OTime, OTimestamp, OInterval, bytearray, list, dictionary, Document.
+        float, str, ODate, OTime, OTimestamp, OInterval, bytearray, list, dictionary, Document.
         :return self for chained invocation"""
         raise NotImplementedError("Should have implemented this")
 
@@ -54,7 +54,7 @@ class DocumentMutation:
         """Atomically increment the existing value at given the FieldPath by the given value.
         :param field_path: FieldPath to apply this increment operation. Type may be FieldPath, str.
         :param inc: increment to apply to a field - can be positive or negative. Type may be byte, int, long,
-        float, decimal.
+        float.
         :return self for chained invocation"""
         raise NotImplementedError("Should have implemented this")
 
@@ -74,7 +74,7 @@ class DocumentMutation:
         If the field doesn't exist in
         the document store then it will be created with the type of given decremental value.
         A decrement operation can be applied on any of the numeric types
-        of a field, such as byte, int, long, float, or decimal.
+        of a field, such as byte, int, long or float.
         The operation will fail if the decrement is applied to a field
         that is of a non-numeric type.
 
@@ -87,7 +87,7 @@ class DocumentMutation:
         will be 54 (54.325 will be truncated to 54).
 
         :param field_path: field name in dot separated notation. Type may be FieldType, str.
-        :param dec: decrement to apply to a field - can be positive or negative. Type may be byte, int, float, decimal.
+        :param dec: decrement to apply to a field - can be positive or negative. Type may be byte, int, float.
         :return self for chained invocation."""
         raise NotImplementedError("Should have implemented this")
 

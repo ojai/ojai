@@ -44,7 +44,7 @@ class Document:
         """Sets the value of the specified fieldPath in this Document to the
         specified String.
         :param field_path: the FieldPath to set. Type may be str and FieldPath.
-        :param value: the value. Type may be bool, byte, long, float, decimal, OTime, ODate, OTimestamp, OInterval,
+        :param value: the value. Type may be bool, byte, long, float, OTime, ODate, OTimestamp, OInterval,
         bytearray, dictionary, Document, Value, list, None.
         :param length: length of bytearray.
         :param off: offset if a value type is bytearray.
@@ -74,13 +74,6 @@ class Document:
         raise NotImplementedError("Should have implemented this")
 
     @abstractmethod
-    def get_byte(self, field_path):
-        """Returns the value at the specified fieldPath.
-                :param field_path: the path to get from the document. Type may be FieldPath, str.
-                :return value at the specified field_path as byte"""
-        raise NotImplementedError("Should have implemented this")
-
-    @abstractmethod
     def get_int(self, field_path):
         """Returns the value at the specified fieldPath.
                 :param field_path: the path to get from the document. Type may be FieldPath, str.
@@ -99,14 +92,6 @@ class Document:
         """Returns the value at the specified fieldPath.
                 :param field_path: the path to get from the document. Type may be FieldPath, str.
                 :return value at the specified field_path as float"""
-        raise NotImplementedError("Should have implemented this")
-
-
-    @abstractmethod
-    def get_decimal(self, field_path):
-        """Returns the value at the specified fieldPath.
-                :param field_path: the path to get from the document. Type may be FieldPath, str.
-                :return value at the specified field_path as decimal"""
         raise NotImplementedError("Should have implemented this")
 
     @abstractmethod

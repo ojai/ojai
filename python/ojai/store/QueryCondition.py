@@ -202,12 +202,12 @@ class QueryConditionOp(Enum):
      LESS_OR_EQUAL, EQUAL, NOT_EQUAL, GREATER_OR_EQUAL, GREATER."""
     # The Value at the specified path is less than the reference value.
     # Reference value type: All scalars ValueType, such as: NULL, BOOLEAN, STRING, BYTE,
-    # SHORT, INT, LONG, FLOAT, DOUBLE, DECIMAL, DATE, TIME, TIMESTAMP, INTERVAL, BINARY.
+    # SHORT, INT, LONG, FLOAT, DOUBLE, DATE, TIME, TIMESTAMP, INTERVAL, BINARY.
     LESS = "$lt"
 
     # The Value at the specified path is less than or equal to the reference value.
     # Reference value type: All scalars ValueType, such as: NULL, BOOLEAN, STRING, BYTE,
-    # SHORT, INT, LONG, FLOAT, DOUBLE, DECIMAL, DATE, TIME, TIMESTAMP, INTERVAL, BINARY.
+    # SHORT, INT, LONG, FLOAT, DOUBLE, DATE, TIME, TIMESTAMP, INTERVAL, BINARY.
     LESS_OR_EQUAL = "$le"
 
     # The Value at the specified path is equal to the reference value.
@@ -220,10 +220,10 @@ class QueryConditionOp(Enum):
 
     # The Value at the specified path is greater than or equal to the reference value.
     # Reference value type: All scalars ValueType, such as: NULL, BOOLEAN, STRING, BYTE,
-    # SHORT, INT, LONG, FLOAT, DOUBLE, DECIMAL, DATE, TIME, TIMESTAMP, INTERVAL, BINARY.
+    # SHORT, INT, LONG, FLOAT, DOUBLE, DATE, TIME, TIMESTAMP, INTERVAL, BINARY.
     GREATER_OR_EQUAL = "$ge"
 
     # The Value at the specified path is greater than the reference value.
     # Reference value type: All scalars ValueType, such as: NULL, BOOLEAN, STRING, BYTE,
-    # SHORT, INT, LONG, FLOAT, DOUBLE, DECIMAL, DATE, TIME, TIMESTAMP, INTERVAL, BINARY.
+    # SHORT, INT, LONG, FLOAT, DOUBLE, DATE, TIME, TIMESTAMP, INTERVAL, BINARY.
     GREATER = "$gt"
