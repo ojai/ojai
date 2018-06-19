@@ -29,12 +29,14 @@ class DocumentStore:
         raise NotImplementedError("Should have implemented this")
 
     @abstractmethod
-    def find(self, query, result_as_document=False):
-        """Returns a QueryResult with all the documents from this DocumentStore that matachs the specified query criteia.
-        When 'result_as_document' flag is set to False (default), the documents are returned as Python dictionaries
-        and when True, the documents are returned as objects of OJAI Document class.
+    def find(self, query, options=None):
+        """Returns a QueryResult with all the documents from this
+        DocumentStore that match the specified query criteria.
+        When 'ojai.mapr.query.result-as-document' flag is set to False
+        (default), the documents are returned as Python dictionaries and when
+        True, the documents are returned as objects of OJAI Document class.
         :param query: OJAI Query.
-        :param result_as_document: if True, the documents are returned as objects of OJAI Document class.
+        :param options: set of options for find method.
         :raises StoreError
         :return Method returns an object of QueryResult containing OJAI documents"""
         raise NotImplementedError("Should have implemented this")

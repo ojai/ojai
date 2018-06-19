@@ -2,7 +2,9 @@ from abc import ABCMeta, abstractmethod
 
 
 class Connection:
-    """The Connection class defines the APIs to perform actions with storage."""
+    """The Connection class defines the APIs to perform actions with storage.
+    In client you may use static method:
+    ConnectionFactory.get_connection(connection_str, options=None)"""
     __metaclass__ = ABCMeta
 
     @abstractmethod
