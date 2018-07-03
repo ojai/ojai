@@ -32,10 +32,9 @@ class Connection:
         raise NotImplementedError("Should have implemented this")
 
     @abstractmethod
-    def get_store(self, store_path, options=None):
+    def get_store(self, store_path):
         """Returns a handle to an OJAI DocumentStore specified by the given name or path.
-        :param store_path: name or path of an OJAI data source table.
-        :param options: an OJAI Document containing arbitrary, implementation specific settings"""
+        :param store_path: name or path of an OJAI data source table."""
         raise NotImplementedError("Should have implemented this")
 
     @abstractmethod

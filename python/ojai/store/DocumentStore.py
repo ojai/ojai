@@ -5,16 +5,6 @@ class DocumentStore:
     __metaclass__ = ABCMeta
 
     @abstractmethod
-    def is_read_only(self):
-        """:return True if this Document store does not support any write operations like insert/update//delete, etc."""
-        raise NotImplementedError("Should have implemented this")
-
-    @abstractmethod
-    def flush(self):
-        """Flushes any buffered writes operations for this DocumentStore."""
-        raise NotImplementedError("Should have implemented this")
-
-    @abstractmethod
     def find_by_id(self, _id, field_paths=None, condition=None, result_as_document=False):
         """Returns the document with the specified `_id` or None if the document with that `_id` either doesn't exist
         in this DocumentStore or does not meet the specified condition.

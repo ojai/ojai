@@ -18,18 +18,6 @@ class Document:
         raise NotImplementedError("Should have implemented this")
 
     @abstractmethod
-    def get_id_str(self):
-        """Method returns _id field of the Document
-        :return _id field as a string"""
-        raise NotImplementedError("Should have implemented this")
-
-    @abstractmethod
-    def get_id_binary(self):
-        """Method returns _id field of the Document
-        :return _id field as a bytearray"""
-        raise NotImplementedError("Should have implemented this")
-
-    @abstractmethod
     def size(self):
         """:return the number of top level entries in the document"""
         raise NotImplementedError("Should have implemented this")
@@ -40,14 +28,12 @@ class Document:
         raise NotImplementedError("Should have implemented this")
 
     @abstractmethod
-    def set(self, field_path, value, off=None, length=None):
+    def set(self, field_path, value):
         """Sets the value of the specified fieldPath in this Document to the
         specified String.
         :param field_path: the FieldPath to set. Type may be str and FieldPath.
         :param value: the value. Type may be bool, byte, long, float, OTime, ODate, OTimestamp, OInterval,
         bytearray, dictionary, Document, Value, list, None.
-        :param length: length of bytearray.
-        :param off: offset if a value type is bytearray.
         :return document itself"""
 
         raise NotImplementedError("Should have implemented this")
@@ -127,13 +113,6 @@ class Document:
         """Returns the value at the specified fieldPath.
                 :param field_path: the path to get from the document. Type may be FieldPath, str.
                 :return value at the specified field_path as OInterval"""
-        raise NotImplementedError("Should have implemented this")
-
-    @abstractmethod
-    def get_value(self, field_path):
-        """Returns the value at the specified fieldPath.
-                :param field_path: the path to get from the document. Type may be FieldPath, str.
-                :return value at the specified field_path as Value"""
         raise NotImplementedError("Should have implemented this")
 
     @abstractmethod

@@ -9,26 +9,6 @@ class Query:
     __metaclass__ = ABCMeta
 
     @abstractmethod
-    def set_option(self, option_name, value=None):
-        """Sets a named query option. A query option can be used to provide hints to query execution engine.
-        However, under stable conditions, a query option can not alter the result of the query.
-        :param option_name: specific query options.
-        :param value: object value.
-        :return Query"""
-        raise NotImplementedError("This should have been implemented.")
-
-    @abstractmethod
-    def set_options(self, options):
-        """Sets multiple query options for this Query.
-        :param options: specific query options. Could be either a Document, dictionary or a JSON string"""
-        raise NotImplementedError("This should have been implemented.")
-
-    @abstractmethod
-    def set_timeout(self, timeout_in_millis):
-        """Sets a duration after which the query will fails with QueryTimeoutError"""
-        raise NotImplementedError("This should have been implemented.")
-
-    @abstractmethod
     def select(self, field_paths):
         """Adds the list of field paths to the list of projected fields.
         If not specified, the entire Document will be returned.
