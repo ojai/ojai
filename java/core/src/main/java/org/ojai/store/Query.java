@@ -26,6 +26,7 @@ import org.ojai.FieldPath;
 import org.ojai.JsonString;
 import org.ojai.annotation.API;
 import org.ojai.annotation.API.NonNullable;
+import org.ojai.annotation.API.Nullable;
 import org.ojai.exceptions.OjaiException;
 import org.ojai.exceptions.QueryTimeoutException;
 
@@ -84,7 +85,7 @@ public interface Query extends Buildable, Container, JsonString {
    *
    * @return {@code this} for chained invocation
    */
-  public Query setOptions(@NonNullable Document options) throws IllegalArgumentException;
+  public Query setOptions(@Nullable Document options) throws IllegalArgumentException;
 
   /**
    * Sets a duration after which the query will fails with {@link QueryTimeoutException}.

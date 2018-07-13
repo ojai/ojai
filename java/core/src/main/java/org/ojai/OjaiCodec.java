@@ -18,6 +18,7 @@ package org.ojai;
 import org.ojai.Document;
 import org.ojai.annotation.API;
 import org.ojai.annotation.API.NonNullable;
+import org.ojai.annotation.API.Nullable;
 import org.ojai.exceptions.DecodingException;
 import org.ojai.exceptions.EncodingException;
 import org.ojai.store.DocumentMutation;
@@ -67,7 +68,7 @@ public interface OjaiCodec<T> {
    * @return an OJAI Query
    * @throws DecodingException
    */
-  public Query decodeQuery(@NonNullable T encodedQuery) throws DecodingException;
+  public Query decodeQuery(@NonNullable T encodedQuery, @Nullable Document options) throws DecodingException;
 
   /**
    * Encodes an OJAI {@link QueryCondition} into an instance of &lt;T&gt;
