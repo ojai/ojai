@@ -16,6 +16,8 @@
 package org.ojai.json;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
@@ -40,7 +42,9 @@ import org.ojai.json.impl.JsonValueBuilder;
 import org.ojai.store.ValueBuilder;
 import org.ojai.util.Documents;
 
+import com.google.common.base.Charsets;
 import com.google.common.base.Preconditions;
+import com.google.common.io.Files;
 
 /**
  * This class serves as a factory for a JSON implementation
@@ -55,6 +59,23 @@ public final class Json {
    */
   public static Document newDocument() {
     return new JsonDocument();
+  }
+
+  /**
+   * Loads a JSON file as OJAI Document.
+   */
+  public static Document loadDocument(final String filePath) throws IOException {
+    return loadDocument(new File(filePath));
+  }
+
+  /**
+   * Loads a JSON file as OJAI Document.
+   */
+  public static Document loadDocument(final File file) throws IOException {
+    if (!file.exists() || !file.canRead()) {
+      throw new FileNotFoundException("The file " + file.getAbsolutePath() + " could not be read or does not exist.");
+    }
+    return newDocument(Files.toString(file, Charsets.UTF_8));
   }
 
   /**
@@ -201,7 +222,7 @@ public final class Json {
   }
 
   /**
-   * @deprecated Use {@link Documents#writeReaderToBuilder(DocumentReader, DocumentBuilder)} 
+   * @deprecated Use {@link Documents#writeReaderToBuilder(DocumentReader, DocumentBuilder)}
    */
   public static void writeReaderToBuilder(@NonNullable DocumentReader r, @NonNullable DocumentBuilder w) {
     Documents.writeReaderToBuilder(r, w);
