@@ -98,11 +98,15 @@ public class JsonDocument extends JsonValue implements Document, Map<String, Obj
     valueType = Type.MAP;
   }
 
-  public void checkForArrayNotation(String fieldPath) {
-    if (fieldPath.contains(ELEMENTS_ALL)) {
-      throw new IllegalArgumentException(
-          ELEMENTS_ALL + " cannot be used to get/set/delete" +
-              " a value in a Document");
+  public static void checkForArrayNotation(FieldPath fp) {
+    FieldSegment curSegment = fp.getRootSegment();
+    while (curSegment != null) {
+      if (curSegment.isIndexed() && !curSegment.getIndexSegment().hasIndex()) {
+        throw new IllegalArgumentException(
+            ELEMENTS_ALL + " cannot be used to get/set/delete" +
+                " a value in a Document");
+      }
+      curSegment = curSegment.getChild();
     }
   }
 
@@ -164,7 +168,7 @@ public class JsonDocument extends JsonValue implements Document, Map<String, Obj
   }
 
   private JsonDocument setCommon(FieldPath fieldPath, JsonValue value) {
-    checkForArrayNotation(fieldPath.toString());
+    checkForArrayNotation(fieldPath);
     Iterator<FieldSegment> iter = fieldPath.iterator();
     createOrInsert(iter, value);
     return this;
@@ -315,7 +319,7 @@ public class JsonDocument extends JsonValue implements Document, Map<String, Obj
 
   @Override
   public Document delete(FieldPath path) {
-    checkForArrayNotation(path.toString());
+    checkForArrayNotation(path);
     delete(path.iterator());
     return this;
   }
@@ -377,7 +381,7 @@ public class JsonDocument extends JsonValue implements Document, Map<String, Obj
 
   @Override
   public String getString(FieldPath fieldPath) {
-    checkForArrayNotation(fieldPath.toString());
+    checkForArrayNotation(fieldPath);
     JsonValue value = getKeyValueAt(fieldPath.iterator());
     if (value != null) {
       return value.getString();
@@ -392,7 +396,7 @@ public class JsonDocument extends JsonValue implements Document, Map<String, Obj
 
   @Override
   public boolean getBoolean(FieldPath fieldPath) {
-    checkForArrayNotation(fieldPath.toString());
+    checkForArrayNotation(fieldPath);
     JsonValue value = getKeyValueAt(fieldPath.iterator());
     testNoSuchElement(fieldPath, value);
     return value.getBoolean();
@@ -419,7 +423,7 @@ public class JsonDocument extends JsonValue implements Document, Map<String, Obj
 
   @Override
   public byte getByte(FieldPath fieldPath) {
-    checkForArrayNotation(fieldPath.toString());
+    checkForArrayNotation(fieldPath);
     JsonValue value = getKeyValueAt(fieldPath.iterator());
     testNoSuchElement(fieldPath, value);
     return value.getByte();
@@ -432,7 +436,7 @@ public class JsonDocument extends JsonValue implements Document, Map<String, Obj
 
   @Override
   public Byte getByteObj(FieldPath fieldPath) {
-    checkForArrayNotation(fieldPath.toString());
+    checkForArrayNotation(fieldPath);
     JsonValue value = getKeyValueAt(fieldPath.iterator());
     if (value != null) {
       return value.getByte();
@@ -447,7 +451,7 @@ public class JsonDocument extends JsonValue implements Document, Map<String, Obj
 
   @Override
   public short getShort(FieldPath fieldPath) {
-    checkForArrayNotation(fieldPath.toString());
+    checkForArrayNotation(fieldPath);
     JsonValue value = getKeyValueAt(fieldPath.iterator());
     testNoSuchElement(fieldPath, value);
     return value.getShort();
@@ -460,7 +464,7 @@ public class JsonDocument extends JsonValue implements Document, Map<String, Obj
 
   @Override
   public Short getShortObj(FieldPath fieldPath) {
-    checkForArrayNotation(fieldPath.toString());
+    checkForArrayNotation(fieldPath);
     JsonValue value = getKeyValueAt(fieldPath.iterator());
     if (value != null) {
       return value.getShort();
@@ -475,7 +479,7 @@ public class JsonDocument extends JsonValue implements Document, Map<String, Obj
 
   @Override
   public int getInt(FieldPath fieldPath) {
-    checkForArrayNotation(fieldPath.toString());
+    checkForArrayNotation(fieldPath);
     JsonValue value = getKeyValueAt(fieldPath.iterator());
     testNoSuchElement(fieldPath, value);
     return value.getInt();
@@ -488,7 +492,7 @@ public class JsonDocument extends JsonValue implements Document, Map<String, Obj
 
   @Override
   public Integer getIntObj(FieldPath fieldPath) {
-    checkForArrayNotation(fieldPath.toString());
+    checkForArrayNotation(fieldPath);
     JsonValue value = getKeyValueAt(fieldPath.iterator());
     if (value != null) {
       return value.getInt();
@@ -503,7 +507,7 @@ public class JsonDocument extends JsonValue implements Document, Map<String, Obj
 
   @Override
   public long getLong(FieldPath fieldPath) {
-    checkForArrayNotation(fieldPath.toString());
+    checkForArrayNotation(fieldPath);
     JsonValue value = getKeyValueAt(fieldPath.iterator());
     testNoSuchElement(fieldPath, value);
     return value.getLong();
@@ -516,7 +520,7 @@ public class JsonDocument extends JsonValue implements Document, Map<String, Obj
 
   @Override
   public Long getLongObj(FieldPath fieldPath) {
-    checkForArrayNotation(fieldPath.toString());
+    checkForArrayNotation(fieldPath);
     JsonValue value = getKeyValueAt(fieldPath.iterator());
     if (value != null) {
       return value.getLong();
@@ -531,7 +535,7 @@ public class JsonDocument extends JsonValue implements Document, Map<String, Obj
 
   @Override
   public float getFloat(FieldPath fieldPath) {
-    checkForArrayNotation(fieldPath.toString());
+    checkForArrayNotation(fieldPath);
     JsonValue value = getKeyValueAt(fieldPath.iterator());
     testNoSuchElement(fieldPath, value);
     return value.getFloat();
@@ -544,7 +548,7 @@ public class JsonDocument extends JsonValue implements Document, Map<String, Obj
 
   @Override
   public Float getFloatObj(FieldPath fieldPath) {
-    checkForArrayNotation(fieldPath.toString());
+    checkForArrayNotation(fieldPath);
     JsonValue value = getKeyValueAt(fieldPath.iterator());
     if (value != null) {
       return value.getFloat();
@@ -559,7 +563,7 @@ public class JsonDocument extends JsonValue implements Document, Map<String, Obj
 
   @Override
   public double getDouble(FieldPath fieldPath) {
-    checkForArrayNotation(fieldPath.toString());
+    checkForArrayNotation(fieldPath);
     JsonValue value = getKeyValueAt(fieldPath.iterator());
     testNoSuchElement(fieldPath, value);
     return value.getDouble();
@@ -572,7 +576,7 @@ public class JsonDocument extends JsonValue implements Document, Map<String, Obj
 
   @Override
   public Double getDoubleObj(FieldPath fieldPath) {
-    checkForArrayNotation(fieldPath.toString());
+    checkForArrayNotation(fieldPath);
     JsonValue value = getKeyValueAt(fieldPath.iterator());
     if (value != null) {
       return value.getDouble();
@@ -582,7 +586,7 @@ public class JsonDocument extends JsonValue implements Document, Map<String, Obj
 
   @Override
   public BigDecimal getDecimal(FieldPath fieldPath) {
-    checkForArrayNotation(fieldPath.toString());
+    checkForArrayNotation(fieldPath);
     JsonValue v = getKeyValueAt(fieldPath.iterator());
     if (v != null) {
       return v.getDecimal();
@@ -592,13 +596,13 @@ public class JsonDocument extends JsonValue implements Document, Map<String, Obj
 
   @Override
   public JsonValue getValue(FieldPath fieldPath) {
-    checkForArrayNotation(fieldPath.toString());
+    checkForArrayNotation(fieldPath);
     return getKeyValueAt(fieldPath.iterator());
   }
 
   @Override
   public Map<String, Object> getMap(FieldPath fieldPath) {
-    checkForArrayNotation(fieldPath.toString());
+    checkForArrayNotation(fieldPath);
     JsonValue v = getKeyValueAt(fieldPath.iterator());
     if (v != null) {
       return v.getMap();
@@ -613,7 +617,7 @@ public class JsonDocument extends JsonValue implements Document, Map<String, Obj
 
   @Override
   public List<Object> getList(FieldPath fieldPath) {
-    checkForArrayNotation(fieldPath.toString());
+    checkForArrayNotation(fieldPath);
     JsonValue v = getKeyValueAt(fieldPath.iterator());
     if (v != null) {
       return v.getList();
