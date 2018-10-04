@@ -1,9 +1,8 @@
 from abc import ABCMeta, abstractmethod
+from future.utils import with_metaclass
 
 
-class DocumentStore:
-    __metaclass__ = ABCMeta
-
+class DocumentStore(with_metaclass(ABCMeta, object)):
     @abstractmethod
     def find_by_id(self, _id, field_paths=None, condition=None, result_as_document=False):
         """Returns the document with the specified `_id` or None if the document with that `_id` either doesn't exist

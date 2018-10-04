@@ -1,12 +1,12 @@
 from abc import ABCMeta, abstractmethod
+from future.utils import with_metaclass
 
 
-class DocumentMutation:
+class DocumentMutation(with_metaclass(ABCMeta, object)):
     """
     The DocumentMutation abstract class defines the APIs to perform mutation
     of a Document already stored in a DocumentStore.
     """
-    __metaclass__ = ABCMeta
 
     @abstractmethod
     def empty(self):

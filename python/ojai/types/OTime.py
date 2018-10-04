@@ -1,3 +1,6 @@
+from __future__ import division
+from builtins import object
+from past.utils import old_div
 import datetime
 import dateutil.parser
 
@@ -12,22 +15,22 @@ class OTime(object):
                  seconds=None, ms=None, date=None, millis_of_day=None):
         if timestamp is not None:
             self.__time = datetime.datetime.fromtimestamp(timestamp).time()
-            self.__millis_of_day = long((self.__time.hour * 60 * 60 + self.__time.second)
-                                        * 1000 + self.__time.microsecond / 1000.0)
+            self.__millis_of_day = (self.__time.hour * 60 * 60 + self.__time.second)\
+                                   * 1000 + old_div(self.__time.microsecond, 1000.0)
         # elif all([hour_of_day, minutes, seconds]) is not None:
         elif hour_of_day is not None and minutes is not None and seconds is not None:
             if ms is None:
                 self.__time = datetime.time(hour=hour_of_day, minute=minutes, second=seconds, microsecond=0)
             else:
                 self.__time = datetime.time(hour=hour_of_day, minute=minutes, second=seconds, microsecond=ms)
-            self.__millis_of_day = long((self.__time.hour * 60 * 60 + self.__time.second)
-                                        * 1000 + self.__time.microsecond / 1000.0)
+            self.__millis_of_day = (self.__time.hour * 60 * 60 + self.__time.second)\
+                                   * 1000 + old_div(self.__time.microsecond, 1000.0)
         elif date is not None:
             if not isinstance(type(date), type(datetime.datetime)):
                 raise TypeError
             self.__time = date.time()
-            self.__millis_of_day = long((self.__time.hour * 60 * 60 + self.__time.second)
-                                        * 1000 + self.__time.microsecond / 1000.0)
+            self.__millis_of_day = (self.__time.hour * 60 * 60 + self.__time.second) \
+                                   * 1000 + old_div(self.__time.microsecond, 1000.0)
         elif millis_of_day is not None:
             self.__time = None
             self.__millis_of_day = millis_of_day
@@ -69,7 +72,7 @@ class OTime(object):
         return self.__get_time().second
 
     def get_millis(self):
-        return self.__get_time().microsecond / 1000
+        return old_div(self.__get_time().microsecond, 1000)
 
     def to_date(self):
         return datetime.datetime.combine(self.__EPOCH_DATE.date(), self.__time)
@@ -90,7 +93,7 @@ class OTime(object):
         return self.time_to_str()
 
     def __hash__(self):
-        return self.millis_of_day
+        return int(self.millis_of_day)
 
     def __cmp__(self, other):
         if type(other) is not self:

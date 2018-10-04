@@ -1,17 +1,12 @@
+from builtins import object
 from abc import ABCMeta, abstractmethod
 
 from aenum import Enum
+from future.utils import with_metaclass
 
 
-class QueryCondition:
+class QueryCondition(with_metaclass(ABCMeta, object)):
     """The public API class contains comprehensive operations for the queries."""
-
-    # All condition methods were named with underscore at the end due to the fact, that:
-    # * underscore at the start - we got the warning, because we use protected members
-    # * is, and, or, in - special keywords in python
-
-
-    __metaclass__ = ABCMeta
 
     @abstractmethod
     def is_empty(self):

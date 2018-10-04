@@ -1,3 +1,6 @@
+from __future__ import division
+from builtins import object
+from past.utils import old_div
 from ojai.error.UnsupportedConstructorException import UnsupportedConstructorException
 from ojai.types import constants
 
@@ -5,9 +8,9 @@ from ojai.types import constants
 class OInterval(object):
     """An immutable class which encapsulates a time interval."""
 
-    __APPROX_DAYS_IN_YEAR = ((365 * 4) + 1)/4.0
+    __APPROX_DAYS_IN_YEAR = old_div(((365 * 4) + 1),4.0)
 
-    __APPROX_DAYS_IN_MONTH = __APPROX_DAYS_IN_YEAR / 12
+    __APPROX_DAYS_IN_MONTH = old_div(__APPROX_DAYS_IN_YEAR, 12)
 
     def __init__(self, milli_seconds=None, years=None, months=None, days=None,
                  seconds=None, iso8601DurationPattern=None):
@@ -19,14 +22,14 @@ class OInterval(object):
             self.__months = months
             self.__years = years
             # total_days = long(((years * self.__APPROX_DAYS_IN_YEAR) + (months * self.__APPROX_DAYS_IN_MONTH) + days))
-            total_days = long(((years * self.__APPROX_DAYS_IN_YEAR) + (months * self.__APPROX_DAYS_IN_MONTH) + days))
+            total_days = ((years * self.__APPROX_DAYS_IN_YEAR) + (months * self.__APPROX_DAYS_IN_MONTH) + days)
             # self.__time_duration = constants.MILLISECONDS_PER_DAY * total_days + seconds * 1000 + milli_seconds
             self.__time_duration = constants.MILLISECONDS_PER_DAY * total_days + seconds * 1000 + milli_seconds
         elif milli_seconds is not None and years is None and months is None and days is None and seconds is None:
-            self.__time_duration = long(milli_seconds)
+            self.__time_duration = milli_seconds
             self.__milli_seconds = int(milli_seconds % 1000)
-            self.__seconds = int((milli_seconds % constants.MILLISECONDS_PER_DAY) / 1000)
-            self.__days = int(milli_seconds / constants.MILLISECONDS_PER_DAY)
+            self.__seconds = int(old_div((milli_seconds % constants.MILLISECONDS_PER_DAY), 1000))
+            self.__days = int(old_div(milli_seconds, constants.MILLISECONDS_PER_DAY))
             self.__months = 0
             self.__years = 0
         elif iso8601DurationPattern is not None:

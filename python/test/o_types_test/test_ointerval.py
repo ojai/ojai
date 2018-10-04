@@ -16,7 +16,7 @@ class OIntervalTest(unittest.TestCase):
         instance2 = OInterval(milli_seconds=86754099)
         self.assertTrue(instance1.__eq__(instance2))
 
-        self.assertEqual(instance1.time_duration, long(86754099))
+        self.assertEqual(instance1.time_duration, 86754099)
         from ojai.types.constants import MILLISECONDS_PER_DAY
         self.assertEqual(instance1.seconds, int((86754099 % MILLISECONDS_PER_DAY) / 1000))
         self.assertEqual(instance1.days, int(86754099 / MILLISECONDS_PER_DAY))

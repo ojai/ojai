@@ -1,3 +1,6 @@
+from __future__ import division
+from builtins import object
+from past.utils import old_div
 import datetime
 
 import dateutil.parser
@@ -71,7 +74,7 @@ class OTimestamp(object):
         return (self.__UTC_CHRONOLOGY + datetime.timedelta(milliseconds=self.millis_since_epoch)).second
 
     def get_millis(self):
-        return (self.__UTC_CHRONOLOGY + datetime.timedelta(milliseconds=self.millis_since_epoch)).microsecond / 1000
+        return old_div((self.__UTC_CHRONOLOGY + datetime.timedelta(milliseconds=self.millis_since_epoch)).microsecond, 1000)
 
     def __get_date_time(self):
         if self.__date_time is None:
@@ -82,7 +85,7 @@ class OTimestamp(object):
 
     # Create datetime object from millis since epoch
     def to_date(self):
-        return datetime.datetime.fromtimestamp(self.millis_since_epoch / 1000.0)
+        return datetime.datetime.fromtimestamp(old_div(self.millis_since_epoch, 1000.0))
 
     # Returns the ISO8601 format timestamp string in UTC.
     def to_utc_str_now(self):

@@ -1,11 +1,10 @@
 from abc import ABCMeta, abstractmethod
 
 from ojai.DocumentStream import DocumentStream
+from future.utils import with_metaclass
 
 
-class QueryResult(DocumentStream):
-
-    __metaclass__ = ABCMeta
+class QueryResult(with_metaclass(ABCMeta, DocumentStream)):
 
     @abstractmethod
     def get_query_plan(self):

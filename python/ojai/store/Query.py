@@ -1,12 +1,11 @@
 from abc import ABCMeta, abstractmethod
+from future.utils import with_metaclass
 
 
-class Query:
+class Query(with_metaclass(ABCMeta, object)):
 
     """OJAI interface which lets users build an OJAI Query that can be executed
     on an OJAI DocumentStore."""
-
-    __metaclass__ = ABCMeta
 
     @abstractmethod
     def select(self, field_paths):

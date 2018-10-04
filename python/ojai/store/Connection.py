@@ -1,11 +1,11 @@
 from abc import ABCMeta, abstractmethod
+from future.utils import with_metaclass
 
 
-class Connection:
+class Connection(with_metaclass(ABCMeta, object)):
     """The Connection class defines the APIs to perform actions with storage.
     In client you may use static method:
     ConnectionFactory.get_connection(connection_str, options=None)"""
-    __metaclass__ = ABCMeta
 
     @abstractmethod
     def create_store(self, store_path):
