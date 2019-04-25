@@ -32,6 +32,10 @@
   <name>OJAI Map-Reduce Library</name>
   <packaging>jar</packaging>
 
+  <properties>
+    <hadoop.version>2.7.4</hadoop.version>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -44,10 +48,12 @@
     <dependency>
       <groupId>org.apache.hadoop</groupId>
       <artifactId>hadoop-mapreduce-client-core</artifactId>
+      <version>${hadoop.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.hadoop</groupId>
       <artifactId>hadoop-common</artifactId>
+      <version>${hadoop.version}</version>
     </dependency>
     <dependency>
       <!-- replaces commons logging, needed for FileInputFormat -->

@@ -89,7 +89,6 @@
 
     <guava.version>18.0</guava.version>
     <slf4j.version>1.7.12</slf4j.version>
-    <hadoop.version>2.7.1</hadoop.version>
     <jackson.version>2.9.5</jackson.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -264,33 +263,6 @@
         <groupId>org.ojai</groupId>
         <artifactId>ojai</artifactId>
         <version>${ojai.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.hadoop</groupId>
-        <artifactId>hadoop-mapreduce-client-core</artifactId>
-        <version>${hadoop.version}</version>
-        <optional>true</optional>
-        <exclusions>
-          <exclusion>
-            <!-- requires maven 3.2.1 -->
-            <groupId>*</groupId>
-            <artifactId>*</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
-        <!-- Used for FileSystem and Path classes -->
-        <groupId>org.apache.hadoop</groupId>
-        <artifactId>hadoop-common</artifactId>
-        <version>${hadoop.version}</version>
-        <optional>true</optional>
-        <exclusions>
-          <exclusion>
-            <!-- requires maven 3.2.1 -->
-            <groupId>*</groupId>
-            <artifactId>*</artifactId>
-          </exclusion>
-        </exclusions>
       </dependency>
       <dependency>
         <groupId>com.fasterxml.jackson.module</groupId>

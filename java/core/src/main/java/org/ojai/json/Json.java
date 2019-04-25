@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 
-import org.apache.hadoop.fs.FileSystem;
 import org.ojai.Document;
 import org.ojai.DocumentBuilder;
 import org.ojai.DocumentReader;
@@ -166,24 +165,6 @@ public final class Json {
   public static DocumentStream newDocumentStream(
       @NonNullable InputStream in, @NonNullable Events.Delegate eventDelegate) {
     return new JsonDocumentStream(in, null, eventDelegate);
-  }
-
-  public static DocumentStream newDocumentStream(
-      @NonNullable FileSystem fs, @NonNullable String path)
-          throws DecodingException, IOException {
-    return JsonDocumentStream.newDocumentStream(fs, path, null, null);
-  }
-
-  public static DocumentStream newDocumentStream(
-      @NonNullable FileSystem fs, @NonNullable String path, @NonNullable Map<FieldPath, Type> fieldPathTypeMap)
-          throws DecodingException, IOException {
-    return JsonDocumentStream.newDocumentStream(fs, path, fieldPathTypeMap, null);
-  }
-
-  public static DocumentStream newDocumentStream(
-      @NonNullable FileSystem fs, @NonNullable String path, @NonNullable Events.Delegate eventDelegate)
-          throws DecodingException, IOException {
-    return JsonDocumentStream.newDocumentStream(fs, path, null, eventDelegate);
   }
 
   public static <T> T encode(@NonNullable String jsonString, @NonNullable Class<T> beanClass) {

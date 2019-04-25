@@ -20,8 +20,6 @@ import java.io.InputStream;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.apache.hadoop.fs.FileSystem;
-import org.apache.hadoop.fs.Path;
 import org.ojai.Document;
 import org.ojai.DocumentListener;
 import org.ojai.DocumentReader;
@@ -48,32 +46,6 @@ public class JsonDocumentStream implements DocumentStream {
 
   private final Map<FieldPath, Type> fieldPathTypeMap;
   private final Events.Delegate eventDelegate;
-
-  static DocumentStream newDocumentStream(FileSystem fs,
-      Path path, Map<FieldPath, Type> map, Events.Delegate delegate)
-          throws IllegalArgumentException, IOException {
-    final InputStream in = fs.open(path);
-    return new JsonDocumentStream(in, map, delegate) {
-      @Override
-      public void close() {
-        try {
-          super.close();
-        } finally {
-          try {
-            in.close();
-          } catch (IOException e) {
-            throw new OjaiException(e);
-          }
-        }
-      }
-    };
-  }
-
-  public static DocumentStream newDocumentStream(FileSystem fs,
-      String path, Map<FieldPath, Type> map, Events.Delegate delegate)
-          throws IllegalArgumentException, IOException {
-    return newDocumentStream(fs, new Path(path), map, delegate);
-  }
 
   public JsonDocumentStream(InputStream in,
       Map<FieldPath, Type> fieldPathTypeMap, Events.Delegate eventDelegate) {

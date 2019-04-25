@@ -146,13 +146,6 @@
       <artifactId>joda-time</artifactId>
       <version>2.9.1</version>
     </dependency>
-
-    <dependency>
-      <!-- Optional, used for FileSystem and Path classes -->
-      <groupId>org.apache.hadoop</groupId>
-      <artifactId>hadoop-common</artifactId>
-      <optional>true</optional>
-    </dependency>
   </dependencies>
 
 </project>
