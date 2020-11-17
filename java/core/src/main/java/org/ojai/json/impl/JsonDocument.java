@@ -642,7 +642,7 @@ public class JsonDocument extends JsonValue implements Document, Map<String, Obj
   @Override
   public DocumentReader asReader(FieldPath fieldPath) {
     JsonValue val = getValue(fieldPath);
-    return new JsonDOMDocumentReader(val);
+    return (val == null) ? null : new JsonDOMDocumentReader(val);
   }
 
   @Override
