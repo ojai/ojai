@@ -312,7 +312,15 @@ public class TestFieldPath extends BaseTest {
 
   @Test
   public void testFieldPathInvalidSequences() {
-    String[] invalidSequences = {"`", "\"", "\\", "\b", "\f", "\n", "\r", "\t"};
+    String[] invalidQuotes = {"`", "\""};
+    for (String invalidQuote : invalidQuotes) {
+      try {
+        FieldPath.parseFrom(invalidQuote);
+        fail("FieldPath parsing should have failed for sequence: " + hexDump(invalidQuote));
+      } catch (IllegalArgumentException e) {}
+    }
+
+    String[] invalidSequences = {"\\", "\b", "\f", "\n", "\r", "\t"};
     for (String invalidSequence : invalidSequences) {
       try {
         FieldPath.parseFrom(invalidSequence);
