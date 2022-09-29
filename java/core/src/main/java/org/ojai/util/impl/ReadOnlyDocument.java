@@ -21,6 +21,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Spliterator;
+import java.util.function.Consumer;
 
 import org.ojai.Document;
 import org.ojai.DocumentReader;
@@ -29,6 +31,7 @@ import org.ojai.Value;
 import org.ojai.annotation.API;
 import org.ojai.exceptions.DecodingException;
 import org.ojai.exceptions.ReadOnlyObjectException;
+import org.ojai.json.JsonOptions;
 import org.ojai.types.ODate;
 import org.ojai.types.OInterval;
 import org.ojai.types.OTime;
@@ -63,6 +66,31 @@ public class ReadOnlyDocument implements Document {
   @Override
   public DocumentReader asReader(String fieldPath) {
     return wrapped.asReader(fieldPath);
+  }
+
+  @Override
+  public String asJsonString() {
+    return wrapped.asJsonString();
+  }
+
+  @Override
+  public String asJsonString(JsonOptions options) {
+    return wrapped.asJsonString(options);
+  }
+
+  @Override
+  public boolean isEmpty() {
+    return wrapped.isEmpty();
+  }
+
+  @Override
+  public void forEach(Consumer<? super Entry<String, Value>> action) {
+    wrapped.forEach(action);
+  }
+
+  @Override
+  public Spliterator<Entry<String, Value>> spliterator() {
+    return wrapped.spliterator();
   }
 
   @Override
