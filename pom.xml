@@ -87,10 +87,10 @@
     <distMgmtStagingName>Sonatype Release Distribution Repository</distMgmtStagingName>
     <distMgmtStagingUrl>https://oss.sonatype.org/service/local/staging/deploy/maven2</distMgmtStagingUrl>
 
-    <guava.version>28.2-jre</guava.version>
-    <slf4j.version>1.7.12</slf4j.version>
-    <jackson.version>2.9.10</jackson.version>
-    <jackson-databind.version>2.9.10.8</jackson-databind.version>
+    <guava.version>31.1-jre</guava.version>
+    <slf4j.version>1.7.36</slf4j.version>
+    <jackson.version>2.14.1</jackson.version>
+    <jackson-databind.version>2.14.1</jackson-databind.version>
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -286,6 +286,12 @@
         <artifactId>jackson-module-scala_2.11</artifactId>
         <version>${jackson.version}</version>
       </dependency>
+      <dependency>
+        <groupId>joda-time</groupId>
+        <artifactId>joda-time</artifactId>
+        <version>2.12.2</version>
+      </dependency>
+
       <!-- Test dependencies -->
       <dependency>
         <groupId>junit</groupId>
