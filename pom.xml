@@ -76,9 +76,9 @@
   </distributionManagement>
 
   <!-- When the version is updated, ensure that the property 'ojai.version' is also updated with the same literal string -->
-  <version>3.1.1</version>
+  <version>3.1.2-SNAPSHOT</version>
   <properties>
-    <ojai.version>3.1.1</ojai.version>
+    <ojai.version>3.1.2-SNAPSHOT</ojai.version>
 
     <distMgmtSnapshotsId>ossrh</distMgmtSnapshotsId>
     <distMgmtSnapshotsName>Sonatype Snapshot Repository</distMgmtSnapshotsName>
