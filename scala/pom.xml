@@ -24,7 +24,7 @@
   <parent>
     <groupId>org.ojai</groupId>
     <artifactId>ojai-root</artifactId>
-    <version>3.1.2-mapr-SNAPSHOT</version>
+    <version>3.1.2-mapr</version>
     <relativePath>..</relativePath>
   </parent>
 
