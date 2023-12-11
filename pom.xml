@@ -87,7 +87,7 @@
     <distMgmtStagingName>Sonatype Release Distribution Repository</distMgmtStagingName>
     <distMgmtStagingUrl>https://oss.sonatype.org/service/local/staging/deploy/maven2</distMgmtStagingUrl>
 
-    <antlr.version>4.9.3</antlr.version>
+    <antlr.version>4.13.1</antlr.version>
     <guava.version>31.1-jre</guava.version>
     <slf4j.version>1.7.36</slf4j.version>
     <jackson.version>2.14.1</jackson.version>
